@@ -35,8 +35,8 @@ export default {
       return []
     }
   },
-  async asyncData({ app, params, store }) {
-    await store.dispatch('stories/fetch', {
+  async fetch() {
+    await this.$store.dispatch('stories/fetch', {
       reviewed: 0,
       newsletter: true
     })

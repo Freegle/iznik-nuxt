@@ -333,10 +333,6 @@ export default {
     }
   },
   async mounted() {
-    this.waitForRef('askmodal', () => { // #####################
-      this.$refs.askmodal.show()
-    })
-
     // We might have parameters from just having posted.
     this.justPosted = this.$route.params.justPosted
     this.newuser = this.$route.params.newuser
@@ -453,7 +449,7 @@ export default {
       }, 2000)
     },
     ask(groupid) {
-      if (process.env.IS_APP && !window.localStorage.getItem('rateappnotagain')) { // CC
+      if (process.env.IS_APP && (Math.random()<0.25) && !window.localStorage.getItem('rateappnotagain')) { // CC
         this.$refs.rateappmodal.show()
       } else {
         this.waitForRef('askmodal', () => {

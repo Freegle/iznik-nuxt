@@ -55,8 +55,8 @@
             <donation-button v-else-if="variant === 'buttons1'" link="paypal1" show="£1" @clicked="score(1)" />
             <donation-button v-else-if="variant === 'buttons3'" link="paypal3" show="£3" @clicked="score(3)" />
             <div v-else-if="variant === 'buttonsmonthly'" class="d-flex justify-content-between flex-wrap">
-              <donation-button link="paypal1" show="£1/month" monthly @clicked="score(4)" />
-              <donation-button link="paypal1" show="£5/month" monthly @clicked="score(20)" />
+              <donation-button link="paypal1" show="£1/month" monthly monthlyvalue="Supporter1" @clicked="score(4)" />
+              <donation-button link="paypal1" show="£5/month" monthly monthlyvalue="Supporter5" @clicked="score(20)" />
             </div>
             <div v-else-if="variant === 'buttons1510'" class="d-flex justify-content-between flex-wrap">
               <donation-button link="paypal1" show="£1" class="mb-1" @clicked="score(1)" />
@@ -163,7 +163,6 @@ export default {
 
         if (variant) {
           this.variant = variant.variant
-          console.log('DonationAskModal', variant.variant) // ###
         }
       } catch (e) {
         console.error('Get variant failed')

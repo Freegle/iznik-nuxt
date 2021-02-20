@@ -8,6 +8,7 @@ node ./node_modules/replace/bin/replace.js '\/en-play-badge.png' 'en-play-badge.
 node ./node_modules/replace/bin/replace.js '\/app-store-black-sm.png' 'app-store-black-sm.png' dist -r --quiet
 node ./node_modules/replace/bin/replace.js '\/ebayvote.PNG' 'ebayvote.PNG' dist -r --quiet
 node ./node_modules/replace/bin/replace.js '\/GAYL.gif' 'GAYL.gif' dist -r --quiet
+node ./node_modules/replace/bin/replace.js '\/PayPalFavourite.gif' 'PayPalFavourite.gif' dist -r --quiet
 node ./node_modules/replace/bin/replace.js '\/vmg.png' 'vmg.png' dist -r --quiet
 node ./node_modules/replace/bin/replace.js '\/bytemark.png' 'bytemark.png' dist -r --quiet
 node ./node_modules/replace/bin/replace.js '\/mythic-beasts.png' 'mythic-beasts.png' dist -r --quiet

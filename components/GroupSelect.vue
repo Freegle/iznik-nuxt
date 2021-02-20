@@ -232,19 +232,15 @@ export default {
     }
   },
     async mounted() {
-    console.log('GroupSelect A')
     if (this.listall) {
       await this.$store.dispatch('group/list', {
         grouptype: 'Freegle'
       })
     }
-      console.log('GroupSelect B')
 
     if (this.remember) {
-      console.log('GroupSelect C')
       let val = this.$store.getters['misc/get']('groupselect-' + this.remember)
 
-      console.log('GroupSelect D',val)
       if (typeof val !== 'undefined') {
         val = parseInt(val)
         this.groups.forEach(g => {
@@ -253,7 +249,6 @@ export default {
           }
         })
       }
-      console.log('GroupSelect E')
     }
   }
 }

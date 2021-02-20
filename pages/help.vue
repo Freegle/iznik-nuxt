@@ -520,12 +520,6 @@ export default {
       contactGroupId: null
     }
   },
-  methods: { // CC
-    showRateMe() {
-      window.localStorage.removeItem('rateappnotagain')
-      this.$refs.rateappmodal.show()
-    }
-  },
   computed: {
     isApp() {
       return process.env.IS_APP
@@ -540,6 +534,10 @@ export default {
     }
   },
   methods: {
+    showRateMe() { // CC
+      window.localStorage.removeItem('rateappnotagain')
+      this.$refs.rateappmodal.show()
+    },
     supporterInfo() {
       this.$refs.supporterInfoModal.show()
     }

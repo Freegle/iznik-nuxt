@@ -12,7 +12,7 @@
       <form ref="donateform" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
         <input type="hidden" name="cmd" value="_s-xclick">
         <input type="hidden" name="hosted_button_id" value="6VJKBWQ9RQHPU">
-        <input type="hidden" name="os0" value="Supporter1">
+        <input type="hidden" name="os0" :value="monthlyvalue">
         <input type="hidden" name="on0" value="">
         <input type="hidden" name="currency_code" value="GBP">
         <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
@@ -54,6 +54,11 @@
         type: Boolean,
         required: false,
         default: false
+      },
+      monthlyvalue: {
+        type: String,
+        required: false,
+        default: null
       }
     },
     computed: {
@@ -63,7 +68,6 @@
     },
     methods: {
       clicked() {
-        console.log("Donation clicked", this.donationLink)
         if (process.env.IS_APP) {
           // eslint-disable-next-line no-undef
           cordova.InAppBrowser.open(this.donationLink, '_system')
@@ -75,13 +79,12 @@
       async donateMonthly() {
 
         if (process.env.IS_APP) {
-          console.log("monthly donation")
           // https://stackoverflow.com/questions/36796416/send-post-request-over-cordova-inappbrowser
           // Or use innerHTML of a surrounding div to get the form
           const pageContent = '<html><head></head><body><form id="payMonthly" action="https://www.paypal.com/cgi-bin/webscr" method="post">' +
             '<input type="hidden" name="cmd" value="_s-xclick">'+
-            '<input type="hidden" name="hosted_button_id" value="6VJKBWQ9RQHPU">'+
-            '<input type="hidden" name="os0" value="Supporter1">'+
+            '<input type="hidden" name="hosted_button_id" value="6VJKBWQ9RQHPU">' +
+            '<input type="hidden" name="os0" value="' + this.monthlyvalue + '">'+
             '<input type="hidden" name="on0" value="">'+
             '<input type="hidden" name="currency_code" value="GBP">'+
             '</form> <script type="text/javascript">document.getElementById("payMonthly").submit()<'+'/script></body></html>';
@@ -90,7 +93,7 @@
           const browserRef = cordova.InAppBrowser.open(
               pageContentUrl,
             '_blank', // '_system',
-              'hidden=no,location=no,clearsessioncache=yes,clearcache=yes'
+              'hidden=no,location=yes,menubar=yes,clearsessioncache=yes,clearcache=yes'
           );
           return false
       }
