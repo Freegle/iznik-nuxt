@@ -163,7 +163,6 @@ export default {
 
         if (variant) {
           this.variant = variant.variant
-          this.variant = 'buttonsmonthly'
         }
       } catch (e) {
         console.error('Get variant failed')
