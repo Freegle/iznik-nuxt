@@ -14,7 +14,7 @@
       <form ref="donateform" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
         <input type="hidden" name="cmd" value="_s-xclick">
         <input type="hidden" name="hosted_button_id" value="6VJKBWQ9RQHPU">
-        <input type="hidden" name="os0" value="Supporter1">
+        <input type="hidden" name="os0" :value="monthlyvalue">
         <input type="hidden" name="on0" value="">
         <input type="hidden" name="currency_code" value="GBP">
         <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
@@ -59,6 +59,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    monthlyvalue: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   computed: {
