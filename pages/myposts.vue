@@ -333,6 +333,10 @@ export default {
     }
   },
   async mounted() {
+    this.waitForRef('askmodal', () => { // #####################
+      this.$refs.askmodal.show()
+    })
+
     // We might have parameters from just having posted.
     this.justPosted = this.$route.params.justPosted
     this.newuser = this.$route.params.newuser

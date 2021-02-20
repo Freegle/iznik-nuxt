@@ -549,7 +549,7 @@ export default {
           this.$refs.promiseModal.show()
           break
         case 'lovejunk':
-          this.lovejunk()
+          this.goToLovejunk()
           break
       }
     }
@@ -671,6 +671,32 @@ export default {
       this.waitForRef('lovejunk', () => {
         this.$refs.lovejunk.show()
       })
+    },
+    async goToLovejunk() {
+      // Mark the message as visible and go straight there.
+      this.$api.bandit.chosen({
+        uid: 'lovejunk',
+        variant: 'mail'
+      })
+
+      // bookings.lovejunk.com/freegle/[freegleid]
+      await this.$store.dispatch('messages/partnerConsent', {
+        id: this.message.id,
+        partner: 'lovejunk.com'
+      })
+
+      await this.$store.dispatch('messages/fetch', {
+        id: this.message.id,
+        summary: true
+      })
+
+      const message = this.$store.getters['messages/get'](this.message.id)
+
+      window.location =
+        'https://bookings.lovejunk.com/freegle/' +
+        this.message.id +
+        '?signature=' +
+        message.lovejunkhash
     }
   }
 }

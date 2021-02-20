@@ -60,8 +60,8 @@
           </p>
           <h3>Websites</h3>
           <p>
-            The Love Essex website has a dedicated
-            <a href="http://www.loveessex.org/news-and-ideas/have-items-you-no-longer-want-freegle-can-help/" target="_blank" rel="noopener noreferrer">Freegle page</a>
+            The Love Essex website has a
+            <a href="https://www.loveessex.org/news-and-ideas/too-good-to-throw-away-pass-on-your-furniture-electricals-and-other-items/" target="_blank" rel="noopener noreferrer">section on donating items</a>,
             which you could replicate for your council.
           </p>
           <p>

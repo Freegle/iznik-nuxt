@@ -87,6 +87,28 @@
                             />
                           </b-col>
                         </b-row>
+                        <div v-if="supporter" class="mt-4">
+                          <Supporter
+                            size="lg"
+                            :hidden="!showSupporter"
+                          />
+                          <b-btn variant="link" size="sm" @click="toggleSupporter">
+                            <span v-if="showSupporter">
+                              Click to hide from others
+                            </span>
+                            <span v-else>
+                              Click to show to others
+                            </span>
+                          </b-btn>
+                          <p class="text-muted small mt-2">
+                            <span v-if="showSupporter">
+                              Other freeglers can see that you have kindly supported Freegle recently with time or funds.
+                            </span>
+                            <span v-else>
+                              Other freeglers can't see this.
+                            </span>
+                          </p>
+                        </div>
                       </b-card-body>
                     </b-card>
                   </b-col>
@@ -545,7 +567,7 @@
           </b-col>
           <b-col cols="0" xl="3" />
         </b-row>
-        <AboutMeModal ref="aboutmemodal" @change="update" />
+        <AboutMeModal ref="aboutmemodal" @datachange="update" />
         <ProfileModal :id="me ? me.id : null" ref="profilemodal" />
         <EmailConfirmModal ref="emailconfirm" />
         <AddressModal ref="addressModal" />
@@ -569,6 +591,7 @@ import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead'
 import ExternalLink from '@/components/ExternalLink'
 import SettingsPhone from '@/components/SettingsPhone'
+import Supporter from '@/components/Supporter'
 import EmailValidator from '../../components/EmailValidator'
 import EmailOwn from '../../components/EmailOwn'
 import SettingsSimple from '../../components/SettingsSimple'
@@ -590,6 +613,7 @@ const PasswordEntry = () => import('~/components/PasswordEntry')
 
 export default {
   components: {
+    Supporter,
     SettingsPhone,
     ExternalLink,
     SettingsSimple,
@@ -637,10 +661,19 @@ export default {
       console.log("isiOSapp false")
       return false
     },
+    showSupporter() {
+      const settings = this.me.settings
+      console.log(
+        'Show supporter?',
+        this.me.settings,
+        'hidesupporter' in settings,
+        !settings.hidesupporter
+      )
+      return 'hidesupporter' in settings ? !settings.hidesupporter : true
+    },
     relevantallowed: {
       // This is 1/0 in the model whereas we want Boolean.
       set(val) {
-        console.log('Set relevant allowed', val)
         Vue.set(this.me, 'relevantallowed', val ? 1 : 0)
       },
       get() {
@@ -783,6 +816,14 @@ export default {
     setTimeout(this.checkUser, 200)
   },
   methods: {
+    async toggleSupporter() {
+      const settings = this.me.settings
+      settings.hidesupporter = this.showSupporter
+
+      await this.$store.dispatch('auth/saveAndGet', {
+        settings: settings
+      })
+    },
     checkUser() {
       // This is a hack.  In the lost password case, we've seen that the login which is driven via the default
       // layout completes after we have retrieved our user.  The result is that we don't have the right info in "me".
@@ -809,7 +850,12 @@ export default {
         console.error('Failed to fetch user', e)
       }
     },
-    addAbout() {
+    async addAbout() {
+      await this.$store.dispatch('auth/fetchUser', {
+        components: ['me', 'phone', 'groups', 'aboutme', 'notifications'],
+        force: true
+      })
+
       this.waitForRef('aboutmemodal', () => {
         this.$refs.aboutmemodal.show()
       })

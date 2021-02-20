@@ -3,7 +3,8 @@ export default {
     return {
       postType: null,
       submitting: false,
-      invalid: false
+      invalid: false,
+      initialPostcode: null
     }
   },
   computed: {
@@ -169,6 +170,11 @@ export default {
       }
 
       return ret
+    }
+  },
+  created() {
+    if (this.$route.query.postcode) {
+      this.initialPostcode = this.$route.query.postcode
     }
   },
   methods: {

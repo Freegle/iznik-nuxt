@@ -318,8 +318,9 @@ export default {
         if (this.newsfeed.replies && this.newsfeed.replies.length) {
           for (let i = 0; i < this.newsfeed.replies.length; i++) {
             if (
-              !this.newsfeed.replies[i].deleted &&
-              this.newsfeed.replies[i].visible
+              (!this.newsfeed.replies[i].deleted &&
+                this.newsfeed.replies[i].visible) ||
+              this.mod
             ) {
               ret.push(this.newsfeed.replies[i])
             }

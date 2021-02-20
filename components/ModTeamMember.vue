@@ -9,6 +9,9 @@
     </b-col>
     <b-col cols="6">
       <strong>{{ member.displayname }}</strong>
+      <span class="text-faded small">
+        <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ member.id }}
+      </span>
     </b-col>
     <b-col>
       <b-btn v-if="admin" size="sm" variant="white">

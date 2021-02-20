@@ -1,5 +1,5 @@
 <template>
-  <div v-if="reply && userid && users[userid] && reply.visible">
+  <div v-if="reply && userid && users[userid] && (reply.visible || mod)">
     <b-row class="p-0" :class="scrollToThis ? 'bg-info' : ''">
       <b-col class="p-0">
         <div v-if="users[userid].profile" class="reply">
@@ -13,7 +13,7 @@
           </div>
           <div class="align-top">
             <span class="text-success font-weight-bold clickme" title="Click to see their profile" @click="showInfo">{{ users[userid].displayname }}</span>
-            <span class="font-weight-bold preline forcebreak text--small nopara">
+            <span :class="'font-weight-bold preline forcebreak text--small nopara ' + ((!reply.visible || reply.deleted) ? 'strike' : '')">
               <NewsHighlight
                 :search-words="threadUsers"
                 :text="emessage"
@@ -360,8 +360,9 @@ export default {
         if (this.reply.replies && this.reply.replies.length) {
           for (let i = 0; i < this.reply.replies.length; i++) {
             if (
-              !this.reply.replies[i].deleted &&
-              this.reply.replies[i].visible
+              (!this.reply.replies[i].deleted &&
+                this.reply.replies[i].visible) ||
+              this.mod
             ) {
               ret.push(this.reply.replies[i])
             }
@@ -615,5 +616,9 @@ export default {
 
 ::v-deep .fa-icon {
   margin-bottom: 1px;
+}
+
+::v-deep .strike {
+  text-decoration: line-through;
 }
 </style>

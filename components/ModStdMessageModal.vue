@@ -95,6 +95,11 @@ export default {
     stdmsg: {
       type: Object,
       required: true
+    },
+    autosend: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -347,7 +352,7 @@ export default {
 
       this.showModal = true
 
-      if (this.stdmsg.autosend) {
+      if (this.autosend) {
         // Start doing stuff.
         this.waitForRef('process', () => {
           this.$refs.process.click()

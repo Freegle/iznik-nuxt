@@ -6,7 +6,7 @@
           <profile-header :id="id" class="m-0" />
         </b-card-body>
       </b-card>
-      <NoticeMessage variant="primary" class="supporter d-flex justify-content-between flex-wrap">
+      <NoticeMessage v-if="user.supporter" variant="primary" class="supporter d-flex justify-content-between flex-wrap">
         <span class="align-self-center">
           <v-icon name="heart" /> Very kindly keeps Freegle running with donations of time or money.
         </span>

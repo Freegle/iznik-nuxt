@@ -13,7 +13,7 @@
         <client-only>
           <b-row>
             <b-col class="text-center">
-              <postcode class="justify-content-center" @selected="postcodeSelect" @cleared="postcodeClear" />
+              <postcode class="justify-content-center" :value="initialPostcode" @selected="postcodeSelect" @cleared="postcodeClear" />
             </b-col>
           </b-row>
           <b-row v-if="postcodeValid && !closed">
