@@ -17,8 +17,8 @@ security unlock-keychain -p circleci ios-build.keychain
 # see http://www.egeek.me/2013/02/23/jenkins-and-xcode-user-interaction-is-not-allowed/
 security set-keychain-settings -t 3600 -l ~/Library/Keychains/ios-build.keychain
 
-# Add certificates to keychain and allow codesign to access them
-security import mobile/AppleWWDRCA.cer -k ~/Library/Keychains/ios-build.keychain -T /usr/bin/codesign -T /usr/bin/xcrun
+# Add certificates to keychain and allow codesign to access them. Apple cert from https://www.apple.com/certificateauthority/
+security import mobile/AppleWWDRCAG3.cer -k ~/Library/Keychains/ios-build.keychain -T /usr/bin/codesign -T /usr/bin/xcrun
 security import mobile/secrets/FreegleLtd0221.cer -k ~/Library/Keychains/ios-build.keychain -T /usr/bin/codesign -T /usr/bin/xcrun
 security import mobile/secrets/FreegleLtd0221.p12 -k ~/Library/Keychains/ios-build.keychain -P $iossignkey -T /usr/bin/codesign -T /usr/bin/xcrun
 
