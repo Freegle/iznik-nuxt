@@ -396,7 +396,7 @@ export default {
             history.forEach(msg => {
               if (msg.daysago < self.recentDays) {
                 recentmsg +=
-                  this.$dayjs(msg.date).format('lll') +
+                  this.$dayjs(msg.postdate).format('lll') +
                   ' - ' +
                   msg.subject +
                   '\n'
@@ -414,7 +414,7 @@ export default {
               history.forEach(msg => {
                 if (msg.type === keyword && msg.daysago < self.recentDays) {
                   recentmsg +=
-                    this.$dayjs(msg.date).format('lll') +
+                    this.$dayjs(msg.postdate).format('lll') +
                     ' - ' +
                     msg.subject +
                     '\n'
