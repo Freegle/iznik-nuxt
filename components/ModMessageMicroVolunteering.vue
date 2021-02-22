@@ -1,9 +1,9 @@
 <template>
   <div>
     <div v-if="microvolunteering.result === 'Reject'" class="border border-warning rounded p-2">
-      <a :href="'/modtools/members/approved/search/' + microvolunteering.userid">
+      <nuxt-link :to="'/modtools/members/approved/search/' + microvolunteering.userid">
         <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ microvolunteering.userid }}
-      </a>
+      </nuxt-link>
       <span v-if="user">
         <strong>{{ user.displayname }}</strong>
         <span v-if="email">
@@ -22,9 +22,9 @@
       <em v-else>No comment supplied.</em>
     </div>
     <div v-if="microvolunteering.result === 'Approve'" class="border border-success rounded p-2">
-      <a :href="'/modtools/members/approved/search/' + microvolunteering.userid">
+      <nuxt-link :to="'/modtools/members/approved/search/' + microvolunteering.userid">
         <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ microvolunteering.userid }}
-      </a>
+      </nuxt-link>
       <span v-if="user">
         <strong>{{ user.displayname }}</strong>
         <span v-if="email">
