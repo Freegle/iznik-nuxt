@@ -7,6 +7,7 @@
         class="max"
         :disabled="searching"
         autocapitalize="none"
+        autocomplete="off"
         @keyup="searched = false"
         @keyup.enter.exact="usersearch"
       />
