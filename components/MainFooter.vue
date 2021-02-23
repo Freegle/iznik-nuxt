@@ -14,7 +14,7 @@
           Freegle is registered as a charity with HMRC (ref. XT32865). Kindly supported by Bytemark and Mythic Beasts.
         </div>
       </div>
-      <div class="d-flex justify-content-between">
+      <div class="d-flex justify-content-between navlinks">
         <nuxt-link to="/about" class="menu__link">
           <v-icon name="info-circle" class="link__icon" />
           About
@@ -80,6 +80,12 @@ export default {
 
   @include media-breakpoint-down(md) {
     width: 99px;
+  }
+}
+
+.navlinks {
+  @include media-breakpoint-down(xs) {
+    font-size: 0.8rem;
   }
 }
 </style>

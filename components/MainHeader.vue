@@ -254,7 +254,12 @@ export default {
       // Go to the landing page.
       this.$router.push('/')
     },
-    showAboutMe() {
+    async showAboutMe() {
+      await this.$store.dispatch('auth/fetchUser', {
+        components: ['me'],
+        force: true
+      })
+
       this.$refs.aboutMeModal.show()
     },
     maybeReload(route) {

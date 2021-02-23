@@ -51,6 +51,8 @@ export const mutations = {
         if (user.settings) {
           Vue.set(state.user, 'relevantallowed', 0)
           Vue.set(state.user, 'newslettersallowed', 0)
+          Vue.set(state.user, 'supporter', false)
+          Vue.set(state.user, 'donor', false)
         }
 
         for (const key in user) {
@@ -367,13 +369,8 @@ export const actions = {
             currentData,
             JSON.stringify(work)
           )
-          const prom = sound.play()
 
-          if (prom) {
-            prom.catch(e => {
-              console.log('Failed to play beep', e.message)
-            })
-          }
+          await sound.play()
         } catch (e) {
           console.log('Failed to play beep', e.message)
         }

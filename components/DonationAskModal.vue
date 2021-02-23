@@ -8,75 +8,125 @@
       no-stacking
     >
       <template slot="default">
-        <NoticeMessage variant="info">
-          Like many charities (and many freeglers) Freegle is affected by the lockdown. Please help us be there
-          for people when it's over.
-        </NoticeMessage>
-        <div class="d-flex justify-content-between">
-          <div v-if="variant === 'whatyoucanrunning'" style="width:250px" class="mr-4 pt-4 d-none d-sm-block">
-            <b-img-lazy fluid src="/running.gif" alt="Keep freegle running" />
+        <div v-if="variant === 'video'">
+          <p>
+            This is a terrible fundraising video.  Because we don't waste your money on that stuff.
+          </p>
+          <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/TByrRQdLVD8" allowfullscreen />
           </div>
-          <div>
-            <p>
-              <strong>{{ groupname }}</strong> is a charity that's free to use, but not free to run.
+          <client-only>
+            <p class="text-center mt-4">
+              Click to donate monthly
             </p>
-            <p>
-              This month we're trying to raise <strong>&pound;{{ target }}</strong><span v-if="groupid && !targetMet"> for this community</span>.
-              If you can, <strong>
-                <span v-if="variant === 'link1' || variant === 'buttons1'">
-                  please donate &pound;1
-                </span>
-                <span v-else-if="variant === 'link3' || variant === 'buttons3'">
-                  please donate &pound;3
-                </span>
-                <span v-else-if="variant === 'buttons1monthly'">
-                  please set up a monthly &pound;1 donation
-                </span>
-                <span v-else-if="variant === 'buttons1510' || variant === 'buttons51025'">
-                  please donate
-                </span>
-                <span v-else>
-                  <!--                  "variant === 'whatyoucan'"-->
-                  please donate what you can
-                </span>
-              </strong>
-              to keep us running.
+            <div class="d-flex justify-content-around">
+              <OurToggle
+                v-model="monthly"
+                :sync="true"
+                :height="36"
+                :width="200"
+                :font-size="14"
+                :labels="{unchecked: 'One-off donation', checked: 'Monthly donation'}"
+                class="toggle"
+                color="#84CF96"
+              />
+            </div>
+            <p class="text-center mt-1">
+              Click the amount to donate
             </p>
-            <donation-button v-if="variant === 'whatyoucanrunning'" link="paypal1510" @clicked="score(5)" />
-            <donation-button v-else-if="variant === 'link1'" link="paypal1" @clicked="score(1)" />
-            <donation-button v-else-if="variant === 'link3'" link="paypal3" @clicked="score(3)" />
-            <donation-button v-else-if="variant === 'buttons1'" link="paypal1" show="£1" @clicked="score(1)" />
-            <donation-button v-else-if="variant === 'buttons3'" link="paypal3" show="£3" @clicked="score(3)" />
-            <donation-button v-else-if="variant === 'buttons1monthly'" link="paypal1" show="£1/month" monthly @clicked="score(4)" />
-            <div v-else-if="variant === 'buttons1510'" class="d-flex justify-content-between flex-wrap">
+            <div v-if="monthly" class="d-flex flex-wrap justify-content-between mt-2">
+              <donation-button link="paypal1" show="£1" monthly monthlyvalue="Supporter1" @clicked="score(4)" />
+              <donation-button link="paypal1" show="£5" monthly monthlyvalue="Supporter5" @clicked="score(20)" />
+              <donation-button link="paypal1" show="£10" monthly monthlyvalue="Supporter10" @clicked="score(40)" />
+            </div>
+            <div v-else class="d-flex flex-wrap justify-content-between mt-2">
               <donation-button link="paypal1" show="£1" class="mb-1" @clicked="score(1)" />
               <donation-button link="paypal5" show="£5" class="mb-1" @clicked="score(5)" />
               <donation-button link="paypal10" show="£10" class="mb-1" @clicked="score(10)" />
             </div>
-            <div v-else-if="variant === 'buttons51025'" class="d-flex justify-content-between flex-wrap">
-              <donation-button link="paypal5" show="£5" class="mb-1" @clicked="score(5)" />
-              <donation-button link="paypal10" show="£10" class="mb-1" @clicked="score(10)" />
-              <donation-button link="paypal25" show="£25" class="mb-1" @clicked="score(25)" />
+          </client-only>
+        </div>
+        <div v-else>
+          <NoticeMessage variant="info" class="mb-2">
+            <strong>Freegle is running out of funds.</strong>  Please help us keep going, so that we can all help those who need it.
+          </NoticeMessage>
+          <div class="d-flex justify-content-between">
+            <div v-if="variant === 'whatyoucanrunning'" style="width:250px" class="mr-4 pt-4 d-none d-sm-block">
+              <b-img-lazy fluid src="/running.gif" alt="Keep freegle running" />
             </div>
-            <!--            if="variant === 'whatyoucan'"-->
-            <donation-button v-else link="paypal1510" @clicked="score(5)" />
-            <p class="mt-2">
-              <!-- eslint-disable-next-line -->
-              Anything you can give is very welcome. You can find other ways to donate (e.g. bank transfer or cheque) <nuxt-link to="/donate">here</nuxt-link>.
-            </p>
-            <p v-if="groupid && !targetMet" class="text-muted small mt-1">
-              This will contribute to the general fund for the ongoing support of Freegle.  If we raise more than the
-              target, we'll use it to support other communities.
-            </p>
-            <div v-if="variant === 'whatyoucanrunning'" class="w-100 d-flex justify-content-center">
-              <img src="/running.gif" alt="Keep freegle running" class="d-block d-sm-none img-fluid " width="200">
+            <div>
+              <p>
+                <strong>{{ groupname }}</strong> is a charity that's free to use, but not free to run.  This month we're
+                trying to raise <strong>&pound;{{ target }}</strong><span v-if="groupid && !targetMet"> for this community</span><span v-else> across the UK</span>.
+              </p>
+              <p>
+                If you can, <strong>
+                  <span v-if="variant === 'link1' || variant === 'buttons1'">
+                    please donate &pound;1
+                  </span>
+                  <span v-else-if="variant === 'link3' || variant === 'buttons3'">
+                    please donate &pound;3
+                  </span>
+                  <span v-else-if="variant === 'buttonsmonthly'">
+                    please set up a monthly donation
+                  </span>
+                  <span v-else-if="variant === 'buttons1510' || variant === 'buttons51025'">
+                    please donate
+                  </span>
+                  <span v-else>
+                    <!--                  "variant === 'whatyoucan'"-->
+                    please donate what you can
+                  </span>
+                </strong>
+                to keep us running.
+              </p>
+              <div class="mt-2 mb-4 d-flex border border-secondary rounded p-2">
+                <Supporter size="lg" class="mr-2 align-self-center" />
+                <div>
+                  You'll get a cute little badge so that other people can see you're a committed
+                  freegler.
+                </div>
+              </div>
+
+              <donation-button v-if="variant === 'whatyoucanrunning'" link="paypal1510" @clicked="score(5)" />
+              <donation-button v-else-if="variant === 'link1'" link="paypal1" @clicked="score(1)" />
+              <donation-button v-else-if="variant === 'link3'" link="paypal3" @clicked="score(3)" />
+              <donation-button v-else-if="variant === 'buttons1'" link="paypal1" show="£1" @clicked="score(1)" />
+              <donation-button v-else-if="variant === 'buttons3'" link="paypal3" show="£3" @clicked="score(3)" />
+              <div v-else-if="variant === 'buttonsmonthly'" class="d-flex justify-content-between flex-wrap">
+                <donation-button link="paypal1" show="£1/month" monthly monthlyvalue="Supporter1" @clicked="score(4)" />
+                <donation-button link="paypal1" show="£5/month" monthly monthlyvalue="Supporter5" @clicked="score(20)" />
+              </div>
+              <div v-else-if="variant === 'buttons1510'" class="d-flex justify-content-between flex-wrap">
+                <donation-button link="paypal1" show="£1" class="mb-1" @clicked="score(1)" />
+                <donation-button link="paypal5" show="£5" class="mb-1" @clicked="score(5)" />
+                <donation-button link="paypal10" show="£10" class="mb-1" @clicked="score(10)" />
+              </div>
+              <div v-else-if="variant === 'buttons51025'" class="d-flex justify-content-between flex-wrap">
+                <donation-button link="paypal5" show="£5" class="mb-1" @clicked="score(5)" />
+                <donation-button link="paypal10" show="£10" class="mb-1" @clicked="score(10)" />
+                <donation-button link="paypal25" show="£25" class="mb-1" @clicked="score(25)" />
+              </div>
+              <!--            if="variant === 'whatyoucan'"-->
+              <donation-button v-else link="paypal1510" @clicked="score(5)" />
+              <p class="mt-2">
+                <!-- eslint-disable-next-line -->
+                Anything you can give is very welcome. You can find other ways to donate (e.g. bank transfer or cheque) <nuxt-link to="/donate">here</nuxt-link>.
+              </p>
+              <p v-if="groupid && !targetMet" class="text-muted small mt-1">
+                This will contribute to the general fund for the ongoing support of Freegle.  If we raise more than the
+                target, we'll use it to support other communities.
+              </p>
+              <div v-if="variant === 'whatyoucanrunning'" class="w-100 d-flex justify-content-center">
+                <img src="/running.gif" alt="Keep freegle running" class="d-block d-sm-none img-fluid " width="200">
+              </div>
             </div>
+            <DonationThermometer ref="thermo" :groupid="groupid" class="ml-md-4" />
           </div>
-          <DonationThermometer ref="thermo" :groupid="groupid" />
         </div>
       </template>
       <template slot="modal-footer" slot-scope="{ cancel }">
-        <b-button variant="primary" @click="cancel">
+        <b-button variant="secondary" @click="cancel">
           Close
         </b-button>
       </template>
@@ -87,11 +137,16 @@
 <script>
 import modal from '@/mixins/modal'
 import NoticeMessage from '@/components/NoticeMessage'
+import Supporter from '@/components/Supporter'
 import DonationThermometer from './DonationThermometer'
 import DonationButton from './DonationButton'
 
+const OurToggle = () => import('~/components/OurToggle')
+
 export default {
   components: {
+    OurToggle,
+    Supporter,
     NoticeMessage,
     DonationThermometer,
     DonationButton
@@ -106,7 +161,8 @@ export default {
   },
   data: function() {
     return {
-      variant: null
+      variant: null,
+      monthly: false
     }
   },
   computed: {

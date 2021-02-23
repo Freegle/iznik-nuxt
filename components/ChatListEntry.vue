@@ -11,7 +11,7 @@
       </div>
       <div class="w-100">
         <!-- eslint-disable-next-line-->
-        <span class="pl-0 mb-0 chatname truncate d-flex justify-content-between">{{ chat.name }} <Supporter v-if="supporter" class="mr-3 small" /></span>
+        <span class="pl-0 mb-0 chatname truncate d-flex justify-content-between">{{ chat.name }} <Supporter v-if="supporter" class="mr-3 mt-1 small" /></span>
         <!-- eslint-disable-next-line-->
         <div class="small text-muted">{{ chat.lastdate | timeago }}</div>
         <div>

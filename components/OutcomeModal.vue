@@ -147,10 +147,9 @@ export default {
   },
   methods: {
     async submit() {
-      console.log('Submit', this.left)
       let complete = false
 
-      if (this.type === 'Withdrawn') {
+      if (this.type === 'Withdrawn' || this.type === 'Received') {
         complete = true
       } else {
         complete = this.left === 0
