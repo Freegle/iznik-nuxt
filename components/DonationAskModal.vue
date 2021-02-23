@@ -9,15 +9,19 @@
     >
       <template slot="default">
         <div v-if="variant === 'video'">
-          <p>
-            This is a terrible fundraising video.  Because we don't waste your money on that stuff.
+          <p class="font-weight-bold">
+            We've made little video to explain that Freegle is running out of funds.  It's
+            just this guy Edward in his living room, because we don't waste your donations on fancy PR agencies.
           </p>
           <div class="embed-responsive embed-responsive-16by9">
             <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/TByrRQdLVD8" allowfullscreen />
           </div>
           <client-only>
-            <p class="text-center mt-4">
-              Click to donate monthly
+            <p class="font-weight-bold text-center mt-4">
+              If you're able to donate to help us keep going, that would be lovely.
+            </p>
+            <p class="text-center mt-2">
+              Click to donate monthly:
             </p>
             <div class="d-flex justify-content-around">
               <OurToggle
@@ -32,7 +36,7 @@
               />
             </div>
             <p class="text-center mt-1">
-              Click the amount to donate
+              Click the amount to donate:
             </p>
             <div v-if="monthly" class="d-flex flex-wrap justify-content-between mt-2">
               <donation-button link="paypal1" show="£1" monthly monthlyvalue="Supporter1" @clicked="score(4)" />
