@@ -79,7 +79,10 @@ export default {
       // Get the tag from the group if we can
       if (this.message) {
         if (this.group && this.group.settings && this.group.settings.keywords) {
-          return this.group.settings.keywords[this.message.type.toLowerCase()]
+          const type = this.group.settings.keywords[
+            this.message.type.toUpperCase()
+          ]
+          return type || this.message.type
         } else {
           return this.message.type
         }
