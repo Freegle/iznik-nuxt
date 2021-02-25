@@ -8,7 +8,7 @@
       </div>
       <div class="media-body">
         <div class="notification-title">
-          You have {{ notification.text | pluralize('open post', { includeNumber: true }) }}
+          You have {{ notification.text | pluralize('recent open post', { includeNumber: true }) }}
         </div>
         <div class="font-weight-bold introduction">
           What happened?  Use <em>My Posts</em> to let us know.
