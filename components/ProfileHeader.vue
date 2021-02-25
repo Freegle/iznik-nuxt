@@ -1,5 +1,5 @@
 <template>
-  <b-media>
+  <b-media v-if="user">
     <template slot="aside">
       <ProfileImage :image="user.profile.url" class="mb-1 mt-1 inline" is-thumbnail size="xl" />
     </template>
