@@ -296,7 +296,7 @@ export default {
 }
 
 .ourBack {
-  background-color: $colour-green-background !important;
+  background-color: $color-green-background !important;
 }
 
 .mainnav {

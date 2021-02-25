@@ -13,6 +13,8 @@
       image-crop-aspect-ratio="1"
       label-idle="Drag & Drop photos or <span class=&quot;btn btn-white&quot;> Browse </span>"
       :server="{ process, revert, restore, load, fetch }"
+      :drop-on-element="false"
+      :drop-on-page="true"
       @init="photoInit"
       @processfile="processed"
       @processfiles="allProcessed"

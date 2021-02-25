@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="text--small">
-      {{ group.arrival | timeago }} on <nuxt-link :to="'/explore/' + group.groupid">
+      <span class="time" :title="group.arrival">{{ group.arrival | timeago }} on</span> <nuxt-link :to="'/explore/' + exploreLink(group)">
         {{ group.namedisplay }}
       </nuxt-link>
       <client-only>
@@ -18,7 +18,7 @@
           IP unavailable.
         </span>
       </span>
-      <span v-if="group && group.approvedby && group.approvedby.displayname">
+      <span v-if="group && group.approvedby && group.approvedby.displayname" class="text-faded">
         Approved by {{ group.approvedby.displayname }}
       </span>
     </div>
@@ -72,6 +72,26 @@ export default {
         return this.message.source
       }
     }
+  },
+  methods: {
+    exploreLink(group) {
+      // Better to link to the group by name if possible to avoid nuxt generate creating explore pages for the
+      // id variants.
+      const thegroup = this.$store.getters['group/get'](group.groupid)
+
+      if (thegroup) {
+        return thegroup.nameshort
+      } else {
+        return group.groupid
+      }
+    }
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+
+.time {
+  color: $colour-success-fg;
+}
+</style>

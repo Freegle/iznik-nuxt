@@ -3,7 +3,7 @@
     ref="map"
     :zoom="12"
     :max-zoom="maxZoom"
-    :style="'width: 100%; height: 200px'"
+    :style="'width: 100%; height: ' + height + 'px'"
     :options="mapOptions"
     @ready="idle"
   >
@@ -53,6 +53,11 @@ export default {
       type: Number,
       required: false,
       default: 14
+    },
+    height: {
+      type: Number,
+      required: true,
+      default: 200
     }
   },
   data: function() {

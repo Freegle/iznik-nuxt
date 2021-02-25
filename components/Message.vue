@@ -1,119 +1,91 @@
 <template>
-  <div :id="'msg-' + id" class="position-relative">
+  <div :id="'msg-' + id" class="position-relative ml-2 mr-2 ml-sm-0 mr-sm-0" itemscope itemtype="http://schema.org/Product">
+    <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="d-none">
+      <meta itemprop="priceCurrency" content="GBP">
+      <span itemprop="price">0</span> |
+      <span itemprop="availability">Instock</span>
+    </div>
     <span ref="breakpoint" class="d-inline d-sm-none" />
-    <b-img-lazy v-if="successful" src="~/static/freegled.jpg" class="freegled__image" />
-    <b-tooltip v-if="successful" variant="success" :target="'msg-' + id">
-      <p v-if="type === 'Offer'">
-        Yay, someone took it!
-      </p>
-      <p v-else>
-        Hurray, they got what they were looking for!
-      </p>
-      <p>
-        Don't forget to Mark your posts as TAKEN/RECEIVED from <em>My Posts</em>.
-      </p>
-    </b-tooltip>
-    <b-card class="p-0" variant="success" :class="{ freegled : successful }">
-      <b-card-header :class="'pl-2 pr-2 clearfix card-header' + (ispromised && replyable ? ' promisedfade' : '')">
-        <b-card-title class="msgsubj mb-1 header--size4 card-header__title clickme" title-tag="h3" @click="expand">
+    <template v-if="successful">
+      <MessageFreegled :id="id" />
+    </template>
+    <div
+      :class="{
+        'p-3': true,
+        'mb-3': !expanded,
+        messagecard: true,
+        freegled : successful,
+        offer: type === 'Offer',
+        wanted: type === 'Wanted',
+        clickme: true,
+        promisedfade: ispromised && replyable
+      }"
+      @click="expand"
+    >
+      <MessageItemLocation :id="id" :matchedon="matchedon" class="mb-1 header-title" :type="type" />
+      <MessageHistory :message="$props" class="mb-1 header-history" :display-message-link="sm()" />
+      <client-only>
+        <MessageDescription v-if="!expanded" :id="id" :matchedon="matchedon" class="mb-1 header-description" />
+      </client-only>
+      <div v-if="!successful && !expanded" class="header-expand mt-2 mt-sm-0">
+        <b-button variant="primary" class="mt-2" @click="expand">
+          {{ expandButtonText }} <v-icon name="angle-double-right" />
+        </b-button>
+      </div>
+      <MessageAttachments
+        :id="id"
+        :attachments="attachments"
+        class="image-wrapper"
+        :disabled="successful"
+        @click="expandIfNot"
+      />
+      <div v-if="!simple && expanded && actions" class="d-flex mt-1 header-options">
+        <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey p-0 mr-4" @click="contract">
+          Close post
+        </b-button>
+        <b-btn
+          v-if="expanded.groups && expanded.groups.length"
+          variant="link"
+          class="grey p-0 mr-4"
+          size="sm"
+          @click="report"
+        >
+          Report this post
+        </b-btn>
+        <b-btn
+          v-if="expanded"
+          variant="link"
+          class="p-0 grey"
+          title="Share"
+          size="sm"
+          @click="share"
+        >
+          Share
+        </b-btn>
+      </div>
+    </div>
+    <div v-if="expanded" class="bg-white mb-3 p-2">
+      <notice-message v-if="ispromised && replyable" variant="warning" class="mb-3 mt-1">
+        This item has already been promised to someone.  You can still reply - you might get it if someone
+        else drops out.
+      </notice-message>
+      <div class="pl-1 d-flex flex-column justify-content-between">
+        <div class="d-flex flex-column">
           <Highlighter
             v-if="matchedon"
             :search-words="[matchedon.word]"
-            :text-to-highlight="eSubject"
+            :text-to-highlight="expanded.textbody"
             highlight-class-name="highlight"
             auto-escape
-          />
-          <span v-else>
-            {{ eSubject }}
-          </span>
-          <b-badge v-if="availablenow > 1" variant="info">
-            {{ availablenow ? availablenow : '0' }} left
-          </b-badge>
-        </b-card-title>
-        <MessageHistory :message="$props" class="mb-1 card-header__history" :display-message-link="sm()" />
-        <div flex-grow-1 class="mb-1 card-header__description text--medium-large">
-          <div v-if="eSnippet && eSnippet !== 'null' && !expanded">
-            <span class="font-weight-bold snippet black">
-              <Highlighter
-                v-if="matchedon"
-                :search-words="[matchedon.word]"
-                :text-to-highlight="eSnippet"
-                highlight-class-name="highlight"
-                auto-escape
-              />
-              <span v-else>{{ eSnippet }}</span>
-              ...
-            </span>
-          </div>
-          <div v-if="(!eSnippet || eSnippet === 'null') && !expanded">
-            <em>There's no description.</em>
-          </div>
-          <b-button v-if="!successful && !expanded" variant="primary" class="mt-2" @click="expand">
-            {{ expandButtonText }} <v-icon name="angle-double-right" />
-          </b-button>
+            class="prewrap"
+          /><span v-else class="prewrap">{{ expanded.textbody }}</span>
         </div>
-        <button v-if="showAttachments && attachments && attachments.length > 0" class="card-header-image__wrapper p-0 border-0" :disabled="successful" @click="showPhotos">
-          <b-badge v-if="attachments.length > 1" class="photobadge" variant="primary">
-            {{ attachments.length }} <v-icon name="camera" />
-          </b-badge>
-          <b-img-lazy
-            rounded
-            thumbnail
-            class="attachment p-0 card-header__image"
-            generator-unable-to-provide-required-alt=""
-            title="Item picture"
-            :src="attachments[0].paththumb"
-            @error.native="brokenImage"
-          />
-        </button>
-        <div v-if="!simple && expanded && actions" class="d-flex mt-1 card-header__options">
-          <b-button v-if="expanded && !hideClose" size="sm" variant="link" class="grey p-0 mr-4" @click="contract">
-            Close post
-          </b-button>
-          <b-btn
-            v-if="expanded.groups && expanded.groups.length"
-            variant="link"
-            class="grey p-0 mr-4"
-            size="sm"
-            @click="report"
-          >
-            Report this post
-          </b-btn>
-          <b-btn
-            v-if="expanded"
-            variant="link"
-            class="p-0 grey"
-            title="Share"
-            size="sm"
-            @click="share"
-          >
-            Share
-          </b-btn>
+        <div v-if="replyable" class="d-flex justify-content-between flex-wrap mt-2">
+          <MessageUserInfo v-if="!simple && expanded.fromuser" :user="expanded.fromuser" :milesaway="milesaway" />
+          <MessageReplyInfo :message="expanded" />
         </div>
-      </b-card-header>
-      <b-card-body v-if="expanded" class="pl-1">
-        <notice-message v-if="ispromised && replyable" variant="warning" class="mb-3 mt-1">
-          This item has already been promised to someone.  You can still reply - you might get it if someone
-          else drops out.
-        </notice-message>
-        <div class="pl-1 d-flex flex-column justify-content-between">
-          <div class="d-flex flex-column">
-            <Highlighter
-              v-if="matchedon"
-              :search-words="[matchedon.word]"
-              :text-to-highlight="expanded.textbody"
-              highlight-class-name="highlight"
-              auto-escape
-              class="prewrap"
-            /><span v-else class="prewrap">{{ expanded.textbody }}</span>
-          </div>
-          <div v-if="replyable" class="d-flex justify-content-between flex-wrap mt-2">
-            <MessageUserInfo v-if="!simple && expanded.fromuser" :user="expanded.fromuser" :milesaway="milesaway" />
-            <MessageReplyInfo :message="expanded" />
-          </div>
-        </div>
-      </b-card-body>
-      <b-card-footer v-if="expanded && replyable" class="p-1 pt-3">
+      </div>
+      <div v-if="replyable" class="p-1 pt-3 bg-white">
         <CovidClosed v-if="expanded && expanded.closed" />
         <NoticeMessage v-else-if="milesaway > 25" variant="danger">
           With current COVID-19 restrictions, this is too far away.  Please keep freegling local and stay safe.
@@ -241,8 +213,8 @@
             </div>
           </div>
         </div>
-      </b-card-footer>
-    </b-card>
+      </div>
+    </div>
     <b-modal
       v-if="showNewUser"
       id="newUserModal"
@@ -254,12 +226,6 @@
     >
       <NewUserInfo :password="newUserPassword" />
     </b-modal>
-    <MessagePhotosModal
-      v-if="expanded && expanded.attachments && expanded.attachments.length"
-      ref="photoModal"
-      :message="expanded"
-      :subject="subject"
-    />
     <ShareModal v-if="expanded && expanded.url" :id="expanded.id" ref="shareModal" />
     <ChatButton v-if="expanded && replyToUser" ref="chatbutton" :userid="replyToUser" class="d-none" @sent="sentReply" />
     <MessageReportModal v-if="expanded" ref="reportModal" :message="$props" />
@@ -272,6 +238,9 @@ import Vue from 'vue'
 import { TooltipPlugin } from 'bootstrap-vue'
 import waitForRef from '@/mixins/waitForRef'
 import SettingsPhone from '@/components/SettingsPhone'
+import MessageAttachments from '@/components/MessageAttachments'
+import MessageFreegled from '@/components/MessageFreegled'
+import MessageItemLocation from '@/components/MessageItemLocation'
 import ChatButton from './ChatButton'
 import ShareModal from './ShareModal'
 import MessageReportModal from './MessageReportModal'
@@ -279,7 +248,6 @@ import MessageReportModal from './MessageReportModal'
 import MessageReplyInfo from './MessageReplyInfo'
 import EmailValidator from './EmailValidator'
 import NewUserInfo from './NewUserInfo'
-import MessagePhotosModal from './MessagePhotosModal'
 import Postcode from './Postcode'
 import MessageMap from './MessageMap'
 import CovidClosed from './CovidClosed'
@@ -290,17 +258,21 @@ const Highlighter = () => import('vue-highlight-words')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const MessageHistory = () => import('~/components/MessageHistory')
+const MessageDescription = () => import('~/components/MessageDescription')
 
 Vue.use(TooltipPlugin)
 
 export default {
   components: {
+    MessageDescription,
+    MessageItemLocation,
+    MessageFreegled,
+    MessageAttachments,
     SettingsPhone,
     CovidCheckList,
     CovidClosed,
     MessageMap,
     Postcode,
-    MessagePhotosModal,
     NewUserInfo,
     EmailValidator,
     MessageReplyInfo,
@@ -435,20 +407,8 @@ export default {
     disableSend() {
       return this.replying || !this.reply || (!this.me && !this.emailValid)
     },
-    eSubject() {
-      return twem.twem(this.$twemoji, this.subject)
-    },
     safeBody() {
       return twem.twem(this.$twemoji, this.textbody)
-    },
-    eSnippet() {
-      let snip = null
-
-      if (this.snippet) {
-        snip = twem.twem(this.$emoji, this.snippet)
-      }
-
-      return snip
     },
     replyToSend() {
       let ret = null
@@ -527,6 +487,11 @@ export default {
     }
   },
   methods: {
+    async expandIfNot() {
+      if (!this.expanded) {
+        await this.expand()
+      }
+    },
     async expand() {
       if (!this.successful) {
         await this.$store.dispatch('messages/fetch', {
@@ -550,17 +515,10 @@ export default {
         }
       }
     },
-    contract() {
+    contract(e) {
       this.expanded = null
-    },
-    async showPhotos() {
-      if (!this.expanded) {
-        await this.expand()
-      }
-
-      this.waitForRef('photoModal', () => {
-        this.$refs.photoModal.show()
-      })
+      e.preventDefault()
+      e.stopPropagation()
     },
     share() {
       if (process.env.IS_APP) { // CC..
@@ -759,10 +717,6 @@ export default {
           settings: settings
         })
       }
-    },
-    brokenImage() {
-      // If the attachment image is broken, we're best off just hiding it.
-      this.showAttachments = false
     }
   }
 }
@@ -783,11 +737,6 @@ export default {
   font-weight: bold;
 }
 
-.header--size4.snippet {
-  color: $color-black !important;
-  font-weight: 500;
-}
-
 .messagePhoto {
   max-height: 600px !important;
 }
@@ -798,16 +747,6 @@ export default {
   padding: 0;
 }
 
-.photobadge {
-  right: 10px;
-  position: absolute;
-  top: 10px;
-}
-
-.msgsubj {
-  color: $colour-info-fg !important;
-}
-
 .promisedfade {
   opacity: 0.3;
 }
@@ -816,69 +755,91 @@ export default {
   color: $color-gray--base;
 }
 
-.card-header {
-  display: grid;
+.messagecard {
+  padding: 16px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  border: solid 1px $color-gray--light;
 
+  display: grid;
   align-items: start;
   grid-template-columns: minmax(0, 1fr);
 
   @include media-breakpoint-up(sm) {
-    grid-template-columns: auto max-content;
-    grid-template-rows: max-content max-content max-content auto auto;
+    grid-template-columns: 200px 1fr;
+    grid-column-gap: 1rem;
+    grid-template-rows: max-content max-content max-content auto auto auto;
   }
-}
 
-.card-header__title {
-  grid-column: 1 / 2;
-  grid-row: 1 / 2;
-}
+  &.offer {
+    background-color: $color-white;
+  }
 
-.card-header__history {
-  grid-column: 1 / 2;
-  grid-row: 2 / 3;
-}
+  &.wanted {
+    background-color: $color-green--light;
+  }
 
-.card-header__description {
-  grid-column: 1 / 2;
-  grid-row: 4 / 5;
-
-  @include media-breakpoint-up(sm) {
+  .header-title {
     grid-column: 1 / 2;
-    grid-row: 3 / 4;
+    grid-row: 1 / 2;
+
+    @include media-breakpoint-up(sm) {
+      grid-column: 2 / 3;
+    }
   }
-}
 
-.card-header-image__wrapper {
-  position: relative;
+  .header-history {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
 
-  grid-column: 1 / 2;
-  grid-row: 3 / 4;
-
-  @include media-breakpoint-up(sm) {
-    grid-column: 2 / 3;
-    grid-row: 1 / 5;
+    @include media-breakpoint-up(sm) {
+      grid-column: 2 / 3;
+    }
   }
-}
 
-.card-header__image {
-  object-fit: cover;
-  width: 100%;
-  height: 200px;
-
-  @include media-breakpoint-up(sm) {
-    max-height: 150px !important;
-    max-width: 150px !important;
-    width: 200px;
-  }
-}
-
-.card-header__options {
-  grid-column: 1 / 2;
-  grid-row: 5 / 6;
-
-  @include media-breakpoint-up(sm) {
+  .header-description {
     grid-column: 1 / 2;
     grid-row: 4 / 5;
+
+    @include media-breakpoint-up(sm) {
+      grid-column: 2 / 3;
+      grid-row: 3 / 4;
+    }
+  }
+
+  .image-wrapper {
+    position: relative;
+
+    grid-column: 1 / 2;
+    grid-row: 3 / 5;
+
+    @include media-breakpoint-up(sm) {
+      grid-column: 1 / 2;
+      grid-row: 1 / 5;
+      width: unset;
+    }
+  }
+
+  .header-options {
+    grid-column: 1 / 2;
+    grid-row: 5 / 6;
+
+    @include media-breakpoint-up(sm) {
+      grid-column: 1 / 2;
+      grid-row: 4 / 5;
+    }
+  }
+
+  .header-expand {
+    grid-column: 1 / 2;
+    grid-row: 5 / 6;
+    align-self: end;
+    justify-self: end;
+
+    @include media-breakpoint-up(sm) {
+      grid-column: 2 / 3;
+      grid-row: 4 / 5;
+    }
   }
 }
 
@@ -893,18 +854,6 @@ export default {
 
 .freegled {
   filter: contrast(50%);
-}
-
-.freegled__image {
-  position: absolute;
-  width: 225px;
-  z-index: 2;
-  transform: rotate(15deg);
-  top: 30%;
-
-  // Centre the absolute positioned div in it's container
-  left: 50%;
-  margin-left: -125px;
 }
 
 /deep/ label {
