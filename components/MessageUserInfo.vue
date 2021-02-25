@@ -85,8 +85,22 @@ export default {
     membership() {
       let ret = null
 
-      if (this.groupid && this.user && this.user.memberof) {
-        ret = this.user.memberof.find(g => g.id === this.groupid)
+      if (
+        this.groupid &&
+        this.message &&
+        this.message.fromuser &&
+        this.message.fromuser.memberof
+      ) {
+        ret = this.message.fromuser.memberof.find(g => {
+          return g.id === this.groupid
+        })
+
+        if (ret) {
+          // Hack around format to match what the component needs.
+          ret = JSON.parse(JSON.stringify(ret))
+          ret.userid = this.message.fromuser.id
+          ret.groupid = this.groupid
+        }
       }
 
       return ret
