@@ -45,6 +45,11 @@
       <h2 class="mt-2">
         Other ways to Donate
       </h2>
+      <b-card>
+        We like to thank people who donate, but we can't do that if we don't know who you are!  Say hello at
+        <!-- eslint-disable-next-line -->
+        <ExternalLink href="mailto:info@ilovefreegle.org">info@ilovefreegle.org</ExternalLink>.
+      </b-card>
       <b-row>
         <b-col cols="12" lg="6">
           <b-card class="mt-2 mb-2" no-body variant="success">
