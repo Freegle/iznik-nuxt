@@ -104,7 +104,8 @@ export default {
       this.context = await this.$store.dispatch('logs/fetch', {
         logtype: 'user',
         userid: this.userid,
-        context: this.context
+        context: this.context,
+        modmailsonly: this.modmailsonly
       })
 
       if (this.logs.length === currentCount) {
