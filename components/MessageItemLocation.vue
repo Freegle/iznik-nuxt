@@ -17,7 +17,7 @@
           {{ item }}
         </span>
       </div>
-      <b-badge v-if="message.availablenow > 1" variant="info" class="ml-3">
+      <b-badge v-if="message && message.availablenow > 1" variant="info" class="ml-3">
         {{ message.availablenow ? message.availablenow : '0' }} left
       </b-badge>
     </h3>
