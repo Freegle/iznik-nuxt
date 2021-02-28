@@ -1,9 +1,6 @@
 <template>
-  <b-row class="m-0">
-    <!--<b-col cols="0" md="3" />-->
-    <b-col cols="0" md="3" class="d-none d-lg-block p-0 pr-1">
-      <SidebarLeft :show-community-events="true" :show-bot-left="true" />
-    </b-col>
+  <b-row class="m-0 bg-white">
+    <b-col cols="0" md="3" />
     <b-col cols="12" md="6" class="mt-2">
       <h1 class="header--size2">
         Spread the word
@@ -174,9 +171,6 @@
         <v-icon name="book-open" /> Tell your story
       </b-btn>
     </b-col>
-    <b-col cols="0" md="3" class="d-none d-lg-block p-0 pl-1">
-      <sidebar-right show-volunteer-opportunities show-job-opportunities />
-    </b-col>
     <PosterModal ref="modal" />
   </b-row>
 </template>
@@ -190,16 +184,9 @@ import loginRequired from '@/mixins/loginRequired.js'
 import PosterModal from '../components/PosterModal'
 import buildHead from '../mixins/buildHead'
 import Invite from '../components/Invite'
-const SidebarLeft = () => import('~/components/SidebarLeft')
-const SidebarRight = () => import('~/components/SidebarRight')
 
 export default {
-  components: {
-    Invite,
-    PosterModal,
-    SidebarLeft,
-    SidebarRight
-  },
+  components: { Invite, PosterModal },
   mixins: [loginRequired, buildHead],
   data: function() {
     return {
