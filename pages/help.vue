@@ -1,7 +1,10 @@
 <template>
-  <div class="bg-white">
+  <div class="">
     <b-row class="m-0">
-      <b-col cols="0" md="3" />
+      <!--<b-col cols="0" md="3" />-->
+      <b-col cols="0" md="3" class="d-none d-lg-block p-0 pr-1">
+        <SidebarLeft :show-community-events="true" :show-bot-left="true" />
+      </b-col>
       <b-col cols="12" md="6">
         <h1 class="header--size1 d-flex flex-wrap justify-content-between">
           <span>
@@ -467,7 +470,10 @@
           <p>This version of the site was built on {{ version }}.</p>
         </div>
       </b-col>
-      <b-col cols="0" md="3" />
+      <!--<b-col cols="0" md="3" />-->
+      <b-col cols="0" md="3" class="d-none d-lg-block p-0 pl-1">
+        <sidebar-right show-volunteer-opportunities show-job-opportunities />
+      </b-col>
     </b-row>
   </div>
 </template>
@@ -484,6 +490,8 @@ const ChatButton = () => import('~/components/ChatButton.vue')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const DonationButton = () => import('~/components/DonationButton')
 const ExternalLink = () => import('~/components/ExternalLink')
+const SidebarLeft = () => import('~/components/SidebarLeft')
+const SidebarRight = () => import('~/components/SidebarRight')
 
 Vue.use(TabsPlugin)
 
@@ -495,6 +503,8 @@ export default {
     NoticeMessage,
     DonationButton,
     ExternalLink,
+    SidebarLeft,
+    SidebarRight,
     TermsOfUse
   },
   mixins: [buildHead],
