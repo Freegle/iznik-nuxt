@@ -1,18 +1,22 @@
 <template>
-  <span v-if="userid !== myid">
-    <b-btn :size="size" :variant="variant" :class="btnClass + ' d-none d-sm-inline'" @click="gotoChat(true)">
-      <v-icon v-if="showIcon" name="comments" />
-      <span v-if="title">
-        {{ title }}
-      </span>
-    </b-btn>
-    <b-btn :size="size" :variant="variant" :class="btnClass + ' d-inline-block d-sm-none'" @click="gotoChat(false)">
-      <v-icon v-if="showIcon" name="comments" />
-      <span v-if="title">
-        {{ title }}
-      </span>
-    </b-btn>
-  </span>
+  <div v-if="userid !== myid" class="d-inline clickme">
+    <div @click="gotoChat(true)">
+      <slot>
+        <b-btn :size="size" :variant="variant" :class="btnClass + ' d-none d-sm-inline'">
+          <v-icon v-if="showIcon" name="comments" />
+          <span v-if="title">
+            {{ title }}
+          </span>
+        </b-btn>
+        <b-btn :size="size" :variant="variant" :class="btnClass + ' d-inline-block d-sm-none'" @click="gotoChat(false)">
+          <v-icon v-if="showIcon" name="comments" />
+          <span v-if="title">
+            {{ title }}
+          </span>
+        </b-btn>
+      </slot>
+    </div>
+  </div>
 </template>
 
 <script>
