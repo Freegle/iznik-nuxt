@@ -7,13 +7,13 @@
           <h1>Free To Use - Not Free To Run!</h1>
         </b-card-header>
         <b-card-text class="p-2">
-          <DonationThermometer ref="thermo" class="float-right text-center" />
+          <DonationThermometer v-if="false" ref="thermo" class="float-right text-center" />
           <p>Thank you!  It's nice of you to even think about supporting us.</p>
           <p>
             We provide a free service and keep costs <em>phenomenally</em> low thanks to our
             large number of committed volunteers - but there are some things we have to pay for to keep going.
           </p>
-          <p class="font-weight-bold">
+          <p v-if="false" class="font-weight-bold">
             This month we're trying to raise &pound;{{ target }} from donations - can you help?
           </p>
           <h3>If you can, please donate &pound;3.</h3>
@@ -45,11 +45,6 @@
       <h2 class="mt-2">
         Other ways to Donate
       </h2>
-      <b-card>
-        We like to thank people who donate, but we can't do that if we don't know who you are!  Say hello at
-        <!-- eslint-disable-next-line -->
-        <ExternalLink href="mailto:info@ilovefreegle.org">info@ilovefreegle.org</ExternalLink>.
-      </b-card>
       <b-row>
         <b-col cols="12" lg="6">
           <b-card class="mt-2 mb-2" no-body variant="success">
