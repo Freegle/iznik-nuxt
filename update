@@ -3,6 +3,8 @@
 # stay fairly up to date.  They don't need to be 100% up to the minute - the Browse page will be for logged in users.
 export API=https://fdapilive.ilovefreegle.org/api
 
+npx patch-package
+
 while true
 do
   if [ -f /tmp/iznik.build.abort ]
