@@ -1,30 +1,28 @@
 <template>
-  <b-row class="m-0">
-    <b-col cols="3" md="2" class="p-0 order-3 text-muted">
-      Chat <v-icon name="hashtag" scale="0.5" class="text-muted" />{{ chat.id }}
-    </b-col>
-    <b-col cols="1" class="order-2 p-0">
+  <div class="layout">
+    <div class="type">
       <v-icon v-if="chat.chattype === 'User2User'" class="text-success pr-1" name="user" />
       <v-icon v-else-if="chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'" class="text-warning pr-1 mb-2" name="crown" />
-    </b-col>
-    <b-col cols="4" md="2" class="p-0 order-4 order-md-3">
+    </div>
+    <div class="id text-muted">
+      Chat <v-icon name="hashtag" scale="0.5" class="text-muted" />{{ chat.id }}
+    </div>
+    <ModChatViewButton :id="chat.id" :pov="pov" class="button" />
+    <div class="name d-flex">
+      {{ chat.name }}&nbsp;
+      <span v-if="otheruser" class="text-muted">
+        <v-icon name="hashtag" class="text-muted" scale="0.5" />{{ otheruser }}
+      </span>
+    </div>
+    <div class="time">
       <span v-if="chat.lastdate" :title="chat.lastdate | datetime">
         {{ chat.lastdate | timeago }}
       </span>
       <span v-else>
         <em>No messages</em>
       </span>
-    </b-col>
-    <b-col cols="12" md="5" class="p-0 order-1 order-md-2">
-      {{ chat.name }}
-      <span v-if="otheruser" class="text-muted">
-        <v-icon name="hashtag" class="text-muted" scale="0.5" />{{ otheruser }}
-      </span>
-    </b-col>
-    <b-col cols="3" md="2" class="p-0 order-5 order-md-4 small text-muted">
-      <ModChatViewButton :id="chat.id" :pov="pov" />
-    </b-col>
-  </b-row>
+    </div>
+  </div>
 </template>
 <script>
 import ModChatViewButton from './ModChatViewButton'
@@ -52,3 +50,45 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+.layout {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 20px 1fr 130px 3fr 130px;
+
+  @include media-breakpoint-down(sm) {
+    grid-template-rows: auto auto auto auto;
+    grid-template-columns: 20px 1fr;
+
+    .type {
+      grid-row: 1 / 2;
+      grid-column: 1 / 2;
+    }
+
+    .id {
+      grid-row: 1 / 2;
+      grid-column: 2 / 3;
+    }
+
+    .name {
+      grid-row: 2 / 3;
+      grid-column: 1 / 3;
+    }
+
+    .time {
+      grid-row: 3 / 4;
+      grid-column: 1 / 3;
+    }
+
+    .button {
+      grid-row: 4 / 5;
+      grid-column: 1 / 3;
+    }
+  }
+}
+</style>
