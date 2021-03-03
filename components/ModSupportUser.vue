@@ -355,7 +355,9 @@ export default {
   },
   computed: {
     user() {
-      return this.$store.getters['user/get'](this.id)
+      const u = this.$store.getters['user/get'](this.id)
+      u.userid = this.id
+      return u
     },
     reportUser() {
       return {
