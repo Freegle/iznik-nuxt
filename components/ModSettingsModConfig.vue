@@ -153,7 +153,7 @@
         </b-card-header>
         <b-collapse id="accordion-pendingmessages" accordion="settings-accordion" role="tabpanel">
           <b-card-body>
-            <ModSettingsStandardMessageSet cc="ccrejectto" addr="ccrejectaddr" :types="['Approve', 'Reject', 'Leave', 'Delete', 'Edit']" :locked="locked" />
+            <ModSettingsStandardMessageSet cc="ccrejectto" addr="ccrejectaddr" :types="['Approve', 'Reject', 'Leave', 'Delete', 'Edit', 'Hold Message']" :locked="locked" />
           </b-card-body>
         </b-collapse>
       </b-card>

@@ -116,7 +116,6 @@ export default {
   },
   watch: {
     config(newval) {
-      console.log('New config')
       this.stdmsgscopy = this.copyStdMsgs(newval)
     }
   },
