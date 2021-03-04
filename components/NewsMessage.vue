@@ -15,12 +15,13 @@
     </div>
     <div class="mt-2 d-flex justify-content-between">
       <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
-      <div>
+      <div class="d-flex">
         <ChatButton
           :userid="newsfeed.userid"
           title="Message"
           size="sm"
           variant="secondary"
+          class="mr-2"
         />
         <b-btn variant="secondary" size="sm" class="d-inline-block" @click="share">
           <v-icon name="share-alt" /> Share
