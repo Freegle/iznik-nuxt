@@ -12,7 +12,9 @@
         </span>
       </div>
     </div>
-    <span v-if="newsfeed.message" class="font-weight-bold preline forcebreak">{{ emessage }}</span>
+    <!-- eslint-disable-next-line-->
+    <div v-if="newsfeed.html" v-html="newsfeed.html" />
+    <span v-else-if="newsfeed.message" class="font-weight-bold preline forcebreak">{{ emessage }}</span>
     <div>
       <b-img
         v-if="newsfeed.image"

@@ -44,7 +44,7 @@
               :users="users"
               @focus-comment="focusComment"
             />
-            <NewsPreview v-if="newsfeed.preview" :preview="newsfeed.preview" class="mt-1" />
+            <NewsPreview v-if="newsfeed.preview && !newsfeed.html" :preview="newsfeed.preview" class="mt-1" />
             <div v-if="newsfeed.hidden" class="text-danger small">
               This has been hidden and is only visible to volunteers and the person who posted it.
             </div>
