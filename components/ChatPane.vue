@@ -30,11 +30,11 @@
             >
               <span slot="no-results" />
               <span slot="no-more" />
-              <span slot="spinner" class="w-100">
+              <div slot="spinner" class="w-100">
                 <div class="col text-center">
                   <b-img-lazy src="~/static/loader.gif" alt="Loading" />
                 </div>
-              </span>
+              </div>
             </infinite-loading>
             <div v-if="otheruser || chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'" class="pt-1 mb-1 w-100">
               <ChatMessage
