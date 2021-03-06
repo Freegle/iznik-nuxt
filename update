@@ -17,6 +17,9 @@ do
     time npm run generate --fail-on-error
 
     if [ $? -eq 0 ]; then
+      # Exclude index until we have copied over everything that it might invoke.
+      rsync -au --exclude dist/index.html dist/ app4:/var/www/iznik.fdnuxt.static.live/
+      rsync -au --exclude dist/index.html dist/ app1:/var/www/iznik.fdnuxt.static.live/
       rsync -au dist/ app4:/var/www/iznik.fdnuxt.static.live/
       rsync -au dist/ app1:/var/www/iznik.fdnuxt.static.live/
     else
