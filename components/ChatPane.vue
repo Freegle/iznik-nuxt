@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-alert v-if="notVisible" variant="warning" class="mt-2" show>
+    <b-alert v-if="notVisible && me" variant="warning" class="mt-2" show>
       <h3>
         That chat isn't for
         <span v-if="me && me.email">{{ me.email }}</span>
@@ -12,6 +12,9 @@
         </nuxt-link> if necessary - we'll
         merge your accounts.
       </p>
+      <h3>
+        Please refresh this page.
+      </h3>
     </b-alert>
     <div v-else-if="me">
       <client-only>
