@@ -26,6 +26,7 @@
         @error.native="brokenImage"
       />
       <MessagePhotosModal
+        v-if="message"
         ref="photoModal"
         :message="message"
         :subject="message.subject"
