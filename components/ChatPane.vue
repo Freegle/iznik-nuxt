@@ -69,10 +69,12 @@ import ChatFooter from './ChatFooter'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import ChatMessage from '~/components/ChatMessage.vue'
+import ExternalLink from '~/components/ExternalLink'
 Vue.use(TooltipPlugin)
 
 export default {
   components: {
+    ExternalLink,
     ChatHeader,
     ChatFooter,
     InfiniteLoading,
