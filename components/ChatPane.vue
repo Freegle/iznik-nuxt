@@ -2,9 +2,7 @@
   <div>
     <b-alert v-if="notVisible" variant="warning" class="mt-2" show>
       <h3>
-        That chat isn't for
-        <span v-if="me && me.email">{{ me.email }}</span>
-        <span v-else>this account </span>
+        That chat isn't for this account.
       </h3>
       <p>
         Please check your email in <nuxt-link to="/settings">
@@ -12,7 +10,7 @@
         </nuxt-link>.  If you have trouble, please contact
         <!-- eslint-disable-next-line -->
         <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink>
-        who will help you merge your accounts.
+        who can help you merge multiple accounts.
       </p>
     </b-alert>
     <div v-else-if="me">
