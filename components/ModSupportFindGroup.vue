@@ -257,26 +257,30 @@ export default {
   },
   watch: {
     async groupid(id) {
-      // Get the full group info
-      await this.$store.dispatch('group/fetch', {
-        id: id,
-        polygon: true
-      })
+      if (id) {
+        // Get the full group info
+        await this.$store.dispatch('group/fetch', {
+          id: id,
+          polygon: true
+        })
 
-      // And the list of volunteers
-      this.fetchingVolunteers = true
-      this.$store.dispatch('members/clear')
+        // And the list of volunteers
+        this.fetchingVolunteers = true
+        this.$store.dispatch('members/clear')
 
-      await this.$store.dispatch('members/fetchMembers', {
-        groupid: this.groupid,
-        collection: 'Approved',
-        modtools: true,
-        summary: false,
-        limit: 1000,
-        filter: 2
-      })
+        await this.$store.dispatch('members/fetchMembers', {
+          groupid: this.groupid,
+          collection: 'Approved',
+          modtools: true,
+          summary: false,
+          limit: 1000,
+          filter: 2
+        })
 
-      this.fetchingVolunteers = false
+        this.fetchingVolunteers = false
+      } else {
+        this.$store.dispatch('members/clear')
+      }
     }
   },
   async mounted() {

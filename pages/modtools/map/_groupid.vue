@@ -42,7 +42,6 @@ export default {
         id: this.groupid,
         polygon: true
       })
-      console.log('Fetched', this.groupid)
     }
 
     this.loaded = true
