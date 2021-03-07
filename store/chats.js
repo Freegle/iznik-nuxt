@@ -81,11 +81,27 @@ export const getters = {
     return ret
   },
 
-  unseenCount: state => {
-    return Object.values(state.list).reduce(
-      (total, chat) => total + chat.unseen,
-      0
-    )
+  unseenCount: (state, getters, rootState, rootGetters) => {
+    const modtools = rootGetters['misc/get']('modtools')
+    const me = rootGetters['auth/user']
+    const myid = me ? me.id : null
+
+    return Object.values(state.list).reduce((total, chat) => {
+      if (modtools) {
+        // We count chats between mods, and chats between other members and mods.
+        if (chat.chattype === 'Mod2Mod') {
+          total += chat.unread
+        } else if (chat.chattype === 'User2Mod' && chat.user1 !== myid) {
+          total += chat.unread
+        }
+        // Otherwise we count chats between users, and our chats to mods.
+      } else if (chat.chattype === 'User2User') {
+        total += chat.unread
+      } else if (chat.chattype === 'User2Mod' && chat.user1 === myid) {
+        total += chat.unread
+      }
+      return total
+    }, 0)
   },
 
   currentChat: state => {
