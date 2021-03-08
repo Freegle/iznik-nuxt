@@ -201,7 +201,7 @@ export default {
 
       return ms.filter(g => {
         return (
-          this.amAModOn(g.id) &&
+          this.amActiveModOn(g.id) &&
           ('reviewrequestedat' in g || g.collection === 'Spam') &&
           !this.ignored[g.id]
         )
