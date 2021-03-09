@@ -74,6 +74,7 @@ module.exports = {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'author', name: 'author', content: 'Freegle' },
       { name: 'supported-color-schemes', content: 'light' },
+      { name: 'color-scheme', content: 'light' },
       { hid: 'og:type', property: 'og:type', content: 'website' },
       {
         hid: 'description',
