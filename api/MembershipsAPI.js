@@ -70,6 +70,14 @@ export default class MembershipsAPI extends BaseAPI {
     })
   }
 
+  unban(userid, groupid) {
+    return this.$post('/memberships', {
+      userid: userid,
+      groupid: groupid,
+      action: 'Unban'
+    })
+  }
+
   hold(userid, groupid) {
     return this.$post('/memberships', {
       action: 'Hold',

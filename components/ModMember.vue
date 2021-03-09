@@ -48,10 +48,14 @@
         <ModBouncing v-if="member.bouncing" :user="member" />
         <NoticeMessage v-if="member.bandate">
           Banned <span :title="member.bandate | datetime">{{ member.bandate | timeago }}</span> <span v-if="member.bannedby">by #{{ member.bannedby }}</span> - check logs for info.
+          <b-btn variant="link" size="sm" @click="confirmUnban">
+            Unban
+          </b-btn>
+          <ConfirmModal ref="unbanConfirm" :title="'Unban #' + member.userid" @confirm="unban" />
         </NoticeMessage>
         <div class="d-flex justify-content-between flex-wrap">
           <SettingsGroup
-            v-if="groupid"
+            v-if="groupid && member.ourpostingstatus"
             :groupid="groupid"
             :emailfrequency="member.emailfrequency"
             :volunteeringallowed="Boolean(member.volunteeringallowed)"
@@ -167,7 +171,7 @@
       <b-card-footer class="d-flex justify-content-between flex-wrap">
         <ModMemberButtons :member="member" :modconfig="modconfig" :actions="footeractions" />
         <div class="d-flex justify-content-between justify-content-md-end flex-grow-1">
-          <ModRole v-if="groupid" :userid="member.userid" :groupid="groupid" :role="member.role" />
+          <ModRole v-if="groupid && member.role" :userid="member.userid" :groupid="groupid" :role="member.role" />
           <ChatButton
             :userid="member.userid"
             :groupid="member.groupid"
@@ -201,12 +205,14 @@ import ModMemberLogins from './ModMemberLogins'
 import ModRole from './ModRole'
 import ChatButton from './ChatButton'
 import ModMemberButton from './ModMemberButton'
+import ConfirmModal from '~/components/ConfirmModal'
 const OurToggle = () => import('@/components/OurToggle')
 const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
   name: 'ModMember',
   components: {
+    ConfirmModal,
     ModModeration,
     ModMemberButton,
     ChatButton,
@@ -406,6 +412,17 @@ export default {
       await this.$store.dispatch('user/edit', {
         id: this.user.id,
         newslettersallowed: e.value
+      })
+    },
+    confirmUnban() {
+      this.waitForRef('unbanConfirm', () => {
+        this.$refs.unbanConfirm.show()
+      })
+    },
+    async unban() {
+      await this.$store.dispatch('members/unban', {
+        userid: this.user.id,
+        groupid: this.groupid
       })
     }
   }
