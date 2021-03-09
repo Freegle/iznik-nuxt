@@ -76,6 +76,9 @@
                 <h5>{{ selectedName }}</h5>
                 <b-textarea v-model="selectedWKT" rows="4" readonly />
               </div>
+              <p v-if="intersects" class="text-danger">
+                Crosses over itself - not valid
+              </p>
             </b-card-body>
             <b-card-footer v-if="groupid" class="d-flex justify-content-between flex-wrap">
               <SpinButton
@@ -84,7 +87,7 @@
                 label="Save"
                 spinclass="text-white"
                 :handler="saveArea"
-                :disabled="!selectedName || !selectedWKT"
+                :disabled="!selectedName || !selectedWKT || intersects"
               />
               <SpinButton variant="white" name="times" label="Cancel" :handler="clearSelection" />
               <SpinButton v-if="selectedId" variant="danger" name="trash-alt" label="Delete" :handler="deleteArea" />
@@ -183,7 +186,8 @@ export default {
       selectedObj: null,
       selectedId: null,
       postcode: null,
-      busy: false
+      busy: false,
+      intersects: false
     }
   },
   computed: {
@@ -203,7 +207,6 @@ export default {
       return Object.values(this.$store.getters['group/list'])
     },
     group() {
-      console.log('Compute group', this.groupid)
       return this.groupid
         ? this.$store.getters['group/get'](this.groupid)
         : null
@@ -297,7 +300,6 @@ export default {
     // Add the draw toolbar as per https://github.com/vue-leaflet/Vue2Leaflet/issues/331
     this.$nextTick(() => {
       const themap = this.$refs.map.mapObject
-      console.log('L', L)
 
       // Last layer is drawn items.  Seems to be, anyway.  Need to use this so that we can turn on editing for
       // the locations we've already got, as well as any new ones we draw.
@@ -312,12 +314,18 @@ export default {
           edit: {
             featureGroup: drawnItems,
             remove: false,
-            edit: false
+            edit: false,
+            poly: {
+              allowIntersection: false
+            }
           },
           position: 'topright',
           draw: {
             polyline: false,
-            polygon: true,
+            polygon: {
+              allowIntersection: false,
+              showArea: true
+            },
             rectangle: false,
             circle: false,
             marker: false,
@@ -336,7 +344,6 @@ export default {
           const wkt = new Wkt.Wkt()
           wkt.fromObject(layer)
           this.selectedWKT = wkt.write()
-          console.log('Created', this.selectedWKT)
         })
 
         themap.on(L.Draw.Event.DRAWVERTEX, this.shapeChanged)
@@ -391,6 +398,8 @@ export default {
     },
     shapeChanged(e) {
       if (e.poly) {
+        this.intersects = e.poly.intersects()
+
         const wkt = new Wkt.Wkt()
         wkt.fromObject(e.poly)
         this.selectedWKT = wkt.write()
