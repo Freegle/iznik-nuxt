@@ -227,7 +227,9 @@
       <NewUserInfo :password="newUserPassword" />
     </b-modal>
     <ShareModal v-if="expanded && expanded.url" :id="expanded.id" ref="shareModal" />
-    <ChatButton v-if="expanded && replyToUser" ref="chatbutton" :userid="replyToUser" class="d-none" @sent="sentReply" />
+    <div class="d-none">
+      <ChatButton v-if="expanded && replyToUser" ref="chatbutton" :userid="replyToUser" @sent="sentReply" />
+    </div>
     <MessageReportModal v-if="expanded" ref="reportModal" :message="$props" />
   </div>
 </template>
