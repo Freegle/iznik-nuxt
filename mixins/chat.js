@@ -210,21 +210,23 @@ export default {
     },
     sentAddress() {
       const ret = this.mymessages.find(m => {
-        // If we've sent an address that's a giveaway.
-        if (m.type === 'Address') {
-          return true
-        }
+        if (new Date().getTime() - new Date(m.date) < 5 * 24 * 60 * 60 * 1000) {
+          // If we've sent an address that's a giveaway.
+          if (m.type === 'Address') {
+            return true
+          }
 
-        // See if we've probably sent an address just by typing.
-        if (
-          ADDRESS_WORDS.find(w => {
-            const re = new RegExp('\\b' + w + '\\b', 'gi')
-            if (m.message && m.message.match(re)) {
-              return true
-            }
-          })
-        ) {
-          return true
+          // See if we've probably sent an address just by typing.
+          if (
+            ADDRESS_WORDS.find(w => {
+              const re = new RegExp('\\b' + w + '\\b', 'gi')
+              if (m.message && m.message.match(re)) {
+                return true
+              }
+            })
+          ) {
+            return true
+          }
         }
       })
 
