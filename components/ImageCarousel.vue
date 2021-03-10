@@ -7,7 +7,6 @@
       controls
       indicators
       img-width="100%"
-      no-animation
     >
       <b-carousel-slide v-for="(attachment,index) in attachments" :key="'mesagephohoto-' + attachment.id">
         <b-img
