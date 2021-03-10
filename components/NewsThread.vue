@@ -58,7 +58,7 @@
         <b-button v-if="showEarlierRepliesOption" variant="link" class="pl-0" @click.prevent="showAllReplies = true">
           Show earlier {{ numberOfRepliesNotShown.length | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
         </b-button>
-        <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="list-unstyled mb-2">
+        <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id + '-' + (entry.replies ? entry.replies.length : 0)" class="list-unstyled mb-2">
           <li>
             <NewsRefer
               v-if="entry.type.indexOf('ReferTo') === 0"
