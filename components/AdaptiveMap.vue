@@ -378,7 +378,7 @@ export default {
       } else if (this.search) {
         // Whether or not the map has moved, the messages are returned through the map.
         msgs = this.sortedMessagesOnMap
-      } else if (!this.mapMoved) {
+      } else if (!this.mapMoved && this.me) {
         // Until the map moves we show posts from the member's groups.  This is to handle people who don't engage
         // with the map at all and just want to see the posts from their groups (which is perfectly reasonable).
         msgs = this.messagesInOwnGroups
@@ -407,11 +407,7 @@ export default {
         //
         // Filter out dups by subject (for crossposting).
         this.messagesForList.forEach(m => {
-          if (
-            (this.selectedType === 'All' || this.selectedType === m.type) &&
-            (!this.selectedGroup ||
-              parseInt(m.groupid) === parseInt(this.selectedGroup))
-          ) {
+          if (this.wantMessage(m)) {
             const message = this.$store.getters['messages/get'](m.id)
 
             if (message) {
@@ -539,6 +535,9 @@ export default {
         key: 'postType',
         value: newVal
       })
+
+      this.infiniteId++
+      this.$store.dispatch('messages/clear')
     },
     search(newval) {
       if (!newval) {
@@ -613,26 +612,30 @@ export default {
           const fetching = []
 
           for (const m of this.messagesForList) {
-            const message = this.$store.getters['messages/get'](m.id)
+            // No point fetching if we don't want to show it.  If those criteria change the watch will clear the
+            // store.
+            if (this.wantMessage(m)) {
+              const message = this.$store.getters['messages/get'](m.id)
 
-            if (!message && !this.fetching[m.id] && this.infiniteId) {
-              this.fetching[m.id] = true
+              if (!message && !this.fetching[m.id] && this.infiniteId) {
+                this.fetching[m.id] = true
 
-              fetching.push(m.id)
+                fetching.push(m.id)
 
-              promises.push(
-                this.$store.dispatch('messages/fetch', {
-                  id: m.id,
-                  summary: true,
-                  matchedon: m.matchedon ? m.matchedon : null
-                })
-              )
+                promises.push(
+                  this.$store.dispatch('messages/fetch', {
+                    id: m.id,
+                    summary: true,
+                    matchedon: m.matchedon ? m.matchedon : null
+                  })
+                )
 
-              count++
+                count++
 
-              if (count >= 5) {
-                // Don't fetch too many at once.
-                break
+                if (count >= 5) {
+                  // Don't fetch too many at once.
+                  break
+                }
               }
             }
           }
@@ -701,6 +704,13 @@ export default {
     },
     mapVisibilityChanged(visible) {
       this.mapVisible = visible
+    },
+    wantMessage(m) {
+      return (
+        (this.selectedType === 'All' || this.selectedType === m.type) &&
+        (!this.selectedGroup ||
+          parseInt(m.groupid) === parseInt(this.selectedGroup))
+      )
     }
   }
 }

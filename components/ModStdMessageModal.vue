@@ -54,6 +54,12 @@
         <v-icon v-else name="cog" />
         Change moderation status to <em>{{ modstatus }}</em>
       </div>
+      <div v-if="stdmsg.action === 'Hold Message'" class="mt-1 text-warning">
+        <v-icon v-if="changingHold" name="sync" class="text-success fa-spin" />
+        <v-icon v-else-if="changedHold" name="check" class="text-success" />
+        <v-icon v-else name="pause" />
+        Hold message
+      </div>
     </template>
     <template slot="modal-footer" slot-scope="{ cancel }">
       <SpinButton
@@ -111,7 +117,9 @@ export default {
       changingNewModStatus: false,
       changedNewModStatus: false,
       changingNewDelStatus: false,
-      changedNewDelStatus: false
+      changedNewDelStatus: false,
+      changingHold: false,
+      changedHold: false
     }
   },
   computed: {
@@ -168,6 +176,8 @@ export default {
           return 'Send and Delete'
         case 'Edit':
           return 'Save Edit'
+        case 'Hold Message':
+          return 'Send and Hold'
         default:
           return 'Send'
       }
@@ -529,6 +539,24 @@ export default {
           break
         case 'Leave':
         case 'Leave Approved Message':
+          await this.$store.dispatch('messages/reply', {
+            id: this.message.id,
+            groupid: this.groupid,
+            subject: subj,
+            body: body,
+            stdmsgid: this.stdmsg.id
+          })
+          break
+        case 'Hold Message':
+          this.changingHold = true
+
+          await this.$store.dispatch('messages/hold', {
+            id: this.message.id
+          })
+
+          this.changingHold = false
+          this.changedHold = true
+
           await this.$store.dispatch('messages/reply', {
             id: this.message.id,
             groupid: this.groupid,

@@ -91,7 +91,7 @@
             <div>
               <v-icon class="text-muted" name="globe-europe" /> Location on ChitChat
             </div>
-            <div v-if="user.info.publiclocation">
+            <div v-if="user.info && user.info.publiclocation">
               {{ user.info.publiclocation.display }}
             </div>
             <div v-else>
@@ -355,7 +355,9 @@ export default {
   },
   computed: {
     user() {
-      return this.$store.getters['user/get'](this.id)
+      const u = this.$store.getters['user/get'](this.id)
+      u.userid = this.id
+      return u
     },
     reportUser() {
       return {

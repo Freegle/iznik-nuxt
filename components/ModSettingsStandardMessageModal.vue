@@ -142,6 +142,7 @@ export default {
         { value: 'Reject', text: 'Reject' },
         { value: 'Leave', text: 'Reply' },
         { value: 'Edit', text: 'Edit' },
+        { value: 'Hold Message', text: 'Reply and Hold' },
         { value: null, text: '-- Approved Messages -- ' },
         { value: 'Delete Approved Message', text: 'Delete' },
         { value: 'Leave Approved Message', text: 'Reply' },

@@ -77,6 +77,11 @@ export default {
       required: false,
       default: false
     },
+    holdMessage: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     release: {
       type: Boolean,
       required: false,

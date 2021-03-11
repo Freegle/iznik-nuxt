@@ -7,13 +7,13 @@
           <h1>Free To Use - Not Free To Run!</h1>
         </b-card-header>
         <b-card-text class="p-2">
-          <DonationThermometer ref="thermo" class="float-right text-center" />
+          <DonationThermometer v-if="false" ref="thermo" class="float-right text-center" />
           <p>Thank you!  It's nice of you to even think about supporting us.</p>
           <p>
             We provide a free service and keep costs <em>phenomenally</em> low thanks to our
             large number of committed volunteers - but there are some things we have to pay for to keep going.
           </p>
-          <p class="font-weight-bold">
+          <p v-if="false" class="font-weight-bold">
             This month we're trying to raise &pound;{{ target }} from donations - can you help?
           </p>
           <h3>If you can, please donate &pound;3.</h3>

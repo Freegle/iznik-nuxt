@@ -18,6 +18,24 @@
         </h3>
       </template>
       <template slot="default">
+        <NoticeMessage v-if="type === 'Withdrawn'" variant="info">
+          <div v-if="message.type === 'Offer'">
+            <p>
+              Only use <strong>Withdraw</strong> if you didn't manage to pass on this item
+              on Freegle, and it's no longer available.
+            </p>
+          </div>
+          <div v-else>
+            <p>
+              Only use <strong>Withdraw</strong> if you are no longer looking for this
+              item.
+            </p>
+          </div>
+          <p>
+            If everything worked out OK, then use <strong>Mark as <span v-if="message.type === 'Offer'">TAKEN</span><span v-else>RECEIVED</span></strong>
+            to let us know.
+          </p>
+        </NoticeMessage>
         <div v-if="type === 'Taken'" class="text-center">
           <OutcomeBy
             :availableinitially="typeof message.availableinitially === 'number' ? message.availableinitially : 1"
@@ -73,11 +91,12 @@
 </template>
 <script>
 import modal from '@/mixins/modal'
+import NoticeMessage from '@/components/NoticeMessage'
 import OutcomeBy from './OutcomeBy'
 import SpinButton from './SpinButton'
 
 export default {
-  components: { SpinButton, OutcomeBy },
+  components: { NoticeMessage, SpinButton, OutcomeBy },
   mixins: [modal],
   props: {
     message: {

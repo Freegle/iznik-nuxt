@@ -1,7 +1,9 @@
 <template>
   <div>
     <NewsUserIntro v-if="userid" :userid="userid" :users="users" :newsfeed="newsfeed" />
-    <read-more v-if="newsfeed.message && emessage" :text="emessage" :max-chars="1024" class="font-weight-bold preline forcebreak nopara" />
+    <!-- eslint-disable-next-line-->
+    <div v-if="newsfeed.html" v-html="newsfeed.html" />
+    <read-more v-else-if="newsfeed.message && emessage" :text="emessage" :max-chars="1024" class="font-weight-bold preline forcebreak nopara" />
     <div>
       <b-img
         v-if="newsfeed.image"
@@ -15,12 +17,13 @@
     </div>
     <div class="mt-2 d-flex justify-content-between">
       <NewsLoveComment :newsfeed="newsfeed" @focus-comment="$emit('focus-comment')" />
-      <div>
+      <div class="d-flex">
         <ChatButton
           :userid="newsfeed.userid"
           title="Message"
           size="sm"
           variant="secondary"
+          class="mr-2"
         />
         <b-btn variant="secondary" size="sm" class="d-inline-block" @click="share">
           <v-icon name="share-alt" /> Share

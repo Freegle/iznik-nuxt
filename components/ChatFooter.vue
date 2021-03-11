@@ -63,7 +63,7 @@
           </b-btn>
         </div>
         <p class="mt-1">
-          Tip: if you're not agreeing it just yet, click <em>No</em> and then click <em>Promise</em> later.
+          Tip: if you're not agreeing it just yet, click <em>No</em> to continue chatting and then click <em>Promise</em> later.
         </p>
       </b-alert>
       <div v-else>

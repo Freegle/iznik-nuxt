@@ -186,7 +186,7 @@
                 :total-members="totalMembers"
                 :group-count="groupcount "
                 :range="range"
-                :start="startDate"
+                :start="start"
                 :end="end"
                 border
               />
@@ -469,6 +469,12 @@ export default {
       )
       return ret + 1
     },
+    start() {
+      const start = this.$dayjs(this.startDate)
+        .format('MMM YY')
+        .toUpperCase()
+      return start
+    },
     end() {
       const end = this.$dayjs(this.endDate)
         .format('MMM YY')
@@ -476,60 +482,68 @@ export default {
       return end
     },
     someoverlap() {
-      const groups = Object.values(this.stats)
       let someoverlaps = false
 
-      for (const ix in groups) {
-        const group = groups[ix]
-        if (group.overlap < 1) {
-          someoverlaps = true
+      if (this.stats) {
+        const groups = Object.values(this.stats)
+
+        if (groups) {
+          for (const ix in groups) {
+            const group = groups[ix]
+            if (group.overlap < 1) {
+              someoverlaps = true
+            }
+          }
         }
       }
 
       return someoverlaps
     },
     items() {
-      const groups = Object.values(this.stats)
-      groups.sort(function(a, b) {
-        return b.avpermonth - a.avpermonth
-      })
-
       const ret = []
 
-      for (const ix in groups) {
-        const group = groups[ix]
+      if (this.stats) {
+        const groups = Object.values(this.stats)
+        groups.sort(function(a, b) {
+          return b.avpermonth - a.avpermonth
+        })
 
-        if (group.ApprovedMemberCount.length > 0) {
-          ret.push({
-            location:
-              '<a class="black" href="/explore/' +
-              group.group.nameshort +
-              '">' +
-              group.group.namedisplay +
-              (group.overlap < 1 ? ' *' : '') +
-              '</a>',
-            members:
-              Math.round(
-                group.ApprovedMemberCount[group.ApprovedMemberCount.length - 1]
-                  .count * group.overlap
-              ).toLocaleString() +
-              (group.overlap < 1
-                ? ' (<span class="text-muted small">of ' +
-                  Math.round(
-                    group.ApprovedMemberCount[
-                      group.ApprovedMemberCount.length - 1
-                    ].count
-                  ).toLocaleString() +
-                  ')</span>'
-                : ''),
-            monthly:
-              Math.round(group.avpermonth * group.overlap) +
-              (group.overlap < 1
-                ? ' (<span class="text-muted small">of ' +
-                  Math.round(group.avpermonth) +
-                  ')</span>'
-                : '')
-          })
+        for (const ix in groups) {
+          const group = groups[ix]
+
+          if (group.ApprovedMemberCount.length > 0) {
+            ret.push({
+              location:
+                '<a class="black" href="/explore/' +
+                group.group.nameshort +
+                '">' +
+                group.group.namedisplay +
+                (group.overlap < 1 ? ' *' : '') +
+                '</a>',
+              members:
+                Math.round(
+                  group.ApprovedMemberCount[
+                    group.ApprovedMemberCount.length - 1
+                  ].count * group.overlap
+                ).toLocaleString() +
+                (group.overlap < 1
+                  ? ' (<span class="text-muted small">of ' +
+                    Math.round(
+                      group.ApprovedMemberCount[
+                        group.ApprovedMemberCount.length - 1
+                      ].count
+                    ).toLocaleString() +
+                    ')</span>'
+                  : ''),
+              monthly:
+                Math.round(group.avpermonth * group.overlap) +
+                (group.overlap < 1
+                  ? ' (<span class="text-muted small">of ' +
+                    Math.round(group.avpermonth) +
+                    ')</span>'
+                  : '')
+            })
+          }
         }
       }
 

@@ -19,6 +19,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.12.13",
     "@fortawesome/free-brands-svg-icons": "^5.11.1",
     "@fortawesome/free-solid-svg-icons": "^5.11.1",
     "@handsontable/vue": "^4.1.1",
@@ -69,7 +70,7 @@
     "lru-cache": "^5.1.1",
     "mutation-observer": "^1.0.3",
     "nchan": "^1.0.10",
-    "nuxt": "^2.14",
+    "nuxt": "^2.14.12",
     "nuxt-dayjs-module": "^1.1.1",
     "nuxt-fontawesome": "^0.4.0",
     "nuxt-i18n": "^5.12.7",

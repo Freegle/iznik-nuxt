@@ -44,7 +44,7 @@
               :users="users"
               @focus-comment="focusComment"
             />
-            <NewsPreview v-if="newsfeed.preview" :preview="newsfeed.preview" class="mt-1" />
+            <NewsPreview v-if="newsfeed.preview && !newsfeed.html" :preview="newsfeed.preview" class="mt-1" />
             <div v-if="newsfeed.hidden" class="text-danger small">
               This has been hidden and is only visible to volunteers and the person who posted it.
             </div>
@@ -58,7 +58,7 @@
         <b-button v-if="showEarlierRepliesOption" variant="link" class="pl-0" @click.prevent="showAllReplies = true">
           Show earlier {{ numberOfRepliesNotShown.length | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
         </b-button>
-        <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="list-unstyled mb-2">
+        <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id + '-' + (entry.replies ? entry.replies.length : 0)" class="list-unstyled mb-2">
           <li>
             <NewsRefer
               v-if="entry.type.indexOf('ReferTo') === 0"

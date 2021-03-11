@@ -18,14 +18,24 @@
       </b-badge>
       <b-img-lazy
         rounded
-        class="attachment p-0"
+        class="d-none d-md-block attachment p-0"
         generator-unable-to-provide-required-alt=""
         title="Item picture"
         :src="attachments[0].paththumb"
         itemprop="image"
         @error.native="brokenImage"
       />
+      <b-img-lazy
+        rounded
+        class="d-block d-md-none attachment p-0"
+        generator-unable-to-provide-required-alt=""
+        title="Item picture"
+        :src="attachments[0].path"
+        itemprop="image"
+        @error.native="brokenImage"
+      />
       <MessagePhotosModal
+        v-if="message"
         ref="photoModal"
         :message="message"
         :subject="message.subject"

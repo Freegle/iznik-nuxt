@@ -2,15 +2,15 @@
   <div>
     <b-alert v-if="notVisible" variant="warning" class="mt-2" show>
       <h3>
-        That chat isn't for
-        <span v-if="me && me.email">{{ me.email }}</span>
-        <span v-else>this account </span>
+        That chat isn't for this account.
       </h3>
       <p>
-        Please change your email from <nuxt-link to="/settings">
+        Please check your email in <nuxt-link to="/settings">
           Settings
-        </nuxt-link> if necessary - we'll
-        merge your accounts.
+        </nuxt-link>.  If you have trouble, please contact
+        <!-- eslint-disable-next-line -->
+        <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink>
+        who can help you merge multiple accounts.
       </p>
     </b-alert>
     <div v-else-if="me">
@@ -28,11 +28,11 @@
             >
               <span slot="no-results" />
               <span slot="no-more" />
-              <span slot="spinner" class="w-100">
+              <div slot="spinner" class="w-100">
                 <div class="col text-center">
                   <b-img-lazy src="~/static/loader.gif" alt="Loading" />
                 </div>
-              </span>
+              </div>
             </infinite-loading>
             <div v-if="otheruser || chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'" class="pt-1 mb-1 w-100">
               <ChatMessage
@@ -67,10 +67,12 @@ import ChatFooter from './ChatFooter'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import ChatMessage from '~/components/ChatMessage.vue'
+import ExternalLink from '~/components/ExternalLink'
 Vue.use(TooltipPlugin)
 
 export default {
   components: {
+    ExternalLink,
     ChatHeader,
     ChatFooter,
     InfiniteLoading,

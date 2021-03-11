@@ -329,6 +329,25 @@ export const actions = {
     )
   },
 
+  async unban({ commit, dispatch }, params) {
+    await this.$api.memberships.unban(params.userid, params.groupid)
+
+    commit('remove', {
+      userid: params.userid
+    })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
+  },
+
   async purge({ commit, dispatch }, params) {
     await this.$api.user.purge(params.userid)
 

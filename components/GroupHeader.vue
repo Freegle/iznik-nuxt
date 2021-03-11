@@ -55,13 +55,31 @@
       <h2 class="header--size5 mb-3">
         If you have questions, you can contact our lovely local volunteers here:
       </h2>
-      <ExternalLink :href="'mailto:' + modsemail">
+      <ExternalLink v-if="!me" :href="'mailto:' + modsemail">
         <span class="btn btn-white mb-3">
           <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
         </span>
+        <div v-if="group.showmods && group.showmods.length" class="d-flex flex-wrap justify-content-start">
+          <GroupShowMod v-for="mod in group.showmods" :key="'showmod-' + mod.id" :modtoshow="mod" class="ml-1" />
+        </div>
       </ExternalLink>
-      <div v-if="group.showmods && group.showmods.length" class="d-flex flex-wrap justify-content-start">
-        <GroupShowMod v-for="mod in group.showmods" :key="'showmod-' + mod.id" :modtoshow="mod" class="ml-1" />
+      <div v-else>
+        <ChatButton
+          :groupid="group.id"
+          title="Contact Volunteers"
+          chattype="User2Mod"
+          variant="white"
+        />
+        <div v-if="group.showmods && group.showmods.length" class="d-flex flex-wrap justify-content-start mt-3">
+          <ChatButton
+            v-for="mod in group.showmods"
+            :key="'showmod-' + mod.id"
+            :groupid="group.id"
+            chattype="User2Mod"
+          >
+            <GroupShowMod :modtoshow="mod" class="ml-1" />
+          </ChatButton>
+        </div>
       </div>
     </div>
     <div v-if="group.sponsors" class="d-flex flex-wrap justify-content-between mt-1">
@@ -91,11 +109,12 @@
 </template>
 
 <script>
+import ChatButton from '@/components/ChatButton'
 import SponsorLogo from './SponsorLogo'
 import GroupShowMod from './GroupShowMod'
 const ExternalLink = () => import('~/components/ExternalLink')
 export default {
-  components: { GroupShowMod, SponsorLogo, ExternalLink },
+  components: { ChatButton, GroupShowMod, SponsorLogo, ExternalLink },
   props: {
     group: {
       type: Object,

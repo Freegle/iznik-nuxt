@@ -212,7 +212,7 @@ export default {
     validActions() {
       // The standard messages we show depend on the valid ones for this type of message.
       if (this.pending) {
-        const ret = ['Reject', 'Leave', 'Delete', 'Edit']
+        const ret = ['Reject', 'Leave', 'Delete', 'Edit', 'Hold Message']
         if (!this.cantpost) {
           ret.push('Approve')
         }
@@ -270,7 +270,6 @@ export default {
       const self = this
 
       return async function() {
-        console.log('Outcome', type, self.message.id)
         await self.$store.dispatch('messages/update', {
           action: 'Outcome',
           id: self.message.id,

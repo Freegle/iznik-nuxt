@@ -49,32 +49,3 @@ export default {
   }
 }
 </script>
-
-<style scoped lang="scss">
-@import 'color-vars';
-
-/* Override the internal classes in b-carousel */
-::v-deep .carousel-control-prev-icon,
-::v-deep .carousel-control-next-icon {
-  height: 100px;
-  width: 100px;
-  outline: $color-black;
-  background-size: 100%, 100%;
-  border-radius: 50%;
-  border: 1px solid $color-black;
-  background-image: none;
-  background-color: $color-white;
-}
-
-::v-deep .carousel-control-next-icon:after {
-  content: '>';
-  font-size: 55px;
-  color: $color-red;
-}
-
-::v-deep .carousel-control-prev-icon:after {
-  content: '<';
-  font-size: 55px;
-  color: $color-red;
-}
-</style>

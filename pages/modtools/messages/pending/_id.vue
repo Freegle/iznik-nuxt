@@ -3,7 +3,12 @@
     <client-only>
       <ModCakeModal />
       <ScrollToTop />
-      <GroupSelect v-model="groupid" all modonly :work="['pending', 'pendingother']" remember="pending" />
+      <div class="d-flex justify-content-between">
+        <GroupSelect v-model="groupid" all modonly :work="['pending', 'pendingother']" remember="pending" />
+        <b-btn variant="link" @click="loadAll">
+          Load all
+        </b-btn>
+      </div>
       <NoticeMessage v-if="!messages.length && !busy" class="mt-2">
         There are no messages at the moment.  This will refresh automatically.
       </NoticeMessage>
@@ -18,6 +23,7 @@
           <b-img-lazy src="~/static/loader.gif" alt="Loading" />
         </span>
       </infinite-loading>
+      <div ref="end" />
     </client-only>
   </div>
 </template>
@@ -49,6 +55,30 @@ export default {
     return {
       collection: 'Pending',
       workType: 'pending'
+    }
+  },
+  methods: {
+    async loadAll() {
+      // This is a bit of a hack - we clear the store and fetch 1000 messages, which is likely to be all of them.
+      this.limit = 1000
+      await this.$store.dispatch('messages/clearContext')
+      await this.$store.dispatch('messages/clear')
+      const self = this
+
+      this.loadMore({
+        loaded() {
+          self.show = self.messages.length
+          self.$nextTick(() => {
+            self.$refs.end.scrollIntoView()
+          })
+        },
+        complete() {
+          self.show = self.messages.length
+          self.$nextTick(() => {
+            self.$refs.end.scrollIntoView()
+          })
+        }
+      })
     }
   }
 }

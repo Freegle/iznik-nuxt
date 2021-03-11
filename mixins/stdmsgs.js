@@ -16,6 +16,8 @@ export default {
           return 'trash-alt'
         case 'Edit':
           return 'pen'
+        case 'Hold Message':
+          return 'pause'
         default:
           return 'check'
       }
@@ -37,6 +39,8 @@ export default {
           return 'danger'
         case 'Edit':
           return 'primary'
+        case 'Hold Message':
+          return 'warning'
         default:
           return 'white'
       }

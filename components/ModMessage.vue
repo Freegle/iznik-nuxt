@@ -121,11 +121,13 @@
             </NoticeMessage>
             <div v-if="message.microvolunteering && message.microvolunteering.length">
               <ModMessageMicroVolunteering v-for="m in message.microvolunteering" :key="'microvolunteering-' + m.id" :message="message" :microvolunteering="m" class="mb-1" />
-              <p class="text-muted small">
-                Messages will be sent for review if a couple of members think they shouldn't be on Freegle, when asked
-                as part of microvolunteering.  Consider whether you (or the original poster) can edit the message to
-                improve it.  You can control whether members can do microvolunteering - click on their user id.
-              </p>
+              <b-btn v-if="pending" v-b-tooltip.html variant="white" size="sm" title="<p>We ask members to review messages as part of microvolunteering.  When members have proven that they are reliable at microvolunteering, they may be shown Pending messages, so you may see their views here.  This can also show for Pending messages for reposts. <p>You can control whether specific members can do microvolunteering - click on their user id.</p>">
+                <v-icon name="info-circle" /> What's this?
+              </b-btn>
+              <b-btn v-else v-b-tooltip.html variant="white" size="sm" title="<p>We ask members to review messages as part of microvolunteering.  Messages will be sent for review if a couple of members think they shouldn't be on Freegle.</p><p>Consider whether you (or the original poster) can edit the message to improve it.</p><p>You can control whether specific members can do microvolunteering - click on their user id.</p>">
+                <v-icon name="info-circle" /> What's this?
+              </b-btn>
+              <p class="text-muted small" />
             </div>
             <ModMessageWorry v-if="message.worry" :message="message" />
             <div v-if="expanded">
