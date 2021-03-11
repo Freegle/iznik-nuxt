@@ -4,18 +4,11 @@
       Hide Help
     </b-btn>
     <p>
-      Spammer reports are reviewed before a member appears on the list.  Once someone is on this list, they will
-      automatically be removed from communities unless you've disabled
-      that in Settings.  If you think someone is on this list wrongly, you can request that they be removed using
-      the button below.
-    </p>
-    <p>
-      Whitelisted people are those who have good reasons to join many groups, who we flag up so that you don't
-      accidentally think they're spammers.
+      These are messages which need checking to make sure they're ok and not spam or scam.
     </p>
     <p>
       <!-- eslint-disable-next-line-->
-      Read more <ExternalLink href="https://wiki.ilovefreegle.org/Spammers">on the wiki</ExternalLink>.
+      Read about spammers <ExternalLink href="https://wiki.ilovefreegle.org/Spammers">on the wiki</ExternalLink>.
     </p>
   </NoticeMessage>
   <b-btn v-else variant="link" class="float-right" @click="toggleHelp">
@@ -32,7 +25,7 @@ export default {
   mixins: [helpBox],
   data: function() {
     return {
-      id: 'publicity'
+      id: 'messagereview'
     }
   }
 }
