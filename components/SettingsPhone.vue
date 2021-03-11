@@ -89,17 +89,19 @@ export default {
   },
   methods: {
     async savePhone() {
-      this.savingPhone = true
+      if (!this.notMobile) {
+        this.savingPhone = true
 
-      await this.$store.dispatch('auth/saveAndGet', {
-        phone: this.me.phone
-      })
+        await this.$store.dispatch('auth/saveAndGet', {
+          phone: this.me.phone
+        })
 
-      this.savingPhone = false
-      this.savedPhone = true
-      setTimeout(() => {
-        this.savedPhone = false
-      }, 2000)
+        this.savingPhone = false
+        this.savedPhone = true
+        setTimeout(() => {
+          this.savedPhone = false
+        }, 2000)
+      }
     },
     async removePhone() {
       this.removingPhone = true
