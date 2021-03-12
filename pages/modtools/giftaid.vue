@@ -2,6 +2,9 @@
   <b-container fluid class="bg-white">
     <ModHelpGiftAid />
     <ModGiftAid v-for="giftaid in giftaids" :key="'giftaid-' + giftaid.id" :giftaid="giftaid" class="mt-1" />
+    <p v-if="!giftaids.length">
+      No gift aid to review.
+    </p>
   </b-container>
 </template>
 
