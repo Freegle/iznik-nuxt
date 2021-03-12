@@ -208,6 +208,20 @@ export default {
 
       return ret
     },
+    promisedRecently() {
+      // Does this chat have any recent promises.
+      let ret = false
+
+      this.chatmessages.forEach(m => {
+        if (new Date().getTime() - new Date(m.date) < 5 * 24 * 60 * 60 * 1000) {
+          if (m.type === 'Promised') {
+            ret = m.refmsg.id
+          }
+        }
+      })
+
+      return ret
+    },
     sentAddress() {
       const ret = this.mymessages.find(m => {
         if (new Date().getTime() - new Date(m.date) < 5 * 24 * 60 * 60 * 1000) {
@@ -293,11 +307,13 @@ export default {
       // - we've not hidden it
       // - we've got an offer which is still open
       // - we're talking about dates or addresses
+      // - we've not promised recently
       return (
         this.otheruser &&
         this.openInterested &&
         (this.discussedDate || this.sentAddress) &&
         this.chat &&
+        !this.promisedRecently &&
         (!nothandover || nothandover.indexOf(this.chat.id) === -1)
       )
     }
