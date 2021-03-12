@@ -121,7 +121,7 @@
     <client-only>
       <OurToggle
         v-model="allowAutoSend"
-        class="mb-1 float-right"
+        class="mb-1 ml-1 mt-1 float-right"
         :height="30"
         :width="150"
         :font-size="14"
