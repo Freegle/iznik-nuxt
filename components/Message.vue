@@ -22,7 +22,7 @@
       }"
       @click="expand"
     >
-      <MessageItemLocation :id="id" :matchedon="matchedon" class="mb-1 header-title" :type="type" />
+      <MessageItemLocation :id="id" :matchedon="matchedon" class="mb-1 header-title" :type="type" :expanded="expanded !== null" />
       <MessageHistory :message="$props" class="mb-1 header-history" :display-message-link="sm()" />
       <client-only>
         <MessageDescription v-if="!expanded" :id="id" :matchedon="matchedon" class="mb-1 header-description" />
