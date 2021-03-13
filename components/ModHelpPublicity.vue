@@ -17,9 +17,8 @@
     </p>
     <p>
       We can't do this automatically - as per
-      <ExternalLink href="https://developers.facebook.com/docs/facebook-login/permissions#reference-manage_pages">
-        Facebook's guidelines
-      </ExternalLink>
+      <!-- eslint-disable-next-line -->
+      <ExternalLink href="https://developers.facebook.com/docs/facebook-login/permissions#reference-manage_pages">Facebook's guidelines</ExternalLink>
       you need to explicitly decide to publish content on pages that you manage.
     </p>
     <p>

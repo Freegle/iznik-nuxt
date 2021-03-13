@@ -1,6 +1,7 @@
 <template>
   <div>
     <client-only>
+      <ModHelpChatReview />
       <GroupSelect
         v-model="groupid"
         modonly
@@ -39,6 +40,7 @@
 import InfiniteLoading from 'vue-infinite-loading'
 import waitForRef from '@/mixins/waitForRef'
 import loginRequired from '@/mixins/loginRequired.js'
+import ModHelpChatReview from '@/components/ModHelpChatReview'
 import ModChatReview from '../../../components/ModChatReview'
 import GroupSelect from '../../../components/GroupSelect'
 import ConfirmModal from '../../../components/ConfirmModal'
@@ -50,6 +52,7 @@ const REVIEWCHAT = null
 export default {
   layout: 'modtools',
   components: {
+    ModHelpChatReview,
     SpinButton,
     ConfirmModal,
     GroupSelect,
