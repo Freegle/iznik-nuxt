@@ -19,6 +19,11 @@
           Case study - Cumbria
         </nuxt-link>
       </li>
+      <li>
+        <nuxt-link to="/councils/casestudies/essex">
+          Case study - Essex
+        </nuxt-link>
+      </li>
     </ul>
 
     <p>
