@@ -144,12 +144,13 @@ export default {
   },
 
   methods: {
-    async listChats() {
+    async listChats(age) {
       const modtools = this.$store.getters['misc/get']('modtools')
       await this.$store.dispatch('chats/listChats', {
         chattypes: modtools
           ? ['User2Mod', 'Mod2Mod']
-          : ['User2User', 'User2Mod']
+          : ['User2User', 'User2Mod'],
+        age: age || null
       })
     },
 
@@ -210,8 +211,6 @@ export default {
   },
 
   beforeRouteLeave(to, from, next) {
-    console.log('Leave', to, from, this.selectedChatId)
-
     if (to === '/chats' && this.selectedChatId) {
       // No longer have a chat selected.  This can happen because of the history element we add above.
       this.selectedChatId = null

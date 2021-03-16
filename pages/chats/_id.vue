@@ -33,6 +33,9 @@
               <v-icon v-if="searching" name="sync" class="text-success fa-spin" />
               <v-icon v-else name="search" /> Search old chats
             </b-btn>
+            <b-btn v-else-if="mightBeOldChats && complete && !showingOlder" variant="link" size="sm" @click="fetchOlder">
+              Show older chats
+            </b-btn>
           </div>
         </b-col>
         <b-col cols="12" md="8" xl="6" :class="'chatback p-0 ' + (selectedChatId ? 'd-block' : 'd-none d-md-block')">
@@ -54,6 +57,7 @@ import SidebarRight from '@/components/SidebarRight'
 import buildHead from '@/mixins/buildHead'
 import chatPage from '@/mixins/chatPage'
 import loginRequired from '@/mixins/loginRequired.js'
+import dayjs from 'dayjs'
 import MicroVolunteering from '../../components/MicroVolunteering'
 
 // We can't use async on ChatListEntry else the infinite scroll kicks in and tries to load everything while we are
@@ -71,7 +75,29 @@ export default {
   },
   mixins: [loginRequired, buildHead, chatPage],
   data: function() {
-    return {}
+    return {
+      showingOlder: false
+    }
+  },
+  computed: {
+    mightBeOldChats() {
+      console.log(this.me)
+      const now = dayjs()
+      const daysago = now.diff(dayjs(this.me.added), 'days')
+
+      if (daysago > 31) {
+        // They've been on the platform log enough that there might be old chats
+        return true
+      }
+
+      return false
+    }
+  },
+  methods: {
+    fetchOlder() {
+      this.showingOlder = true
+      this.listChats('11 September 2009')
+    }
   },
   head() {
     return this.buildHead(
