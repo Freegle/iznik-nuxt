@@ -78,7 +78,7 @@
             highlight-class-name="highlight"
             auto-escape
             class="prewrap"
-          /><span v-else class="prewrap">{{ expanded.textbody }}</span>
+          /><span v-else class="prewrap forcebreak">{{ expanded.textbody }}</span>
         </div>
         <div v-if="replyable" class="d-flex justify-content-between flex-wrap mt-2">
           <MessageUserInfo v-if="!simple && expanded.fromuser" :user="expanded.fromuser" :milesaway="milesaway" />
