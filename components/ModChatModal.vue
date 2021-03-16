@@ -136,6 +136,10 @@ export default {
   },
   methods: {
     async show() {
+      await this.$store.dispatch('chatmessages/clearContext', {
+        chatid: this.id
+      })
+
       await this.$store.dispatch('chats/fetch', {
         id: this.id
       })
@@ -145,47 +149,61 @@ export default {
 
       this.showModal = true
     },
-    loadMore: function($state) {
+    loadMore: async function($state) {
       const currentCount = this.chatmessages.length
+
+      if (!this.scrolledToBottom) {
+        // First load.  Scroll to the bottom when things have sorted themselves out.  This helps if we have messages
+        // in our store, so we'll render some, otherwise we are stuck at the top until this fetch completes and we
+        // scroll to the bottom below.
+        this.$nextTick(() => {
+          if (this.$el && this.$el.querySelector) {
+            const container = this.$refs.chatContent
+            container.scrollTop = container.scrollHeight
+          }
+        })
+      }
 
       if (this.complete) {
         $state.complete()
       } else {
         this.busy = true
-        this.$store
-          .dispatch('chatmessages/fetch', {
+
+        try {
+          await this.$store.dispatch('chatmessages/fetch', {
             chatid: this.id
           })
-          .then(() => {
+
+          try {
+            this.lastFetched = new Date()
+
             if (!this.scrolledToBottom) {
               // First load.  Scroll to the bottom when things have sorted themselves out.
               this.$nextTick(() => {
                 if (this.$el && this.$el.querySelector) {
                   const container = this.$refs.chatContent
-                  if (container) {
-                    container.scrollTop = container.scrollHeight
-                    this.scrolledToBottom = true
-                  }
+                  container.scrollTop = container.scrollHeight
+                  this.scrolledToBottom = true
                 }
               })
             }
 
-            try {
-              if (currentCount === this.chatmessages.length) {
-                $state.complete()
-              } else {
-                $state.loaded()
-              }
-              this.busy = false
-            } catch (e) {
-              console.error(e)
+            if (currentCount === this.chatmessages.length) {
+              this.complete = true
+              $state.complete()
+            } else {
+              $state.loaded()
             }
-          })
-          .catch(e => {
-            console.error(e)
+
             this.busy = false
-            $state.complete()
-          })
+          } catch (e) {
+            console.error(e)
+          }
+        } catch (e) {
+          console.error(e)
+          this.busy = false
+          $state.complete()
+        }
       }
     },
     closeit() {
