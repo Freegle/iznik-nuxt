@@ -30,7 +30,7 @@
                 <PostItem ref="item" v-model="item" />
               </b-col>
               <b-col cols="6" md="3">
-                <Postcode :find="false" size="md" @selected="postcodeSelect" @cleared="postcodeClear" />
+                <Postcode :find="false" size="md" :value="message.location.name" @selected="postcodeSelect" @cleared="postcodeClear" />
               </b-col>
             </b-row>
           </div>
