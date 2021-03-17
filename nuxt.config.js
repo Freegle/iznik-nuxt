@@ -539,7 +539,7 @@ module.exports = {
 
   generate: {
     // Don't hit the server too hard.
-    concurrency: 5,
+    concurrency: 10,
 
     // Get the list of routes to generate - importantly the group explore pages.
     async routes(callback) {
