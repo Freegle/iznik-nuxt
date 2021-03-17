@@ -12,7 +12,7 @@ do
     echo "Build disabled, sleeping"
     sleep 30;
   else
-    export NODE_OPTIONS=--max_old_space_size=2048;
+    export NODE_OPTIONS=--max_old_space_size=4096;
     export API=http://fdapilive.ilovefreegle.org/api
 
     # Very occasionally the build seems to hang, so use timeout.
