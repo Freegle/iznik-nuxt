@@ -81,7 +81,6 @@ export default {
   },
   computed: {
     mightBeOldChats() {
-      console.log(this.me)
       const now = dayjs()
       const daysago = now.diff(dayjs(this.me.added), 'days')
 

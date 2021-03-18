@@ -502,7 +502,11 @@ export default {
             if (msg.refmsg) {
               // Check that it's still in our list of messages
               for (const ours of this.ouroffers) {
-                if (ours.id === msg.refmsg.id) {
+                if (
+                  ours.id === msg.refmsg.id &&
+                  !ours.promised &&
+                  (!ours.outcomes || ours.outcomes.length === 0)
+                ) {
                   this.likelymsg = msg.refmsg.id
                 }
               }
