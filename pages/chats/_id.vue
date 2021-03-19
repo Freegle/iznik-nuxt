@@ -82,11 +82,14 @@ export default {
   computed: {
     mightBeOldChats() {
       const now = dayjs()
-      const daysago = now.diff(dayjs(this.me.added), 'days')
 
-      if (daysago > 31) {
-        // They've been on the platform log enough that there might be old chats
-        return true
+      if (this.me) {
+        const daysago = now.diff(dayjs(this.me.added), 'days')
+
+        if (daysago > 31) {
+          // They've been on the platform log enough that there might be old chats
+          return true
+        }
       }
 
       return false
