@@ -800,7 +800,7 @@ export default {
     grid-row: 5 / 6;
 
     @include media-breakpoint-up(sm) {
-      grid-column: 1 / 2;
+      grid-column: 2 / 3;
       grid-row: 4 / 5;
     }
   }
