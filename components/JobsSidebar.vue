@@ -1,6 +1,6 @@
 <template>
   <aside v-if="location">
-    <NoticeMessage v-if="blocked" variant="warning">
+    <NoticeMessage v-if="blocked" variant="warning" class="d-none">
       <h3>Please help keep Freegle running</h3>
       <p>
         We normally show job ads here.  It looks like you may have an AdBlocker or security software which is blocking those.
