@@ -59,7 +59,7 @@
             class="ml-4"
             @click="notHandover"
           >
-            No, I'm not
+            Not now
           </b-btn>
         </div>
         <p class="mt-1">
