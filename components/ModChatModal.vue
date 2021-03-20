@@ -129,15 +129,17 @@ export default {
   },
   methods: {
     async show() {
+      if (!this.$store.getters['chats/get'](this.id)) {
+        await this.$store.dispatch('chats/fetch', {
+          id: this.id
+        })
+      }
+
       await this.$store.dispatch('chatmessages/clearContext', {
         chatid: this.id
       })
 
-      await this.$store.dispatch('chats/fetch', {
-        id: this.id
-      })
-
-      // Take a copy rather than use computed as it isn't ours and will vanish from the store.
+      // Take a copy rather than use computed as it may not be ours and will vanish from the store.
       this.chat2 = this.$store.getters['chats/get'](this.id)
 
       this.showModal = true

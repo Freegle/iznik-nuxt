@@ -368,7 +368,10 @@ export default {
               this.$store.getters['chatmessages/getContext'](this.id)
             )
 
-            if (newContext.localeCompare(currentContext)) {
+            if (
+              currentContext !== 'null' &&
+              newContext.localeCompare(currentContext)
+            ) {
               this.complete = true
               $state.complete()
             } else {
