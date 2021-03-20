@@ -28,7 +28,8 @@ export default {
       notVisible: false,
       contactGroup: null,
       urlid: null,
-      showSpamModal: false
+      showSpamModal: false,
+      showMicrovolunteering: false
     }
   },
   computed: {
@@ -442,6 +443,9 @@ export default {
           this.waitForRef('rsvp', () => {
             this.$refs.rsvp.show()
           })
+        } else {
+          // We've sent a message.  This would be a good time to do some microvolunteering.
+          this.showMicrovolunteering = true
         }
       }
     },
