@@ -40,7 +40,7 @@
         <ModComments :user="member" />
         <ModSpammer v-if="member.spammer" :user="member" />
         <NoticeMessage v-if="member.suspectreason" variant="danger" class="mb-2">
-          This freegler is flagged as suspicious: {{ member.suspectreason }}
+          This freegler is flagged: {{ member.suspectreason }}
         </NoticeMessage>
         <NoticeMessage v-if="member.activedistance > 50" variant="warning" class="mb-2">
           This freegler is active on groups {{ member.activedistance }} miles apart.
