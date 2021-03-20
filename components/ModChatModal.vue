@@ -76,11 +76,12 @@ import modal from '@/mixins/modal'
 import InfiniteLoading from 'vue-infinite-loading'
 import chatCollate from '@/mixins/chatCollate.js'
 import chat from '@/mixins/chat.js'
+import waitForRef from '@/mixins/waitForRef'
 const ChatMessage = () => import('@/components/ChatMessage')
 
 export default {
   components: { ChatMessage, InfiniteLoading },
-  mixins: [chatCollate, chat, modal],
+  mixins: [chatCollate, chat, modal, waitForRef],
   props: {
     id: {
       type: Number,
@@ -130,7 +131,9 @@ export default {
     },
     chatmessages() {
       return this.chatCollate(
-        this.$store.getters['chatmessages/getMessages'](this.id)
+        this.$store.getters['chatmessages/getMessages'](this.id).filter(
+          m => m.chatid === this.id
+        )
       )
     }
   },
@@ -149,62 +152,64 @@ export default {
 
       this.showModal = true
     },
-    loadMore: async function($state) {
-      const currentCount = this.chatmessages.length
+    loadMore: function($state) {
+      this.waitForRef('chatContent', async () => {
+        const currentCount = this.chatmessages.length
 
-      if (!this.scrolledToBottom) {
-        // First load.  Scroll to the bottom when things have sorted themselves out.  This helps if we have messages
-        // in our store, so we'll render some, otherwise we are stuck at the top until this fetch completes and we
-        // scroll to the bottom below.
-        this.$nextTick(() => {
-          if (this.$el && this.$el.querySelector) {
-            const container = this.$refs.chatContent
-            container.scrollTop = container.scrollHeight
-          }
-        })
-      }
-
-      if (this.complete) {
-        $state.complete()
-      } else {
-        this.busy = true
-
-        try {
-          await this.$store.dispatch('chatmessages/fetch', {
-            chatid: this.id
+        if (!this.scrolledToBottom) {
+          // First load.  Scroll to the bottom when things have sorted themselves out.  This helps if we have messages
+          // in our store, so we'll render some, otherwise we are stuck at the top until this fetch completes and we
+          // scroll to the bottom below.
+          this.$nextTick(() => {
+            if (this.$el && this.$el.querySelector) {
+              const container = this.$refs.chatContent
+              container.scrollTop = container.scrollHeight
+            }
           })
+        }
+
+        if (this.complete) {
+          $state.complete()
+        } else {
+          this.busy = true
 
           try {
-            this.lastFetched = new Date()
+            await this.$store.dispatch('chatmessages/fetch', {
+              chatid: this.id
+            })
 
-            if (!this.scrolledToBottom) {
-              // First load.  Scroll to the bottom when things have sorted themselves out.
-              this.$nextTick(() => {
-                if (this.$el && this.$el.querySelector) {
-                  const container = this.$refs.chatContent
-                  container.scrollTop = container.scrollHeight
-                  this.scrolledToBottom = true
-                }
-              })
+            try {
+              this.lastFetched = new Date()
+
+              if (!this.scrolledToBottom) {
+                // First load.  Scroll to the bottom when things have sorted themselves out.
+                this.$nextTick(() => {
+                  if (this.$el && this.$el.querySelector) {
+                    const container = this.$refs.chatContent
+                    container.scrollTop = container.scrollHeight
+                    this.scrolledToBottom = true
+                  }
+                })
+              }
+
+              if (currentCount === this.chatmessages.length) {
+                this.complete = true
+                $state.complete()
+              } else {
+                $state.loaded()
+              }
+
+              this.busy = false
+            } catch (e) {
+              console.error(e)
             }
-
-            if (currentCount === this.chatmessages.length) {
-              this.complete = true
-              $state.complete()
-            } else {
-              $state.loaded()
-            }
-
-            this.busy = false
           } catch (e) {
             console.error(e)
+            this.busy = false
+            $state.complete()
           }
-        } catch (e) {
-          console.error(e)
-          this.busy = false
-          $state.complete()
         }
-      }
+      })
     },
     closeit() {
       // We have loaded this chat into store, but it's probably not ours.  So update the list, otherwise next
