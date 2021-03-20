@@ -39,7 +39,7 @@
         <div v-if="!id" class="mt-2">
           <b-card no-body class="mb-2">
             <b-card-text class="p-2 pb-0 mb-0">
-              <label class="font-weight-bold" for="startThread">Chat to nearby freeglers! <span class="d-none d-sm-inline">Ask for advice, recommendations, or just have a blether:</span></label>
+              <label class="font-weight-bold" for="startThread">Chat to nearby freeglers! <span class="d-none d-sm-inline">Ask for advice, recommendations, or just have a natter:</span></label>
               <b-textarea
                 id="startThread"
                 v-model="startThread"
@@ -377,7 +377,7 @@ export default {
   head() {
     return this.buildHead(
       'ChitChat',
-      'Chat to nearby freeglers...ask for advice, recommendations or just have a good old blether.'
+      'Chat to nearby freeglers...ask for advice, recommendations or just have a good old natter.'
     )
   }
 }
