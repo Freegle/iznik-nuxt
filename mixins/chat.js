@@ -328,20 +328,27 @@ export default {
         this.$refs.profile.show()
       })
     },
-    loadMore: async function($state) {
-      const currentCount = this.chatmessages.length
-
-      if (!this.scrolledToBottom) {
+    scrollToBottom(force) {
+      if (!this.scrolledToBottom || force) {
         // First load.  Scroll to the bottom when things have sorted themselves out.  This helps if we have messages
         // in our store, so we'll render some, otherwise we are stuck at the top until this fetch completes and we
         // scroll to the bottom below.
-        this.$nextTick(() => {
-          if (this.$el && this.$el.querySelector) {
-            const container = this.$el.querySelector('.chatContent')
+        this.waitForRef('chatContent', () => {
+          setTimeout(() => {
+            const container = this.$refs.chatContent
             container.scrollTop = container.scrollHeight
-          }
+          }, 500)
         })
+
+        this.scrolledToBottom = true
       }
+    },
+    loadMore: async function($state) {
+      const currentContext = JSON.stringify(
+        this.$store.getters['chatmessages/getContext'](this.id)
+      )
+
+      this.scrollToBottom()
 
       if (this.complete) {
         $state.complete()
@@ -355,19 +362,13 @@ export default {
 
           try {
             this.lastFetched = new Date()
+            this.scrollToBottom()
 
-            if (!this.scrolledToBottom) {
-              // First load.  Scroll to the bottom when things have sorted themselves out.
-              this.$nextTick(() => {
-                if (this.$el && this.$el.querySelector) {
-                  const container = this.$el.querySelector('.chatContent')
-                  container.scrollTop = container.scrollHeight
-                  this.scrolledToBottom = true
-                }
-              })
-            }
+            const newContext = JSON.stringify(
+              this.$store.getters['chatmessages/getContext'](this.id)
+            )
 
-            if (currentCount === this.chatmessages.length) {
+            if (newContext.localeCompare(currentContext)) {
               this.complete = true
               $state.complete()
             } else {
@@ -402,6 +403,7 @@ export default {
       this.lastFetched = new Date()
 
       this.$emit('scrollbottom')
+      this.scrollToBottom(true)
 
       // We also want to trigger an update in the chat list.
       await this.$store.dispatch('chats/fetch', {
@@ -701,14 +703,7 @@ export default {
           chatid: this.id
         })
 
-        setTimeout(() => {
-          if (this.$el && this.$el.querySelector) {
-            const container = this.$el.querySelector('.chatContent')
-            if (container) {
-              container.scrollTop = container.scrollHeight
-            }
-          }
-        }, 500)
+        this.scrollToBottom(true)
       }
     }
   }
