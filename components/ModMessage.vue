@@ -554,7 +554,7 @@ export default {
 
       // Find the newest and oldest texts; intermediates are just confusing.
       // Edits are in descending time order.
-      let newest = null
+      let newest = this.message.textbody
 
       this.message.edits.forEach(edit => {
         if (edit.reviewrequired) {
