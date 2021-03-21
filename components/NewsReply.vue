@@ -80,24 +80,14 @@
         </div>
       </b-col>
     </b-row>
-    <b-button v-if="showEarlierRepliesOption" variant="link" size="sm" class="pl-0" @click.prevent="showAllReplies = true">
-      Show earlier {{ numberOfRepliesNotShown | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
-    </b-button>
-    <div v-if="repliestoshow && repliestoshow.length > 0" :class="firstlevel ? 'pl-3' : ''">
-      <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id" class="'p-0 pt-1 list-unstyled mb-1 pl-1 border-left">
-        <li>
-          <news-refer v-if="entry.type.indexOf('ReferTo') === 0" :type="entry.type" />
-          <news-reply
-            v-else
-            :key="'newsfeedreply-' + replyid + '-reply-' + entry.id"
-            :replyid="entry.id"
-            :users="users"
-            :threadhead="threadhead"
-            :scroll-to="scrollTo"
-          />
-        </li>
-      </ul>
-    </div>
+    <NewsReplies
+      :threadhead="threadhead"
+      :users="users"
+      :scroll-to="scrollTo"
+      :reply-ids="reply.replies.map(r => r.id)"
+      :reply-to="reply.id"
+      :class="firstlevel ? 'pl-3' : ''"
+    />
     <div v-if="showReplyBox" class="mb-2 pb-1 ml-4">
       <div v-if="enterNewLine" class="w-100">
         <at-ta ref="at" :members="tagusers" class="pl-2 input-group" :filter-match="filterMatch">
@@ -236,21 +226,20 @@ import NewsUserInfo from '~/components/NewsUserInfo'
 import NewsHighlight from '~/components/NewsHighlight'
 import ChatButton from '~/components/ChatButton'
 import NewsPreview from '~/components/NewsPreview'
-import NewsRefer from '~/components/NewsRefer'
 import ProfileImage from '~/components/ProfileImage'
 
 const ProfileModal = () => import('~/components/ProfileModal')
 const ConfirmModal = () => import('~/components/ConfirmModal.vue')
+const NewsReplies = () => import('~/components/NewsReplies.vue')
 
 const AtTa = process.browser
   ? require('vue-at/dist/vue-at-textarea')
   : undefined
 
-const INITIAL_NUMBER_OF_REPLIES_TO_SHOW = 5
-
 export default {
   name: 'NewsReply',
   components: {
+    NewsReplies,
     SpinButton,
     OurFilePond,
     NewsLovesModal,
@@ -259,7 +248,6 @@ export default {
     ProfileModal,
     ChatButton,
     NewsPreview,
-    NewsRefer,
     AtTa,
     ProfileImage,
     ConfirmModal
@@ -352,79 +340,6 @@ export default {
       }
       return ret
     },
-    visiblereplies() {
-      // These are the replies which are candidates to show, i.e. not deleted or hidden.
-      const ret = []
-
-      if (this.reply) {
-        if (this.reply.replies && this.reply.replies.length) {
-          for (let i = 0; i < this.reply.replies.length; i++) {
-            if (
-              (!this.reply.replies[i].deleted &&
-                this.reply.replies[i].visible) ||
-              this.mod
-            ) {
-              ret.push(this.reply.replies[i])
-            }
-          }
-        }
-      }
-
-      return ret
-    },
-    repliestoshow() {
-      let ret = []
-
-      if (this.visiblereplies.length) {
-        if (
-          this.showAllReplies ||
-          this.visiblereplies.length <= INITIAL_NUMBER_OF_REPLIES_TO_SHOW
-        ) {
-          // Return all the replies
-          ret = this.visiblereplies
-        } else {
-          // We have to prune what we show, but we should show any replyto.
-          ret = this.visiblereplies
-          let pruned = 0
-          let pruneAt = ret - 1
-
-          while (
-            pruned < INITIAL_NUMBER_OF_REPLIES_TO_SHOW &&
-            pruneAt < ret.length
-          ) {
-            if (ret[pruneAt].id !== parseInt(this.replyTo)) {
-              pruned++
-              ret.splice(pruneAt, 1)
-            } else {
-              pruneAt++
-            }
-          }
-        }
-      }
-
-      return ret
-    },
-    showEarlierRepliesOption() {
-      if (!this.reply || !this.reply.replies) {
-        return false
-      }
-
-      // If we're not already showing all replies and there are still some to show after the default display
-      return (
-        !this.showAllReplies &&
-        this.visiblereplies.length > INITIAL_NUMBER_OF_REPLIES_TO_SHOW
-      )
-    },
-    numberOfRepliesNotShown() {
-      if (
-        !this.visiblereplies ||
-        this.visiblereplies.length < INITIAL_NUMBER_OF_REPLIES_TO_SHOW
-      ) {
-        return 0
-      }
-
-      return this.visiblereplies.length - INITIAL_NUMBER_OF_REPLIES_TO_SHOW
-    },
     scrollToThis() {
       return parseInt(this.scrollTo) === this.replyid
     },
@@ -500,6 +415,9 @@ export default {
 
         // And any image id
         this.imageid = null
+
+        // Force re-render.  Store reactivity doesn't seem to work nicely with the nested reply structure we have.
+        this.bump++
       }
     },
     newlineReply() {

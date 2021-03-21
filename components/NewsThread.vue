@@ -55,27 +55,14 @@
         </b-card-text>
       </b-card-body>
       <div slot="footer">
-        <b-button v-if="showEarlierRepliesOption" variant="link" class="pl-0" @click.prevent="showAllReplies = true">
-          Show earlier {{ numberOfRepliesNotShown.length | pluralize(['reply', 'replies']) }} ({{ numberOfRepliesNotShown }})
-        </b-button>
-        <ul v-for="entry in repliestoshow" :key="'newsfeed-' + entry.id + '-' + (entry.replies ? entry.replies.length : 0)" class="list-unstyled mb-2">
-          <li>
-            <NewsRefer
-              v-if="entry.type.indexOf('ReferTo') === 0"
-              :id="entry.id"
-              :type="entry.type"
-              :threadhead="newsfeed"
-            />
-            <NewsReply
-              v-else
-              :key="'newsfeedreply-' + newsfeed.id + '-reply-' + entry.id"
-              :replyid="entry.id"
-              :users="users"
-              :threadhead="newsfeed"
-              :scroll-to="scrollTo"
-            />
-          </li>
-        </ul>
+        <NewsReplies
+          :threadhead="newsfeed"
+          :users="users"
+          :scroll-to="scrollTo"
+          :reply-ids="newsfeed.replies.map(r => r.id)"
+          :reply-to="replyingTo"
+          class="pl-3"
+        />
         <span v-if="!newsfeed.closed">
           <div v-if="enterNewLine">
             <at-ta ref="at" :members="tagusers" class="flex-shrink-2 input-group" :filter-match="filterMatch">
@@ -186,6 +173,7 @@
 </template>
 
 <script>
+import NewsReplies from '@/components/NewsReplies'
 import waitForRef from '../mixins/waitForRef'
 import NewsReportModal from './NewsReportModal'
 import OurFilePond from './OurFilePond'
@@ -193,7 +181,6 @@ import SpinButton from './SpinButton'
 import twem from '~/assets/js/twem'
 
 // Use standard import to avoid screen-flicker
-import NewsReply from '~/components/NewsReply'
 import NewsRefer from '~/components/NewsRefer'
 import NewsMessage from '~/components/NewsMessage'
 import NewsAboutMe from '~/components/NewsAboutMe'
@@ -217,10 +204,10 @@ const INITIAL_NUMBER_OF_REPLIES_TO_SHOW = 10
 export default {
   name: 'NewsThread',
   components: {
+    NewsReplies,
     SpinButton,
     OurFilePond,
     NewsReportModal,
-    NewsReply,
     NewsRefer,
     NewsMessage,
     NewsAboutMe,
@@ -255,7 +242,6 @@ export default {
     return {
       replyingTo: null,
       threadcomment: null,
-      showAllReplies: false,
       newsreport: false,
       newsComponents: {
         AboutMe: 'NewsAboutMe',
@@ -355,28 +341,6 @@ export default {
     },
     newsComponentName() {
       return this.isNewsComponent ? this.newsComponents[this.newsfeed.type] : ''
-    },
-    showEarlierRepliesOption() {
-      if (!this.newsfeed || !this.newsfeed.replies) {
-        return false
-      }
-
-      // If we're not already showing all replies and there are still some to show after the default display
-      return (
-        !this.showAllReplies &&
-        this.newsfeed.replies.length > INITIAL_NUMBER_OF_REPLIES_TO_SHOW
-      )
-    },
-    numberOfRepliesNotShown() {
-      if (
-        !this.newsfeed ||
-        !this.newsfeed.replies ||
-        this.newsfeed.replies.length < INITIAL_NUMBER_OF_REPLIES_TO_SHOW
-      ) {
-        return 0
-      }
-
-      return this.newsfeed.replies.length - INITIAL_NUMBER_OF_REPLIES_TO_SHOW
     },
     starter() {
       if (

@@ -10,22 +10,36 @@ export const state = () => ({
 })
 
 export const mutations = {
-  addNewsfeed(state, item) {
-    let found = false
+  addNewsfeed(state, outeritem) {
+    function recursiveAdd(item) {
+      let found = false
 
-    for (let i = 0; i < state.newsfeed.length; i++) {
-      if (parseInt(state.newsfeed[i].id) === parseInt(item.id)) {
-        // Already there - replace.
-        item.message = item.message + ''
-        Vue.set(state.newsfeed, i, item)
-        found = true
+      for (let i = 0; i < state.newsfeed.length; i++) {
+        if (parseInt(state.newsfeed[i].id) === parseInt(item.id)) {
+          // Already there - replace.
+          item.message = item.message + ''
+          Vue.set(state.newsfeed, i, item)
+          found = true
+        }
+      }
+
+      if (!found) {
+        // Just add to head.
+        state.newsfeed.unshift(item)
+      }
+
+      if (item.replies) {
+        // Add each reply into the store as a separate item so that we get reactivity working on nested replied.
+        //
+        // It would be better to change the structure so that we find out about replies as a list of ids, not
+        // nested objects.
+        item.replies.forEach(r => {
+          recursiveAdd(r)
+        })
       }
     }
 
-    if (!found) {
-      // Just add to head.
-      state.newsfeed.unshift(item)
-    }
+    recursiveAdd(outeritem)
   },
 
   removeNewsfeed(state, id) {
