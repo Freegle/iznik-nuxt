@@ -2,8 +2,7 @@ export const state = () => ({
   configs: [],
 
   // We have a current one.  This is so that we can configure it without interfering with our main list until
-  // we save it.  This is particularly useful during COVID19 where the server doesn't return the usual configs
-  // normally.
+  // we save it.
   current: null
 })
 

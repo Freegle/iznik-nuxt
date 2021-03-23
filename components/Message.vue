@@ -87,128 +87,122 @@
       </div>
       <div v-if="replyable" class="p-1 pt-3 bg-white">
         <CovidClosed v-if="expanded && expanded.closed" />
-        <NoticeMessage v-else-if="milesaway > 25" variant="danger">
-          With current COVID-19 restrictions, this is too far away.  Please keep freegling local and stay safe.
-        </NoticeMessage>
         <div v-else-if="expanded.fromuser && expanded.fromuser.id === myid" />
         <div v-else>
-          <CovidCheckList v-if="!confirmed" class="mt-2" @confirmed="confirmed = true" />
-          <div v-if="confirmed">
-            <EmailValidator
-              v-if="!me && !sent"
-              ref="email"
-              size="lg"
-              label="Your email address:"
-              :email.sync="email"
-              :valid.sync="emailValid"
+          <EmailValidator
+            v-if="!me && !sent"
+            ref="email"
+            size="lg"
+            label="Your email address:"
+            :email.sync="email"
+            :valid.sync="emailValid"
+          />
+          <NoticeMessage v-if="milesaway > 10" variant="warning">
+            Remember: essential travel only and stay local. Could you delay the actual collection?
+          </NoticeMessage>
+          <notice-message v-if="stillAvailable" variant="info" class="mb-1 mt-1">
+            You don't need to ask if things are still available.  People can mark OFFERs as promised or TAKEN, and
+            you'd see that here.  So just write whatever you would have said next - explain why you'd like it and when
+            you could collect.
+          </notice-message>
+          <b-form-group
+            v-if="!sent"
+            class="flex-grow-1"
+            label="Your reply:"
+            :label-for="'replytomessage-' + expanded.id"
+            :description="expanded.type === 'Offer' ? 'Interested?  Please explain why you\'d like it and when you can collect.  Always be polite and helpful, and remember it\'s not always first come first served.  If appropriate, ask if it\'s working.' : 'Can you help?  If you have what they\'re looking for, let them know.'"
+          >
+            <b-form-textarea
+              v-if="expanded.type == 'Offer'"
+              :id="'replytomessage-' + expanded.id"
+              v-model="reply"
+              rows="3"
+              max-rows="8"
+              class="border border-success"
             />
-            <NoticeMessage v-if="milesaway > 3" variant="warning">
-              Remember: essential travel only and stay local. Could you delay the actual collection?
-            </NoticeMessage>
-            <notice-message v-if="stillAvailable" variant="info" class="mb-1 mt-1">
-              You don't need to ask if things are still available.  People can mark OFFERs as promised or TAKEN, and
-              you'd see that here.  So just write whatever you would have said next - explain why you'd like it and when
-              you could collect.
-            </notice-message>
-            <b-form-group
-              v-if="!sent"
+            <b-form-textarea
+              v-if="expanded.type == 'Wanted'"
+              :id="'replytomessage-' + expanded.id"
+              v-model="reply"
+              rows="3"
+              max-rows="8"
               class="flex-grow-1"
-              label="Your reply:"
-              :label-for="'replytomessage-' + expanded.id"
-              :description="expanded.type === 'Offer' ? 'Interested?  Please explain why you\'d like it and when you can collect.  Always be polite and helpful, and remember it\'s not always first come first served.  If appropriate, ask if it\'s working.' : 'Can you help?  If you have what they\'re looking for, let them know.'"
-            >
-              <b-form-textarea
-                v-if="expanded.type == 'Offer'"
-                :id="'replytomessage-' + expanded.id"
-                v-model="reply"
-                rows="3"
-                max-rows="8"
-                class="border border-success"
-              />
-              <b-form-textarea
-                v-if="expanded.type == 'Wanted'"
-                :id="'replytomessage-' + expanded.id"
-                v-model="reply"
-                rows="3"
-                max-rows="8"
-                class="flex-grow-1"
-              />
-            </b-form-group>
-            <BAlert v-if="sent" show variant="info" class="d-block d-sm-none mb-1">
-              <p class="font-weight-bold">
-                We've sent your message.
-              </p>
-              <p>
-                When they reply, it'll be in the
-                <nuxt-link to="/chats">
-                  <v-icon name="comments" />&nbsp;Chats
-                </nuxt-link> section, and by email.  Check your spam folder!
-              </p>
-            </BAlert>
-            <div v-if="!sent">
-              <div v-if="!me">
-                <div class="contents">
-                  <div>
-                    <b-btn size="lg" variant="primary" :disabled="disableSend" @click="registerOrSend">
-                      Send your reply
-                      <v-icon v-if="replying" name="sync" class="fa-spin" />
-                      <v-icon v-else name="angle-double-right" />&nbsp;
-                    </b-btn>
-                  </div>
-                  <div />
-                  <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" />
+            />
+          </b-form-group>
+          <BAlert v-if="sent" show variant="info" class="d-block d-sm-none mb-1">
+            <p class="font-weight-bold">
+              We've sent your message.
+            </p>
+            <p>
+              When they reply, it'll be in the
+              <nuxt-link to="/chats">
+                <v-icon name="comments" />&nbsp;Chats
+              </nuxt-link> section, and by email.  Check your spam folder!
+            </p>
+          </BAlert>
+          <div v-if="!sent">
+            <div v-if="!me">
+              <div class="contents">
+                <div>
+                  <b-btn size="lg" variant="primary" :disabled="disableSend" @click="registerOrSend">
+                    Send your reply
+                    <v-icon v-if="replying" name="sync" class="fa-spin" />
+                    <v-icon v-else name="angle-double-right" />&nbsp;
+                  </b-btn>
                 </div>
-                <p class="mt-1">
-                  If you're a new freegler then welcome!  You'll get emails.  Name, approx. location, and profile picture are public - you
-                  can hide your real name and picture from Settings.  This adds cookies and local
-                  storage.  Read <nuxt-link target="_blank" to="/terms">
-                    Terms of Use
-                  </nuxt-link> and
-                  <nuxt-link target="_blank" to="/privacy">
-                    Privacy
-                  </nuxt-link> for details.
-                </p>
+                <div />
+                <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" />
               </div>
-              <div v-else>
-                <div class="contents">
-                  <div>
-                    <b-form-group
-                      class="flex-grow-1"
-                      label="Your postcode:"
-                      :label-for="'replytomessage-' + expanded.id"
-                      description="So that we know how far away you are.  The closer the better."
-                    >
-                      <Postcode @selected="savePostcode" />
-                    </b-form-group>
-                    <SettingsPhone
-                      v-if="me"
-                      label="Your mobile number:"
-                      description="(Optional)  We'll use this to notify you by text (SMS) so you don't miss replies.  We won't show it to the other freegler."
-                      size="lg"
-                      hide-remove
-                      auto-save
-                    />
-                    <b-btn size="lg" variant="primary" class="d-none d-md-block" :disabled="disableSend" @click="sendReply">
-                      Send your reply
-                      <v-icon v-if="replying" name="sync" class="fa-spin" />
-                      <v-icon v-else name="angle-double-right" />&nbsp;
-                    </b-btn>
-                    <b-btn
-                      size="lg"
-                      variant="primary"
-                      class="d-block d-md-none mt-2"
-                      block
-                      :disabled="disableSend"
-                      @click="sendReply"
-                    >
-                      Send your reply
-                      <v-icon v-if="replying" name="sync" class="fa-spin" />
-                      <v-icon v-else name="angle-double-right" />&nbsp;
-                    </b-btn>
-                  </div>
-                  <div />
-                  <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" class="border border-black rounded" />
+              <p class="mt-1">
+                If you're a new freegler then welcome!  You'll get emails.  Name, approx. location, and profile picture are public - you
+                can hide your real name and picture from Settings.  This adds cookies and local
+                storage.  Read <nuxt-link target="_blank" to="/terms">
+                  Terms of Use
+                </nuxt-link> and
+                <nuxt-link target="_blank" to="/privacy">
+                  Privacy
+                </nuxt-link> for details.
+              </p>
+            </div>
+            <div v-else>
+              <div class="contents">
+                <div>
+                  <b-form-group
+                    class="flex-grow-1"
+                    label="Your postcode:"
+                    :label-for="'replytomessage-' + expanded.id"
+                    description="So that we know how far away you are.  The closer the better."
+                  >
+                    <Postcode @selected="savePostcode" />
+                  </b-form-group>
+                  <SettingsPhone
+                    v-if="me"
+                    label="Your mobile number:"
+                    description="(Optional)  We'll use this to notify you by text (SMS) so you don't miss replies.  We won't show it to the other freegler."
+                    size="lg"
+                    hide-remove
+                    auto-save
+                  />
+                  <b-btn size="lg" variant="primary" class="d-none d-md-block" :disabled="disableSend" @click="sendReply">
+                    Send your reply
+                    <v-icon v-if="replying" name="sync" class="fa-spin" />
+                    <v-icon v-else name="angle-double-right" />&nbsp;
+                  </b-btn>
+                  <b-btn
+                    size="lg"
+                    variant="primary"
+                    class="d-block d-md-none mt-2"
+                    block
+                    :disabled="disableSend"
+                    @click="sendReply"
+                  >
+                    Send your reply
+                    <v-icon v-if="replying" name="sync" class="fa-spin" />
+                    <v-icon v-else name="angle-double-right" />&nbsp;
+                  </b-btn>
                 </div>
+                <div />
+                <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" class="border border-black rounded" />
               </div>
             </div>
           </div>
@@ -253,7 +247,6 @@ import NewUserInfo from './NewUserInfo'
 import Postcode from './Postcode'
 import MessageMap from './MessageMap'
 import CovidClosed from './CovidClosed'
-import CovidCheckList from './CovidCheckList'
 import twem from '~/assets/js/twem'
 
 const Highlighter = () => import('vue-highlight-words')
@@ -271,7 +264,6 @@ export default {
     MessageFreegled,
     MessageAttachments,
     SettingsPhone,
-    CovidCheckList,
     CovidClosed,
     MessageMap,
     Postcode,
@@ -386,8 +378,7 @@ export default {
       emailValid: false,
       showNewUser: false,
       newUserPassword: null,
-      showAttachments: true,
-      confirmed: false
+      showAttachments: true
     }
   },
   computed: {
