@@ -8,7 +8,7 @@
         Your community is currently closed.  You can change this in <em>Features for Members</em>.
       </NoticeMessage>
       <NoticeMessage v-if="group.autofunctionoverride" variant="danger" class="mb-1">
-        Your community is subject to restrictions.  Auto-repost/auto-approve are disabled.  <em>All Posts Moderated</em>
+        Your community is subject to restrictions.  Auto-approve is disabled.  <em>All Posts Moderated</em>
         will have been set to <em>Yes</em> but you can choose to set this back to <em>No</em> in <em>Features for Moderators</em>.
         If you have questions, ask on
         <!-- eslint-disable-next-line -->
