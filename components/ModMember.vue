@@ -353,7 +353,7 @@ export default {
     }
   },
   mounted() {
-    if (!this.member.info) {
+    if (!this.user) {
       // Fetch with info so that we can display more.
       this.$store.dispatch('user/fetch', {
         id: this.member.userid,
