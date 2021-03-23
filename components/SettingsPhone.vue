@@ -7,7 +7,7 @@
         :description="description"
       >
         <b-input-group>
-          <b-input v-model="me.phone" placeholder="Your mobile number" :size="size" lazy />
+          <b-input v-model="me.phone" placeholder="Your mobile" :size="size" lazy />
           <b-input-group-append v-if="!autoSave">
             <b-button variant="white" @click="savePhone">
               <v-icon v-if="savingPhone" name="sync" class="text-success fa-spin" />
