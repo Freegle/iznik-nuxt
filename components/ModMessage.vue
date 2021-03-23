@@ -160,7 +160,7 @@
                   {{ eBody }}
                 </span>
               </div>
-              <div v-if="attachments.length" class="d-flex flex-wrap">
+              <div v-if="attachments.length" class="photos">
                 <ModPhoto v-for="attachment in attachments" :key="'attachment-' + attachment.id" :message="message" :attachment="attachment" class="d-inline pr-1" />
               </div>
               <MessageReplyInfo v-if="!pending || message.replies && message.replies.length" :message="message" class="d-inline" />
@@ -798,11 +798,25 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
 .type {
   max-width: 150px;
 }
+
 .location {
   max-width: 250px;
+}
+
+.photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  @include media-breakpoint-up(md) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
 }
 </style>
