@@ -609,12 +609,15 @@ export default {
       })
 
       // Set the current location and nearby groups, too, since we're about to use them
-      const loc = await this.$axios.get(process.env.API + '/locations', {
-        params: {
-          typeahead: this.message.location.name
-        }
-      })
-      await this.$store.dispatch('compose/setPostcode', loc.data.locations[0])
+      if (this.message.location) {
+        const loc = await this.$axios.get(process.env.API + '/locations', {
+          params: {
+            typeahead: this.message.location.name
+          }
+        })
+
+        await this.$store.dispatch('compose/setPostcode', loc.data.locations[0])
+      }
 
       await this.$store.dispatch('compose/setAttachmentsForMessage', {
         id: this.message.id,
