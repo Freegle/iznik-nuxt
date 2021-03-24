@@ -18,7 +18,7 @@
           </span>
         </div>
         <div v-if="otheruser && otheruser.info && otheruser.info.lastaccess" class="small">
-          last seen {{ otheruser.info.lastaccess | timeago }}
+          last seen <span :title="otheruser.info.lastaccess | datetimeshort">{{ otheruser.info.lastaccess | timeago }}</span>
         </div>
       </div>
       <div v-if="unseen" class="ml-2 align-self-center">
