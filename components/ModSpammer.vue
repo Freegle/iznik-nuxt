@@ -12,7 +12,12 @@
       </span>
       <span v-if="user.spammer.byuser">
         {{ user.spammer.byuser.displayname }}
-        (<ExternalLink :href="'mailto:' + user.spammer.byuser.email">{{ user.spammer.byuser.email }}</ExternalLink>)
+        <span v-if="user.spammer.collection === 'PendingAdd' && hasPermissionSpamAdmin">
+          (<ExternalLink :href="'mailto:' + user.spammer.byuser.email + '?cc=spammerlist@ilovefreegle.org'">{{ user.spammer.byuser.email }}</ExternalLink>)
+        </span>
+        <span v-else>
+          (<ExternalLink :href="'mailto:' + user.spammer.byuser.email">{{ user.spammer.byuser.email }}</ExternalLink>)
+        </span>
       </span>
       #{{ user.spammer.byuserid }} {{ user.spammer.added | timeago }}
     </div>

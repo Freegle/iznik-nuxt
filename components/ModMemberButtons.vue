@@ -26,6 +26,9 @@
           spamconfirm
           label="Confirm add to spammer list"
         />
+        <b-btn variant="white" @click="addAComment">
+          <v-icon name="tag" /> Add note
+        </b-btn>
         <ModMemberButton
           v-if="hasPermissionSpamAdmin && !member.heldby"
           :member="member"
@@ -129,18 +132,25 @@
         :labels="{checked: 'Allow autosend', unchecked: 'Autosend off'}"
         color="#61AE24"
       />
+      <ModCommentAddModal v-if="addComment" ref="addComment" :user="member" />
     </client-only>
   </div>
 </template>
 <script>
 import waitForRef from '@/mixins/waitForRef'
+import ModCommentAddModal from '@/components/ModCommentAddModal'
 import ModMemberButton from './ModMemberButton'
 import ModMemberActions from './ModMemberActions'
 
 const OurToggle = () => import('@/components/OurToggle')
 
 export default {
-  components: { ModMemberActions, ModMemberButton, OurToggle },
+  components: {
+    ModCommentAddModal,
+    ModMemberActions,
+    ModMemberButton,
+    OurToggle
+  },
   mixins: [waitForRef],
   props: {
     member: {
@@ -166,7 +176,8 @@ export default {
   data: function() {
     return {
       showRare: false,
-      allowAutoSend: true
+      allowAutoSend: true,
+      addComment: false
     }
   },
   computed: {
@@ -224,7 +235,6 @@ export default {
           return 'check'
       }
     },
-
     variant(stdmsg) {
       switch (stdmsg.action) {
         case 'Approve Member':
@@ -242,7 +252,6 @@ export default {
           return 'white'
       }
     },
-
     hasCollection(coll) {
       let ret = false
 
@@ -255,6 +264,12 @@ export default {
       }
 
       return ret
+    },
+    addAComment() {
+      this.addComment = true
+      this.waitForRef('addComment', () => {
+        this.$refs.addComment.show()
+      })
     }
   }
 }
