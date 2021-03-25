@@ -67,6 +67,7 @@
       :chatid="chat.id"
       @confirm="hide"
     />
+    <ProfileModal v-if="otheruser" :id="otheruser.id" ref="profile" />
   </div>
 </template>
 <script>
@@ -78,9 +79,11 @@ const ChatBlockModal = () => import('./ChatBlockModal')
 const ChatHideModal = () => import('./ChatHideModal')
 const Ratings = () => import('~/components/Ratings')
 const ChatReportModal = () => import('~/components/ChatReportModal')
+const ProfileModal = () => import('~/components/ProfileModal')
 
 export default {
   components: {
+    ProfileModal,
     Supporter,
     Ratings,
     ChatBlockModal,
