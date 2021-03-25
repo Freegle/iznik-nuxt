@@ -167,7 +167,14 @@
             </div>
           </b-col>
           <b-col cols="12" lg="3">
-            <MessageMap v-if="group && position" :centerat="{ lat: group.lat, lng: group.lng }" :position="{ lat: position.lat, lng: position.lng }" locked :height="150" />
+            <MessageMap
+              v-if="group && position"
+              wales
+              :centerat="{ lat: group.lat, lng: group.lng }"
+              :position="{ lat: position.lat, lng: position.lng }"
+              locked
+              :height="150"
+            />
           </b-col>
           <b-col cols="12" lg="3">
             <div class="rounded border border-info p-2 d-flex justify-content-between flex-wrap">
