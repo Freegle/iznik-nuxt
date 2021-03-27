@@ -164,9 +164,11 @@ export default {
     // We want to refetch the group in case its closed status has changed.
     const groupid = this.$store.getters['compose/getGroup']
 
-    this.$store.dispatch('group/fetch', {
-      id: groupid
-    })
+    if (groupid) {
+      this.$store.dispatch('group/fetch', {
+        id: groupid
+      })
+    }
   },
   methods: {
     deleteItem() {

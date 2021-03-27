@@ -9,7 +9,7 @@
       <template slot="default">
         <ul v-if="newsfeed" class="p-0">
           <li v-for="(love, index) in newsfeed.lovelist" :key="'love-' + love.id" class="p-0 pt-1 list-unstyled">
-            <div class="media clickme">
+            <div class="media clickme" @click="goToProfile(love.id)">
               <div class="media-left">
                 <div class="media-object">
                   <ProfileImage v-if="love.profile.turl" :image="love.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="lg" />
@@ -92,6 +92,12 @@ export default {
       })
 
       this.showModal = true
+    },
+    goToProfile(id) {
+      console.log('Go to profile', id)
+      this.$router.push({
+        path: '/profile/' + id
+      })
     }
   }
 }
