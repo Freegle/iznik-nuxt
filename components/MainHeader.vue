@@ -86,7 +86,12 @@
     </b-navbar>
     <!-- Navbar for small screens -->
     <b-navbar id="navbar_small" toggleable="xl" type="dark" class="ourBack d-flex justify-content-between d-xl-none" fixed="top">
-      <b-navbar-brand to="/" class="p-0">
+      <b-navbar-brand v-if="showBackButton" class="p-0">
+        <b-btn ref="backButton" variant="white" class="nohover" @click="backButton">
+          <v-icon name="arrow-left" />
+        </b-btn>
+      </b-navbar-brand>
+      <b-navbar-brand v-else to="/" class="p-0">
         <b-img
           class="logo mr-2"
           height="58"
@@ -199,6 +204,20 @@ export default {
       chatCount: 0
     }
   },
+  computed: {
+    showBackButton() {
+      // On mobile we want to show a back button instead of the logo when we're not on one of the "home" routes,
+      // which are /browse, /chitchat, /myposts
+      const modtools = this.$store.getters['misc/get']('modtools')
+
+      return (
+        !modtools &&
+        this.$route.path !== '/browse' &&
+        this.$route.path !== '/chitchat' &&
+        this.$route.path !== '/myposts'
+      )
+    }
+  },
   watch: {
     unreadNotificationCount: function() {
       this.$emit('update:unreadNotificationCount', this.unreadNotificationCount)
@@ -266,6 +285,13 @@ export default {
       if (this.$router.currentRoute.path === route) {
         // We have clicked to route to the page we're already on.  Force a full refresh.
         window.location.reload(true)
+      }
+    },
+    backButton() {
+      try {
+        this.$router.back()
+      } catch (e) {
+        this.$router.push('/')
       }
     }
   }
@@ -406,5 +432,11 @@ svg.fa-icon {
 
 .toggler svg {
   vertical-align: -20px;
+}
+
+.nohover:hover {
+  background-color: $color-white;
+  border-color: $color-green--dark;
+  color: $color-black;
 }
 </style>
