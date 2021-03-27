@@ -18,7 +18,7 @@
       </b-badge>
     </h4>
     <ModPostingHistoryModal ref="history" :user="member" :type="type" />
-    <ModLogsModal ref="logs" :userid="member.userid" modmailsonly />
+    <ModLogsModal v-if="showLogsModal" ref="logs" :userid="member.userid" modmailsonly />
   </div>
 </template>
 <script>
@@ -37,7 +37,8 @@ export default {
   },
   data: function() {
     return {
-      type: null
+      type: null,
+      showLogsModal: false
     }
   },
   computed: {
@@ -77,6 +78,7 @@ export default {
     },
     showModmails() {
       this.modmailsonly = true
+      this.showLogsModal = true
 
       this.waitForRef('logs', () => {
         this.$refs.logs.show()
