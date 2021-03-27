@@ -17,7 +17,7 @@
       <client-only>
         <div class="chatHolder">
           <ChatHeader v-bind="$props" class="chatTitle" />
-          <div v-if="chat" class="chatContent" infinite-wrapper>
+          <div v-if="chat" ref="chatContent" class="chatContent" infinite-wrapper>
             <infinite-loading
               v-if="otheruser || chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'"
               direction="top"
@@ -49,7 +49,7 @@
               <b-img class="float-right" src="~static/loader.gif" />
             </div>
           </div>
-          <ChatFooter v-bind="$props" class="chatFooter" @scrollbottom="scrollBottom" />
+          <ChatFooter v-bind="$props" class="chatFooter" @scrollbottom="scrollToBottom(true)" />
         </div>
       </client-only>
     </div>
@@ -88,17 +88,6 @@ export default {
   },
   created() {
     this.urlid = this.$route.query.u
-  },
-  methods: {
-    scrollBottom() {
-      // Scroll to the bottom so we can see it.
-      this.$nextTick(() => {
-        if (this.$el && this.$el.querySelector) {
-          const container = this.$el.querySelector('.chatContent')
-          container.scrollTop = container.scrollHeight
-        }
-      })
-    }
   }
 }
 </script>

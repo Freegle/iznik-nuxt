@@ -1,6 +1,7 @@
 <template>
   <div>
     <client-only>
+      <ModHelpMessageReview />
       <ScrollToTop />
       <GroupSelect v-model="groupid" all modonly :work="['spam', 'spamother']" remember="messagereview" />
       <NoticeMessage v-if="!messages.length && !busy" class="mt-2">
@@ -27,9 +28,10 @@ import createGroupRoute from '@/mixins/createGroupRoute'
 import NoticeMessage from '../../../../components/NoticeMessage'
 import GroupSelect from '../../../../components/GroupSelect'
 import ScrollToTop from '../../../../components/ScrollToTop'
+import ModHelpMessageReview from '~/components/ModHelpMessageReview'
 
 export default {
-  components: { ScrollToTop, GroupSelect, NoticeMessage },
+  components: { ModHelpMessageReview, ScrollToTop, GroupSelect, NoticeMessage },
   layout: 'modtools',
   mixins: [
     loginRequired,

@@ -198,7 +198,6 @@ export default {
       let obj = this.$store.getters['group/get'](this.groupid)
 
       if (obj) {
-        console.log('OBj', obj)
         let name = this.name
         let p
 
@@ -213,7 +212,6 @@ export default {
                   ? obj[name]
                   : Boolean(parseInt(obj[name]))
             } else {
-              console.log('Set', this, obj, name)
               this.value = obj[name]
             }
           } else {

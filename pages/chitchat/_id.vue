@@ -7,27 +7,24 @@
       <b-col cols="12" lg="6" class="newsfeedHolder p-0">
         <CovidWarning />
         <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
-        <b-card v-if="!id">
+        <b-card v-if="!id" body-class="p-2 p-md-4">
           <b-card-text>
-            <h5 class="text-center mb-3">
-              Looking for your posts?  Click
-              <nuxt-link to="/myposts">
-                here
-              </nuxt-link>
+            <h5 class="text-center mb-3 d-block d-md-none">
+              <span class="d-none d-sm-inline">Looking for your posts?  Click</span>
+              <span class="d-inline d-sm-none">Your posts are</span>
+              <!-- eslint-disable-next-line -->
+              <nuxt-link to="/myposts">here</nuxt-link>.
             </h5>
-            <h5 class="text-center mb-3">
+            <h5 class="text-center mb-3 d-block d-md-none">
               Browse OFFERs/WANTEDs
-              <nuxt-link to="/browse">
-                here
-              </nuxt-link>
+              <!-- eslint-disable-next-line -->
+              <nuxt-link to="/browse">here</nuxt-link>.
             </h5>
             <div class="d-flex justify-content-between">
               <b-btn id="givebutton" ref="givebutton" to="/give" variant="primary" class="post__button">
-                <v-icon name="gift" class="mr-1" />
                 Give stuff
               </b-btn>
               <b-btn id="findbutton" ref="findbutton" to="/find" variant="secondary" class="post__button">
-                <v-icon name="shopping-cart" class="mr-1" />
                 Ask for stuff
               </b-btn>
             </div>
@@ -41,8 +38,19 @@
         </b-card>
         <div v-if="!id" class="mt-2">
           <b-card no-body class="mb-2">
-            <b-card-text>
-              <b-textarea v-model="startThread" rows="2" max-rows="8" placeholder="Chat to nearby freeglers...ask for advice, recommendations, or have a blether.  To give or ask for stuff, please use the Give/Ask buttons.  Everything here is public.  Be kind to each other; occasionally we may moderate to ensure things stay friendly." />
+            <b-card-text class="p-2 pb-0 mb-0">
+              <label class="font-weight-bold" for="startThread">Chat to nearby freeglers! <span class="d-none d-sm-inline">Ask for advice, recommendations, or just have a natter:</span></label>
+              <b-textarea
+                id="startThread"
+                v-model="startThread"
+                rows="2"
+                max-rows="8"
+                placeholder="What's going on in your world?"
+                class="border border-primary"
+              />
+              <div class="small text-muted">
+                Everything here is public.  Be kind <span class="d-none d-sm-inline">to each other</span>; occasionally we may moderate to ensure things stay friendly.
+              </div>
               <b-img v-if="imageid" lazy thumbnail :src="imagethumb" class="image__uploaded" />
             </b-card-text>
             <hr class="mt-1 mb-1">
@@ -369,7 +377,7 @@ export default {
   head() {
     return this.buildHead(
       'ChitChat',
-      'Chat to nearby freeglers...ask for advice, recommendations or just have a good old blether.'
+      'Chat to nearby freeglers...ask for advice, recommendations or just have a good old natter.'
     )
   }
 }
@@ -377,9 +385,14 @@ export default {
 
 <style scoped lang="scss">
 @import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
 
 .post__button {
-  width: 40%;
+  @include media-breakpoint-up(sm) {
+    width: 40%;
+  }
 }
 
 .newsfeedHolder {

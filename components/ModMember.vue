@@ -40,7 +40,7 @@
         <ModComments :user="member" />
         <ModSpammer v-if="member.spammer" :user="member" />
         <NoticeMessage v-if="member.suspectreason" variant="danger" class="mb-2">
-          This freegler is flagged as suspicious: {{ member.suspectreason }}
+          This freegler is flagged: {{ member.suspectreason }}
         </NoticeMessage>
         <NoticeMessage v-if="member.activedistance > 50" variant="warning" class="mb-2">
           This freegler is active on groups {{ member.activedistance }} miles apart.
@@ -183,7 +183,7 @@
       </b-card-footer>
     </b-card>
     <ModPostingHistoryModal ref="history" :user="member" :type="type" />
-    <ModLogsModal ref="logs" :userid="member.userid" />
+    <ModLogsModal v-if="showLogsModal" ref="logs" :userid="member.userid" />
   </div>
 </template>
 <script>
@@ -198,7 +198,6 @@ import ModMemberSummary from './ModMemberSummary'
 import ModSpammer from './ModSpammer'
 import ModComments from './ModComments'
 import ModMemberButtons from './ModMemberButtons'
-import ModLogsModal from './ModLogsModal'
 import ModMemberships from './ModMemberships'
 import ModBouncing from './ModBouncing'
 import ModMemberLogins from './ModMemberLogins'
@@ -208,6 +207,7 @@ import ModMemberButton from './ModMemberButton'
 import ConfirmModal from '~/components/ConfirmModal'
 const OurToggle = () => import('@/components/OurToggle')
 const ExternalLink = () => import('~/components/ExternalLink')
+const ModLogsModal = () => import('~/components/ModLogsModal')
 
 export default {
   name: 'ModMember',
@@ -257,7 +257,8 @@ export default {
       saved: false,
       showEmails: false,
       type: null,
-      allmemberships: false
+      allmemberships: false,
+      showLogsModal: false
     }
   },
   computed: {
@@ -353,7 +354,7 @@ export default {
     }
   },
   mounted() {
-    if (!this.member.info) {
+    if (!this.user) {
       // Fetch with info so that we can display more.
       this.$store.dispatch('user/fetch', {
         id: this.member.userid,
@@ -370,6 +371,7 @@ export default {
     },
     showLogs() {
       this.modmailsonly = false
+      this.showLogsModal = true
 
       this.waitForRef('logs', () => {
         this.$refs.logs.show()

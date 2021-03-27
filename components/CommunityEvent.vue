@@ -1,6 +1,19 @@
 <template>
   <div>
     <b-card variant="success" no-body>
+      <div itemscope itemtype="http://schema.org/Event" class="d-none">
+        <div itemprop="about">
+          {{ item.title }}
+        </div>
+        <div itemprop="description">
+          {{ item.description }}
+        </div>
+        <div v-if="item.earliestDate" itemprop="startDate" :datetime="item.earliestDate.start.substring(0, 16)" />
+        <div itemprop="location">
+          {{ item.location }}
+        </div>
+      </div>
+
       <b-card-title class="bg-info px-2 mb-0 pt-2 pb-2 text-truncate d-flex justify-content-between header--size4" :title-tag="titleTag">
         <nuxt-link :to="'/communityevent/' + item.id" class="event__link">
           {{ item.title }}

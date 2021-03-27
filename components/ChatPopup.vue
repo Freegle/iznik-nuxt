@@ -39,7 +39,7 @@
                 <v-icon name="window-maximize" scale="1.5" class="clickme mt-1" title="Maximise chat window" />
               </span>
             </div>
-            <div v-if="chat" class="chatContent m-0" infinite-wrapper>
+            <div v-if="chat" ref="chatContent" class="chatContent m-0" infinite-wrapper>
               <infinite-loading direction="top" force-use-infinite-wrapper="true" :distance="distance" @infinite="loadMore">
                 <span slot="no-results" />
                 <span slot="no-more" />

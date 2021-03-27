@@ -337,46 +337,50 @@ export default {
     },
     response(verdict) {
       return async () => {
-        switch (verdict) {
-          case 'Stop': {
-            this.$store.dispatch('misc/set', {
-              key: 'microvolunteeringinviterejected',
-              value: Date.now()
-            })
+        // It's possible we might have realised by now that we are not logged in.  In that case just ignore the
+        // response.
+        if (this.myid) {
+          switch (verdict) {
+            case 'Stop': {
+              this.$store.dispatch('misc/set', {
+                key: 'microvolunteeringinviterejected',
+                value: Date.now()
+              })
 
-            await this.$store.dispatch('user/edit', {
-              id: this.myid,
-              trustlevel: 'Declined'
-            })
+              await this.$store.dispatch('user/edit', {
+                id: this.myid,
+                trustlevel: 'Declined'
+              })
 
-            this.doneForNow()
-            break
-          }
-          case 'Approve': {
-            // Approved -  that's it.
-            await this.$store.dispatch('microvolunteering/respond', {
-              msgid: this.task.msgid,
-              response: verdict
-            })
+              this.doneForNow()
+              break
+            }
+            case 'Approve': {
+              // Approved -  that's it.
+              await this.$store.dispatch('microvolunteering/respond', {
+                msgid: this.task.msgid,
+                response: verdict
+              })
 
-            this.considerNext()
-            break
-          }
-          case 'Reject': {
-            // Don't record the result yet - people who don't give comments seem to have less good judgement.
-            this.showComments = true
-            break
-          }
-          case 'Comments': {
-            // Record the result with comments.
-            await this.$store.dispatch('microvolunteering/respond', {
-              msgid: this.task.msgid,
-              response: 'Reject',
-              comments: this.comments,
-              msgcategory: this.msgcategory
-            })
+              this.considerNext()
+              break
+            }
+            case 'Reject': {
+              // Don't record the result yet - people who don't give comments seem to have less good judgement.
+              this.showComments = true
+              break
+            }
+            case 'Comments': {
+              // Record the result with comments.
+              await this.$store.dispatch('microvolunteering/respond', {
+                msgid: this.task.msgid,
+                response: 'Reject',
+                comments: this.comments,
+                msgcategory: this.msgcategory
+              })
 
-            this.considerNext()
+              this.considerNext()
+            }
           }
         }
       }

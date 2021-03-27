@@ -14,7 +14,9 @@ do
   else
     export NODE_OPTIONS=--max_old_space_size=8192;
     export API=http://fdapilive.ilovefreegle.org/api
-    time npm run generate --fail-on-error
+
+    # Very occasionally the build seems to hang, so use timeout.
+    timeout -k 20 3600 npm run generate --fail-on-error
 
     if [ $? -eq 0 ]; then
       # Exclude index until we have copied over everything that it might invoke.

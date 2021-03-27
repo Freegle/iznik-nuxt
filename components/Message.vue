@@ -22,7 +22,7 @@
       }"
       @click="expand"
     >
-      <MessageItemLocation :id="id" :matchedon="matchedon" class="mb-1 header-title" :type="type" />
+      <MessageItemLocation :id="id" :matchedon="matchedon" class="mb-1 header-title" :type="type" :expanded="expanded !== null" />
       <MessageHistory :message="$props" class="mb-1 header-history" :display-message-link="sm()" />
       <client-only>
         <MessageDescription v-if="!expanded" :id="id" :matchedon="matchedon" class="mb-1 header-description" />
@@ -78,7 +78,7 @@
             highlight-class-name="highlight"
             auto-escape
             class="prewrap"
-          /><span v-else class="prewrap">{{ expanded.textbody }}</span>
+          /><span v-else class="prewrap forcebreak">{{ expanded.textbody }}</span>
         </div>
         <div v-if="replyable" class="d-flex justify-content-between flex-wrap mt-2">
           <MessageUserInfo v-if="!simple && expanded.fromuser" :user="expanded.fromuser" :milesaway="milesaway" />
@@ -182,7 +182,7 @@
                     </b-form-group>
                     <SettingsPhone
                       v-if="me"
-                      label="Your mobile:"
+                      label="Your mobile number:"
                       description="(Optional)  We'll use this to notify you by text (SMS) so you don't miss replies.  We won't show it to the other freegler."
                       size="lg"
                       hide-remove
@@ -827,7 +827,7 @@ export default {
     grid-row: 5 / 6;
 
     @include media-breakpoint-up(sm) {
-      grid-column: 1 / 2;
+      grid-column: 2 / 3;
       grid-row: 4 / 5;
     }
   }

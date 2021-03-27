@@ -7,6 +7,7 @@
       <div>
         <h4 class="d-inline-block">
           {{ user.displayname }}
+          <span v-if="modtools && email" class="small">({{ email }})</span>
         </h4>
         <div>
           <div class="text-muted">
@@ -55,6 +56,22 @@ export default {
     }
   },
   computed: {
+    modtools() {
+      return this.$store.getters['misc/get']('modtools')
+    },
+    email() {
+      let ret = null
+
+      if (this.user) {
+        this.user.emails.forEach(e => {
+          if (!e.ourdomain && (!ret || e.preferred)) {
+            ret = e.email
+          }
+        })
+      }
+
+      return ret
+    },
     user() {
       // Look for the user in both the user store (FD) and the members store (MT).  This saves some fetches which can
       // result in weird render errors.

@@ -1,7 +1,7 @@
 <template>
   <div class="item header--size4">
     <h3 class="m-0 d-flex justify-content-between">
-      <div>
+      <div class="w-100">
         <div class="sr-only">
           {{ type }}
         </div>
@@ -13,7 +13,14 @@
           auto-escape
           class="item"
         />
-        <span v-else class="item" itemprop="name">
+        <span
+          v-else
+          :class="{
+            item: true,
+            nowrap: !expanded
+          }"
+          itemprop="name"
+        >
           {{ item }}
         </span>
       </div>
@@ -47,6 +54,11 @@ export default {
       type: String,
       required: false,
       default: null
+    },
+    expanded: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   computed: {
@@ -92,9 +104,12 @@ export default {
   color: $colour-info-fg !important;
   font-weight: bold !important;
   text-overflow: ellipsis;
-  white-space: nowrap;
   overflow: hidden;
   display: block;
+}
+
+.nowrap {
+  white-space: nowrap;
 }
 
 .location {

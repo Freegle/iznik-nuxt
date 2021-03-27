@@ -10,7 +10,6 @@
                 Confirmed Spammers
               </h2>
             </template>
-            <!--            TODO Search-->
           </b-tab>
           <b-tab v-if="hasPermissionSpamAdmin" id="PendingAdd">
             <template v-slot:title>

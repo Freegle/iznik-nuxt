@@ -1,22 +1,31 @@
 <template>
   <div v-if="chat" class="title pb-1">
-    <div class="thename pl-1 pr-1 d-flex">
-      <span v-if="chat.chattype === 'User2Mod' && mod && chat.group" class="d-inline clickme hidelink align-self-center">
-        <nuxt-link :to="'/modtools/members/approved/search/' + chat.group.id + '/' + otheruserid">
-          {{ chat.name }}
-        </nuxt-link>
-      </span>
-      <span v-else-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline clickme align-self-center">
-        <span @click="showInfo">
-          {{ chat.name }}
-        </span>
-      </span>
-      <span v-else class="d-inline align-self-center">
-        {{ chat.name }}
-      </span>
-      <span v-if="unseen" class="ml-2 align-self-center">
-        <b-badge variant="danger">{{ unseen }}</b-badge>
-      </span>
+    <div class="thename d-flex pl-1 pr-1">
+      <div class="d-flex flex-column align-content-around">
+        <div class="d-flex">
+          <span v-if="chat.chattype === 'User2Mod' && mod && chat.group" class="d-inline clickme hidelink align-self-center">
+            <nuxt-link :to="'/modtools/members/approved/search/' + chat.group.id + '/' + otheruserid">
+              {{ chat.name }}
+            </nuxt-link>
+          </span>
+          <span v-else-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline clickme align-self-center">
+            <span @click="showInfo">
+              {{ chat.name }}
+            </span>
+          </span>
+          <span v-else class="d-inline align-self-center">
+            {{ chat.name }}
+          </span>
+        </div>
+        <div v-if="otheruser && otheruser.info && otheruser.info.lastaccess" class="small">
+          last seen <span :title="otheruser.info.lastaccess | datetimeshort">{{ otheruser.info.lastaccess | timeago }}</span>
+        </div>
+      </div>
+      <div v-if="unseen" class="ml-2 align-self-center">
+        <b-badge variant="danger">
+          {{ unseen }}
+        </b-badge>
+      </div>
     </div>
     <div class="themenu">
       <span class="pl-1 mr-1 clickme d-none d-sm-inline-block" title="Popup chat window" @click="popup">
@@ -58,6 +67,7 @@
       :chatid="chat.id"
       @confirm="hide"
     />
+    <ProfileModal v-if="otheruser" :id="otheruser.id" ref="profile" />
   </div>
 </template>
 <script>
@@ -69,9 +79,11 @@ const ChatBlockModal = () => import('./ChatBlockModal')
 const ChatHideModal = () => import('./ChatHideModal')
 const Ratings = () => import('~/components/Ratings')
 const ChatReportModal = () => import('~/components/ChatReportModal')
+const ProfileModal = () => import('~/components/ProfileModal')
 
 export default {
   components: {
+    ProfileModal,
     Supporter,
     Ratings,
     ChatBlockModal,

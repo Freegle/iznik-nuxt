@@ -13,25 +13,8 @@ export default {
         this.$store.dispatch('compose/setGroup', group)
       },
       get() {
-        // The group could be in the ones nearby to this postcode.
-        const pc = this.$store.getters['compose/getPostcode']
         const groupid = this.$store.getters['compose/getGroup']
-        let group = null
-
-        if (pc && pc.groupsnear) {
-          for (const groupnear of pc.groupsnear) {
-            if (groupnear.id === groupid) {
-              group = groupnear
-            }
-          }
-        }
-
-        if (!group && this.myid) {
-          // Or it could be in our own groups if we're logged in.
-          group = this.$store.getters['auth/groupById'](groupid)
-        }
-
-        return group
+        return groupid ? this.$store.getters['group/get'](groupid) : null
       }
     },
     closed() {
@@ -176,6 +159,14 @@ export default {
     if (this.$route.query.postcode) {
       this.initialPostcode = this.$route.query.postcode
     }
+  },
+  mounted() {
+    // We want to refetch the group in case its closed status has changed.
+    const groupid = this.$store.getters['compose/getGroup']
+
+    this.$store.dispatch('group/fetch', {
+      id: groupid
+    })
   },
   methods: {
     deleteItem() {

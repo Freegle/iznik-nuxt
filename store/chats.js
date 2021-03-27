@@ -97,7 +97,10 @@ export const getters = {
         // Otherwise we count chats between users, and our chats to mods.
       } else if (chat.chattype === 'User2User') {
         total += chat.unseen
-      } else if (chat.chattype === 'User2Mod' && chat.user1 === myid) {
+      } else if (
+        chat.chattype === 'User2Mod' &&
+        (!chat.user1 || chat.user1 === myid)
+      ) {
         total += chat.unseen
       }
       return total

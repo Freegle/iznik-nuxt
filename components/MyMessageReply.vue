@@ -3,7 +3,7 @@
     <div class="layout mb-1">
       <div class="divider" />
       <div class="d-flex flex-column justify-content-start user">
-        <div class="d-flex mr-4">
+        <div class="d-flex mr-4 clickme" @click="showProfileModal">
           <ProfileImage :image="reply.user.profile.turl" class="m-1 d-none d-md-block" is-thumbnail size="sm" />
           <ProfileImage :image="reply.user.profile.turl" class="m-1 d-block d-md-none" is-thumbnail size="lg" />
           <!-- eslint-disable-next-line -->
@@ -98,15 +98,19 @@
     </div>
     <PromiseModal ref="promise" :messages="[ message ]" :selected-message="message.id" :users="[ reply.user ]" :selected-user="reply.user.id" />
     <RenegeModal ref="renege" :messages="[ message ]" :selected-message="message.id" :users="[ reply.user ]" :selected-user="reply.user.id" />
+    <ProfileModal v-if="showProfile && reply && reply.user" :id="reply.user.id" ref="profile" />
   </div>
 </template>
 
 <script>
 import Supporter from '@/components/Supporter'
+import waitForRef from '@/mixins/waitForRef'
 import ProfileImage from '~/components/ProfileImage'
+
 const PromiseModal = () => import('./PromiseModal')
 const RenegeModal = () => import('./RenegeModal')
 const Ratings = () => import('~/components/Ratings')
+const ProfileModal = () => import('~/components/ProfileModal')
 
 export default {
   components: {
@@ -114,8 +118,10 @@ export default {
     Ratings,
     PromiseModal,
     RenegeModal,
-    ProfileImage
+    ProfileImage,
+    ProfileModal
   },
+  mixins: [waitForRef],
   props: {
     message: {
       type: Object,
@@ -158,6 +164,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    }
+  },
+  data: function() {
+    return {
+      showProfile: false
     }
   },
   computed: {
@@ -216,6 +227,13 @@ export default {
     },
     unpromise() {
       this.$refs.renege.show()
+    },
+    showProfileModal() {
+      this.showProfile = true
+
+      this.waitForRef('profile', () => {
+        this.$refs.profile.show()
+      })
     }
   }
 }

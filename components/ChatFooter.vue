@@ -59,7 +59,7 @@
             class="ml-4"
             @click="notHandover"
           >
-            No, I'm not
+            Not now
           </b-btn>
         </div>
         <p class="mt-1">
@@ -222,6 +222,7 @@
     <ChatRSVPModal v-if="RSVP" :id="id" ref="rsvp" :user="otheruser" />
     <NudgeTooSoonWarningModal ref="nudgetoosoonwarning" @confirm="doNudge" />
     <NudgeWarningModal ref="nudgewarning" @confirm="doNudge" />
+    <MicroVolunteering v-if="showMicrovolunteering" />
   </div>
 </template>
 <script>
@@ -246,6 +247,7 @@ const ChatRSVPModal = () => import('~/components/ChatRSVPModal')
 const NudgeWarningModal = () => import('~/components/NudgeWarningModal')
 const NudgeTooSoonWarningModal = () =>
   import('~/components/NudgeTooSoonWarningModal')
+const MicroVolunteering = () => import('~/components/MicroVolunteering')
 
 export default {
   components: {
@@ -260,7 +262,8 @@ export default {
     PromiseModal,
     ProfileModal,
     AddressModal,
-    ChatRSVPModal
+    ChatRSVPModal,
+    MicroVolunteering
   },
   mixins: [waitForRef, chat, chatCollate]
 }

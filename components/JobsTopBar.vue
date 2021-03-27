@@ -1,6 +1,6 @@
 <template>
   <div v-if="!simple && location" class="mb-2 jobbox bg-light overflow-hidden forcewrap">
-    <NoticeMessage v-if="blocked" variant="warning">
+    <NoticeMessage v-if="blocked" variant="warning" class="d-none">
       <h2 class="header--size3 d-none d-md-block">
         Please help keep Freegle running
       </h2>

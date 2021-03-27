@@ -28,7 +28,8 @@ export default {
       notVisible: false,
       contactGroup: null,
       urlid: null,
-      showSpamModal: false
+      showSpamModal: false,
+      showMicrovolunteering: false
     }
   },
   computed: {
@@ -208,6 +209,20 @@ export default {
 
       return ret
     },
+    promisedRecently() {
+      // Does this chat have any recent promises.
+      let ret = false
+
+      this.chatmessages.forEach(m => {
+        if (new Date().getTime() - new Date(m.date) < 5 * 24 * 60 * 60 * 1000) {
+          if (m.type === 'Promised') {
+            ret = m.refmsg.id
+          }
+        }
+      })
+
+      return ret
+    },
     sentAddress() {
       const ret = this.mymessages.find(m => {
         if (new Date().getTime() - new Date(m.date) < 5 * 24 * 60 * 60 * 1000) {
@@ -293,11 +308,13 @@ export default {
       // - we've not hidden it
       // - we've got an offer which is still open
       // - we're talking about dates or addresses
+      // - we've not promised recently
       return (
         this.otheruser &&
         this.openInterested &&
         (this.discussedDate || this.sentAddress) &&
         this.chat &&
+        !this.promisedRecently &&
         (!nothandover || nothandover.indexOf(this.chat.id) === -1)
       )
     }
@@ -311,20 +328,27 @@ export default {
         this.$refs.profile.show()
       })
     },
-    loadMore: async function($state) {
-      const currentCount = this.chatmessages.length
-
-      if (!this.scrolledToBottom) {
+    scrollToBottom(force) {
+      if (!this.scrolledToBottom || force) {
         // First load.  Scroll to the bottom when things have sorted themselves out.  This helps if we have messages
         // in our store, so we'll render some, otherwise we are stuck at the top until this fetch completes and we
         // scroll to the bottom below.
-        this.$nextTick(() => {
-          if (this.$el && this.$el.querySelector) {
-            const container = this.$el.querySelector('.chatContent')
+        this.waitForRef('chatContent', () => {
+          setTimeout(() => {
+            const container = this.$refs.chatContent
             container.scrollTop = container.scrollHeight
-          }
+          }, 500)
         })
+
+        this.scrolledToBottom = true
       }
+    },
+    loadMore: async function($state) {
+      const currentContext = JSON.stringify(
+        this.$store.getters['chatmessages/getContext'](this.id)
+      )
+
+      this.scrollToBottom()
 
       if (this.complete) {
         $state.complete()
@@ -338,19 +362,16 @@ export default {
 
           try {
             this.lastFetched = new Date()
+            this.scrollToBottom()
 
-            if (!this.scrolledToBottom) {
-              // First load.  Scroll to the bottom when things have sorted themselves out.
-              this.$nextTick(() => {
-                if (this.$el && this.$el.querySelector) {
-                  const container = this.$el.querySelector('.chatContent')
-                  container.scrollTop = container.scrollHeight
-                  this.scrolledToBottom = true
-                }
-              })
-            }
+            const newContext = JSON.stringify(
+              this.$store.getters['chatmessages/getContext'](this.id)
+            )
 
-            if (currentCount === this.chatmessages.length) {
+            if (
+              currentContext !== 'null' &&
+              newContext.localeCompare(currentContext)
+            ) {
               this.complete = true
               $state.complete()
             } else {
@@ -385,6 +406,7 @@ export default {
       this.lastFetched = new Date()
 
       this.$emit('scrollbottom')
+      this.scrollToBottom(true)
 
       // We also want to trigger an update in the chat list.
       await this.$store.dispatch('chats/fetch', {
@@ -426,6 +448,9 @@ export default {
           this.waitForRef('rsvp', () => {
             this.$refs.rsvp.show()
           })
+        } else {
+          // We've sent a message.  This would be a good time to do some microvolunteering.
+          this.showMicrovolunteering = true
         }
       }
     },
@@ -486,7 +511,11 @@ export default {
             if (msg.refmsg) {
               // Check that it's still in our list of messages
               for (const ours of this.ouroffers) {
-                if (ours.id === msg.refmsg.id) {
+                if (
+                  ours.id === msg.refmsg.id &&
+                  !ours.promised &&
+                  (!ours.outcomes || ours.outcomes.length === 0)
+                ) {
                   this.likelymsg = msg.refmsg.id
                 }
               }
@@ -677,14 +706,7 @@ export default {
           chatid: this.id
         })
 
-        setTimeout(() => {
-          if (this.$el && this.$el.querySelector) {
-            const container = this.$el.querySelector('.chatContent')
-            if (container) {
-              container.scrollTop = container.scrollHeight
-            }
-          }
-        }, 500)
+        this.scrollToBottom(true)
       }
     }
   }

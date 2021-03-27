@@ -160,14 +160,21 @@
                   {{ eBody }}
                 </span>
               </div>
-              <div v-if="attachments.length" class="d-flex flex-wrap">
+              <div v-if="attachments.length" class="photos">
                 <ModPhoto v-for="attachment in attachments" :key="'attachment-' + attachment.id" :message="message" :attachment="attachment" class="d-inline pr-1" />
               </div>
               <MessageReplyInfo v-if="!pending || message.replies && message.replies.length" :message="message" class="d-inline" />
             </div>
           </b-col>
           <b-col cols="12" lg="3">
-            <MessageMap v-if="group && position" :centerat="{ lat: group.lat, lng: group.lng }" :position="{ lat: position.lat, lng: position.lng }" locked :height="150" />
+            <MessageMap
+              v-if="group && position"
+              wales
+              :centerat="{ lat: group.lat, lng: group.lng }"
+              :position="{ lat: position.lat, lng: position.lng }"
+              locked
+              :height="150"
+            />
           </b-col>
           <b-col cols="12" lg="3">
             <div class="rounded border border-info p-2 d-flex justify-content-between flex-wrap">
@@ -554,7 +561,7 @@ export default {
 
       // Find the newest and oldest texts; intermediates are just confusing.
       // Edits are in descending time order.
-      let newest = null
+      let newest = this.message.textbody
 
       this.message.edits.forEach(edit => {
         if (edit.reviewrequired) {
@@ -798,11 +805,25 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
 .type {
   max-width: 150px;
 }
+
 .location {
   max-width: 250px;
+}
+
+.photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  @include media-breakpoint-up(md) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
 }
 </style>
