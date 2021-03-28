@@ -203,7 +203,10 @@ async function createDraft(message, email, state, commit) {
 
 async function submitDraft(id, email, commit) {
   console.log('Submit draft', id, email)
-  const ret = await this.$api.message.joinAndPost(id, email)
+  const ret = await this.$api.message.joinAndPost(id, email, data => {
+    // ret = 8 is posting prohibited, which is due to mod choice not a server error.
+    return data.ret !== 8
+  })
   console.log('Returned', ret)
   commit('incProgress')
   return ret

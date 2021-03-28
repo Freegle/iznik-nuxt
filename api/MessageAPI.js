@@ -17,8 +17,12 @@ export default class MessageAPI extends BaseAPI {
     return this.$patch('/message', event)
   }
 
-  joinAndPost(id, email) {
-    return this.$post('/message', { id, email, action: 'JoinAndPost' })
+  joinAndPost(id, email, logError = true) {
+    return this.$post(
+      '/message',
+      { id, email, action: 'JoinAndPost' },
+      logError
+    )
   }
 
   del(id) {
