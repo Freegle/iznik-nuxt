@@ -98,7 +98,7 @@
             :valid.sync="emailValid"
           />
           <NoticeMessage v-if="milesaway > 10" variant="warning">
-            Remember: essential travel only and stay local. Could you delay the actual collection?
+            Remember: lockdown is easing but please stay local.
           </NoticeMessage>
           <notice-message v-if="stillAvailable" variant="info" class="mb-1 mt-1">
             You don't need to ask if things are still available.  People can mark OFFERs as promised or TAKEN, and
