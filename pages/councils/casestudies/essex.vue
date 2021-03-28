@@ -19,7 +19,7 @@
           <p>
             The Sustainability and Resilience Team at Essex County Council, otherwise known as 'Love Essex', are a team
             of ten, working across a range of sustainability projects. These include waste prevention & reuse;
-            environmental awareness and a project called ‘Blueprint', focussing on the Circular Economy.
+            environmental awareness and an Interreg-funded project called BLUEPRINT to the Circular Economy.
           </p>
 
           <p>
@@ -30,7 +30,7 @@
           </p>
 
           <p>
-            Essex acknowledged the value in supporting residents to build more self-reliant communities through the
+            Essex County Council acknowledged the value in supporting residents to build more self-reliant communities through the
             simple act of reuse, an activity which impacts positively on use of resources, saves money and helps to
             protect the environment, aligning neatly with many of the Love Essex priorities.
           </p>
@@ -38,19 +38,15 @@
           <h2>Love Essex - a move towards reuse</h2>
           <p>
             The 'Love Essex' brand and website were launched in September 2018, replacing 'Recycle for Essex'.
-            It was important for the county to have consistent messaging across all districts and for the team to
-            move away from any perception that they focussed only on 'recycling'. This new, broader remit facilitated
-            a transition towards waste reduction, prevention and reuse whilst linking in with more general
-            environmental issues.
+            The county council and the districts worked together to develop a single brand with a consistent
+            message to promote waste reduction, prevention, recycling and reuse.
           </p>
 
           <p>
-            The website, managed by the Love Essex team, is now the county's main port of call for all things
-            related to household waste & recycling, recycling centres and waste prevention initiatives. Essex's
-            twelve districts can disseminate the news, ideas and content derived from this central source through their
-            own channels. Information arrives via the website, a dedicated Facebook page, Twitter, Instagram and a
+            The website is now the county's main hub for all things related to household waste & recycling, recycling
+            centres and waste prevention initiatives. Information arrives via the website, a dedicated Facebook page, Twitter, Instagram and a
             monthly e-newsletter for residents. Over 15, 000 residents are current subscribers to the newsletter and
-            this multi-media method of communicating with the public has proved to be very effective.
+            this multi-channel method of communicating with the public has proved to be very effective.
             Cathryn Wood, Senior Sustainability & Resilience Officer at Essex CC commented:-
           </p>
 
@@ -62,6 +58,11 @@
               'open' and 'click' rates to help inform us as to what works most effectively. This digital
               trail, means that engagement can be measured and monitored much more effectively than with more
               traditional communication methods, such as radio ads and print.</span>
+          </p>
+
+          <p>
+            Essex's twelve districts, boroughs and cities use the Love Essex website to share news,
+            ideas and content derived from this central source through their own channels.
           </p>
 
           <ImageWithCaption src="/councils/casestudies/essex1.png" text="Promotion of Freegle in the Love Essex e-bulletin Jan 2021" />
@@ -83,23 +84,22 @@
           <p>
             There are currently twenty local Freegle groups across Essex, with almost 70,000 members. In the last
             12 months, 164 tonnes of 'stuff' was reused via the platform, saving an estimated 83.8 tonnes of CO2.
-            These figures are likely to be underestimates.
           </p>
 
           <p>
-            Cathryn Wood explained why the county council wanted to support Freegle:-
+            Cathryn Wood explained why Essex County Council wanted to support Freegle:-
           </p>
 
           <p>
             <span class="quote">
               Local Freegle groups have been active within the community for several years now and as a local
-              authority we felt compelled to support and encourage them. There are some really excellent examples of
-              reuse already happening within the groups. For every tonne of material that does not enter the waste
-              stream, the county can count on savings in collection, processing and disposal. But the benefits don't
-              end there. The fact that residents can pass on a range of useful resources such as furniture, clothing or
-              children's toys, means that those in our community who are most in need, get to access such items for
-              no cost. For us, supporting a charity such as Freegle is also a way of encouraging resilient
-              communities, especially in these difficult times.
+              authority we felt compelled to support and encourage them. There are some excellent examples of
+              reuse already happening within the groups. The fact that residents can pass on a range of useful
+              resources such as furniture, clothing or children's toys, means that those in our community who are
+              most in need, get to access such items for no cost. For us, supporting a charity such as Freegle is
+              also a way of en-couraging resilient communities, especially in these difficult times.  But the
+              benefits don't end there. For every tonne of material that is reused, the local authorities reduce
+              collection, processing and disposal costs.
             </span>
           </p>
 
@@ -118,7 +118,20 @@
             <span class="quote">
               However it made total sense for us to offer on-going support to Freegle more centrally. Even with a
               small investment, Freegle has the capacity to deliver significant, meaningful and measurable results
-              which are of great value to us.
+              which are of great value to Essex County Council and its residents.
+            </span>
+          </p>
+          <p>
+            Freegle Founder Edward Hibbert commented:-
+          </p>
+          <p>
+            <span class="quote">
+              Support from local authorities is crucial for Freegle. Our local groups are community driven and
+              largely self-sustaining but with a small input of funding centrally, an incredible amount can be
+              achieved. As a charity, Freegle is free to use but not free to run and we rely on donations to
+              keep the platform operating. Local authorities have the ability to spread the reuse message far and wide
+              and it is simply fantastic to see Essex County Council consistently demonstrating this in innovative
+              and engaging ways.
             </span>
           </p>
 
@@ -140,7 +153,7 @@
               increase donations
             </span> said Cathryn.
             <span class="quote">
-              The estimated reach of the collection vehicle livery was 65,000 households on a weekly basis.
+              The estimated reach of the collection vehicle livery is 65,000 households on a weekly basis.
             </span>
           </p>
 
@@ -179,7 +192,7 @@
           </p>
           <p>
             <!-- eslint-disable-next-line-->
-            The process of ‘Freegling’ was covered in one of Love Essex’s videos: <b>Give your unwanted items away on Freegle</b>
+            The process of 'Freegling' was covered in one of Love Essex's videos: <b>Give your unwanted items away on Freegle</b>
             This video, alongside other messages promoting reuse, was viewed over 126,000 times across @loveessexuk
             Facebook, Twitter and Instagram pages, with residents engaging with content by liking, commenting and
             sharing over 9,000 times in just 12 months.

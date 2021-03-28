@@ -35,7 +35,7 @@
             <b-btn v-if="!rejected && !queued && !simple" variant="primary" title="Share" class="m-1" @click="share">
               <v-icon name="share-alt" /> Share
             </b-btn>
-            <b-btn v-if="message.canedit" variant="secondary" class="m-1" @click="edit">
+            <b-btn v-if="message.canedit && message.location && message.item" variant="secondary" class="m-1" @click="edit">
               <v-icon name="pen" /> Edit
             </b-btn>
             <b-btn v-if="!rejected && !queued && message.type === 'Offer' && !taken" variant="secondary" class="m-1" @click="outcome('Taken')">
@@ -136,7 +136,7 @@
               <b-btn v-if="queued" variant="primary" class="mr-2 mb-1" @click="submitQueued">
                 <v-icon name="check" /> Still applies - Submit
               </b-btn>
-              <b-btn v-if="rejected" variant="warning" class="mr-2 mb-1" @click="repost">
+              <b-btn v-if="rejected && message.location && message.item" variant="warning" class="mr-2 mb-1" @click="repost">
                 <v-icon name="pen" /> Edit and Resend
               </b-btn>
               <b-btn v-if="rejected && !withdrawn" variant="secondary" class="mr-2 mb-1" @click="outcome('Withdrawn')">
@@ -148,16 +148,16 @@
               <b-btn v-if="!rejected && !queued && message.type === 'Wanted' && !received" variant="primary" class="mr-2 mb-1" @click="outcome('Received')">
                 <v-icon name="check" /> Mark as RECEIVED
               </b-btn>
-              <b-btn v-if="!rejected && !queued && message.canedit" variant="secondary" class="mr-2 mb-1" @click="edit">
+              <b-btn v-if="!rejected && !queued && message.canedit && message.location && message.item" variant="secondary" class="mr-2 mb-1" @click="edit">
                 <v-icon name="pen" /> Edit
               </b-btn>
               <b-btn v-if="!rejected && !taken && !received && !withdrawn" variant="secondary" class="mr-2 mb-1" @click="outcome('Withdrawn')">
                 <v-icon name="trash-alt" /> Withdraw
               </b-btn>
-              <b-btn v-if="!rejected && message.canrepost" variant="secondary" class="mr-2 mb-1" @click="repost">
+              <b-btn v-if="!rejected && message.canrepost && message.location && message.item" variant="secondary" class="mr-2 mb-1" @click="repost">
                 <v-icon name="sync" /> Repost
               </b-btn>
-              <b-btn v-else-if="!rejected && !taken && !received && message.canrepostat" variant="secondary" disabled class="mr-2 mb-1" title="You will be able to repost this soon">
+              <b-btn v-else-if="!rejected && !taken && !received && message.canrepostat && message.location && message.item" variant="secondary" disabled class="mr-2 mb-1" title="You will be able to repost this soon">
                 <v-icon name="sync" /> Repost <span class="small">{{ message.canrepostat | timeago }}</span>
               </b-btn>
               <b-btn v-if="!rejected && !queued && !simple" variant="secondary" title="Share" class="mr-2 mb-1" @click="share">
@@ -609,12 +609,15 @@ export default {
       })
 
       // Set the current location and nearby groups, too, since we're about to use them
-      const loc = await this.$axios.get(process.env.API + '/locations', {
-        params: {
-          typeahead: this.message.location.name
-        }
-      })
-      await this.$store.dispatch('compose/setPostcode', loc.data.locations[0])
+      if (this.message.location) {
+        const loc = await this.$axios.get(process.env.API + '/locations', {
+          params: {
+            typeahead: this.message.location.name
+          }
+        })
+
+        await this.$store.dispatch('compose/setPostcode', loc.data.locations[0])
+      }
 
       await this.$store.dispatch('compose/setAttachmentsForMessage', {
         id: this.message.id,

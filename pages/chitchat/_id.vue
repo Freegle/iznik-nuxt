@@ -48,9 +48,9 @@
                 placeholder="What's going on in your world?"
                 class="border border-primary"
               />
-              <span class="small text-muted">
+              <div class="small text-muted">
                 Everything here is public.  Be kind <span class="d-none d-sm-inline">to each other</span>; occasionally we may moderate to ensure things stay friendly.
-              </span>
+              </div>
               <b-img v-if="imageid" lazy thumbnail :src="imagethumb" class="image__uploaded" />
             </b-card-text>
             <hr class="mt-1 mb-1">

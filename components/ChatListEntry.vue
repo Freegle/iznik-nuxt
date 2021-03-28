@@ -51,6 +51,10 @@ export default {
       return this.$store.getters['chats/get'](this.id)
     },
     esnippet() {
+      if (this.chat.snippet === 'null') {
+        return '...'
+      }
+
       let ret = twem.twem(this.$twemoji, this.chat.snippet)
 
       // The way the snippet is constructed might lead to backslashes if we have an emoji.

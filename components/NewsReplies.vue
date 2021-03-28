@@ -52,6 +52,11 @@ export default {
       default: ''
     }
   },
+  data() {
+    return {
+      showAllReplies: false
+    }
+  },
   computed: {
     replies() {
       const ret = []
