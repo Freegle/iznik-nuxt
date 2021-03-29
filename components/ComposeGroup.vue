@@ -13,15 +13,6 @@ export default {
   computed: {
     group: {
       get() {
-        // COVID Lockdown 2
-        if (this.postcode && this.postcode.groupsnear) {
-          for (const group of this.postcode.groupsnear) {
-            if (group.type === 'Freegle') {
-              return group.id
-            }
-          }
-        }
-
         return this.$store.getters['compose/getGroup']
       },
       set(value) {
@@ -45,29 +36,25 @@ export default {
             })
 
             ids[group.id] = true
-
-            // COVID Lockdown 2 - only show closest group.
-            break
           }
         }
       }
 
       // Add any other groups we are a member of and might want to select.
-      // COVID lockdown 2
-      // const groups = this.$store.getters['auth/groups']
-      //
-      // for (const group of groups) {
-      //   if (group.type === 'Freegle') {
-      //     if (!ids[group.id]) {
-      //       ret.push({
-      //         value: group.id,
-      //         text: group.namedisplay ? group.namedisplay : group.nameshort
-      //       })
-      //
-      //       ids[group.id] = true
-      //     }
-      //   }
-      // }
+      const groups = this.$store.getters['auth/groups']
+
+      for (const group of groups) {
+        if (group.type === 'Freegle') {
+          if (!ids[group.id]) {
+            ret.push({
+              value: group.id,
+              text: group.namedisplay ? group.namedisplay : group.nameshort
+            })
+
+            ids[group.id] = true
+          }
+        }
+      }
 
       return ret
     }
