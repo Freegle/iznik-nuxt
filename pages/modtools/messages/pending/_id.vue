@@ -2,7 +2,7 @@
   <div>
     <client-only>
       <ModCakeModal />
-      <ScrollToTop />
+      <PreCovidModeration />
       <div class="d-flex justify-content-between">
         <GroupSelect v-model="groupid" all modonly :work="['pending', 'pendingother']" remember="pending" />
         <b-btn variant="link" @click="loadAll">
@@ -32,17 +32,17 @@ import loginRequired from '@/mixins/loginRequired'
 import modMessagesPage from '@/mixins/modMessagesPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
 import ModCakeModal from '@/components/ModCakeModal'
+import PreCovidModeration from '@/components/PreCovidModeration'
 import NoticeMessage from '../../../../components/NoticeMessage'
-import ScrollToTop from '../../../../components/ScrollToTop'
 import GroupSelect from '../../../../components/GroupSelect'
 import ModMessage from '../../../../components/ModMessage'
 
 export default {
   components: {
+    PreCovidModeration,
     ModCakeModal,
     ModMessage,
     GroupSelect,
-    ScrollToTop,
     NoticeMessage
   },
   layout: 'modtools',

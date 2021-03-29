@@ -336,7 +336,10 @@ export default {
         this.waitForRef('chatContent', () => {
           setTimeout(() => {
             const container = this.$refs.chatContent
-            container.scrollTop = container.scrollHeight
+
+            if (container) {
+              container.scrollTop = container.scrollHeight
+            }
           }, 500)
         })
 

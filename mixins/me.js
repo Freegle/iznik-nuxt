@@ -106,7 +106,7 @@ Vue.mixin({
           ret = true
 
           if (g.mysettings && 'active' in g.mysettings) {
-            ret = g.mysettings.active
+            ret = this.amAModOn(groupid) && g.mysettings.active
           }
         }
       })

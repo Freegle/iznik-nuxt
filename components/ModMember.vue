@@ -74,6 +74,9 @@
                 - won't send mails
               </span>
             </div>
+            <div v-if="member.info && member.info.publiclocation">
+              Public location: {{ member.info.publiclocation.location }}
+            </div>
             <ModMemberActions v-if="!footeractions" :userid="member.userid" :groupid="groupid" :banned="(Boolean)(member.bandate)" />
             <ModMemberships :user="member" />
             <ModMemberLogins :member="member" />

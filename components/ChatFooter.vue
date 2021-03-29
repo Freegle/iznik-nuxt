@@ -30,8 +30,8 @@
           <span v-if="milesaway">
             <!--            COVID lockdown 2-->
             <v-icon name="map-marker-alt" class="fa-fw" />&nbsp;About <strong>{{ milesaway | pluralize('mile', { includeNumber: true }) }} away</strong>.
-            <span v-if="milesaway > 3">
-              Remember: essential travel only and keep it local.
+            <span v-if="milesaway > 10">
+              Remember: please keep it local, and respect any COVID-19 restrictions in your area.
             </span>
           </span>
           <span v-if="replytime">

@@ -17,10 +17,10 @@ export default class MessageAPI extends BaseAPI {
     return this.$patch('/message', event)
   }
 
-  joinAndPost(id, email) {
+  joinAndPost(id, email, logError = true) {
     const params = { id, email, action: 'JoinAndPost' }
     if (process.env.IS_APP) params.appVersion = process.env.MOBILE_VERSION
-    return this.$post('/message', params)
+    return this.$post('/message', params, logError)
   }
 
   del(id) {

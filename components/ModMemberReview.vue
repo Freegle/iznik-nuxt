@@ -58,6 +58,9 @@
                 - won't send mails
               </span>
             </div>
+            <div v-if="member.info && member.info.publiclocation">
+              Public location: {{ member.info.publiclocation.location }}
+            </div>
             <ModMemberLogins :member="member" />
             <b-btn v-if="member.emails && member.emails.length" variant="link" @click="showEmails = !showEmails">
               <v-icon name="envelope" />

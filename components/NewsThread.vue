@@ -281,7 +281,11 @@ export default {
       }
 
       return ret.sort((a, b) => {
-        return a.toLowerCase().localeCompare(b.toLowerCase())
+        if (typeof a === 'string' && typeof b === 'string') {
+          return a.toLowerCase().localeCompare(b.toLowerCase())
+        } else {
+          return 0
+        }
       })
     },
     mod() {
