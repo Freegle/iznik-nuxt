@@ -251,10 +251,12 @@ export default {
       return this.me && this.me.trustlevel && this.me.trustlevel !== 'Declined'
     },
     askDue() {
-      // Ask no more than once per hour.
+      // Ask no more than once per hour.  Only want to ask if we're logged in, because otherwise a) we don't know if we've
+      // already declined and b) we couldn't save a decline.
       return (
-        !this.lastAsk ||
-        Date.now() - new Date(this.lastAsk).getTime() > 60 * 60 * 1000
+        this.me &&
+        (!this.lastAsk ||
+          Date.now() - new Date(this.lastAsk).getTime() > 60 * 60 * 1000)
       )
     }
   },
