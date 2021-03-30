@@ -54,7 +54,7 @@
                 :key="'chatmessage-' + chatmessage.id"
                 :chatmessage="chatmessage"
                 :chat="chat2"
-                :otheruser="pov === chat2.user1.id ? chat2.user2 : chat2.user1"
+                :otheruser="chat2.user1 && pov === chat2.user1.id ? chat2.user2 : chat2.user1"
                 :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
                 :pov="pov"
                 :chatusers="chatusers"
@@ -104,7 +104,7 @@ export default {
       let ret = null
 
       if (this.chat2) {
-        if (this.chat2.user1.id === this.pov) {
+        if (this.chat2.user1 && this.chat2.user1.id === this.pov) {
           ret = this.chat2.user2
         } else {
           ret = this.chat2.user1
