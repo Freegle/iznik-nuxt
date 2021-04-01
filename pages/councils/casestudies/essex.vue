@@ -54,7 +54,7 @@
             <span class="quote">Our monthly e-newsletter is one of a range of digital communications that we use.
               Use of social media platforms to reach out to residents has become more important, especially in
               the current climate, when face-to-face engagement is not possible and many are spending more time
-              in the home. We monitor all of our campaigns on a monthly basis using measures such as the
+              in the home. We monitor all our campaigns on a monthly basis using measures such as the
               'open' and 'click' rates to help inform us as to what works most effectively. This digital
               trail, means that engagement can be measured and monitored much more effectively than with more
               traditional communication methods, such as radio ads and print.</span>
