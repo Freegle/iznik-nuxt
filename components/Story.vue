@@ -26,7 +26,7 @@
         <div class="text-muted small d-flex justify-content-between">
           <span>
             {{ story.date | timeago }} on {{ story.groupname }}
-            <span v-if="amAModOn(story.groupid)">
+            <span v-if="amAModOn(story.groupid) && story.user">
               (by {{ story.user.email }} <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ story.user.id }})
             </span>
           </span>
