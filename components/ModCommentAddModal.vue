@@ -15,7 +15,7 @@
         </p>
         <p>
           These comments can be seen by moderators, and also by members who choose to download their data under
-          GDPR.  So keep them objective, polite and factual please.
+          GDPR.  So keep them objective, polite and factual, and without identifiable personal information please.
         </p>
         <p>
           <!-- eslint-disable-next-line -->
