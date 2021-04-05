@@ -10,6 +10,7 @@
       id="placeautocomplete"
       ref="autocomplete"
       v-model="wip"
+      :init-value="value"
       restrict
       :url="source"
       param="q"

@@ -10,32 +10,19 @@
               near {{ location }}
             </span>
           </h3>
-          <p>
-            These are jobs
-            <span v-if="location">
-              near {{ location }},
-            </span>
-            which you might be interested in.
-          </p>
-          <p>
-            Freegle will get a small amount if you click to view any of them, which will help keep us going.
-          </p>
-          <b-input-group class="flex mb-2">
-            <b-form-input
-              v-model="searchLocation"
-              size="lg"
-              type="text"
-              placeholder="Where are you looking?  Use a postcode or town name"
-            />
-            <b-input-group-append>
-              <b-button variant="primary" size="lg" @click="search">
-                <v-icon name="search" />&nbsp;Search
-              </b-button>
-            </b-input-group-append>
-          </b-input-group>
-
-          <b-img-lazy v-if="loading && (!jobs || jobs.length === 0)" src="~/static/loader.gif" alt="Loading..." />
-          <div v-for="job in jobs" :key="'job-' + job.onmousedown">
+          <NoticeMessage variant="info" class="mb-2">
+            <p>
+              Freegle will get a small amount if you click to view any of them, which will help keep us going.
+            </p>
+            <p>
+              Some may ask you to sign up - sorry about that, it's not under our control.
+            </p>
+          </NoticeMessage>
+          <PlaceAutocomplete class="mb-2" labeltext="Where are you looking?  Use a postcode or town name." @selected="search($event)" />
+          <div class="d-flex justify-content-around">
+            <b-img-lazy v-if="loading && (!jobs || jobs.length === 0)" src="~/static/loader.gif" alt="Loading..." />
+          </div>
+          <div v-for="job in jobs" :key="'job-' + job.job_reference">
             <Job :job="job" class="mb-1" />
           </div>
           <NoticeMessage v-if="blocked" variant="warning">
@@ -52,12 +39,14 @@
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
-import NoticeMessage from '../../components/NoticeMessage'
+import PlaceAutocomplete from '@/components/PlaceAutocomplete'
+import NoticeMessage from '@/components/NoticeMessage'
 
-const Job = () => import('~/components/Job')
+const Job = () => import('@/components/Job')
 
 export default {
   components: {
+    PlaceAutocomplete,
     NoticeMessage,
     Job
   },
@@ -70,8 +59,7 @@ export default {
   },
   computed: {
     jobs() {
-      const ret = this.$store.getters['jobs/list']
-      return ret
+      return this.$store.getters['jobs/list']
     },
     blocked() {
       return this.$store.getters['jobs/blocked']
@@ -98,20 +86,33 @@ export default {
     }
   },
   async mounted() {
-    if (this.location) {
-      await this.$store.dispatch('jobs/fetch', {
-        location: this.location
-      })
-    }
+    // We default to our own.
+    await this.$store.dispatch('jobs/fetch', {
+      lat: this.me.lat,
+      lng: this.me.lng
+    })
 
-    this.loading = false
+    this.$nextTick(() => {
+      this.loading = false
+    })
   },
   beforeCreate() {
     this.suppliedLocation = this.$route.params.location
   },
   methods: {
-    search() {
-      this.$router.push('/jobs/' + encodeURIComponent(this.searchLocation))
+    async search(e) {
+      if (e && (e.lat || e.lng)) {
+        this.loading = true
+
+        await this.$store.dispatch('jobs/clear')
+
+        await this.$store.dispatch('jobs/fetch', {
+          lat: e.lat,
+          lng: e.lng
+        })
+
+        this.loading = false
+      }
     }
   },
   head() {

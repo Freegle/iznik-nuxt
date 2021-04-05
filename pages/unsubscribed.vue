@@ -14,6 +14,10 @@
           <!-- eslint-disable-next-line -->
           <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink>.
         </p>
+        <p>
+          We have database backups for up to 30 days.  Your data will be in there, but we would only access
+          that in very exceptional circumstances.
+        </p>
       </div>
     </b-col>
     <b-col cols="0" md="3" />
