@@ -108,7 +108,8 @@ export default {
 
         await this.$store.dispatch('jobs/fetch', {
           lat: e.lat,
-          lng: e.lng
+          lng: e.lng,
+          force: true
         })
 
         this.loading = false

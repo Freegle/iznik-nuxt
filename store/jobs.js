@@ -49,6 +49,7 @@ export const actions = {
       if (
         state.lastFetched &&
         params.location === state.lastLocation &&
+        !params.force &&
         now - state.lastFetched < 10 * 60 * 60
       ) {
         // We have fetched jobs in the last few minutes.  No need to fetch again.
