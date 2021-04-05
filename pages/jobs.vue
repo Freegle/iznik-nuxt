@@ -87,10 +87,12 @@ export default {
   },
   async mounted() {
     // We default to our own.
-    await this.$store.dispatch('jobs/fetch', {
-      lat: this.me.lat,
-      lng: this.me.lng
-    })
+    if (this.me) {
+      await this.$store.dispatch('jobs/fetch', {
+        lat: this.me.lat,
+        lng: this.me.lng
+      })
+    }
 
     this.$nextTick(() => {
       this.loading = false
