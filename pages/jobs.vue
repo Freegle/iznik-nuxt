@@ -18,7 +18,12 @@
               Some may ask you to sign up - sorry about that, it's not under our control.
             </p>
           </NoticeMessage>
-          <PlaceAutocomplete class="mb-2" labeltext="Where are you looking?  Use a postcode or town name." @selected="search($event)" />
+          <div class="d-flex mb-2">
+            <PlaceAutocomplete class="w-100 w-md-50 pr-md-2" labeltext="Where are you looking?  Use a postcode or town name." @selected="search($event)" />
+            <div class="mt-md-2 w-100 w-md-50 pl-md-2">
+              <b-form-select v-model="category" :options="categories" size="lg" class="mt-md-4" />
+            </div>
+          </div>
           <div class="d-flex justify-content-around">
             <b-img-lazy v-if="loading && (!jobs || jobs.length === 0)" src="~/static/loader.gif" alt="Loading..." />
           </div>
@@ -54,10 +59,56 @@ export default {
   data: function() {
     return {
       searchLocation: null,
-      loading: true
+      loading: true,
+      category: null
     }
   },
   computed: {
+    categories() {
+      const ret = [
+        {
+          value: null,
+          text: 'All job categories'
+        }
+      ]
+      ;[
+        'Accounting/Financial/Insurance',
+        'Administration',
+        'Agriculture',
+        'Arts/Graphic Design',
+        'Automotive/Aerospace',
+        'Car',
+        'Catering',
+        'Charity',
+        'Construction',
+        'Consulting',
+        'Customer Services',
+        'Distribution',
+        'Electronics',
+        'Hospitality/Hotel',
+        'IT',
+        'Legal',
+        'Leisure/Tourism',
+        'Management',
+        'Manufacturing/Surveying',
+        'Marketing',
+        'Media',
+        'Medical/Pharmaceutical/Scientific',
+        'Military/Emergency/Government',
+        'Other',
+        'Personnel/Recruitment',
+        'Property Services',
+        'Public Sector',
+        'Retail/Purchasing',
+        'Sales',
+        'Social Care',
+        'Telecoms'
+      ].forEach(c => {
+        ret.push({ value: c, text: c })
+      })
+
+      return ret
+    },
     jobs() {
       return this.$store.getters['jobs/list']
     },
@@ -85,37 +136,45 @@ export default {
       return ret
     }
   },
-  async mounted() {
+  watch: {
+    category() {
+      this.$nextTick(this.doSearch)
+    }
+  },
+  mounted() {
     // We default to our own.
     if (this.me) {
-      await this.$store.dispatch('jobs/fetch', {
-        lat: this.me.lat,
-        lng: this.me.lng
-      })
+      this.searchLat = this.me.lat
+      this.searchLng = this.me.lng
+      this.doSearch()
     }
-
-    this.$nextTick(() => {
-      this.loading = false
-    })
   },
   beforeCreate() {
     this.suppliedLocation = this.$route.params.location
   },
   methods: {
-    async search(e) {
+    search(e) {
       if (e && (e.lat || e.lng)) {
-        this.loading = true
-
-        await this.$store.dispatch('jobs/clear')
-
-        await this.$store.dispatch('jobs/fetch', {
-          lat: e.lat,
-          lng: e.lng,
-          force: true
-        })
-
-        this.loading = false
+        this.searchLat = e.lat
+        this.searchLng = e.lng
+        this.doSearch()
       }
+    },
+    async doSearch() {
+      this.loading = true
+
+      await this.$store.dispatch('jobs/clear')
+
+      await this.$store.dispatch('jobs/fetch', {
+        lat: this.searchLat,
+        lng: this.searchLng,
+        category: this.category,
+        force: true
+      })
+
+      this.$nextTick(() => {
+        this.loading = false
+      })
     }
   },
   head() {
