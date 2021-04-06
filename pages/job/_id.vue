@@ -1,7 +1,7 @@
 <template>
   <client-only>
     <div class="d-flex justify-content-around">
-      <b-img-lazy  src="~/static/loader.gif" alt="Loading..." />
+      <b-img-lazy src="~/static/loader.gif" alt="Loading..." />
     </div>
   </client-only>
 </template>
@@ -19,7 +19,7 @@ export default {
   created() {
     this.id = parseInt(this.$route.params.id) || null
   },
-  mounted() {
+  async mounted() {
     await this.$store.dispatch('jobs/clear')
 
     if (this.id) {
@@ -28,19 +28,21 @@ export default {
         force: true
       })
 
-      let jobs = this.$store.getters['jobs/list']
+      const jobs = this.$store.getters['jobs/list']
 
-      jobs.forEach(j => {
+      jobs.forEach(async j => {
         if (parseInt(j.id) === parseInt(this.id)) {
+          await this.$store.dispatch('jobs/log', {
+            link: j.url
+          })
+
           window.location = j.url
         }
       })
     }
   },
   head() {
-    return this.buildHead(
-      'Job'
-    )
+    return this.buildHead('Job')
   }
 }
 </script>
