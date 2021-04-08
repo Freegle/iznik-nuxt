@@ -8,7 +8,7 @@
         </span>
       </h4>
       <p class="text-truncate mt-2 d-none d-lg-block">
-        {{ job.body }}
+        {{ body }}
       </p>
     </div>
     <b-card v-else no-body variant="info" :class="highlight ? 'job-row bg-info': 'job-row'">
@@ -27,7 +27,7 @@
               <div class="media-left" />
               <div class="media-body w-100">
                 <p class="text-truncate mt-2 job-description">
-                  {{ job.body }}
+                  {{ body }}
                 </p>
               </div>
             </div>
@@ -73,6 +73,13 @@ export default {
       } else {
         return this.job.location
       }
+    },
+    body() {
+      if (!this.job || !this.job.body) {
+        return ''
+      }
+
+      return this.job.body.replace(/\\n/g, '\n').trim()
     }
   },
   methods: {
