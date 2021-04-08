@@ -437,6 +437,16 @@ module.exports = {
       }
     },
 
+    // Possible fix for memory leak in nuxt generate as per https://github.com/nuxt/nuxt.js/issues/7855
+    hooks: {
+      'build:done'() {
+        const modulesToClear = ['vue', 'vue/dist/vue.runtime.common.prod']
+        modulesToClear.forEach((entry) => {
+          delete require.cache[require.resolve(entry)]
+        })
+      },
+    },
+
     babel: {
       presets({ isServer }) {
         const targets = isServer
@@ -531,6 +541,9 @@ module.exports = {
   },
 
   generate: {
+    // Possible fix for memory leak in nuxt generate as per https://github.com/nuxt/nuxt.js/issues/7855
+    crawler: false,
+
     // Don't hit the server too hard.
     concurrency: 5,
 
