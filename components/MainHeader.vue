@@ -169,6 +169,7 @@
     </b-navbar>
     <client-only>
       <LoginModal ref="loginModal" />
+      <LogoutConfirmModal ref="logoutConfirm" />
       <AboutMeModal ref="aboutMeModal" />
     </client-only>
   </header>
@@ -180,6 +181,7 @@ import NotificationOptions from '~/components/NotificationOptions'
 import ChatMenu from '~/components/ChatMenu'
 // Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.
 import LoginModal from '~/components/LoginModal'
+import LogoutConfirmModal from '~/components/LogoutConfirmModal'
 const AboutMeModal = () => import('~/components/AboutMeModal')
 
 export default {
@@ -189,6 +191,7 @@ export default {
     NotificationOptions,
     ChatMenu,
     LoginModal,
+    LogoutConfirmModal,
     AboutMeModal
   },
   data: function() {
@@ -241,18 +244,10 @@ export default {
     requestLogin() {
       this.$refs.loginModal.show()
     },
-    async logOut() {
+    logOut() {
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie
       // on the server, which would otherwise keep us logged in despite our efforts.
-      try {
-        this.$cookies.removeAll()
-      } catch (e) {}
-
-      await this.$store.dispatch('auth/logout')
-      this.$store.dispatch('auth/forceLogin', false)
-
-      // Go to the landing page.
-      this.$router.push('/')
+      this.$refs.logoutConfirm.show()
     },
     showAboutMe() {
       this.$refs.aboutMeModal.show()
