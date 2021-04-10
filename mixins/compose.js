@@ -4,7 +4,9 @@ export default {
       postType: null,
       submitting: false,
       invalid: false,
-      initialPostcode: null
+      initialPostcode: null,
+      notAllowed: false,
+      wentWrong: false
     }
   },
   computed: {
@@ -236,71 +238,80 @@ export default {
     async freegleIt(type) {
       this.submitting = true
 
-      const results = await this.$store.dispatch('compose/submit', {
-        type: type
-      })
+      try {
+        const results = await this.$store.dispatch('compose/submit', {
+          type: type
+        })
 
-      // The params we pass from the results may crucially include new user information,
-      // and depending on timing this may not appear in the first result, so look for one of those first.
-      const params = {
-        justPosted: [],
-        newuser: null,
-        newpassword: null
-      }
+        // The params we pass from the results may crucially include new user information,
+        // and depending on timing this may not appear in the first result, so look for one of those first.
+        const params = {
+          justPosted: [],
+          newuser: null,
+          newpassword: null
+        }
 
-      results.forEach(async res => {
-        if (res.newuser) {
-          params.newuser = res.newuser
-          params.newpassword = res.newpassword
+        results.forEach(async res => {
+          if (res.newuser) {
+            params.newuser = res.newuser
+            params.newpassword = res.newpassword
 
-          // Fetch the session so that we know we're logged in, and so that we have permission to fetch messages
-          // below.
-          await this.$store.dispatch('auth/fetchUser', {
-            components: ['me', 'groups'],
-            force: true
+            // Fetch the session so that we know we're logged in, and so that we have permission to fetch messages
+            // below.
+            await this.$store.dispatch('auth/fetchUser', {
+              components: ['me', 'groups'],
+              force: true
+            })
+          }
+        })
+
+        // Fetch the message and group we posted on so that it's in the store for the next page - it might not be if
+        // we weren't a member or logged in.  Do this before we navigate as it looks nicer that way.
+        //
+        // All posts are made to the same group so it's ok to check just the first.  The group should be in store.
+        const promises = []
+
+        if (results.length > 0 && results[0].groupid) {
+          const groupid = results[0].groupid
+          const group = this.$store.getters['group/get'](groupid)
+
+          if (!group) {
+            promises.push(
+              this.$store.dispatch('group/fetch', {
+                id: groupid
+              })
+            )
+          }
+
+          results.forEach(res => {
+            params.justPosted.push(res.id)
+
+            promises.push(
+              this.$store.dispatch('messages/fetch', {
+                id: res.id
+              })
+            )
+          })
+
+          await Promise.all(promises)
+
+          this.$router.push({
+            name: 'myposts',
+            params: params
+          })
+        } else {
+          // Was probably already submitted
+          this.$router.push({
+            name: 'myposts'
           })
         }
-      })
-
-      // Fetch the message and group we posted on so that it's in the store for the next page - it might not be if
-      // we weren't a member or logged in.  Do this before we navigate as it looks nicer that way.
-      //
-      // All posts are made to the same group so it's ok to check just the first.  The group should be in store.
-      const promises = []
-
-      if (results.length > 0 && results[0].groupid) {
-        const groupid = results[0].groupid
-        const group = this.$store.getters['group/get'](groupid)
-
-        if (!group) {
-          promises.push(
-            this.$store.dispatch('group/fetch', {
-              id: groupid
-            })
-          )
+      } catch (e) {
+        console.log('Submit failed', e)
+        if (e.message.indexOf('Not allowed to post on this group') !== -1) {
+          this.notAllowed = true
+        } else {
+          this.wentWrong = true
         }
-
-        results.forEach(res => {
-          params.justPosted.push(res.id)
-
-          promises.push(
-            this.$store.dispatch('messages/fetch', {
-              id: res.id
-            })
-          )
-        })
-
-        await Promise.all(promises)
-
-        this.$router.push({
-          name: 'myposts',
-          params: params
-        })
-      } else {
-        // Was probably already submitted
-        this.$router.push({
-          name: 'myposts'
-        })
       }
     },
     emailInUse(email) {

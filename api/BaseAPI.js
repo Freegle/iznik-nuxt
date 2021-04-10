@@ -123,6 +123,7 @@ export default class BaseAPI {
       // indicates whether we want to log this to Sentry - which can be a boolean or a function for more complex
       // decisions.
       const log = typeof logError === 'function' ? logError(data) : logError
+      console.log('Log it?', log)
 
       if (log) {
         Sentry.captureException(

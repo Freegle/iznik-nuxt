@@ -205,6 +205,7 @@ async function submitDraft(id, email, commit) {
   console.log('Submit draft', id, email)
   const ret = await this.$api.message.joinAndPost(id, email, data => {
     // ret = 8 is posting prohibited, which is due to mod choice not a server error.
+    console.log('Post failed', data, data.ret, data.ret !== 8)
     return data.ret !== 8
   })
   console.log('Returned', ret)
@@ -479,10 +480,5 @@ export const actions = {
     })
 
     return results
-  },
-  async submitQueued({ dispatch, commit, state, store }, params) {
-    const { id } = await submitDraft.call(this, params.id, params.email, commit)
-
-    return id
   }
 }

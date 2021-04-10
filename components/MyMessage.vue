@@ -32,16 +32,16 @@
         </b-card-body>
         <b-card-footer v-if="me" class="p-1">
           <div class="d-flex justify-content-start flex-wrap">
-            <b-btn v-if="!rejected && !queued && !simple" variant="primary" title="Share" class="m-1" @click="share">
+            <b-btn v-if="!rejected && !simple" variant="primary" title="Share" class="m-1" @click="share">
               <v-icon name="share-alt" /> Share
             </b-btn>
             <b-btn v-if="message.canedit && message.location && message.item" variant="secondary" class="m-1" @click="edit">
               <v-icon name="pen" /> Edit
             </b-btn>
-            <b-btn v-if="!rejected && !queued && message.type === 'Offer' && !taken" variant="secondary" class="m-1" @click="outcome('Taken')">
+            <b-btn v-if="!rejected && message.type === 'Offer' && !taken" variant="secondary" class="m-1" @click="outcome('Taken')">
               <v-icon name="check" /> Mark as TAKEN
             </b-btn>
-            <b-btn v-if="!rejected && !queued && message.type === 'Wanted' && !received" variant="secondary" class="m-1" @click="outcome('Received')">
+            <b-btn v-if="!rejected && message.type === 'Wanted' && !received" variant="secondary" class="m-1" @click="outcome('Received')">
               <v-icon name="check" /> Mark as RECEIVED
             </b-btn>
             <b-btn v-if="!rejected && !taken && !received && !withdrawn" variant="secondary" class="m-1" @click="outcome('Withdrawn')">
@@ -133,22 +133,19 @@
               </div>
             </div>
             <div class="d-flex justify-content-start flex-wrap mt-1">
-              <b-btn v-if="queued" variant="primary" class="mr-2 mb-1" @click="submitQueued">
-                <v-icon name="check" /> Still applies - Submit
-              </b-btn>
               <b-btn v-if="rejected && message.location && message.item" variant="warning" class="mr-2 mb-1" @click="repost">
                 <v-icon name="pen" /> Edit and Resend
               </b-btn>
               <b-btn v-if="rejected && !withdrawn" variant="secondary" class="mr-2 mb-1" @click="outcome('Withdrawn')">
                 <v-icon name="trash-alt" /> Withdraw
               </b-btn>
-              <b-btn v-if="!rejected && !queued && message.type === 'Offer' && !taken" variant="primary" class="mr-2 mb-1" @click="outcome('Taken')">
+              <b-btn v-if="!rejected && message.type === 'Offer' && !taken" variant="primary" class="mr-2 mb-1" @click="outcome('Taken')">
                 <v-icon name="check" /> Mark as TAKEN
               </b-btn>
-              <b-btn v-if="!rejected && !queued && message.type === 'Wanted' && !received" variant="primary" class="mr-2 mb-1" @click="outcome('Received')">
+              <b-btn v-if="!rejected && message.type === 'Wanted' && !received" variant="primary" class="mr-2 mb-1" @click="outcome('Received')">
                 <v-icon name="check" /> Mark as RECEIVED
               </b-btn>
-              <b-btn v-if="!rejected && !queued && message.canedit && message.location && message.item" variant="secondary" class="mr-2 mb-1" @click="edit">
+              <b-btn v-if="!rejected && message.canedit && message.location && message.item" variant="secondary" class="mr-2 mb-1" @click="edit">
                 <v-icon name="pen" /> Edit
               </b-btn>
               <b-btn v-if="!rejected && !taken && !received && !withdrawn" variant="secondary" class="mr-2 mb-1" @click="outcome('Withdrawn')">
@@ -160,7 +157,7 @@
               <b-btn v-else-if="!rejected && !taken && !received && message.canrepostat && message.location && message.item" variant="secondary" disabled class="mr-2 mb-1" title="You will be able to repost this soon">
                 <v-icon name="sync" /> Repost <span class="small">{{ message.canrepostat | timeago }}</span>
               </b-btn>
-              <b-btn v-if="!rejected && !queued && !simple" variant="secondary" title="Share" class="mr-2 mb-1" @click="share">
+              <b-btn v-if="!rejected && !simple" variant="secondary" title="Share" class="mr-2 mb-1" @click="share">
                 <v-icon name="share-alt" /> Share
               </b-btn>
               <b-btn v-if="message.lovejunkhash && message.type === 'Offer' && !rejected && !taken && !received && !withdrawn" variant="secondary" class="mr-2 mb-1" @click="lovejunk">
@@ -304,11 +301,6 @@ export default {
       type: String,
       required: false,
       default: null
-    },
-    queued: {
-      type: Boolean,
-      required: false,
-      default: false
     },
     justPosted: {
       type: Boolean,
@@ -580,18 +572,6 @@ export default {
     },
     edit() {
       this.$refs.editModal.show()
-    },
-    async submitQueued() {
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['me']
-      })
-      const me = this.$store.getters['auth/user']
-      await this.$store.dispatch('compose/submitQueued', {
-        id: this.message.id,
-        email: me.email
-      })
-
-      this.hide = true
     },
     async repost() {
       // Remove any partially composed messages we currently have, because they'll be confusing.

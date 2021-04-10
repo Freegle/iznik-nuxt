@@ -297,19 +297,6 @@ export default {
 
       return count
     },
-
-    queued() {
-      const ret = this.messages.filter(
-        m => m.isdraft && (!m.outcomes || m.outcomes.length === 0)
-      )
-      ret.sort(this.postSort)
-      return ret
-    },
-
-    queuedCount() {
-      return this.queued.length
-    },
-
     searches() {
       // Show the searches within the last 90 days, most recent first.  Anything older is less likely to be relevant
       // and it stops it growing forever, forcing them to delete things.
