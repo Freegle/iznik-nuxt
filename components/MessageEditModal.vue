@@ -17,6 +17,7 @@
               append-text=" available"
               class="count pt-1"
               size="md"
+              :min="0"
             />
           </div>
         </template>
@@ -85,12 +86,14 @@
           </b-button>
         </template>
       </b-modal>
+      <OutcomeModal ref="outcomeModal" :message="message" />
     </client-only>
   </div>
 </template>
 <script>
 import modal from '@/mixins/modal'
 import keywords from '@/mixins/keywords.js'
+import OutcomeModal from '@/components/OutcomeModal'
 import NumberIncrementDecrement from './NumberIncrementDecrement'
 import Postcode from '~/components/Postcode'
 const OurFilePond = () => import('~/components/OurFilePond')
@@ -99,6 +102,7 @@ const PostPhoto = () => import('./PostPhoto')
 
 export default {
   components: {
+    OutcomeModal,
     NumberIncrementDecrement,
     OurFilePond,
     Postcode,
@@ -132,6 +136,17 @@ export default {
       return this.message && this.type === 'Offer'
         ? "Please give a few details, e.g. colour, condition, size, whether it's working etc."
         : "Please give a few more details about what you're looking for, and why you'd like it."
+    },
+    count() {
+      return this.message ? this.message.availablenow : null
+    }
+  },
+  watch: {
+    count(newVal) {
+      if (newVal === 0) {
+        this.hide()
+        this.$refs.outcomeModal.show()
+      }
     }
   },
   mounted() {
