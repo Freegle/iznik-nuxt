@@ -253,7 +253,7 @@ export default {
     askDue() {
       // Ask no more than once per hour.  Only want to ask if we're logged in, because otherwise a) we don't know if we've
       // already declined and b) we couldn't save a decline.
-      const modtools = this.store.getters['misc/get']('modtools')
+      const modtools = this.$store.getters['misc/get']('modtools')
 
       return (
         !modtools &&
