@@ -1,8 +1,9 @@
 <template>
   <div v-if="userid !== myid" class="d-inline clickme">
-    <div @click="gotoChat(true)">
+    <div id="sizer" ref="sizer" class="d-none d-md-block" />
+    <div>
       <slot>
-        <b-btn :size="size" :variant="variant" :class="btnClass + ' d-none d-sm-inline'">
+        <b-btn :size="size" :variant="variant" :class="btnClass + ' d-none d-sm-inline'" @click="gotoChat(true)">
           <v-icon v-if="showIcon" name="comments" />
           <span v-if="title">
             {{ title }}

@@ -84,8 +84,8 @@
           We'd prefer not to,
           but we don't raise enough from <nuxt-link to="/donate">
             donations
-          </nuxt-link> alone to keep going.
-          We pass them your IP address, but not your personal information.
+          </nuxt-link> alone to keep going.  We don't pass them any information at all unless you click on one
+          of the job links, not even your IP address.
         </li>
       </ul>
       <h2>Sentry</h2>

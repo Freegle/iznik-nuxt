@@ -2,9 +2,8 @@
   <NoticeMessage>
     <p>
       You are logged in
-      <span v-if="ours">
-        with <strong>{{ ours }}</strong>
-      </span>,
+      <!-- eslint-disable-next-line -->
+      <strong v-if="ours">with {{ ours }}</strong><strong v-else>as <v-icon name="hashtag" class="text-muted" scale="0.5" />{{ myid }}</strong>,
       but <strong>{{ theirs }}</strong> belongs to another account.
     </p>
     <p>

@@ -42,7 +42,15 @@
           </div>
           <b-row v-if="submitting">
             <b-col cols="12" md="6" offset-md="3" class="text-center pt-2 mt-2">
+              <NoticeMessage v-if="notAllowed" variant="danger">
+                You are not allowed to post on this community.
+              </NoticeMessage>
+              <NoticeMessage v-else-if="wentWrong" variant="danger">
+                <!-- eslint-disable-next-line -->
+                Something went wrong.  Please try again, and if this keeps happening then contact <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink>.
+              </NoticeMessage>
               <b-progress
+                v-else
                 height="48px"
                 class="mt-2"
                 animate
@@ -62,6 +70,8 @@
 import loginOptional from '@/mixins/loginOptional.js'
 import compose from '@/mixins/compose.js'
 import buildHead from '@/mixins/buildHead.js'
+import NoticeMessage from '@/components/NoticeMessage'
+import ExternalLink from '@/components/ExternalLink'
 import EmailValidator from '../../components/EmailValidator'
 
 const EmailBelongsToSomeoneElse = () =>
@@ -70,6 +80,8 @@ const WizardProgress = () => import('~/components/WizardProgress')
 
 export default {
   components: {
+    ExternalLink,
+    NoticeMessage,
     EmailBelongsToSomeoneElse,
     EmailValidator,
     WizardProgress

@@ -22,7 +22,7 @@
           Jobs near you.  Freegle gets a small amount if you click.
         </p>
         <ul class="list-unstyled">
-          <li v-for="job in visibleJobs" :key="'job-' + job.onmousedown">
+          <li v-for="job in visibleJobs" :key="'job-' + job.job_reference">
             <Job :summary="true" :job="job" />
           </li>
         </ul>

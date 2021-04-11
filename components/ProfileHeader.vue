@@ -24,14 +24,14 @@
         </div>
         <div class="d-flex flex-row flex-lg-column align-items-baseline">
           <ChatButton
-            v-if="id !== myid"
+            v-if="myid && id !== myid"
             :userid="id"
             size="sm"
             title="Message"
             class="mb-1 order-1 order-lg-0 align-self-lg-center"
             variant="secondary"
           />
-          <ratings :id="id" size="sm" class="pt-1 mr-2 mr-lg-0 d-block" />
+          <ratings :id="id" size="sm" class="pt-1 mr-2 mr-lg-0 d-block" :disabled="!myid" />
         </div>
       </div>
     </b-media-body>

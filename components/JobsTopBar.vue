@@ -23,7 +23,7 @@
         See more<span class="d-none d-md-inline"> jobs</span></nuxt-link>.
       </div>
       <ul class="list-unstyled">
-        <li v-for="(job, index) in jobs" :key="'job-' + job.onmousedown">
+        <li v-for="(job, index) in jobs" :key="'job-' + job.job_reference">
           <Job :summary="true" :job="job" :class="index > 1 ? 'd-none d-md-block' : ''" />
         </li>
       </ul>

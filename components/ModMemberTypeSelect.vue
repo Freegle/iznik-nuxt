@@ -12,9 +12,6 @@
     <option value="1">
       With notes
     </option>
-    <option value="4">
-      Most active web
-    </option>
     <option value="5">
       Banned
     </option>

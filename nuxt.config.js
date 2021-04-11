@@ -162,13 +162,6 @@ const config = {
       { rel: 'preconnect', href: 'https://www.facebook.com' },
       { rel: 'preconnect', href: 'https://connect.facebook.com' },
       { rel: 'preconnect', href: 'https://apis.google.com' }
-    ],
-    script: [
-      {
-        src:
-          'https://adview.online/js/pub/tracking.js?publisher=2053&channel=web&source=feed',
-        async: true
-      }
     ]
   },
 
@@ -458,6 +451,16 @@ const config = {
       }
     },
 
+    // Possible fix for memory leak in nuxt generate as per https://github.com/nuxt/nuxt.js/issues/7855
+    hooks: {
+      'build:done'() {
+        const modulesToClear = ['vue', 'vue/dist/vue.runtime.common.prod']
+        modulesToClear.forEach((entry) => {
+          delete require.cache[require.resolve(entry)]
+        })
+      },
+    },
+
     babel: {
       presets({ isServer }) {
         const targets = isServer
@@ -552,6 +555,9 @@ const config = {
   },
 
   generate: {
+    // Possible fix for memory leak in nuxt generate as per https://github.com/nuxt/nuxt.js/issues/7855
+    crawler: false,
+
     // Don't hit the server too hard.
     concurrency: 5,
 

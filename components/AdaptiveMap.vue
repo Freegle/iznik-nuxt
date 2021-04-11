@@ -274,6 +274,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    initialSearch: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data: function() {
@@ -567,6 +572,8 @@ export default {
     this.swlng = this.initialBounds[0][1]
     this.nelat = this.initialBounds[1][0]
     this.nelng = this.initialBounds[1][1]
+    this.search = this.initialSearch
+    this.searchOn = this.initialSearch
   },
   async mounted() {
     this.postMapInitialBounds = this.locked ? this.locked : this.initialBounds

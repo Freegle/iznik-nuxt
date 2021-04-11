@@ -1,6 +1,7 @@
 <template>
   <div>
     <client-only>
+      <ScrollToTop />
       <ModCakeModal />
       <PreCovidModeration />
       <div class="d-flex justify-content-between">
@@ -33,12 +34,14 @@ import modMessagesPage from '@/mixins/modMessagesPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
 import ModCakeModal from '@/components/ModCakeModal'
 import PreCovidModeration from '@/components/PreCovidModeration'
+import ScrollToTop from '@/components/ScrollToTop'
 import NoticeMessage from '../../../../components/NoticeMessage'
 import GroupSelect from '../../../../components/GroupSelect'
 import ModMessage from '../../../../components/ModMessage'
 
 export default {
   components: {
+    ScrollToTop,
     PreCovidModeration,
     ModCakeModal,
     ModMessage,

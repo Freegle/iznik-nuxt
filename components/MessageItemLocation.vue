@@ -79,7 +79,7 @@ export default {
         }
       }
 
-      return ret ? twem.twem(this.$twemoji, ret) : null
+      return ret ? twem.twem(this.$twemoji, ret) : 'unknown'
     },
     location() {
       let ret = null

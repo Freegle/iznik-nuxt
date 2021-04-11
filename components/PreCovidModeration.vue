@@ -2,12 +2,13 @@
   <div v-if="modGroups && modGroups.length">
     <NoticeMessage variant="warning" class="mb-2">
       <p>
-        Some of your groups are currently moderated, but were not moderated before lockdown:
+        Some of your groups are currently moderated, but were not moderated before lockdown.  Click on the name to
+        set the groups to the usual setting (new members moderated):
       </p>
       <p>
-        <span v-for="group in modGroups" :key="'modgroup-' + group">
-          {{ group }},
-        </span>
+        <b-btn v-for="group in modGroups" :key="'modgroup-' + group" variant="link" @click="unmoderate(group.id)">
+          {{ group.name }}
+        </b-btn>
       </p>
       <p>
         You can change this in
@@ -36,7 +37,10 @@ export default {
           group.settings.moderated
         ) {
           if (!ids[group.id]) {
-            ret.push(group.namedisplay ? group.namedisplay : group.nameshort)
+            ret.push({
+              id: group.id,
+              name: group.namedisplay ? group.namedisplay : group.nameshort
+            })
 
             ids[group.id] = true
           }
@@ -44,6 +48,23 @@ export default {
       }
 
       return ret
+    }
+  },
+  methods: {
+    async unmoderate(groupid) {
+      console.log('Unmoderate', groupid)
+      const group = this.$store.getters['auth/groupById'](groupid)
+      const settings = group.settings
+      settings.moderated = false
+
+      await this.$store.dispatch('group/update', {
+        id: groupid,
+        settings
+      })
+
+      await this.$store.dispatch('auth/fetchUser', {
+        components: ['me', 'groups']
+      })
     }
   }
 }

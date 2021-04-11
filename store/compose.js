@@ -100,13 +100,13 @@ export const mutations = {
     state.attachments[params.id].push(params.attachment)
   },
   removeAttachment(state, params) {
-    Vue.set(
-      state.attachments,
-      params.id,
-      state.attachments[params.id].filter(obj => {
-        return parseInt(obj.id) !== parseInt(params.photoid)
-      })
-    )
+    const newAtts = state.attachments[params.id].filter(obj => {
+      return parseInt(obj.id) !== parseInt(params.photoid)
+    })
+
+    // Delete then set because of reactivity pernicketiness.
+    Vue.delete(state.attachments, params.id)
+    Vue.set(state.attachments, params.id, newAtts)
   },
   setAttachmentsForMessage(state, params) {
     state.attachments[params.id] = params.attachments
@@ -205,6 +205,7 @@ async function submitDraft(id, email, commit) {
   console.log('Submit draft', id, email)
   const ret = await this.$api.message.joinAndPost(id, email, data => {
     // ret = 8 is posting prohibited, which is due to mod choice not a server error.
+    console.log('Post failed', data, data.ret, data.ret !== 8)
     return data.ret !== 8
   })
   console.log('Returned', ret)
@@ -250,6 +251,7 @@ async function updateIt(
   messagetype,
   item,
   textbody,
+  attachments,
   availablenow,
   groupid,
   dispatch,
@@ -261,6 +263,7 @@ async function updateIt(
     messagetype,
     item,
     textbody,
+    attachments,
     groupid,
     availablenow
   }
@@ -344,12 +347,22 @@ export const actions = {
           console.log('Existing message')
           const id = message.id
           await backToDraft(id, dispatch, commit)
+
+          const attids = []
+
+          if (state.attachments[message.id]) {
+            for (const att in state.attachments[message.id]) {
+              attids.push(state.attachments[message.id][att].id)
+            }
+          }
+
           await updateIt(
             id,
             state.postcode.id,
             message.type,
             message.item,
             message.description,
+            attids,
             'availablenow' in message ? message.availablenow : 1,
             state.group,
             dispatch,
@@ -419,12 +432,22 @@ export const actions = {
           console.log('Existing message')
           const id = message.id
           await backToDraft(id, dispatch, commit)
+
+          const attids = []
+
+          if (state.attachments[message.id]) {
+            for (const att in state.attachments[message.id]) {
+              attids.push(state.attachments[message.id][att].id)
+            }
+          }
+
           await updateIt(
             id,
             state.postcode.id,
             message.type,
             message.item,
             message.description,
+            attids,
             'availablenow' in message ? message.availablenow : 1,
             state.group,
             dispatch,
@@ -457,10 +480,5 @@ export const actions = {
     })
 
     return results
-  },
-  async submitQueued({ dispatch, commit, state, store }, params) {
-    const { id } = await submitDraft.call(this, params.id, params.email, commit)
-
-    return id
   }
 }

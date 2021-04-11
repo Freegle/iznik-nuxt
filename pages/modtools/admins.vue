@@ -72,7 +72,7 @@
                 />
               </b-form-group>
             </validating-form>
-            <b-btn class="mt-2 mb-2" size="lg" :variant="groupidcreate < 0 ? 'danger' : 'primary'" :disabled="groupidcreate <= 0" @click="create">
+            <b-btn class="mt-2 mb-2" size="lg" :variant="groupidcreate < 0 ? 'danger' : 'primary'" :disabled="groupidcreate <= 0 && groupidcreate !== -2" @click="create">
               <v-icon v-if="created" name="check" />
               <v-icon v-else-if="creating" name="sync" class="fa-spin" />
               <v-icon v-else name="save" />

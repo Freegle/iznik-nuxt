@@ -7,13 +7,6 @@ export const state = () => ({
 
 export const mutations = {
   setList(state, list) {
-    for (let i = 0; i < list.length; i++) {
-      // Get a unique ID.
-      const p = list[i].url.lastIndexOf('/')
-      const q = list[i].url.indexOf('?')
-      list[i].id = list[i].url.substring(p + 1, q)
-    }
-
     state.list = list
   },
 
@@ -49,6 +42,7 @@ export const actions = {
       if (
         state.lastFetched &&
         params.location === state.lastLocation &&
+        !params.force &&
         now - state.lastFetched < 10 * 60 * 60
       ) {
         // We have fetched jobs in the last few minutes.  No need to fetch again.

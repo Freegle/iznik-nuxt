@@ -27,6 +27,7 @@
           v-if="initialBounds"
           :key="'map-' + bump"
           :initial-bounds="initialBounds"
+          :initial-search="searchTerm"
           class="mt-2"
           force-messages
           group-info
@@ -47,7 +48,7 @@ import leafletPip from '@mapbox/leaflet-pip'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
-import MicroVolunteering from '../components/MicroVolunteering'
+import MicroVolunteering from '~/components/MicroVolunteering'
 import AdaptiveMap from '~/components/AdaptiveMap'
 
 const CovidWarning = () => import('~/components/CovidWarning')
@@ -78,7 +79,8 @@ export default {
     return {
       initialBounds: null,
       showRest: false,
-      bump: 1
+      bump: 1,
+      searchTerm: null
     }
   },
   watch: {
@@ -109,6 +111,9 @@ export default {
 
       this.showRest = true
     }, 5000)
+  },
+  created() {
+    this.searchTerm = this.$route.params.term
   },
   methods: {
     async calculateInitialMapBounds() {

@@ -39,6 +39,8 @@ const GroupSelect = () => import('~/components/GroupSelect')
 const StoriesAddModal = () => import('~/components/StoriesAddModal')
 const Story = () => import('~/components/Story')
 
+const LIMIT = 20
+
 export default {
   components: {
     GroupSelect,
@@ -55,7 +57,8 @@ export default {
       context: null,
       infiniteId: +new Date(),
       complete: false,
-      modalStory: null
+      modalStory: null,
+      limit: LIMIT
     }
   },
   computed: {
@@ -108,7 +111,18 @@ export default {
       asyncGroupid: params.groupid
     }
   },
-
+  created() {
+    this.limit = this.$route.query.limit || LIMIT
+  },
+  mounted() {
+    if (this.limit) {
+      // Secret parameter to pick up more stories.
+      this.$store.dispatch('stories/fetch', {
+        groupid: this.asyncGroupid,
+        limit: this.limit
+      })
+    }
+  },
   methods: {
     showAddModal() {
       this.$refs.addmodal.show()
