@@ -39,8 +39,13 @@
         </b-btn>
       </b-card>
     </div>
-    <div class="subject-layout mb-1">
-      <b-input v-model="type" disabled class="type text-uppercase bg-white mt-1" size="lg" />
+    <div class="subject-layout mb-1 mt-1">
+      <div class="d-flex flex-column">
+        <label :for="$id('posttype')" class="pl-1">
+          Type
+        </label>
+        <b-input :id="$id('posttype')" v-model="type" disabled class="type text-uppercase bg-white mt-1" size="lg" />
+      </div>
       <PostItem ref="item" v-model="item" class="item pt-1" @input="itemType" />
       <NumberIncrementDecrement v-if="type === 'Offer'" :count.sync="availablenow" label="Quantity" append-text=" available" class="count pt-1" />
     </div>
@@ -72,8 +77,10 @@
         </p>
       </NoticeMessage>
     </div>
-    <div>
+    <div class="d-flex flex-column mt-2">
+      <label :for="$id('description')">Please give a few details:</label>
       <b-form-textarea
+        :id="$id('description')"
         v-model="description"
         :placeholder="placeholder"
         rows="8"

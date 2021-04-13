@@ -102,6 +102,7 @@
     "vue-resize-text": "^0.1.0",
     "vue-social-sharing": "^2.4.7",
     "vue-twemoji": "^1.0.1",
+    "vue-unique-id": "^3.2.0",
     "vue2-datepicker": "^3.3.0",
     "vue2-editor": "^2.10.2",
     "vue2-filters": "^0.7.0",

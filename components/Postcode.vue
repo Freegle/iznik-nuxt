@@ -1,52 +1,55 @@
 <template>
-  <div class="d-flex">
-    <autocomplete
-      id="postcodeautocomplete"
-      ref="autocomplete"
-      v-model="wip"
-      restrict
-      :url="source"
-      param="typeahead"
-      :custom-params="{ pconly: pconly }"
-      anchor="name"
-      label=""
-      :placeholder="pconly ? 'Type postcode' : 'Type location'"
-      :classes="{ input: 'form-control form-control-' + size + ' text-center pcinp', list: 'postcodelist', listentry: 'w-100', listentrylist: 'listentry' }"
-      class="mr-1"
-      :min="3"
-      :debounce="200"
-      :process="process"
-      :on-select="select"
-      :size="10"
-      :variant="variant"
-      @invalid="invalid"
-    />
+  <div class="d-flex flex-column">
+    <label v-if="label" :for="$id('postcodeautocomplete')">{{ label }}</label>
+    <div class="d-flex">
+      <autocomplete
+        :id="$id('postcodeautocomplete')"
+        ref="autocomplete"
+        v-model="wip"
+        restrict
+        :url="source"
+        param="typeahead"
+        :custom-params="{ pconly: pconly }"
+        anchor="name"
+        label=""
+        :placeholder="pconly ? 'Type postcode' : 'Type location'"
+        :classes="{ input: 'form-control form-control-' + size + ' text-center pcinp', list: 'postcodelist', listentry: 'w-100', listentrylist: 'listentry' }"
+        class="mr-1"
+        :min="3"
+        :debounce="200"
+        :process="process"
+        :on-select="select"
+        :size="10"
+        :variant="variant"
+        @invalid="invalid"
+      />
 
-    <div v-if="find && !wip">
-      <b-button variant="secondary" :size="size" title="Find my device's location instead of typing a postcode" @click="findLoc">
-        <v-icon v-if="locating" name="sync" class="fa-spin" />
-        <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
-        <v-icon v-else name="map-marker-alt" />
-      </b-button>
-    </div>
-
-    <b-tooltip :show.sync="showToolTip" target="postcodeautocomplete" placement="top" variant="primary" triggers="">
-      <div class="font-weight-bold">
-        Your device thinks you're here.<br><br>
-
-        If it's wrong, please change it.
+      <div v-if="find && !wip">
+        <b-button variant="secondary" :size="size" title="Find my device's location instead of typing a postcode" @click="findLoc">
+          <v-icon v-if="locating" name="sync" class="fa-spin" />
+          <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
+          <v-icon v-else name="map-marker-alt" />
+        </b-button>
       </div>
-    </b-tooltip>
-    <b-tooltip
-      :show="wip && (!results || !results.length)"
-      target="postcodeautocomplete"
-      placement="top"
-      variant="primary"
-      triggers=""
-      :delay="{ show: 1000 }"
-    >
-      Keep typing your full postcode...
-    </b-tooltip>
+
+      <b-tooltip :show.sync="showToolTip" target="postcodeautocomplete" placement="top" variant="primary" triggers="">
+        <div class="font-weight-bold">
+          Your device thinks you're here.<br><br>
+
+          If it's wrong, please change it.
+        </div>
+      </b-tooltip>
+      <b-tooltip
+        :show="wip && (!results || !results.length)"
+        target="postcodeautocomplete"
+        placement="top"
+        variant="primary"
+        triggers=""
+        :delay="{ show: 1000 }"
+      >
+        Keep typing your full postcode...
+      </b-tooltip>
+    </div>
   </div>
 </template>
 <script>
@@ -62,6 +65,11 @@ export default {
   },
   props: {
     value: {
+      type: String,
+      required: false,
+      default: null
+    },
+    label: {
       type: String,
       required: false,
       default: null

@@ -25,13 +25,25 @@
           <div v-if="message.location">
             <b-row>
               <b-col cols="6" md="3">
-                <b-form-select v-model="type" :options="typeOptions" size="lg" />
+                <div class="d-flex flex-column">
+                  <label :for="$id('posttype')">
+                    Type
+                  </label>
+                  <b-form-select :id="$id('posttype')" v-model="type" :options="typeOptions" size="lg" />
+                </div>
               </b-col>
               <b-col cols="6">
                 <PostItem ref="item" v-model="item" />
               </b-col>
               <b-col cols="6" md="3">
-                <Postcode :find="false" size="md" :value="message.location.name" @selected="postcodeSelect" @cleared="postcodeClear" />
+                <Postcode
+                  label="Postcode"
+                  :find="false"
+                  size="md"
+                  :value="message.location.name"
+                  @selected="postcodeSelect"
+                  @cleared="postcodeClear"
+                />
               </b-col>
             </b-row>
           </div>

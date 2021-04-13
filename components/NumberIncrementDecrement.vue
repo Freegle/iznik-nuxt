@@ -1,8 +1,13 @@
 <template>
   <div class="d-flex flex-column text-center width position-relative">
-    <label :for="'spinbutton-' + id" class="sr-only">{{ label }}</label>
+    <label
+      :for="$id('spinbutton')"
+      :class="{
+        'sr-only': labelSROnly
+      }"
+    >{{ label }}</label>
     <b-form-spinbutton
-      :id="'spinbutton-' + id"
+      :id="$id('spinbutton')"
       v-model="current"
       type="number"
       :min="min"
@@ -40,6 +45,11 @@ export default {
       required: false,
       default: ''
     },
+    labelSROnly: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     appendText: {
       type: String,
       required: false,
@@ -58,8 +68,7 @@ export default {
   },
   data() {
     return {
-      current: null,
-      id: Date.now()
+      current: null
     }
   },
   watch: {
