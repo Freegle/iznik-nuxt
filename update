@@ -13,6 +13,8 @@ do
     export NODE_OPTIONS=--max_old_space_size=8192;
     export API=http://fdapilive.ilovefreegle.org/api
 
+    npm install
+
     # Very occasionally the build seems to hang, so use timeout.
     timeout -k 20 3600 npm run generate --fail-on-error
 
