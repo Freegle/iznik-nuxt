@@ -214,7 +214,8 @@ export default {
         !modtools &&
         this.$route.path !== '/browse' &&
         this.$route.path !== '/chitchat' &&
-        this.$route.path !== '/myposts'
+        this.$route.path !== '/myposts' &&
+        this.$route.path !== '/'
       )
     }
   },
