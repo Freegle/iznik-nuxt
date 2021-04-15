@@ -15,9 +15,11 @@
             favourite charity on PayPal during April.  <b>You don't need to donate</b> - setting us as your favourite charity counts
             as a vote for us to win.
           </p>
-          <b-btn variant="primary" size="lg" to="https://www.paypal.com/signin?returnUri=https%3A%2F%2Fwww.paypal.com%2Ffundraiser%2Fcharity%2F55681%3FsetPreferred%3Dtrue">
-            Click here to set Freegle as your favourite charity
-          </b-btn>
+          <ExternalLink href="https://www.paypal.com/signin?returnUri=https%3A%2F%2Fwww.paypal.com%2Ffundraiser%2Fcharity%2F55681%3FsetPreferred%3Dtrue">
+            <b-btn variant="primary" size="lg">
+              Click here to set Freegle as your favourite charity
+            </b-btn>
+          </ExternalLink>
           <p class="mt-2">
             <b>Sign in to PayPal, if it asks, and then it should set Freegle as your favourite charity.</b>
           </p>
