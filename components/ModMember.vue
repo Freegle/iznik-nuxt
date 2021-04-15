@@ -65,7 +65,6 @@
             class="border border-info p-1 flex-grow-1 mr-1"
             @change="settingsChange"
           />
-          <ModModeration :user="member" :membership="member" />
           <div>
             <ModMemberSummary :member="member" />
             <div v-if="member.lastaccess" :class="'mb-1 ' + (inactive ? 'text-danger': '')">
@@ -190,7 +189,6 @@
   </div>
 </template>
 <script>
-import ModModeration from '@/components/ModModeration'
 import waitForRef from '../mixins/waitForRef'
 import SettingsGroup from './SettingsGroup'
 import NoticeMessage from './NoticeMessage'
@@ -216,7 +214,6 @@ export default {
   name: 'ModMember',
   components: {
     ConfirmModal,
-    ModModeration,
     ModMemberButton,
     ChatButton,
     OurToggle,
