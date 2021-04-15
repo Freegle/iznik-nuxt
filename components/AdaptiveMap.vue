@@ -38,7 +38,7 @@
         <h2 class="sr-only">
           Nearby commmunities
         </h2>
-        <div class="dense">
+        <div class="d-flex flex-wrap justify-content-center">
           <div
             v-for="g in closestGroups"
             :key="'group-' + g.id"
@@ -764,10 +764,6 @@ export default {
 }
 
 .dense {
-  display: grid;
-  grid-auto-flow: column dense;
-  justify-content: center;
-
   .btn {
     max-width: 300px;
     text-overflow: ellipsis;
