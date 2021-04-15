@@ -18,7 +18,6 @@
           <label for="who">To:</label>
           <b-select id="who" v-model="selectedUser" :options="userOptions" class="mb-2 font-weight-bold" />
         </div>
-
         <div>
           <label for="date">
             Handover on:
@@ -41,8 +40,10 @@
                 :min="minDate"
                 :max="maxDate"
                 nav-button-variant="primary"
+                reset-button
                 close-button
                 button-only
+                label-reset-button="Clear"
                 @context="onContext"
               >
                 <template slot="button-content">
