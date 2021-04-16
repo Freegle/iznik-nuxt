@@ -51,6 +51,7 @@ export const mutations = {
     state.group = group
   },
   setMessage(state, message) {
+    message.savedAt = Date.now()
     Vue.set(state.messages, message.id, message)
 
     if (message && message.submitted) {
@@ -59,6 +60,9 @@ export const mutations = {
         message.id
       )
     }
+  },
+  updateMessageSaved: (state, params) => {
+    Vue.set(state.messages[params.id], 'savedAt', Date.now())
   },
   clearMessage: (state, params) => {
     Vue.delete(state.messages, params.id)
@@ -80,6 +84,7 @@ export const mutations = {
     Vue.set(state.messages[params.id], 'item', params.item)
     Vue.set(state.messages[params.id], 'type', params.type)
     Vue.set(state.messages[params.id], 'availablenow', params.availablenow)
+    Vue.set(state.messages[params.id], 'savedAt', Date.now())
   },
   setDescription(state, params) {
     if (!state.messages[params.id]) {
@@ -90,6 +95,7 @@ export const mutations = {
 
     Vue.set(state.messages[params.id], 'description', params.description)
     Vue.set(state.messages[params.id], 'type', params.type)
+    Vue.set(state.messages[params.id], 'savedAt', Date.now())
   },
   addAttachment(state, params) {
     Vue.set(
@@ -480,5 +486,27 @@ export const actions = {
     })
 
     return results
+  },
+
+  prune({ commit, state }, params) {
+    // We want to clear any messages from our local store that are not fairly recent, otherwise we can confusingly
+    // show an old message, which may then get edited to be a new one, leaving replies to the old message pointing
+    // at the new one.  I'm looking at you, Craig.
+    if (state.messages) {
+      for (const id in state.messages) {
+        const m = state.messages[id]
+
+        if (!m.savedAt) {
+          // This can happen for legacy stores.
+          commit('updateMessageSaved', {
+            id: id
+          })
+        } else if (Date.now() - m.savedAt > 7 * 24 * 60 * 60 * 1000) {
+          commit('clearMessage', {
+            id: id
+          })
+        }
+      }
+    }
   }
 }

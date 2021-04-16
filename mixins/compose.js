@@ -171,6 +171,9 @@ export default {
         id: groupid
       })
     }
+
+    // We also want to prune any old messages from our store.
+    this.$store.dispatch('compose/prune')
   },
   methods: {
     deleteItem() {
