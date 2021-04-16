@@ -99,7 +99,7 @@ export default {
           // Hack around format to match what the component needs.
           ret = JSON.parse(JSON.stringify(ret))
           ret.userid = this.message.fromuser.id
-          ret.groupid = this.groupid
+          ret.id = this.groupid
         }
       }
 
