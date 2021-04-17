@@ -1,6 +1,6 @@
 import InfiniteLoading from 'vue-infinite-loading'
-import ModMember from '@/components/ModMember'
-import GroupSelect from '@/components/GroupSelect'
+import ModMember from '~/components/ModMember'
+import GroupSelect from '~/components/GroupSelect'
 
 export default {
   layout: 'modtools',

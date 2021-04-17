@@ -109,9 +109,9 @@
 </template>
 
 <script>
-import ChatButton from '@/components/ChatButton'
 import SponsorLogo from './SponsorLogo'
 import GroupShowMod from './GroupShowMod'
+import ChatButton from '~/components/ChatButton'
 const ExternalLink = () => import('~/components/ExternalLink')
 export default {
   components: { ChatButton, GroupShowMod, SponsorLogo, ExternalLink },

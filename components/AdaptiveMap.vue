@@ -177,7 +177,7 @@ import Vue from 'vue'
 import VueObserveVisibility from 'vue-observe-visibility'
 import InfiniteLoading from 'vue-infinite-loading'
 import map from '@/mixins/map.js'
-import JoinWithConfirm from '@/components/JoinWithConfirm'
+import JoinWithConfirm from '~/components/JoinWithConfirm'
 const AdaptiveMapGroup = () => import('./AdaptiveMapGroup')
 const ExternalLink = () => import('./ExternalLink')
 const GroupSelect = () => import('./GroupSelect')

@@ -138,11 +138,11 @@
 </template>
 <script>
 import waitForRef from '@/mixins/waitForRef'
-import ModCommentAddModal from '@/components/ModCommentAddModal'
 import ModMemberButton from './ModMemberButton'
 import ModMemberActions from './ModMemberActions'
+import ModCommentAddModal from '~/components/ModCommentAddModal'
 
-const OurToggle = () => import('@/components/OurToggle')
+const OurToggle = () => import('~/components/OurToggle')
 
 export default {
   components: {

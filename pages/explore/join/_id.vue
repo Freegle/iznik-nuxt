@@ -13,8 +13,8 @@
   </div>
 </template>
 <script>
-import NoticeMessage from '@/components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired.js'
+import NoticeMessage from '~/components/NoticeMessage'
 const ExploreGroup = () => import('~/components/ExploreGroup.vue')
 
 export default {

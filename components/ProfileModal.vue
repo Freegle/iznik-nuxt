@@ -22,7 +22,7 @@
 
 <script>
 import modal from '@/mixins/modal'
-import ProfileInfo from '@/components/ProfileInfo'
+import ProfileInfo from '~/components/ProfileInfo'
 import ProfileHeader from '~/components/ProfileHeader'
 
 export default {

@@ -44,7 +44,7 @@
   </div>
 </template>
 <script>
-import ModDashboardBase from '@/components/ModDashboardBase'
+import ModDashboardBase from '~/components/ModDashboardBase'
 const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {

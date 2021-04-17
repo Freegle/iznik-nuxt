@@ -103,8 +103,8 @@
 </template>
 
 <script>
-import Supporter from '@/components/Supporter'
 import waitForRef from '@/mixins/waitForRef'
+import Supporter from '~/components/Supporter'
 import ProfileImage from '~/components/ProfileImage'
 
 const PromiseModal = () => import('./PromiseModal')

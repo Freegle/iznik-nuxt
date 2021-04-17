@@ -135,12 +135,12 @@
   </div>
 </template>
 <script>
-import AutocompleteLocal from '@/components/AutocompleteLocal'
-import GroupHeader from '@/components/GroupHeader'
 import ModSupportFindGroupVolunteer from './ModSupportFindGroupVolunteer'
 import SpinButton from './SpinButton'
 import Clipboard from './Clipboard'
-const OurToggle = () => import('@/components/OurToggle')
+import GroupHeader from '~/components/GroupHeader'
+import AutocompleteLocal from '~/components/AutocompleteLocal'
+const OurToggle = () => import('~/components/OurToggle')
 const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {

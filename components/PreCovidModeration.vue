@@ -18,7 +18,7 @@
   </div>
 </template>
 <script>
-import NoticeMessage from '@/components/NoticeMessage'
+import NoticeMessage from '~/components/NoticeMessage'
 export default {
   components: { NoticeMessage },
   props: {},

@@ -11,7 +11,7 @@
   </div>
 </template>
 <script>
-import ModDashboardBase from '@/components/ModDashboardBase'
+import ModDashboardBase from '~/components/ModDashboardBase'
 
 export default {
   extends: ModDashboardBase,

@@ -43,10 +43,10 @@
   </div>
 </template>
 <script>
-import ModSettingsPersonal from '@/components/ModSettingsPersonal'
-import ModSettingsGroup from '@/components/ModSettingsGroup'
-import ModSettingsModConfig from '@/components/ModSettingsModConfig'
 import loginRequired from '@/mixins/loginRequired.js'
+import ModSettingsPersonal from '~/components/ModSettingsPersonal'
+import ModSettingsGroup from '~/components/ModSettingsGroup'
+import ModSettingsModConfig from '~/components/ModSettingsModConfig'
 
 export default {
   layout: 'modtools',

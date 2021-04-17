@@ -105,8 +105,8 @@
 <script>
 import modal from '@/mixins/modal'
 import keywords from '@/mixins/keywords.js'
-import OutcomeModal from '@/components/OutcomeModal'
 import NumberIncrementDecrement from './NumberIncrementDecrement'
+import OutcomeModal from '~/components/OutcomeModal'
 import Postcode from '~/components/Postcode'
 const OurFilePond = () => import('~/components/OurFilePond')
 const PostItem = () => import('./PostItem')

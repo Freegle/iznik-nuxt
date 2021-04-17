@@ -73,14 +73,14 @@
 </template>
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
-import NoticeMessage from '@/components/NoticeMessage'
-import ModMessage from '@/components/ModMessage'
 import ModSupportFindGroup from '../../../components/ModSupportFindGroup'
 import ModSupportFindUser from '../../../components/ModSupportFindUser'
 import ModFindMessage from '../../../components/ModFindMessage'
 import ModSupportListGroups from '../../../components/ModSupportListGroups'
 import ModSupportAddGroup from '../../../components/ModSupportAddGroup'
 import ModSupportContactGroup from '../../../components/ModSupportContactGroup'
+import ModMessage from '~/components/ModMessage'
+import NoticeMessage from '~/components/NoticeMessage'
 
 export default {
   components: {

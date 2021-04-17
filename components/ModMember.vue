@@ -184,7 +184,6 @@
   </div>
 </template>
 <script>
-import ModMemberEngagement from '@/components/ModMemberEngagement'
 import waitForRef from '../mixins/waitForRef'
 import SettingsGroup from './SettingsGroup'
 import NoticeMessage from './NoticeMessage'
@@ -201,8 +200,9 @@ import ModMemberLogins from './ModMemberLogins'
 import ModRole from './ModRole'
 import ChatButton from './ChatButton'
 import ModMemberButton from './ModMemberButton'
+import ModMemberEngagement from '~/components/ModMemberEngagement'
 import ConfirmModal from '~/components/ConfirmModal'
-const OurToggle = () => import('@/components/OurToggle')
+const OurToggle = () => import('~/components/OurToggle')
 const ExternalLink = () => import('~/components/ExternalLink')
 const ModLogsModal = () => import('~/components/ModLogsModal')
 

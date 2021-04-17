@@ -287,7 +287,6 @@
   </b-card>
 </template>
 <script>
-import ModBouncing from '@/components/ModBouncing'
 import waitForRef from '../mixins/waitForRef'
 import ModSupportMembership from './ModSupportMembership'
 import ModLogsModal from './ModLogsModal'
@@ -302,6 +301,7 @@ import SpinButton from './SpinButton'
 import NoticeMessage from './NoticeMessage'
 import ModMergeButton from './ModMergeButton'
 import ModMemberSummary from './ModMemberSummary'
+import ModBouncing from '~/components/ModBouncing'
 const ExternalLink = () => import('~/components/ExternalLink')
 const ModCommentAddModal = () => import('~/components/ModCommentAddModal')
 

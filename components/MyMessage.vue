@@ -250,10 +250,10 @@
   </div>
 </template>
 <script>
-import AddToCalendar from '@/components/AddToCalendar'
-import PromiseModal from '@/components/PromiseModal'
 import waitForRef from '@/mixins/waitForRef'
 import OutcomeModal from './OutcomeModal'
+import AddToCalendar from '~/components/AddToCalendar'
+import PromiseModal from '~/components/PromiseModal'
 const MyMessageReply = () => import('./MyMessageReply.vue')
 const ShareModal = () => import('./ShareModal')
 const MessageEditModal = () => import('./MessageEditModal')

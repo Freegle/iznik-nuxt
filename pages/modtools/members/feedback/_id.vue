@@ -56,13 +56,13 @@
 </template>
 <script>
 import { GChart } from 'vue-google-charts'
-import NoticeMessage from '@/components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired'
 import modMembersPage from '@/mixins/modMembersPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
-import ModMemberHappiness from '@/components/ModMemberHappiness'
 import ScrollToTop from '../../../../components/ScrollToTop'
 import ModHelpFeedback from '../../../../components/ModHelpFeedback'
+import ModMemberHappiness from '~/components/ModMemberHappiness'
+import NoticeMessage from '~/components/NoticeMessage'
 
 export default {
   components: {

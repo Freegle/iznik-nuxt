@@ -46,9 +46,9 @@
 </template>
 <script>
 import buildHead from '@/mixins/buildHead.js'
-import ClusterMarker from '@/components/ClusterMarker'
 import waitForRef from '@/mixins/waitForRef'
-import RandomImage from '@/components/RandomImage'
+import ClusterMarker from '~/components/ClusterMarker'
+import RandomImage from '~/components/RandomImage'
 
 function shuffle(array) {
   let counter = array.length

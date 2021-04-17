@@ -45,8 +45,8 @@
   </div>
 </template>
 <script>
-import ModDashboardBase from '@/components/ModDashboardBase'
 import ProfileImage from './ProfileImage'
+import ModDashboardBase from '~/components/ModDashboardBase'
 
 export default {
   components: { ProfileImage },

@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import Supporter from '@/components/Supporter'
+import Supporter from '~/components/Supporter'
 import twem from '~/assets/js/twem'
 import ProfileImage from '~/components/ProfileImage'
 

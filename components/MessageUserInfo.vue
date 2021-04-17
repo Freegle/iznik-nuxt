@@ -42,9 +42,9 @@
 </template>
 
 <script>
-import Supporter from '@/components/Supporter'
 import ModPostingHistory from './ModPostingHistory'
 import ModMemberships from './ModMemberships'
+import Supporter from '~/components/Supporter'
 import ProfileImage from '~/components/ProfileImage'
 const ModModeration = () => import('./ModModeration')
 

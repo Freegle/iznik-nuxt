@@ -173,11 +173,11 @@
 </template>
 
 <script>
-import NewsReplies from '@/components/NewsReplies'
 import waitForRef from '../mixins/waitForRef'
 import NewsReportModal from './NewsReportModal'
 import OurFilePond from './OurFilePond'
 import SpinButton from './SpinButton'
+import NewsReplies from '~/components/NewsReplies'
 import twem from '~/assets/js/twem'
 
 // Use standard import to avoid screen-flicker

@@ -45,7 +45,7 @@
 </template>
 <script>
 import waitForRef from '@/mixins/waitForRef'
-import MessagePhotosModal from '@/components/MessagePhotosModal'
+import MessagePhotosModal from '~/components/MessagePhotosModal'
 
 export default {
   components: { MessagePhotosModal },

@@ -481,9 +481,9 @@
 import { TabsPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import buildHead from '@/mixins/buildHead.js'
-import TermsOfUse from '@/components/TermsOfUse'
-import SupporterInfoModal from '@/components/SupporterInfoModal'
 import Question from '../components/Question'
+import TermsOfUse from '~/components/TermsOfUse'
+import SupporterInfoModal from '~/components/SupporterInfoModal'
 
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')
 const ChatButton = () => import('~/components/ChatButton.vue')

@@ -19,7 +19,7 @@
   </div>
 </template>
 <script>
-import NewsRefer from '@/components/NewsRefer'
+import NewsRefer from '~/components/NewsRefer'
 
 const NewsReply = () => import('~/components/NewsReply.vue')
 

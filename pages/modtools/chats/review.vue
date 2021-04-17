@@ -40,11 +40,11 @@
 import InfiniteLoading from 'vue-infinite-loading'
 import waitForRef from '@/mixins/waitForRef'
 import loginRequired from '@/mixins/loginRequired.js'
-import ModHelpChatReview from '@/components/ModHelpChatReview'
 import ModChatReview from '../../../components/ModChatReview'
 import GroupSelect from '../../../components/GroupSelect'
 import ConfirmModal from '../../../components/ConfirmModal'
 import SpinButton from '../../../components/SpinButton'
+import ModHelpChatReview from '~/components/ModHelpChatReview'
 
 // We need an id for the store.  The null value is a special case used just for retrieving chat review messages.
 const REVIEWCHAT = null

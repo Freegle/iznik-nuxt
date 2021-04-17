@@ -186,10 +186,10 @@ import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import FilePondPluginImageTransform from 'filepond-plugin-image-transform'
 import FilePondPluginImageResize from 'filepond-plugin-image-resize'
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
-import SpinButton from '@/components/SpinButton'
-import BooktasticResult from '@/components/BooktasticResult'
-import NoticeMessage from '@/components/NoticeMessage'
 import waitForRef from '@/mixins/waitForRef'
+import SpinButton from '~/components/SpinButton'
+import BooktasticResult from '~/components/BooktasticResult'
+import NoticeMessage from '~/components/NoticeMessage'
 
 const a = require('axios')
 const axios = a.create({

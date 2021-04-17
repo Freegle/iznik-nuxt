@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import DonationMonthly from '@/components/DonationMonthly'
 import JobsSidebar from './JobsSidebar'
+import DonationMonthly from '~/components/DonationMonthly'
 const VolunteerOpportunitySidebar = () =>
   import('~/components/VolunteerOpportunitySidebar')
 

@@ -44,7 +44,7 @@
 </template>
 <script>
 import modal from '@/mixins/modal'
-import DonationButton from '@/components/DonationButton'
+import DonationButton from '~/components/DonationButton'
 
 export default {
   components: { DonationButton },

@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import AddToCalendar from '@/components/AddToCalendar'
+import AddToCalendar from '~/components/AddToCalendar'
 import ChatBase from '~/components/ChatBase'
 import ProfileImage from '~/components/ProfileImage'
 const RenegeModal = () => import('./RenegeModal')

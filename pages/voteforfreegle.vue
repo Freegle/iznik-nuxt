@@ -41,7 +41,7 @@
 <script>
 import buildHead from '@/mixins/buildHead.js'
 import loginOptional from '@/mixins/loginOptional.js'
-import ExternalLink from '@/components/ExternalLink'
+import ExternalLink from '~/components/ExternalLink'
 
 export default {
   components: { ExternalLink },

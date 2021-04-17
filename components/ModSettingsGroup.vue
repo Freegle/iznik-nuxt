@@ -744,7 +744,7 @@ import NoticeMessage from './NoticeMessage'
 import ModSettingsGroupFacebook from './ModSettingsGroupFacebook'
 const ExternalLink = () => import('~/components/ExternalLink')
 
-const OurToggle = () => import('@/components/OurToggle')
+const OurToggle = () => import('~/components/OurToggle')
 
 let VueEditor, htmlEditButton
 

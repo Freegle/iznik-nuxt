@@ -140,10 +140,10 @@
 
 <script>
 import modal from '@/mixins/modal'
-import NoticeMessage from '@/components/NoticeMessage'
-import Supporter from '@/components/Supporter'
 import DonationThermometer from './DonationThermometer'
 import DonationButton from './DonationButton'
+import NoticeMessage from '~/components/NoticeMessage'
+import Supporter from '~/components/Supporter'
 
 const OurToggle = () => import('~/components/OurToggle')
 

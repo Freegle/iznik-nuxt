@@ -58,7 +58,7 @@
 </template>
 <script>
 import SpinButton from './SpinButton'
-const OurToggle = () => import('@/components/OurToggle')
+const OurToggle = () => import('~/components/OurToggle')
 
 export default {
   components: { OurToggle, SpinButton },

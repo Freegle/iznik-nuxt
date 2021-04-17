@@ -108,9 +108,9 @@
   </div>
 </template>
 <script>
-import ModCake from '@/components/ModCake'
 import SpinButton from './SpinButton'
-const OurToggle = () => import('@/components/OurToggle')
+import ModCake from '~/components/ModCake'
+const OurToggle = () => import('~/components/OurToggle')
 
 export default {
   components: { SpinButton, OurToggle, ModCake },
