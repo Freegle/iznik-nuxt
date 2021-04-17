@@ -27,5 +27,6 @@ do
     else
       echo "Generate failed!"
     fi
+    sleep 600;
   fi
 done
