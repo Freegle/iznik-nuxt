@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import shuffle from '@/mixins/shuffle.js'
 const Job = () => import('./Job')
 const NoticeMessage = () => import('./NoticeMessage')
 const DonationButton = () => import('./DonationButton')
@@ -42,6 +43,7 @@ export default {
     Job,
     DonationButton
   },
+  mixins: [shuffle],
   data: function() {
     return {
       location: null
@@ -50,7 +52,7 @@ export default {
   computed: {
     jobs() {
       let jobs = this.$store.getters['jobs/list']
-      jobs = jobs.slice(0, 3)
+      jobs = this.shuffle(jobs).slice(0, 3)
       return jobs
     },
     blocked() {

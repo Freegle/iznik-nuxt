@@ -1,15 +1,17 @@
 <template>
   <div @click="clicked">
     <div v-if="summary" class="ml-2 mr-2">
-      <h4>
-        {{ job.title }}
-        <span v-if="job.location" class="text-muted">
-          {{ location }}
-        </span>
-      </h4>
-      <p class="text-truncate mt-2 d-none d-lg-block">
-        {{ body }}
-      </p>
+      <ExternalLink :href="job.url">
+        <h4>
+          {{ job.title }}
+          <span v-if="job.location" class="text-muted">
+            {{ location }}
+          </span>
+        </h4>
+        <p class="text-truncate mt-2 d-none d-lg-block black">
+          {{ body }}
+        </p>
+      </ExternalLink>
     </div>
     <b-card v-else no-body variant="info" :class="highlight ? 'job-row bg-info': 'job-row'">
       <b-card-body class="job-row">
@@ -35,9 +37,11 @@
         </b-row>
         <b-row>
           <b-col>
-            <b-btn :href="job.url" target="_blank" variant="info">
-              More Info
-            </b-btn>
+            <ExternalLink :href="job.url">
+              <b-btn variant="info">
+                More Info
+              </b-btn>
+            </ExternalLink>
           </b-col>
         </b-row>
       </b-card-body>
@@ -45,7 +49,9 @@
   </div>
 </template>
 <script>
+import ExternalLink from '@/components/ExternalLink'
 export default {
+  components: { ExternalLink },
   props: {
     job: {
       type: Object,

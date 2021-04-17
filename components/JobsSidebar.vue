@@ -44,6 +44,7 @@
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
+import shuffle from '@/mixins/shuffle.js'
 import Job from './Job'
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const DonationButton = () => import('~/components/DonationButton')
@@ -55,6 +56,7 @@ export default {
     InfiniteLoading,
     DonationButton
   },
+  mixins: [shuffle],
   data: function() {
     return {
       location: null,
@@ -63,7 +65,7 @@ export default {
   },
   computed: {
     jobs() {
-      return this.$store.getters['jobs/list']
+      return this.shuffle(this.$store.getters['jobs/list'])
     },
     blocked() {
       return this.$store.getters['jobs/blocked']

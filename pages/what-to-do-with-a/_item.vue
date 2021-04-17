@@ -47,26 +47,13 @@
 <script>
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
+import shuffle from '@/mixins/shuffle.js'
 import ClusterMarker from '~/components/ClusterMarker'
 import RandomImage from '~/components/RandomImage'
 
-function shuffle(array) {
-  let counter = array.length
-
-  while (counter > 0) {
-    const index = Math.floor(Math.random() * counter)
-    counter--
-    const temp = array[counter]
-    array[counter] = array[index]
-    array[index] = temp
-  }
-
-  return array
-}
-
 export default {
   components: { RandomImage, ClusterMarker },
-  mixins: [buildHead, waitForRef],
+  mixins: [buildHead, waitForRef, shuffle],
   data: function() {
     return {
       showCluster: false,
@@ -105,7 +92,7 @@ export default {
 
       // Find some OFFERs with photos.
       const messages = store.getters['messages/getAll']
-      const shuffled = shuffle(messages)
+      const shuffled = this.shuffle(messages)
 
       for (let i = 0; offers.length < 20 && i < shuffled.length; i++) {
         await store.dispatch('messages/fetch', {
