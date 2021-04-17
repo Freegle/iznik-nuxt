@@ -67,12 +67,7 @@
           />
           <div>
             <ModMemberSummary :member="member" />
-            <div v-if="member.lastaccess" :class="'mb-1 ' + (inactive ? 'text-danger': '')">
-              Last active: {{ member.lastaccess | timeago }}
-              <span v-if="inactive">
-                - won't send mails
-              </span>
-            </div>
+            <ModMemberEngagement :member="member" />
             <div v-if="member.info && member.info.publiclocation">
               Public location: {{ member.info.publiclocation.location }}
             </div>
@@ -189,6 +184,7 @@
   </div>
 </template>
 <script>
+import ModMemberEngagement from '@/components/ModMemberEngagement'
 import waitForRef from '../mixins/waitForRef'
 import SettingsGroup from './SettingsGroup'
 import NoticeMessage from './NoticeMessage'
@@ -213,6 +209,7 @@ const ModLogsModal = () => import('~/components/ModLogsModal')
 export default {
   name: 'ModMember',
   components: {
+    ModMemberEngagement,
     ConfirmModal,
     ModMemberButton,
     ChatButton,
@@ -304,15 +301,6 @@ export default {
       }
 
       return ret
-    },
-    inactive() {
-      // This code matches server code in sendOurMails.
-      return (
-        this.member &&
-        this.member.lastaccess &&
-        this.$dayjs().diff(this.$dayjs(this.member.lastaccess), 'days') >=
-          365 / 2
-      )
     },
     user() {
       return this.$store.getters['user/get'](this.member.userid)
