@@ -348,10 +348,10 @@ import { required, maxLength } from 'vuelidate/lib/validators'
 import cloneDeep from 'lodash.clonedeep'
 import { validationMixin } from 'vuelidate'
 import validationHelpers from '@/mixins/validationHelpers'
-import ValidatingForm from '@/components/ValidatingForm'
-import ValidatingFormInput from '@/components/ValidatingFormInput'
-import ValidatingTextarea from '@/components/ValidatingTextarea'
 import EmailValidator from './EmailValidator'
+import ValidatingForm from '~/components/ValidatingForm'
+import ValidatingFormInput from '~/components/ValidatingFormInput'
+import ValidatingTextarea from '~/components/ValidatingTextarea'
 import twem from '~/assets/js/twem'
 
 const GroupRememberSelect = () => import('~/components/GroupRememberSelect')

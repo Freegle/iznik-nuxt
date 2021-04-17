@@ -24,14 +24,14 @@
   </div>
 </template>
 <script>
-import NoticeMessage from '@/components/NoticeMessage'
 import loginRequired from '@/mixins/loginRequired'
 import createGroupRoute from '@/mixins/createGroupRoute'
-import ModMicrovolunteering from '@/components/ModMicrovolunteering'
-import GroupSelect from '@/components/GroupSelect'
 import InfiniteLoading from 'vue-infinite-loading'
 import ScrollToTop from '../../../../components/ScrollToTop'
 import ModHelpMicrovolunteering from '../../../../components/ModHelpMicrovolunteering'
+import GroupSelect from '~/components/GroupSelect'
+import ModMicrovolunteering from '~/components/ModMicrovolunteering'
+import NoticeMessage from '~/components/NoticeMessage'
 
 export default {
   components: {

@@ -269,12 +269,12 @@ import { TablePlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import DatePicker from 'vue2-datepicker'
 import 'vue2-datepicker/index.css'
-import Impact from '@/components/Impact'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
+import Impact from '~/components/Impact'
 
-const GroupMarker = () => import('@/components/GroupMarker')
+const GroupMarker = () => import('~/components/GroupMarker')
 
 Vue.use(TablePlugin)
 

@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import SupporterInfoModal from '@/components/SupporterInfoModal'
+import SupporterInfoModal from '~/components/SupporterInfoModal'
 export default {
   components: { SupporterInfoModal },
   props: {

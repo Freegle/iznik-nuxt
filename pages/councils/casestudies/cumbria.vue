@@ -199,9 +199,9 @@
 <script>
 import buildHead from '@/mixins/buildHead.js'
 import sectionScroll from '@/mixins/sectionScroll.js'
-import CouncilsContent from '@/components/CouncilsContent'
+import CouncilsContent from '~/components/CouncilsContent'
 
-const ExternalLink = () => import('@/components/ExternalLink')
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
   components: { CouncilsContent, ExternalLink },

@@ -116,13 +116,13 @@ import { required } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
 import loginRequired from '@/mixins/loginRequired.js'
 import validationHelpers from '@/mixins/validationHelpers'
-import ValidatingForm from '@/components/ValidatingForm'
-import ValidatingFormInput from '@/components/ValidatingFormInput'
-import ValidatingTextarea from '@/components/ValidatingTextarea'
-import ModHelpAdmins from '@/components/ModHelpAdmins'
 import NoticeMessage from '../../components/NoticeMessage'
 import ModAdmin from '../../components/ModAdmin'
 import GroupSelect from '../../components/GroupSelect'
+import ValidatingForm from '~/components/ValidatingForm'
+import ValidatingFormInput from '~/components/ValidatingFormInput'
+import ValidatingTextarea from '~/components/ValidatingTextarea'
+import ModHelpAdmins from '~/components/ModHelpAdmins'
 
 const noAdmin = val => {
   return !!(val && val.toLowerCase().indexOf('admin') === -1)

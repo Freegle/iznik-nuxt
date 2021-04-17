@@ -79,9 +79,9 @@ select {
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import compose from '@/mixins/compose.js'
-import CovidWarning from '@/components/CovidWarning'
 import NoticeMessage from '../../components/NoticeMessage'
 import CovidClosed from '../../components/CovidClosed'
+import CovidWarning from '~/components/CovidWarning'
 import Postcode from '~/components/Postcode'
 const ComposeGroup = () => import('~/components/ComposeGroup')
 

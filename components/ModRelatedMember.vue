@@ -46,7 +46,7 @@
   </b-card>
 </template>
 <script>
-import ModMember from '@/components/ModMember'
+import ModMember from '~/components/ModMember'
 
 const LONG_THRESHOLD = 4
 

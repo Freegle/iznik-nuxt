@@ -41,9 +41,9 @@
   </div>
 </template>
 <script>
-import ExternalLink from '@/components/ExternalLink'
-import SpinButton from '@/components/SpinButton'
-const OurToggle = () => import('@/components/OurToggle')
+import ExternalLink from '~/components/ExternalLink'
+import SpinButton from '~/components/SpinButton'
+const OurToggle = () => import('~/components/OurToggle')
 
 export default {
   components: { SpinButton, OurToggle, ExternalLink },

@@ -52,11 +52,11 @@
 </template>
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
-import SidebarRight from '@/components/SidebarRight'
 import buildHead from '@/mixins/buildHead'
 import chatPage from '@/mixins/chatPage'
 import loginRequired from '@/mixins/loginRequired.js'
 import dayjs from 'dayjs'
+import SidebarRight from '~/components/SidebarRight'
 
 // We can't use async on ChatListEntry else the infinite scroll kicks in and tries to load everything while we are
 // still waiting for the import to complete.

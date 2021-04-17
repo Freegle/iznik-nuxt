@@ -94,8 +94,8 @@
   </div>
 </template>
 <script>
-import NoticeMessage from '@/components/NoticeMessage'
 import loginOptional from '@/mixins/loginOptional.js'
+import NoticeMessage from '~/components/NoticeMessage'
 const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {

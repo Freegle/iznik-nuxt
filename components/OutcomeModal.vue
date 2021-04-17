@@ -91,9 +91,9 @@
 </template>
 <script>
 import modal from '@/mixins/modal'
-import NoticeMessage from '@/components/NoticeMessage'
 import OutcomeBy from './OutcomeBy'
 import SpinButton from './SpinButton'
+import NoticeMessage from '~/components/NoticeMessage'
 
 export default {
   components: { NoticeMessage, SpinButton, OutcomeBy },

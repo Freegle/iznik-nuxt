@@ -198,12 +198,12 @@
 </template>
 <script>
 import waitForRef from '@/mixins/waitForRef'
-import ExternalLink from '@/components/ExternalLink'
 import ModConfigSetting from './ModConfigSetting'
 import NoticeMessage from './NoticeMessage'
 import ModSettingsStandardMessageSet from './ModSettingsStandardMessageSet'
 import SpinButton from './SpinButton'
 import ConfirmModal from './ConfirmModal'
+import ExternalLink from '~/components/ExternalLink'
 
 export default {
   components: {

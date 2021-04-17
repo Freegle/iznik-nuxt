@@ -44,10 +44,10 @@
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
-import PlaceAutocomplete from '@/components/PlaceAutocomplete'
-import NoticeMessage from '@/components/NoticeMessage'
+import PlaceAutocomplete from '~/components/PlaceAutocomplete'
+import NoticeMessage from '~/components/NoticeMessage'
 
-const Job = () => import('@/components/Job')
+const Job = () => import('~/components/Job')
 
 export default {
   components: {

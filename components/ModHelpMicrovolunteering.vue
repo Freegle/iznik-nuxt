@@ -22,8 +22,8 @@
 </template>
 <script>
 import helpBox from '@/mixins/helpBox'
-import ExternalLink from '@/components/ExternalLink'
 import NoticeMessage from './NoticeMessage'
+import ExternalLink from '~/components/ExternalLink'
 
 export default {
   components: { ExternalLink, NoticeMessage },

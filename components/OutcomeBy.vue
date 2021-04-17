@@ -32,6 +32,7 @@
       <div :class="'ml-1 took ' + (availableinitially <= 1 ? 'd-none' : '')">
         <NumberIncrementDecrement
           label="Number taken"
+          label-s-r-only
           append-text=" taken"
           :min="0"
           :max="left + user.count"

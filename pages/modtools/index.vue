@@ -116,11 +116,11 @@ const ExternalLink = () => import('~/components/ExternalLink')
 
 // We lazy load these components below, but by importing them here it means they can render their own
 // loading indicators rather than using the lazyload text.
-// import('@/components/ModDashboardRecentCounts.vue')
-// import('@/components/ModDashboardPopularPosts.vue')
-// import('@/components/ModDashboardModeratorsActive.vue')
-// import('@/components/ModDashboardFreeglersReplying.vue')
-// import('@/components/ModDashboardFreeglersPosting.vue')
+// import('~/components/ModDashboardRecentCounts.vue')
+// import('~/components/ModDashboardPopularPosts.vue')
+// import('~/components/ModDashboardModeratorsActive.vue')
+// import('~/components/ModDashboardFreeglersReplying.vue')
+// import('~/components/ModDashboardFreeglersPosting.vue')
 
 export default {
   // We use a lazy-loading trick from https://markus.oberlehner.net/blog/lazy-load-vue-components-when-they-become-visible/.
@@ -134,27 +134,27 @@ export default {
     GroupSelect,
     ModDashboardRecentCounts: lazyLoadComponent({
       componentFactory: () =>
-        import('@/components/ModDashboardRecentCounts.vue'),
+        import('~/components/ModDashboardRecentCounts.vue'),
       loading: ModDashboardSkeleton
     }),
     ModDashboardPopularPosts: lazyLoadComponent({
       componentFactory: () =>
-        import('@/components/ModDashboardPopularPosts.vue'),
+        import('~/components/ModDashboardPopularPosts.vue'),
       loading: ModDashboardSkeleton
     }),
     ModDashboardModeratorsActive: lazyLoadComponent({
       componentFactory: () =>
-        import('@/components/ModDashboardModeratorsActive.vue'),
+        import('~/components/ModDashboardModeratorsActive.vue'),
       loading: ModDashboardSkeleton
     }),
     ModDashboardFreeglersReplying: lazyLoadComponent({
       componentFactory: () =>
-        import('@/components/ModDashboardFreeglersReplying.vue'),
+        import('~/components/ModDashboardFreeglersReplying.vue'),
       loading: ModDashboardSkeleton
     }),
     ModDashboardFreeglersPosting: lazyLoadComponent({
       componentFactory: () =>
-        import('@/components/ModDashboardFreeglersPosting.vue'),
+        import('~/components/ModDashboardFreeglersPosting.vue'),
       loading: ModDashboardSkeleton
     }),
     DatePicker,

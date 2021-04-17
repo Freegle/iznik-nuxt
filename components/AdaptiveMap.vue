@@ -38,19 +38,18 @@
         <h2 class="sr-only">
           Nearby commmunities
         </h2>
-        <div class="dense">
+        <div class="d-flex flex-wrap justify-content-center">
           <div
             v-for="g in closestGroups"
             :key="'group-' + g.id"
           >
-            <b-btn
+            <JoinWithConfirm
+              :id="g.id"
+              :name="g.namedisplay"
               size="md"
-              :to="'/explore/join/' + g.id"
               variant="primary"
               class="m-1"
-            >
-              Join {{ g.namedisplay }}
-            </b-btn>
+            />
           </div>
         </div>
       </div>
@@ -178,6 +177,7 @@ import Vue from 'vue'
 import VueObserveVisibility from 'vue-observe-visibility'
 import InfiniteLoading from 'vue-infinite-loading'
 import map from '@/mixins/map.js'
+import JoinWithConfirm from '~/components/JoinWithConfirm'
 const AdaptiveMapGroup = () => import('./AdaptiveMapGroup')
 const ExternalLink = () => import('./ExternalLink')
 const GroupSelect = () => import('./GroupSelect')
@@ -197,6 +197,7 @@ if (process.browser) {
 
 export default {
   components: {
+    JoinWithConfirm,
     NoticeMessage,
     GroupHeader,
     GroupSelect,
@@ -763,10 +764,6 @@ export default {
 }
 
 .dense {
-  display: grid;
-  grid-auto-flow: column dense;
-  justify-content: center;
-
   .btn {
     max-width: 300px;
     text-overflow: ellipsis;

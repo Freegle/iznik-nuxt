@@ -37,7 +37,7 @@
             />
           </NoticeMessage>
         </div>
-        <ModComments :user="member" />
+        <ModComments :user="member" :expand-comments="expandComments" />
         <ModSpammer v-if="member.spammer" :user="member" />
         <NoticeMessage v-if="member.suspectreason" variant="danger" class="mb-2">
           This freegler is flagged: {{ member.suspectreason }}
@@ -65,15 +65,9 @@
             class="border border-info p-1 flex-grow-1 mr-1"
             @change="settingsChange"
           />
-          <ModModeration :user="member" :membership="member" />
           <div>
             <ModMemberSummary :member="member" />
-            <div v-if="member.lastaccess" :class="'mb-1 ' + (inactive ? 'text-danger': '')">
-              Last active: {{ member.lastaccess | timeago }}
-              <span v-if="inactive">
-                - won't send mails
-              </span>
-            </div>
+            <ModMemberEngagement :member="member" />
             <div v-if="member.info && member.info.publiclocation">
               Public location: {{ member.info.publiclocation.location }}
             </div>
@@ -190,7 +184,6 @@
   </div>
 </template>
 <script>
-import ModModeration from '@/components/ModModeration'
 import waitForRef from '../mixins/waitForRef'
 import SettingsGroup from './SettingsGroup'
 import NoticeMessage from './NoticeMessage'
@@ -207,16 +200,17 @@ import ModMemberLogins from './ModMemberLogins'
 import ModRole from './ModRole'
 import ChatButton from './ChatButton'
 import ModMemberButton from './ModMemberButton'
+import ModMemberEngagement from '~/components/ModMemberEngagement'
 import ConfirmModal from '~/components/ConfirmModal'
-const OurToggle = () => import('@/components/OurToggle')
+const OurToggle = () => import('~/components/OurToggle')
 const ExternalLink = () => import('~/components/ExternalLink')
 const ModLogsModal = () => import('~/components/ModLogsModal')
 
 export default {
   name: 'ModMember',
   components: {
+    ModMemberEngagement,
     ConfirmModal,
-    ModModeration,
     ModMemberButton,
     ChatButton,
     OurToggle,
@@ -252,6 +246,11 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    expandComments: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -302,15 +301,6 @@ export default {
       }
 
       return ret
-    },
-    inactive() {
-      // This code matches server code in sendOurMails.
-      return (
-        this.member &&
-        this.member.lastaccess &&
-        this.$dayjs().diff(this.$dayjs(this.member.lastaccess), 'days') >=
-          365 / 2
-      )
     },
     user() {
       return this.$store.getters['user/get'](this.member.userid)

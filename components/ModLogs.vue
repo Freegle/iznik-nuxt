@@ -26,8 +26,8 @@
   </div>
 </template>
 <script>
-import ModLog from '@/components/ModLog'
 import logsPage from '@/mixins/logsPage.js'
+import ModLog from '~/components/ModLog'
 
 export default {
   components: { ModLog },

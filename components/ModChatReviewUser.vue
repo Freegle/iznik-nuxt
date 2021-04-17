@@ -19,10 +19,10 @@
   </div>
 </template>
 <script>
-import ExternalLink from '@/components/ExternalLink'
 import waitForRef from '../mixins/waitForRef'
 import ModComment from './ModComment'
 import ModCommentAddModal from './ModCommentAddModal'
+import ExternalLink from '~/components/ExternalLink'
 
 const REVIEWCHAT = null
 

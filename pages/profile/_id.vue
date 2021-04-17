@@ -9,7 +9,7 @@
 
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
-import ProfileInfo from '@/components/ProfileInfo'
+import ProfileInfo from '~/components/ProfileInfo'
 
 export default {
   components: {

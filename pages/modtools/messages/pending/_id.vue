@@ -32,12 +32,12 @@
 import loginRequired from '@/mixins/loginRequired'
 import modMessagesPage from '@/mixins/modMessagesPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
-import ModCakeModal from '@/components/ModCakeModal'
-import PreCovidModeration from '@/components/PreCovidModeration'
-import ScrollToTop from '@/components/ScrollToTop'
 import NoticeMessage from '../../../../components/NoticeMessage'
 import GroupSelect from '../../../../components/GroupSelect'
 import ModMessage from '../../../../components/ModMessage'
+import ModCakeModal from '~/components/ModCakeModal'
+import PreCovidModeration from '~/components/PreCovidModeration'
+import ScrollToTop from '~/components/ScrollToTop'
 
 export default {
   components: {

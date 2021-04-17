@@ -24,7 +24,7 @@
 </template>
 <script>
 import modal from '@/mixins/modal'
-import ModCake from '@/components/ModCake'
+import ModCake from '~/components/ModCake'
 
 export default {
   components: {

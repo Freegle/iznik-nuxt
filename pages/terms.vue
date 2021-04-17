@@ -16,7 +16,7 @@
 </template>
 <script>
 import buildHead from '@/mixins/buildHead.js'
-import TermsOfUse from '@/components/TermsOfUse'
+import TermsOfUse from '~/components/TermsOfUse'
 
 export default {
   components: {

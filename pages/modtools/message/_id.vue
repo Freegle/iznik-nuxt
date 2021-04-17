@@ -7,7 +7,7 @@
 </template>
 <script>
 import loginRequired from '@/mixins/loginRequired'
-import ModMessage from '@/components/ModMessage'
+import ModMessage from '~/components/ModMessage'
 
 export default {
   components: {

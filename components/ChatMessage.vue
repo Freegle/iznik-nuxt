@@ -114,7 +114,6 @@
 </template>
 <script>
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
-import ChatMessageWarning from '@/components/ChatMessageWarning'
 import ChatMessageText from './ChatMessageText'
 import ChatMessageImage from './ChatMessageImage'
 import ChatMessageInterested from './ChatMessageInterested'
@@ -127,6 +126,7 @@ import ChatMessageDateRead from './ChatMessageDateRead'
 import ChatMessageModMail from './ChatMessageModMail'
 import ChatMessageSchedule from './ChatMessageSchedule'
 import ChatMessageReport from './ChatMessageReport'
+import ChatMessageWarning from '~/components/ChatMessageWarning'
 
 // System chat message doesn't seem to be used; ReportedUser is for ModTools only.
 

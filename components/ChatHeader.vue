@@ -73,7 +73,7 @@
 <script>
 import chat from '@/mixins/chat.js'
 import waitForRef from '@/mixins/waitForRef'
-import Supporter from '@/components/Supporter'
+import Supporter from '~/components/Supporter'
 
 const ChatBlockModal = () => import('./ChatBlockModal')
 const ChatHideModal = () => import('./ChatHideModal')

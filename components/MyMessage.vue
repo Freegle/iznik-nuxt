@@ -250,10 +250,10 @@
   </div>
 </template>
 <script>
-import AddToCalendar from '@/components/AddToCalendar'
-import PromiseModal from '@/components/PromiseModal'
 import waitForRef from '@/mixins/waitForRef'
 import OutcomeModal from './OutcomeModal'
+import AddToCalendar from '~/components/AddToCalendar'
+import PromiseModal from '~/components/PromiseModal'
 const MyMessageReply = () => import('./MyMessageReply.vue')
 const ShareModal = () => import('./ShareModal')
 const MessageEditModal = () => import('./MessageEditModal')
@@ -406,7 +406,10 @@ export default {
             const thisrating =
               u.info.ratings.Up / (u.info.ratings.Up + u.info.ratings.Down)
 
-            if (rating === null || thisrating > rating) {
+            if (
+              u.info.ratings.Up > u.info.ratings.Down &&
+              (rating === null || thisrating > rating)
+            ) {
               rating = thisrating
               ret = u.id
             }

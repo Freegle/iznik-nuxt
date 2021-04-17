@@ -203,6 +203,7 @@ const config = {
     { src: '~/plugins/axios-token' },
     { src: '~/plugins/axios-baseurl' },
     { src: '~/plugins/dayjs' },
+    { src: '~/plugins/vue-unique-id' },
 
     // Some plugins are client-side features
     { src: '~/plugins/visibility.js', ssr: false },

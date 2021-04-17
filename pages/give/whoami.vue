@@ -70,9 +70,9 @@
 import loginOptional from '@/mixins/loginOptional.js'
 import compose from '@/mixins/compose.js'
 import buildHead from '@/mixins/buildHead.js'
-import NoticeMessage from '@/components/NoticeMessage'
-import ExternalLink from '@/components/ExternalLink'
 import EmailValidator from '../../components/EmailValidator'
+import NoticeMessage from '~/components/NoticeMessage'
+import ExternalLink from '~/components/ExternalLink'
 
 const EmailBelongsToSomeoneElse = () =>
   import('~/components/EmailBelongsToSomeoneElse')
