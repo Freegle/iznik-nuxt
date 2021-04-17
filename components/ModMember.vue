@@ -37,7 +37,7 @@
             />
           </NoticeMessage>
         </div>
-        <ModComments :user="member" />
+        <ModComments :user="member" :expand-comments="expandComments" />
         <ModSpammer v-if="member.spammer" :user="member" />
         <NoticeMessage v-if="member.suspectreason" variant="danger" class="mb-2">
           This freegler is flagged: {{ member.suspectreason }}
@@ -249,6 +249,11 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    expandComments: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {

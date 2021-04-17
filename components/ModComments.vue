@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ModComment v-for="comment in comments" :key="'modcomments-' + user.id + '-' + comment.id" :comment="comment" :user="user" />
+    <ModComment v-for="comment in comments" :key="'modcomments-' + user.id + '-' + comment.id" :comment="comment" :user="user" :expand-comments="expandComments" />
     <div v-if="sortedComments.length > 1" class="mb-1">
       <b-btn v-if="!showAll" variant="white" @click="showAll = true">
         <v-icon name="tag" /> Show {{ sortedComments.length - 1 | pluralize(['more note', 'more notes'], { includeNumber: true }) }}
@@ -20,6 +20,11 @@ export default {
     user: {
       type: Object,
       required: true
+    },
+    expandComments: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
