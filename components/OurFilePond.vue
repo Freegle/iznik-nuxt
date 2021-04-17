@@ -109,10 +109,14 @@ export default {
         // This is the only way of finding out if the browser is supported - see
         // https://github.com/pqina/vue-filepond/issues/136
         this.supported = false
-      } else if (this.browse) {
-        // We have rendered the filepond instance.  Trigger browse so that they can upload a photo without an
-        // extra click.
-        this.$refs.pond.browse()
+      } else {
+        this.$emit('init')
+
+        if (this.browse) {
+          // We have rendered the filepond instance.  Trigger browse so that they can upload a photo without an
+          // extra click.
+          this.$refs.pond.browse()
+        }
       }
     },
     async process(fieldName, file, metadata, load, error, progress, abort) {
@@ -243,3 +247,26 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+
+/deep/ .filepond--root {
+  .filepond--drop-label {
+    background-color: $colour-success-bg;
+
+    label {
+      font-weight: bold;
+    }
+
+    .btn {
+      background-color: $colour-success !important;
+      border-color: $colour-success !important;
+      color: $color-white !important;
+
+      &:hover {
+        background-color: $colour-success-hover !important;
+      }
+    }
+  }
+}
+</style>

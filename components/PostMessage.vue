@@ -6,7 +6,11 @@
         <b-btn
           variant="primary"
           size="lg"
-          class="ml-3 mr-3"
+          :class="{
+            'ml-3': true,
+            'mr-3': true,
+            'invisible': uploading && hidingPhotoButton
+          }"
           @click="photoAdd"
           @drop.prevent="drop"
           @dragover.prevent
@@ -29,6 +33,7 @@
         :multiple="true"
         @photoProcessed="photoProcessed"
         @allProcessed="allProcessed"
+        @init="hidePhotoButton"
       />
     </div>
     <div v-if="suggestions.length && !item.length">
@@ -123,6 +128,7 @@ export default {
       myFiles: [],
       suggestions: [],
       pondBrowse: true,
+      hidingPhotoButton: false,
       vagueness: [
         'eney fink',
         'eney think',
@@ -362,6 +368,9 @@ export default {
           this.$refs.filepond.addFile(f)
         })
       })
+    },
+    hidePhotoButton() {
+      this.hidingPhotoButton = true
     }
   }
 }
