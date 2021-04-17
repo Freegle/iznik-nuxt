@@ -95,9 +95,11 @@ export default {
     },
     goToProfile(id) {
       console.log('Go to profile', id)
-      this.$router.push({
-        path: '/profile/' + id
-      })
+      this.$router
+        .push({
+          path: '/profile/' + id
+        })
+        .catch(() => {})
     }
   }
 }

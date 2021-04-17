@@ -236,7 +236,7 @@ export default {
       this.$store.dispatch('auth/forceLogin', false)
 
       // Go to the landing page.
-      this.$router.push('/modtools')
+      this.$router.push('/modtools').catch(() => {})
     },
     requestLogin() {
       this.$refs.loginModal.show()
@@ -255,7 +255,7 @@ export default {
       e.preventDefault()
     },
     chats(e) {
-      this.$router.push('/modtools/chats')
+      this.$router.push('/modtools/chats').catch(() => {})
       e.stopPropagation()
       e.preventDefault()
     },
@@ -265,7 +265,7 @@ export default {
         e.stopPropagation()
         this.$router.go()
       } else {
-        this.$router.push('/modtools')
+        this.$router.push('/modtools').catch(() => {})
       }
     },
     toggleMenu() {

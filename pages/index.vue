@@ -142,7 +142,7 @@ export default {
         }
 
         if (this.$nuxt.path !== route) {
-          this.$router.push(route)
+          this.$router.push(route).catch(() => {})
         }
       } catch (e) {
         console.log('Exception', e)
@@ -170,12 +170,14 @@ export default {
         variant: this.type + '-place'
       })
 
-      this.$router.push({
-        name: 'explore-place-place',
-        params: {
-          place: JSON.stringify(place)
-        }
-      })
+      this.$router
+        .push({
+          name: 'explore-place-place',
+          params: {
+            place: JSON.stringify(place)
+          }
+        })
+        .catch(() => {})
     }
   }
 }

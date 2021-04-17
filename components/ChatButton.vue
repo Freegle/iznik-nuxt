@@ -97,9 +97,9 @@ export default {
           })
           console.log('Popped up')
         } else {
-          this.$router.push(
-            (modtools ? '/modtools/chats/' : '/chats/') + chatid
-          )
+          this.$router
+            .push((modtools ? '/modtools/chats/' : '/chats/') + chatid)
+            .catch(() => {})
         }
       } else if (this.userid > 0) {
         const chatid = await this.$store.dispatch('chats/openChatToUser', {
@@ -124,9 +124,9 @@ export default {
             id: chatid
           })
         } else if (route) {
-          this.$router.push(
-            (modtools ? '/modtools/chats/' : '/chats/') + chatid
-          )
+          this.$router
+            .push((modtools ? '/modtools/chats/' : '/chats/') + chatid)
+            .catch(() => {})
         }
       }
     }

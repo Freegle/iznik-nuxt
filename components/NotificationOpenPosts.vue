@@ -49,7 +49,7 @@ export default {
         })
       }
 
-      this.$router.push('/myposts')
+      this.$router.push('/myposts').catch(() => {})
     }
   }
 }

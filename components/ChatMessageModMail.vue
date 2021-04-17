@@ -85,9 +85,9 @@ export default {
         attachments: message.attachments
       })
 
-      this.$router.push(
-        message.type === 'Offer' ? '/give/whatisit' : 'find/whatisit'
-      )
+      this.$router
+        .push(message.type === 'Offer' ? '/give/whatisit' : 'find/whatisit')
+        .catch(() => {})
     }
   }
 }

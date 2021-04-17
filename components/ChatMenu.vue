@@ -60,9 +60,9 @@ export default {
       const modtools = this.$store.getters['misc/get']('modtools')
 
       if (modtools) {
-        this.$router.push('/modtools/chats')
+        this.$router.push('/modtools/chats').catch(() => {})
       } else {
-        this.$router.push('/chats')
+        this.$router.push('/chats').catch(() => {})
       }
     }
   }

@@ -219,7 +219,7 @@ export default {
           id: this.reply.chatid
         })
       } else {
-        this.$router.push('/chats/' + this.reply.chatid)
+        this.$router.push('/chats/' + this.reply.chatid).catch(() => {})
       }
     },
     promise() {

@@ -59,7 +59,7 @@ export default {
   mounted() {
     if (!this.$route.params.id) {
       // Probably here by mistake - send to the list of all of them.
-      this.$router.push('/communityevents')
+      this.$router.push('/communityevents').catch(() => {})
     }
   },
   head() {

@@ -138,7 +138,7 @@ export default {
 
       if (currentpc) {
         // We shouldn't be able to progress if we didn't have a postcode.
-        this.$router.push('/find/whoami')
+        this.$router.push('/find/whoami').catch(() => {})
       }
     }
   },

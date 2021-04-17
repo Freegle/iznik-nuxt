@@ -48,7 +48,7 @@ export default function createGroupRoute(key, options = {}) {
           val = groupIdOrNull(val)
           if (val !== oldVal) {
             // We have changed the groupid away from the one in the route! Redirect...
-            this.$router.push(routePath(val))
+            this.$router.push(routePath(val)).catch(() => {})
 
             if (val === DEFAULT_VALUE) {
               this.updateMemory(DEFAULT_VALUE)

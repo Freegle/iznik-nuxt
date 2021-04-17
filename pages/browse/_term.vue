@@ -180,7 +180,7 @@ export default {
       } else {
         // We aren't a member of any groups and we don't know where we are.  This can happen, but it's rare.
         // Send them to the explore page to pick somewhere.
-        this.$router.push('/explore')
+        this.$router.push('/explore').catch(() => {})
       }
 
       if (bounds) {

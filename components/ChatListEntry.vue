@@ -89,7 +89,9 @@ export default {
     click: function() {
       // We need to do a full route otherwise the back button doesn't work.
       const modtools = this.$store.getters['misc/get']('modtools')
-      this.$router.push((modtools ? '/modtools/chats/' : '/chats/') + this.id)
+      this.$router
+        .push((modtools ? '/modtools/chats/' : '/chats/') + this.id)
+        .catch(() => {})
     }
   }
 }

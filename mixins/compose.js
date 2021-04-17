@@ -298,15 +298,19 @@ export default {
 
           await Promise.all(promises)
 
-          this.$router.push({
-            name: 'myposts',
-            params: params
-          })
+          this.$router
+            .push({
+              name: 'myposts',
+              params: params
+            })
+            .catch(() => {})
         } else {
           // Was probably already submitted
-          this.$router.push({
-            name: 'myposts'
-          })
+          this.$router
+            .push({
+              name: 'myposts'
+            })
+            .catch(() => {})
         }
       } catch (e) {
         console.log('Submit failed', e)

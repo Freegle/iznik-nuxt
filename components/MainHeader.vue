@@ -272,7 +272,7 @@ export default {
       this.$store.dispatch('auth/forceLogin', false)
 
       // Go to the landing page.
-      this.$router.push('/')
+      this.$router.push('/').catch(() => {})
     },
     async showAboutMe() {
       await this.$store.dispatch('auth/fetchUser', {
@@ -292,7 +292,7 @@ export default {
       try {
         this.$router.back()
       } catch (e) {
-        this.$router.push('/')
+        this.$router.push('/').catch(() => {})
       }
     }
   }

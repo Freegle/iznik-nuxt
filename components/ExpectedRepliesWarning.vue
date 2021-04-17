@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     go(id) {
-      this.$router.push('/chats/' + id)
+      this.$router.push('/chats/' + id).catch(() => {})
     }
   }
 }

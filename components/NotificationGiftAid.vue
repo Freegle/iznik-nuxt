@@ -37,7 +37,7 @@ export default {
         })
       }
 
-      this.$router.push('/giftaid')
+      this.$router.push('/giftaid').catch(() => {})
     }
   }
 }
