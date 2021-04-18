@@ -33,7 +33,7 @@
           </b-button>
         </div>
 
-        <b-tooltip :show.sync="showToolTip" target="postcodeautocomplete" placement="top" variant="primary" triggers="">
+        <b-tooltip :show.sync="showToolTip" :target="$id('postcodeautocomplete')" placement="top" variant="primary" triggers="">
           <div class="font-weight-bold">
             Your device thinks you're here.<br><br>
 
@@ -42,7 +42,7 @@
         </b-tooltip>
         <b-tooltip
           :show="wip && (!results || !results.length)"
-          target="postcodeautocomplete"
+          :target="$id('postcodeautocomplete')"
           placement="top"
           variant="primary"
           triggers=""
