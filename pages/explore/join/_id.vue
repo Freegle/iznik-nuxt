@@ -56,7 +56,7 @@ export default {
         this.invalid = true
       }
     } else {
-      this.$router.push('/explore').catch(() => {})
+      this.$router.push('/explore')
     }
   },
   methods: {
@@ -69,7 +69,7 @@ export default {
       })
 
       // Route back.
-      this.$router.push('/explore/' + group.nameshort).catch(() => {})
+      this.$router.push('/explore/' + group.nameshort)
     }
   }
 }

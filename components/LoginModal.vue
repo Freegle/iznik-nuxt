@@ -381,7 +381,7 @@ export default {
 
               if (this.$route.path === '/' || !this.$route.path) {
                 // We've signed up from the home page.  Send them to the explore page to find a group.
-                this.$router.push('/explore').catch(() => {})
+                this.$router.push('/explore')
               }
             })
             .catch(e => {
@@ -549,7 +549,7 @@ export default {
     forgot() {
       this.hide()
       this.$store.dispatch('auth/forceLogin', false)
-      this.$router.push('/forgot').catch(() => {})
+      this.$router.push('/forgot')
     }
   }
 }

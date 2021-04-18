@@ -157,7 +157,7 @@ export default {
 
       if (!me) {
         // We need to force them to log in.
-        this.$router.push('/explore/join/' + this.group.id).catch(() => {})
+        this.$router.push('/explore/join/' + this.group.id)
       } else {
         this.joiningOrLeaving = true
 

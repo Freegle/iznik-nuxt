@@ -50,7 +50,7 @@ export default {
       })
     },
     confirmed() {
-      this.$router.push('/explore/join/' + this.id).catch(() => {})
+      this.$router.push('/explore/join/' + this.id)
     }
   }
 }

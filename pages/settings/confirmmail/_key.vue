@@ -124,7 +124,7 @@ export default {
   },
   methods: {
     closed() {
-      this.$router.push('/chitchat').catch(() => {})
+      this.$router.push('/chitchat')
     },
     async resend() {
       await this.$store.dispatch('auth/saveAndGet', {

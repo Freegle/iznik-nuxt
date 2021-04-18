@@ -24,7 +24,7 @@ export default {
     }
 
     // Now route on to where we were supposed to go.
-    this.$router.push('/' + (this.action ? this.action : '')).catch(() => {})
+    this.$router.push('/' + (this.action ? this.action : ''))
   }
 }
 </script>

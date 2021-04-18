@@ -179,6 +179,7 @@ module.exports = {
     { src: '~/plugins/api.js' },
 
     // Global mixins.
+    { src: '~/mixins/global.js' },
     { src: '~/mixins/me.js' },
 
     // Our parameters serialize differently from axios defaults

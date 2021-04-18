@@ -142,7 +142,7 @@ export default {
         }
 
         if (this.$nuxt.path !== route) {
-          this.$router.push(route).catch(() => {})
+          this.$router.push(route)
         }
       } catch (e) {
         console.log('Exception', e)

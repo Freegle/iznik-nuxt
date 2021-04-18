@@ -643,7 +643,7 @@ export default {
         id: this.id
       })
 
-      this.$router.push('/chats').catch(() => {})
+      this.$router.push('/chats')
     },
     report() {
       this.$refs.chatreport.show()

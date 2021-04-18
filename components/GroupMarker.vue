@@ -52,7 +52,7 @@ export default {
       if (this.group.external) {
         window.open(this.group.external)
       } else {
-        this.$router.push('/explore/' + this.group.nameshort).catch(() => {})
+        this.$router.push('/explore/' + this.group.nameshort)
       }
     }
   }

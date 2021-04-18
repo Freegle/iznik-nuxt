@@ -56,7 +56,7 @@ export default {
           '/modtools/members/approved/search/' +
           (this.groupid ? this.groupid + '/' : '') +
           this.term.trim()
-        this.$router.push(url).catch(() => {})
+        this.$router.push(url)
       })
     }
   }

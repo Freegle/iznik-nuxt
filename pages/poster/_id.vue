@@ -13,7 +13,7 @@ export default {
     this.id = this.$route.params.id
   },
   mounted() {
-    this.$router.push('/noticeboards/' + this.id).catch(() => {})
+    this.$router.push('/noticeboards/' + this.id)
   }
 }
 </script>

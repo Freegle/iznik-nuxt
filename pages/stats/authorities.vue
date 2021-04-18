@@ -63,7 +63,7 @@ export default {
       return ret
     },
     select(auth) {
-      this.$router.push('/stats/authority/' + auth.id).catch(() => {})
+      this.$router.push('/stats/authority/' + auth.id)
     }
   },
   head() {

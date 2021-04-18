@@ -140,7 +140,7 @@ export default {
       } else {
         // Almost always this means they've clicked on the same link twice.  Tell them we've removed the account
         // otherwise they'll get confused.
-        this.$router.push('/unsubscribed').catch(() => {})
+        this.$router.push('/unsubscribed')
       }
     }
   },
@@ -180,7 +180,7 @@ export default {
       if (ret) {
         this.$refs.forgetfail.show()
       } else {
-        this.$router.push('/unsubscribed').catch(() => {})
+        this.$router.push('/unsubscribed')
       }
     },
 

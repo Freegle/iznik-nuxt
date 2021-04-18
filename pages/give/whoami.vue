@@ -104,7 +104,7 @@ export default {
   },
   mounted() {
     if (!this.valid) {
-      this.$router.push('/give/whatisit').catch(() => {})
+      this.$router.push('/give/whatisit')
     }
   },
   methods: {

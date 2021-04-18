@@ -89,7 +89,7 @@ export default {
   },
   mounted() {
     if (!this.valid) {
-      this.$router.push('/find/whatisit').catch(() => {})
+      this.$router.push('/find/whatisit')
     }
   },
   methods: {

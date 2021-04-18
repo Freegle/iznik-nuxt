@@ -71,7 +71,7 @@ export default {
           e.stopPropagation()
           this.$router.go()
         } else {
-          this.$router.push(this.link).catch(() => {})
+          this.$router.push(this.link)
         }
       }
     }

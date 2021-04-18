@@ -77,7 +77,7 @@ export default {
   },
   mounted() {
     if (this.me) {
-      this.$router.push('/').catch(() => {})
+      this.$router.push('/')
     }
   },
   methods: {

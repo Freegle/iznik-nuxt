@@ -25,10 +25,10 @@ export default {
       if (returnto) {
         // Go where we want to be.  Make sure we remove the code to avoid us trying to log in again.
         console.log('Return to', returnto)
-        this.$router.push(returnto).catch(() => {})
+        this.$router.push(returnto)
       } else {
         console.log('Just go home')
-        this.$router.push('/').catch(() => {})
+        this.$router.push('/')
       }
     } else if (!code) {
       // Probably they rejected our authorisation.  Just go back to the same page we were at.
@@ -59,7 +59,7 @@ export default {
               this.$router.go(returnto)
             } else {
               console.log('Just go home')
-              this.$router.push('/').catch(() => {})
+              this.$router.push('/')
             }
           } else {
             // Sometimes this fails on the server side.  Force login again.

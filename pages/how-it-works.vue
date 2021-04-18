@@ -7,7 +7,7 @@
 export default {
   // Lega
   mounted() {
-    this.$router.push('/').catch(() => {})
+    this.$router.push('/')
   }
 }
 </script>
