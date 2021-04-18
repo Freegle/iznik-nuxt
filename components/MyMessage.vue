@@ -607,11 +607,9 @@ export default {
         attachments: this.message.attachments
       })
 
-      this.$router
-        .push(
-          this.message.type === 'Offer' ? '/give/whatisit' : '/find/whatisit'
-        )
-        .catch(() => {})
+      this.$router.push(
+        this.message.type === 'Offer' ? '/give/whatisit' : '/find/whatisit'
+      )
     },
     hasOutcome(val) {
       let ret = false

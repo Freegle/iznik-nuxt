@@ -48,19 +48,15 @@ export default {
   watch: {
     groupid(newVal) {
       if (newVal) {
-        this.$router
-          .push(
-            '/modtools/members/approved/search/' + newVal + '/' + this.search
-          )
-          .catch(() => {})
+        this.$router.push(
+          '/modtools/members/approved/search/' + newVal + '/' + this.search
+        )
       }
     },
     search(newVal) {
       if (!newVal) {
         // Cleared box.
-        this.$router
-          .push('/modtools/members/approved/' + this.groupid)
-          .catch(() => {})
+        this.$router.push('/modtools/members/approved/' + this.groupid)
       }
     }
   },

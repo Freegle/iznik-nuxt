@@ -101,9 +101,7 @@ export default {
       })
 
       const modtools = this.$store.getters['misc/get']('modtools')
-      this.$router
-        .push((modtools ? '/modtools' : '') + '/chats')
-        .catch(() => {})
+      this.$router.push((modtools ? '/modtools' : '') + '/chats')
     }
   }
 }

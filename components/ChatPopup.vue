@@ -237,9 +237,9 @@ export default {
     maximise() {
       const modtools = this.$store.getters['misc/get']('modtools')
       this.$store.dispatch('popupchats/hide', { id: this.chat.id })
-      this.$router
-        .push((modtools ? '/modtools' : '') + '/chats/' + this.chat.id)
-        .catch(() => {})
+      this.$router.push(
+        (modtools ? '/modtools' : '') + '/chats/' + this.chat.id
+      )
     },
     onResize: function(x, y, width, height) {
       this.$store.dispatch('popupchats/popup', {

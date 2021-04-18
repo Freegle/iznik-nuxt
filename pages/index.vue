@@ -170,14 +170,12 @@ export default {
         variant: this.type + '-place'
       })
 
-      this.$router
-        .push({
-          name: 'explore-place-place',
-          params: {
-            place: JSON.stringify(place)
-          }
-        })
-        .catch(() => {})
+      this.$router.push({
+        name: 'explore-place-place',
+        params: {
+          place: JSON.stringify(place)
+        }
+      })
     }
   }
 }

@@ -40,9 +40,7 @@ export default {
   },
   methods: {
     click() {
-      this.$router
-        .push('/chitchat/' + this.notification.newsfeed.id)
-        .catch(() => {})
+      this.$router.push('/chitchat/' + this.notification.newsfeed.id)
     }
   }
 }

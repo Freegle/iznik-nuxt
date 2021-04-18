@@ -63,9 +63,7 @@ export default {
       if (this.notification.url) {
         window.open(this.notification.url)
       } else if (this.notification.newsfeed) {
-        this.$router
-          .push('/chitchat/' + this.notification.newsfeed.id)
-          .catch(() => {})
+        this.$router.push('/chitchat/' + this.notification.newsfeed.id)
       }
     },
     showModal() {

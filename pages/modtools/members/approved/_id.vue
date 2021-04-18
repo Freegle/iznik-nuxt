@@ -84,9 +84,7 @@ export default {
     search(newVal) {
       if (!newVal) {
         // Cleared box.
-        this.$router
-          .push('/modtools/members/approved/' + this.groupid)
-          .catch(() => {})
+        this.$router.push('/modtools/members/approved/' + this.groupid)
       }
     }
   },
@@ -106,9 +104,7 @@ export default {
       })
 
       if (countmod === 1) {
-        this.$router
-          .push('/modtools/members/approved/' + lastmod)
-          .catch(() => {})
+        this.$router.push('/modtools/members/approved/' + lastmod)
       }
     }
   },
