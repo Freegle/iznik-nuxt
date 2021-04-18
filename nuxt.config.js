@@ -510,8 +510,11 @@ module.exports = {
         }
 
         // Sentry logs unhelpful exceptions - see https://github.com/getsentry/sentry-javascript/issues/2210.
-        if (hint && hint.originalException instanceof Event) {
+        if (hint) {
           console.log("Original exception", hint.originalException)
+        }
+
+        if (hint && hint.originalException instanceof Event) {
           event.extra.isTrusted = hint.originalException.isTrusted
           event.extra.detail = hint.originalException.detail
           event.extra.type = hint.originalException.type
