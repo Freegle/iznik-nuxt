@@ -494,7 +494,12 @@ module.exports = {
           if (!event.breadcrumbs) return false
 
           for (const breadcrumb of event.breadcrumbs) {
-            if (breadcrumb.message.includes('div#honeyContainer')) return true
+            if (
+              breadcrumb.message &&
+              breadcrumb.message.includes('div#honeyContainer')
+            ) {
+              return true
+            }
           }
 
           return false
