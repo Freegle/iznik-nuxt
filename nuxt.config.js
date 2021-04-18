@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import sitemap from './utils/sitemap.js'
 import Sentry from '@nuxtjs/sentry'
+import sitemap from './utils/sitemap.js'
 
 const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
@@ -381,7 +381,11 @@ module.exports = {
         process.env.NODE_ENV === 'development' ? '[name].js' : '[chunkhash].js'
     },
 
-    transpile: [/^vue2-google-maps($|\/)/, 'vue-lazy-youtube-video', 'vue-draggable-resizable'],
+    transpile: [
+      /^vue2-google-maps($|\/)/,
+      'vue-lazy-youtube-video',
+      'vue-draggable-resizable'
+    ],
 
     extend(config, ctx) {
       if (process.env.NODE_ENV !== 'production') {
@@ -443,10 +447,10 @@ module.exports = {
     hooks: {
       'build:done'() {
         const modulesToClear = ['vue', 'vue/dist/vue.runtime.common.prod']
-        modulesToClear.forEach((entry) => {
+        modulesToClear.forEach(entry => {
           delete require.cache[require.resolve(entry)]
         })
-      },
+      }
     },
 
     babel: {
@@ -483,6 +487,24 @@ module.exports = {
   sentry: {
     dsn: SENTRY_DSN,
     publishRelease: false,
+    config: {
+      beforeSend(event, hint) {
+        // Honey extension causes errors.
+        function isHoneyIssue(event) {
+          if (!event.breadcrumbs) return false
+
+          for (const breadcrumb of event.breadcrumbs) {
+            if (breadcrumb.message.includes('div#honeyContainer')) return true
+          }
+
+          return false
+        }
+
+        if (isHoneyIssue(event)) return null
+
+        return event
+      }
+    },
     clientIntegrations: function(integrations) {
       // Don't include breadcrumbs as this makes POSTs too large, and they fail.
       const ours = integrations
