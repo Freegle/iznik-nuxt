@@ -137,6 +137,7 @@ export default {
           ? member.comments.replace(/[\n\r]+/g, '').trim()
           : ''
 
+        // This code matches the code in Group.php on the server.
         if (
           comment.length &&
           comment !== 'Sorry, this is no longer available.' &&
