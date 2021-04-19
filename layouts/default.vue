@@ -102,6 +102,7 @@ export default {
     try {
       // Set the build date.  This may get superceded by Sentry releases, but it does little harm to add it in.
       this.$sentry.setExtra('builddate', process.env.BUILD_DATE)
+      if (process.env.IS_APP) this.$sentry.setExtra('isapp', process.env.IS_MTAPP ? 'MT' : 'FD')
 
       if (me) {
         // Set the context for sentry so that we know which users are having errors.

@@ -155,6 +155,7 @@ export default {
   methods: {
     async getContacts() {
       if (process.env.IS_APP) {
+        // throw new Error("TEST APP ERROR BY CHRIS")
         function onError(contactError) {
           console.log('navigator.contacts.pickContact onError!', contactError)
           if( contactError==20) alert('Sorry, no permission')
