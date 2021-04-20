@@ -24,13 +24,13 @@
             :icon="item.from.icon"
           />
           <l-marker
-            v-if="showReplies"
+            v-if="showReplies && item"
             :lat-lng="[item.tolat, item.tolng]"
             :icon="replyIcon(item.touser)"
             :z-index-offset="1000"
           />
           <VisualiseUser
-            v-if="showTo"
+            v-if="showTo && item"
             :id="item.to.id"
             ref="touser"
             :lat="item.tolat"

@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import sitemap from './utils/sitemap.js'
 import Sentry from '@nuxtjs/sentry'
+import sitemap from './utils/sitemap.js'
 
 const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
@@ -188,6 +188,7 @@ const config = {
     { src: '~/plugins/api.js' },
 
     // Global mixins.
+    { src: '~/mixins/global.js' },
     { src: '~/mixins/me.js' },
 
     // Our parameters serialize differently from axios defaults
@@ -394,7 +395,11 @@ const config = {
         process.env.NODE_ENV === 'development' ? '[name].js' : '[chunkhash].js'
     },
 
-    transpile: [/^vue2-google-maps($|\/)/, 'vue-lazy-youtube-video', 'vue-draggable-resizable'],
+    transpile: [
+      /^vue2-google-maps($|\/)/,
+      'vue-lazy-youtube-video',
+      'vue-draggable-resizable'
+    ],
 
     extend(config, ctx) {
       if (process.env.NODE_ENV !== 'production') {
@@ -456,10 +461,10 @@ const config = {
     hooks: {
       'build:done'() {
         const modulesToClear = ['vue', 'vue/dist/vue.runtime.common.prod']
-        modulesToClear.forEach((entry) => {
+        modulesToClear.forEach(entry => {
           delete require.cache[require.resolve(entry)]
         })
-      },
+      }
     },
 
     babel: {
@@ -496,6 +501,45 @@ const config = {
   sentry: {
     dsn: SENTRY_DSN,
     publishRelease: false,
+    config: {
+      beforeSend(event, hint) {
+        function isSafariExtension(event, hint) {
+          if (
+            !hint ||
+            !hint.originalException ||
+            !hint.originalException.stack
+          ) {
+            return false
+          }
+
+          if (
+            hint.originalException.stack.indexOf('safari-extension:') !== -1
+          ) {
+            return true
+          }
+
+          return false
+        }
+
+        if (isSafariExtension(event)) {
+          // Honey extension causes errors, and we're not interested in any errors inside extensions.
+          return null
+        }
+
+        // Sentry logs unhelpful exceptions - see https://github.com/getsentry/sentry-javascript/issues/2210.
+        if (hint) {
+          console.log('Original exception', hint.originalException)
+        }
+
+        if (hint && hint.originalException instanceof Event) {
+          event.extra.isTrusted = hint.originalException.isTrusted
+          event.extra.detail = hint.originalException.detail
+          event.extra.type = hint.originalException.type
+        }
+
+        return event
+      }
+    },
     clientIntegrations: function(integrations) {
       // Don't include breadcrumbs as this makes POSTs too large, and they fail.
       const ours = integrations
