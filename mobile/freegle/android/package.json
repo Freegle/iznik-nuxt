@@ -31,7 +31,6 @@
   "devDependencies": {
     "@havesource/cordova-plugin-push": "1.0.0",
     "cordova-plugin-whitelist": "^1.3.4",
-    "ionic-plugin-deeplinks": "1.0.22",
     "phonegap-plugin-push": "2.3.0"
   },
   "cordova": {
@@ -59,24 +58,6 @@
       "phonegap-plugin-push": {
         "ANDROID_SUPPORT_V13_VERSION": "27.+",
         "FCM_VERSION": "17.0.+"
-      },
-      "ionic-plugin-deeplinks": {
-        "URL_SCHEME": "freegle",
-        "DEEPLINK_SCHEME": "https",
-        "DEEPLINK_HOST": "ilovefreegle.org",
-        "ANDROID_PATH_PREFIX": "/",
-        "ANDROID_2_PATH_PREFIX": "/",
-        "ANDROID_3_PATH_PREFIX": "/",
-        "ANDROID_4_PATH_PREFIX": "/",
-        "ANDROID_5_PATH_PREFIX": "/",
-        "DEEPLINK_2_SCHEME": " ",
-        "DEEPLINK_2_HOST": " ",
-        "DEEPLINK_3_SCHEME": " ",
-        "DEEPLINK_3_HOST": " ",
-        "DEEPLINK_4_SCHEME": " ",
-        "DEEPLINK_4_HOST": " ",
-        "DEEPLINK_5_SCHEME": " ",
-        "DEEPLINK_5_HOST": " "
       }
     },
     "platforms": [
