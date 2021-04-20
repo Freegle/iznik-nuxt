@@ -489,29 +489,32 @@ module.exports = {
     publishRelease: false,
     config: {
       beforeSend(event, hint) {
-        // Honey extension causes errors.
-        function isHoneyIssue(event) {
-          if (!event.breadcrumbs) return false
+        function isSafariExtension(event, hint) {
+          if (
+            !hint ||
+            !hint.originalException ||
+            !hint.originalException.stack
+          ) {
+            return false
+          }
 
-          for (const breadcrumb of event.breadcrumbs) {
-            if (
-              breadcrumb.message &&
-              breadcrumb.message.includes('div#honeyContainer')
-            ) {
-              return true
-            }
+          if (
+            hint.originalException.stack.indexOf('safari-extension:') !== -1
+          ) {
+            return true
           }
 
           return false
         }
 
-        if (isHoneyIssue(event)) {
+        if (isSafariExtension(event)) {
+          // Honey extension causes errors, and we're not interested in any errors inside extensions.
           return null
         }
 
         // Sentry logs unhelpful exceptions - see https://github.com/getsentry/sentry-javascript/issues/2210.
         if (hint) {
-          console.log("Original exception", hint.originalException)
+          console.log('Original exception', hint.originalException)
         }
 
         if (hint && hint.originalException instanceof Event) {
