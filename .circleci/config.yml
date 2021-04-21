@@ -202,7 +202,7 @@ jobs:
           #install-npm: false
           #node-version: "14.15.4"
           #npm-version: "6.14.11"
-      - run: npm -v; node -v # OK: 7.5.2 v14.15.4  # 6.14.11 v14.15.4
+      - run: npm -v; node -v # OK: 7.5.2 v14.15.4  # 6.14.11 v14.15.4 # Seems OK: 7.10.0 14.16.1
 
       - run: npm install
       - run: npm install -g cordova rimraf # @9.0.0
