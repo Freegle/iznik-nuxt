@@ -31,7 +31,7 @@
   "devDependencies": {
     "@havesource/cordova-plugin-push": "1.0.0",
     "cordova-plugin-whitelist": "^1.3.4",
-    "ionic-plugin-deeplinks": "1.0.22",
+    "ionic-plugin-deeplinks": "git+https://github.com/Freegle/ionic-plugin-deeplinks.git",
     "phonegap-plugin-push": "2.3.0"
   },
   "cordova": {

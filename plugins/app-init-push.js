@@ -14,6 +14,11 @@ const pushstate = Vue.observable({
   chatid: false
 })
 
+const linkstate = Vue.observable({
+  received: false, // Set to true to handle push in Vue context
+  route: false
+})
+
 let acceptedMobilePushId = false
 let mobilePush = false
 let lastPushMsgid = false
@@ -59,22 +64,21 @@ const cordovaApp = {
       }
 
       if (!process.env.IS_MTAPP) {
-        console.log('window.IonicDeeplink START')
         window.IonicDeeplink.route({
-          '/chats': {
-            target: 'chats',
-            parent: ''
-          },
           '/': {
             target: '',
             parent: ''
           }
         }, function (match) {
-          console.log('========== Successfully matched route', match)
+          console.log('========== Universal/App-link NOT HANDLED', match)
         }, function (nomatch) {
-          console.error('========== Got a deeplink that didn\'t match', nomatch)
+          console.log('========== Universal/App-link', nomatch.$link.path)
+          if (nomatch && nomatch.$link && 'path' in nomatch.$link) {
+            console.log('linkstate.route')
+            linkstate.route = nomatch.$link.path
+            linkstate.received = true
+          }
         })
-        console.log('window.IonicDeeplink END')
       }
 
       console.log('push init start')
@@ -342,6 +346,29 @@ export default ({ app, store }) => { // route
 
           pushstate.pushed = false
           pushstate.route = false
+        }
+      }
+    )
+    // When linkstate.received, move to given route
+    store.watch(
+      () => linkstate.received,
+      received => {
+        if (received) {
+          if (linkstate.route === '') linkstate.route = '/'
+          console.log('linkstate.received', app.router.currentRoute.path, linkstate.route)
+          if (app.router.currentRoute.path !== linkstate.route) {
+            console.log('GO TO ', linkstate.route)
+            app.router.push({ path: linkstate.route })
+            setTimeout(function () {
+              console.log('CHECKING', app.router.currentRoute.path, linkstate.route)
+              if (app.router.currentRoute.path !== linkstate.route) {
+                console.log('RE GO TO ', linkstate.route)
+                app.router.push({ path: linkstate.route })
+              }
+            }, 5000)
+
+          }
+          linkstate.received = false
         }
       }
     )
