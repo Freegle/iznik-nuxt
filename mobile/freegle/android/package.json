@@ -29,8 +29,9 @@
   },
   "devDependencies": {
     "@havesource/cordova-plugin-push": "1.0.0",
+    "cordova-android": "8.1.0",
     "cordova-plugin-whitelist": "^1.3.4",
-    "ionic-plugin-deeplinks": "https://github.com/Freegle/ionic-plugin-deeplinks",
+    "ionic-plugin-deeplinks": "file:../ionic-plugin-deeplinks",
     "phonegap-plugin-push": "2.3.0"
   },
   "cordova": {
