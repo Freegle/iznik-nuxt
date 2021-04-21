@@ -12,7 +12,6 @@
   ],
   "author": "Chris Cant",
   "dependencies": {
-    "cordova-android": "^8.1.0",
     "cordova-plugin-calendar": "5.1.5",
     "cordova-plugin-camera": "^4.1.0",
     "cordova-plugin-contacts": "3.0.1",
@@ -31,7 +30,7 @@
   "devDependencies": {
     "@havesource/cordova-plugin-push": "1.0.0",
     "cordova-plugin-whitelist": "^1.3.4",
-    "ionic-plugin-deeplinks": "git+https://github.com/Freegle/ionic-plugin-deeplinks.git",
+    "ionic-plugin-deeplinks": "https://github.com/Freegle/ionic-plugin-deeplinks",
     "phonegap-plugin-push": "2.3.0"
   },
   "cordova": {
