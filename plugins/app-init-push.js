@@ -58,6 +58,25 @@ const cordovaApp = {
         cordova.plugins.ZoomControl.setUseWideViewPort('false') // Sets whether the WebView should enable support for the "viewport" HTML meta tag or should use a wide viewport.
       }
 
+      if (!process.env.IS_MTAPP) {
+        console.log('window.IonicDeeplink START')
+        window.IonicDeeplink.route({
+          '/chats': {
+            target: 'chats',
+            parent: ''
+          },
+          '/': {
+            target: '',
+            parent: ''
+          }
+        }, function (match) {
+          console.log('========== Successfully matched route', match)
+        }, function (nomatch) {
+          console.error('========== Got a deeplink that didn\'t match', nomatch)
+        })
+        console.log('window.IonicDeeplink END')
+      }
+
       console.log('push init start')
       if ((typeof window.PushNotification === 'undefined') || (!PushNotification)) {
         console.log('NO PUSH NOTIFICATION SERVICE')

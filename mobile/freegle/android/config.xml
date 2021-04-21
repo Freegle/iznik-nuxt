@@ -18,6 +18,7 @@
   <platform name="android">
     <not-set-preference name="android-minSdkVersion" value="22" />
     <preference name="android-targetSdkVersion" value="29" />
+    <preference name="AndroidLaunchMode" value="singleTask" />
   </platform>
   <splash density="ldpi" height="426" orientation="portrait" platform="android" src="package-assets/FreegleSplash_320x426.png" width="320" />
   <splash density="mdpi" height="470" orientation="portrait" platform="android" src="package-assets/FreegleSplash_320x470.png" width="320" />
