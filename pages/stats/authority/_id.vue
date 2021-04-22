@@ -652,6 +652,7 @@ export default {
           const overlap = this.overlap(groupid)
           const stat = this.stats[groupid]
           const outcomes = stat.OutcomesPerMonth
+          let thisone = 0
 
           const start = this.last3Months[mon].startOf('month')
           const end = this.last3Months[mon].endOf('month')
@@ -660,7 +661,8 @@ export default {
             const m = this.$dayjs(outcome.date + '-01')
 
             if (!m.isBefore(start) && !m.isAfter(end)) {
-              count += outcome.count * overlap
+              thisone += outcome.count * overlap
+              count += thisone
             }
           }
         }
