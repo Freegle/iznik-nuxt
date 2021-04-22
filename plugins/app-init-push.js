@@ -72,9 +72,9 @@ const cordovaApp = {
         }, function (match) {
           console.log('========== Universal/App-link NOT HANDLED', match)
         }, function (nomatch) {
-          console.log('========== Universal/App-link', nomatch.$link.path)
+          // console.log('========== Universal/App-link', nomatch.$link.path)
           if (nomatch && nomatch.$link && 'path' in nomatch.$link) {
-            console.log('linkstate.route')
+            console.log('linkstate.route', nomatch.$link.path)
             linkstate.route = nomatch.$link.path
             linkstate.received = true
           }
@@ -355,12 +355,12 @@ export default ({ app, store }) => { // route
       received => {
         if (received) {
           if (linkstate.route === '') linkstate.route = '/'
-          console.log('linkstate.received', app.router.currentRoute.path, linkstate.route)
+          // console.log('linkstate.received', app.router.currentRoute.path, linkstate.route)
           if (app.router.currentRoute.path !== linkstate.route) {
             console.log('GO TO ', linkstate.route)
             app.router.push({ path: linkstate.route })
             setTimeout(function () {
-              console.log('CHECKING', app.router.currentRoute.path, linkstate.route)
+              // console.log('CHECKING', app.router.currentRoute.path, linkstate.route)
               if (app.router.currentRoute.path !== linkstate.route) {
                 console.log('RE GO TO ', linkstate.route)
                 app.router.push({ path: linkstate.route })
