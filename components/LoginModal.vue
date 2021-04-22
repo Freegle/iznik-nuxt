@@ -336,7 +336,12 @@ export default {
       e.preventDefault()
       e.stopPropagation()
 
-      if (this.signUp) {
+      // Probably this is someone who is already a user and is trying to sign in, but has cleared their cache
+      // (so we've forgotten that they've previously signed in) and hasn't noticed that they need to switch.
+      const confused =
+        !this.firstname && !this.lastname && this.email && this.password
+
+      if (!confused && this.signUp) {
         if (
           !this.firstname ||
           !this.lastname ||
