@@ -128,7 +128,10 @@ export default {
     const ret = {
       loading: true,
       askfor: ['ApprovedMessageCount', 'Activity', 'Replies', 'Donations'],
+      groupids: [],
       MessageBreakdown: null,
+      PostMethodBreakdown: null,
+      ModeratorsActive: null,
       ApprovedMessageCount: null,
       ApprovedMemberCount: null,
       Activity: null,
@@ -168,7 +171,8 @@ export default {
           value: 'year',
           text: 'Year'
         }
-      ]
+      ],
+      destroyed: false
     }
 
     return ret
@@ -343,6 +347,9 @@ export default {
   mounted() {
     this.fetch()
   },
+  beforeDestroy() {
+    this.destroyed = true
+  },
   methods: {
     async fetch(nodef) {
       this.loading = true
@@ -369,12 +376,15 @@ export default {
         units: this.units
       })
 
-      Object.keys(res).forEach(c => {
-        // eslint-disable-next-line
-        Vue.set(this, c, res[c])
-      })
+      // This avoids some Sentry errors caused by destroying the component under the feet of the call.
+      if (!this.detroyed) {
+        Object.keys(res).forEach(c => {
+          // eslint-disable-next-line
+          Vue.set(this, c, res[c])
+        })
 
-      this.loading = false
+        this.loading = false
+      }
     },
     maybeFetch(nodef) {
       if (!this.loading) {
@@ -392,7 +402,6 @@ export default {
       const factor =
         this.MessageBreakdown[type] /
         (this.MessageBreakdown.Offer + this.MessageBreakdown.Wanted)
-      console.log('Factor', factor)
 
       const ret = []
       this.ApprovedMessageCount.forEach(ent => {
