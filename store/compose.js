@@ -50,8 +50,10 @@ export const mutations = {
   setGroup(state, group) {
     state.group = group
   },
-  setMessage(state, message) {
+  setMessage(state, { message, me }) {
     message.savedAt = Date.now()
+    message.savedBy = me ? me.id : null
+
     Vue.set(state.messages, message.id, message)
 
     if (message && message.submitted) {
@@ -219,14 +221,17 @@ async function submitDraft(id, email, commit) {
   return ret
 }
 
-function markSubmitted(id, commit) {
+function markSubmitted(id, commit, me) {
   console.log('Mark submitted', id)
   commit('setMessage', {
-    id: id,
-    submitted: true,
-    item: null,
-    description: null,
-    availablenow: 1
+    message: {
+      id: id,
+      submitted: true,
+      item: null,
+      description: null,
+      availablenow: 1
+    },
+    me
   })
 
   commit('setAttachmentsForMessage', {
@@ -299,8 +304,12 @@ export const actions = {
   clearMessages({ commit }, email) {
     commit('clear', email)
   },
-  setMessage({ commit }, message) {
-    commit('setMessage', message)
+  setMessage({ commit, rootGetters }, message) {
+    const me = rootGetters['auth/user']
+    commit('setMessage', {
+      message,
+      me
+    })
   },
   setItem({ commit }, params) {
     commit('setItem', params)
@@ -381,7 +390,7 @@ export const actions = {
     console.log('Done')
     commit('clear')
   },
-  async submit({ dispatch, commit, state, store }, params) {
+  async submit({ dispatch, commit, state, store, rootGetters }, params) {
     // This is the most important bit of code in the client :-).  We have our messages in the compose store.
     //
     // For messages we've just created, the server has a two stage process - create a draft and submit it, so that's
@@ -472,7 +481,9 @@ export const actions = {
 
         console.log('Got result', result)
         results.push(result)
-        markSubmitted(result.id, commit)
+
+        const me = rootGetters['auth/user']
+        markSubmitted(result.id, commit, me)
       }
     }
 

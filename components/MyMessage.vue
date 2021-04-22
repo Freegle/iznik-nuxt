@@ -583,6 +583,7 @@ export default {
       // Add this message to the compose store so that it will show up on the compose page.
       await this.$store.dispatch('compose/setMessage', {
         id: this.message.id,
+        savedBy: this.message.fromuser,
         item: this.message.item.name.trim(),
         description: this.message.textbody
           ? this.message.textbody.trim()

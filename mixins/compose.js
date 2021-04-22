@@ -46,7 +46,11 @@ export default {
 
       let ids = []
       for (const message of messages) {
-        if (message.id && message.type === this.postType) {
+        if (
+          message.id &&
+          message.type === this.postType &&
+          (!message.savedBy || message.savedBy === this.myid)
+        ) {
           ids.push(message.id)
         }
       }
