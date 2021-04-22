@@ -207,7 +207,8 @@ export default {
       lastBounds: null,
       zoom: 5,
       lockModal: false,
-      unlockModal: false
+      unlockModal: false,
+      destroyed: false
     }
   },
   computed: {
@@ -387,6 +388,9 @@ export default {
       this.$emit('update:ready', true)
     }
   },
+  beforeDestroy() {
+    this.destroyed = true
+  },
   methods: {
     ready() {
       this.waitForRef('map', () => {
@@ -537,7 +541,7 @@ export default {
 
         const ret = await this.$api.message.fetchMessages(params)
 
-        if (ret.ret === 0 && ret.messages) {
+        if (ret.ret === 0 && ret.messages && !this.destroyed) {
           // Don't really understand why the clone is necessary, but it is - without it we seem to process
           // old data inside the watch().
           messages = cloneDeep(ret.messages)
