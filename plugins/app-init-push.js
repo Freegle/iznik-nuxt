@@ -1,5 +1,7 @@
 import Vue from 'vue'
 
+const querystring = require('querystring')
+
 export const mobilestate = {
   isiOS: false
 }
@@ -73,9 +75,9 @@ const cordovaApp = {
           console.log('========== Universal/App-link NOT HANDLED', match)
         }, function (nomatch) {
           // console.log('========== Universal/App-link', nomatch.$link.path)
-          if (nomatch && nomatch.$link && 'path' in nomatch.$link) {
-            console.log('linkstate.route', nomatch.$link.path)
-            linkstate.route = nomatch.$link.path
+          if (nomatch && nomatch.$link) {
+            console.log('linkstate.route', nomatch.$link)
+            linkstate.route = nomatch.$link
             linkstate.received = true
           }
         })
@@ -352,23 +354,50 @@ export default ({ app, store }) => { // route
     // When linkstate.received, move to given route
     store.watch(
       () => linkstate.received,
-      received => {
+      async received => {
         if (received) {
-          if (linkstate.route === '') linkstate.route = '/'
-          // console.log('linkstate.received', app.router.currentRoute.path, linkstate.route)
-          if (app.router.currentRoute.path !== linkstate.route) {
-            console.log('GO TO ', linkstate.route)
-            app.router.push({ path: linkstate.route })
+          linkstate.received = false
+          let route = linkstate.route.path
+          if (route === '') route = '/'
+          if (route === '/settings') {
+            try {
+              // https://www.ilovefreegle.org/settings?u=12345&k=uniquekey&src=forgotpass
+              console.log('queryString', linkstate.route.queryString)
+              const query = querystring.parse(linkstate.route.queryString)
+              console.log('query', query)
+              if (query.src === 'forgotpass' && query.u && query.k) {
+                console.log('FORGOTPASS LOGIN')
+                // Clear the related list.  This avoids accidentally flagging members as related if people forget to close
+                // an incognito tab while impersonating.
+                await store.dispatch('auth/clearRelated')
+
+                // Log in using the username and key.
+                await store.dispatch('auth/login', {
+                  u: query.u,
+                  k: query.k,
+                  force: true
+                })
+                console.log('FORGOTPASS SUCCESS')
+              }
+            } catch (e) {
+              // Login failed.  Usually this is because they're logged in as someone else. Ignore it.
+              console.log('Login failed', e)
+            }
+            return
+          }
+          // console.log('linkstate.received', app.router.currentRoute.path, route)
+          if (app.router.currentRoute.path !== route) {
+            console.log('GO TO ', route)
+            app.router.push({ path: route })
             setTimeout(function () {
-              // console.log('CHECKING', app.router.currentRoute.path, linkstate.route)
-              if (app.router.currentRoute.path !== linkstate.route) {
-                console.log('RE GO TO ', linkstate.route)
-                app.router.push({ path: linkstate.route })
+              // console.log('CHECKING', app.router.currentRoute.path, route)
+              if (app.router.currentRoute.path !== route) {
+                console.log('RE GO TO ', route)
+                app.router.push({ path: route })
               }
             }, 5000)
 
           }
-          linkstate.received = false
         }
       }
     )
