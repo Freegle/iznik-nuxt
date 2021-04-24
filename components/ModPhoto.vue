@@ -70,6 +70,10 @@ export default {
 <style scoped>
 .square {
   object-fit: cover;
+  max-width: 200px;
+  min-width: 200px;
+  min-height: 200px;
+  max-height: 200px;
   width: 200px;
   height: 200px;
 }
