@@ -169,7 +169,7 @@ export default {
             this.$refs.pond.browse()
           }
         } else {
-          this.$refs.pond.labelIdle = '<span class="take-photo btn btn-default">Take Photo</span> or <span class="btn btn-white">Browse</span>'
+          this.$refs.pond.labelIdle = '<span class="take-photo btn btn-primary">Take Photo</span> or <span class="btn btn-white">Browse</span>'
           setTimeout(() => { // this.$nextTick didn't work
             const takePhoto = this.$el.querySelector('.take-photo')
             takePhoto.addEventListener('click', e => {
