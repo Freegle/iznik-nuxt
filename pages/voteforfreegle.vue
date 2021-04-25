@@ -32,6 +32,10 @@
               here
             </ExternalLink>.
           </p>
+          <p>
+            If you don't see the option to set us as your favourite charity, you may be using a PayPal Business account
+            - it only works for personal accounts.
+          </p>
         </b-card-text>
       </b-card>
     </b-col>
