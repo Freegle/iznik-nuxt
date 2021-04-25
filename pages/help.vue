@@ -198,7 +198,7 @@
                 </template>
                 <template slot="content">
                   <p>
-                    Some freeglers use mention this to indicate that they will wait a while before deciding who to
+                    Some freeglers use this to indicate that they will wait a while before deciding who to
                     give an item to.
                   </p>
                   <p>
