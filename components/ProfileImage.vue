@@ -170,8 +170,8 @@ export default {
 
 .ProfileImage__moderator--sm {
   padding: 2px;
-  width: 12px;
-  height: 12px;
+  // width: 12px;
+  // height: 12px;
 
   @include media-breakpoint-up(md) {
     padding: 3px;
@@ -182,8 +182,8 @@ export default {
 
 .ProfileImage__moderator--md {
   padding: 2px;
-  width: 16px;
-  height: 16px;
+  // width: 16px;
+  // height: 16px;
 
   @include media-breakpoint-up(md) {
     padding: 3px;
@@ -194,8 +194,8 @@ export default {
 
 .ProfileImage__moderator--lg {
   padding: 2px;
-  width: 18px;
-  height: 18px;
+  // width: 18px;
+  // height: 18px;
 
   @include media-breakpoint-up(md) {
     padding: 3px;
@@ -206,8 +206,8 @@ export default {
 
 .ProfileImage__moderator--xl {
   padding: 2px;
-  width: 24px;
-  height: 24px;
+  // width: 24px;
+  // height: 24px;
 
   @include media-breakpoint-up(md) {
     padding: 3px;
@@ -218,8 +218,8 @@ export default {
 
 .ProfileImage__moderator--xxl {
   padding: 2px;
-  width: 24px;
-  height: 24px;
+  // width: 24px;
+  // height: 24px;
 
   @include media-breakpoint-up(md) {
     padding: 3px;
@@ -230,5 +230,19 @@ export default {
 
 .ourBorder {
   border: 2px solid $colour-success-fg;
+}
+/*Profile Img Styles*/
+.profile-img-wrap {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
+.profile-img-wrap img {
+  display: block;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
 }
 </style>
