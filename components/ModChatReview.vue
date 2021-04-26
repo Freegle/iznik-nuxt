@@ -106,6 +106,7 @@
             spinclass="text-white"
             variant="primary"
             class="mr-2 mb-1"
+            confirm
             :handler="whitelist"
           />
           <SpinButton
@@ -122,6 +123,7 @@
             label="Delete"
             variant="danger"
             class="mr-2 mb-1"
+            confirm
             :handler="reject"
           />
           <SpinButton
@@ -130,6 +132,7 @@
             label="Spam"
             variant="danger"
             class="mr-2 mb-1"
+            confirm
             :handler="reject"
           />
         </div>
