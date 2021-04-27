@@ -24,7 +24,7 @@ export default {
       let ret = false
 
       if (this.chatmessage && this.chatmessage.message) {
-        const re = new RegExp(/\+(\d\d)/, 'gm')
+        const re = new RegExp(/\+(\d\d)[^:]/, 'gm')
         const matches = re.exec(this.chatmessage.message)
 
         if (matches && matches.length > 1) {
