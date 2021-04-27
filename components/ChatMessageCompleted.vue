@@ -25,7 +25,7 @@
                 This is no longer available.
               </span>
               <span v-else>
-                They are no longer looking for this.
+                Thanks, this has now been received.
               </span>
             </b-card-text>
           </b-card>
@@ -54,7 +54,7 @@
                 We've let them know this is no longer available.
               </span>
               <span v-else>
-                We've let them know you are no longer looking for this.
+                This has now been received.
               </span>
             </b-card-text>
           </b-card>

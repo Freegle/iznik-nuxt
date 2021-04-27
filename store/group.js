@@ -74,7 +74,7 @@ export const actions = {
     polygon = Object.is(polygon, undefined) ? false : polygon
     sponsors = Object.is(sponsors, undefined) ? false : sponsors
     showmods = Object.is(showmods, undefined) ? false : showmods
-    tnkey = Object.is(polygon, undefined) ? false : tnkey
+    tnkey = Object.is(tnkey, undefined) ? false : tnkey
 
     const group = await this.$api.group.fetch(
       id,

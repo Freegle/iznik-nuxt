@@ -466,6 +466,13 @@
               type="number"
               :step="5"
             />
+            <ModGroupSetting
+              :groupid="groupid"
+              name="settings.spammers.worrywords"
+              label="Worry words?"
+              description="List of 'worry words' to force posts to Messages->Pending.  Separate by commas."
+              type="input"
+            />
           </b-card-body>
         </b-collapse>
       </b-card>

@@ -91,7 +91,7 @@ export default {
   methods: {
     clicked() {
       this.$store.dispatch('jobs/log', {
-        link: this.job.url
+        id: this.job.id
       })
     }
   }
