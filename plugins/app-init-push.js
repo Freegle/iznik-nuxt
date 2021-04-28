@@ -364,7 +364,6 @@ export default ({ app, store }) => { // route
               // https://www.ilovefreegle.org/settings?u=12345&k=uniquekey&src=forgotpass
               console.log('queryString', linkstate.route.queryString)
               const query = querystring.parse(linkstate.route.queryString)
-              console.log('query', query)
               if (query.src === 'forgotpass' && query.u && query.k) {
                 console.log('FORGOTPASS LOGIN')
                 // Clear the related list.  This avoids accidentally flagging members as related if people forget to close
@@ -385,12 +384,10 @@ export default ({ app, store }) => { // route
             }
             return
           }
-          // console.log('linkstate.received', app.router.currentRoute.path, route)
           if (app.router.currentRoute.path !== route) {
             console.log('GO TO ', route)
             app.router.push({ path: route })
             setTimeout(function () {
-              // console.log('CHECKING', app.router.currentRoute.path, route)
               if (app.router.currentRoute.path !== route) {
                 console.log('RE GO TO ', route)
                 app.router.push({ path: route })
