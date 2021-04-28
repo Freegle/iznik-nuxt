@@ -55,16 +55,20 @@
             </div>
           </div>
           <div>
-            <div v-if="expanded">
-              <b-btn v-if="message.source === 'Email'" variant="white" @click="viewSource">
-                <v-icon name="book-open" /><span class="d-none d-sm-inline"> View Email Source</span>
-              </b-btn>
-              <b-btn v-if="!editing" variant="white" @click="startEdit">
-                <v-icon name="pen" /><span class="d-none d-sm-inline"> Edit</span>
-              </b-btn>
-              <b-btn v-if="summary" variant="white" @click="expanded = !expanded">
-                <v-icon name="caret-up" />
-              </b-btn>
+            <div v-if="expanded" class="d-flex">
+              <div>
+                <b-btn v-if="message.source === 'Email'" variant="white" @click="viewSource">
+                  <v-icon name="book-open" /><span class="d-none d-sm-inline"> View Email Source</span>
+                </b-btn>
+                <b-btn v-if="!editing" variant="white" @click="startEdit">
+                  <v-icon name="pen" /><span class="d-none d-sm-inline"> Edit</span>
+                </b-btn>
+              </div>
+              <div class="ml-2">
+                <b-btn v-if="summary" variant="white" @click="expanded = !expanded">
+                  <v-icon name="caret-up" />
+                </b-btn>
+              </div>
             </div>
             <b-btn v-else variant="white" @click="expanded = !expanded">
               <v-icon name="caret-down" />
