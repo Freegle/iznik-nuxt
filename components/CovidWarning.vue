@@ -2,7 +2,7 @@
   <div>
     <p v-if="!voted" class="text-center bg-white pulsate" @click="vote">
       <nuxt-link to="/voteforfreegle" class="text-danger font-weight-bold">
-        Please vote for Freegle to win much-needed funds from PayPal!  Click here to find out more.
+        Two days left - please vote for Freegle to win much-needed funds from PayPal!  Click here to find out more.
       </nuxt-link>
     </p>
     <NoticeMessage v-if="show" variant="danger">
