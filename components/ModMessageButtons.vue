@@ -112,21 +112,26 @@
         confirm
       />
     </div>
-    <div v-else-if="spam" class="d-inline">
-      <ModMessageButton
-        :message="message"
-        variant="danger"
-        icon="trash-alt"
-        spam
-        label="Delete Message"
-      />
-      <ModMessageButton
-        :message="message"
-        variant="primary"
-        icon="check"
-        notspam
-        label="Approve Message"
-      />
+    <div v-else-if="spam">
+      <div class="d-inline">
+        <ModMessageButton
+          :message="message"
+          variant="danger"
+          icon="trash-alt"
+          spam
+          label="Delete as Spam/Scam"
+        />
+        <ModMessageButton
+          :message="message"
+          variant="primary"
+          icon="check"
+          notspam
+          label="Message is not Spam/Scam"
+        />
+      </div>
+      <div class="small text-muted">
+        More standard message buttons will appear once you've clicked one of these.
+      </div>
     </div>
     <div v-if="!editreview" class="d-lg-inline">
       <ModMessageButton
@@ -148,7 +153,7 @@
         <v-icon name="caret-down" /> +{{ rareToShow }}...
       </b-btn>
     </div>
-    <client-only>
+    <client-only v-if="!spam">
       <OurToggle
         v-model="allowAutoSend"
         class="mt-1 mb-1 ml-1 float-right"

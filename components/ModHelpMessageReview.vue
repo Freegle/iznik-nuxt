@@ -4,7 +4,11 @@
       Hide Help
     </b-btn>
     <p>
-      These are messages which need checking to make sure they're ok and not spam or scam.
+      These are messages which need checking to make sure they're not spam or scam.
+    </p>
+    <p>
+      Once you've checked for that, the message will be moved back to Pending/Approved as appropriate.  Then you'll see
+      the standard message buttons, in case you want to follow up on something.
     </p>
     <p>
       <!-- eslint-disable-next-line-->
