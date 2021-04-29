@@ -21,10 +21,6 @@
       <div v-else>
         <h4>{{ event.title }}</h4>
         <a :href="event.url" target="_blank" class="small">{{ event.url }}</a>
-        <div class="text-danger">
-          Many events are disrupted due to COVID-19 - please check if they are going ahead.  If your event is
-          cancelled please use the Edit button to let us know.
-        </div>
       </div>
     </template>
     <template slot="default">
