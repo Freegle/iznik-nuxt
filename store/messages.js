@@ -333,26 +333,6 @@ export const actions = {
     )
   },
 
-  async notspam({ state, commit, dispatch }, params) {
-    await this.$api.message.notspam(params.id, params.groupid)
-
-    // Fetch back so that we know whether it's pending or approved and show appropriate buttons.
-    dispatch('fetch', {
-      id: params.id
-    })
-
-    dispatch(
-      'auth/fetchUser',
-      {
-        components: ['work'],
-        force: true
-      },
-      {
-        root: true
-      }
-    )
-  },
-
   async reject({ commit, dispatch }, params) {
     await this.$api.message.reject(
       params.id,

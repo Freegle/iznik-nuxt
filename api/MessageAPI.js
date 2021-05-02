@@ -100,14 +100,6 @@ export default class MessageAPI extends BaseAPI {
     })
   }
 
-  notspam(id, groupid) {
-    return this.$post('/message', {
-      action: 'NotSpam',
-      id: id,
-      groupid: groupid
-    })
-  }
-
   hold(id) {
     return this.$post('/message', {
       action: 'Hold',

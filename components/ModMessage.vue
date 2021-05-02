@@ -120,9 +120,6 @@
             <NoticeMessage v-if="message.spamreason" variant="warning" class="mb-2">
               {{ message.spamreason }}
             </NoticeMessage>
-            <NoticeMessage v-else-if="spam" variant="warning" class="mb-2">
-              We think this message might be spam.
-            </NoticeMessage>
             <div v-if="message.microvolunteering && message.microvolunteering.length">
               <ModMessageMicroVolunteering v-for="m in message.microvolunteering" :key="'microvolunteering-' + m.id" :message="message" :microvolunteering="m" class="mb-1" />
               <b-btn v-if="pending" v-b-tooltip.html variant="white" size="sm" title="<p>We ask members to review messages as part of microvolunteering.  When members have proven that they are reliable at microvolunteering, they may be shown Pending messages, so you may see their views here.  This can also show for Pending messages for reposts. <p>You can control whether specific members can do microvolunteering - click on their user id.</p>">
@@ -456,9 +453,6 @@ export default {
     },
     approved() {
       return this.hasCollection('Approved')
-    },
-    spam() {
-      return this.hasCollection('Spam')
     },
     eSubject() {
       return twem.twem(this.$twemoji, this.message.subject)
