@@ -4,8 +4,11 @@
       <span class="text-muted small d-flex justify-content-between">
         <ProfileImage :image="user.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
         <span class="flex-grow-1">
-          <span class="align-middle">
-            Posted by {{ user.displayname }}
+          <span class="text-muted align-middle">
+            Posted by
+          </span>
+          <span class="align-middle font-weight-bold text-info text--medium">
+            {{ user.displayname }}
           </span>
           <span v-if="milesaway" class="align-middle">
             &bull; <strong>about {{ milesaway | pluralize('mile', { includeNumber: true }) }} away</strong>
