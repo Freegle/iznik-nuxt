@@ -3,7 +3,9 @@
     <client-only>
       <b-row class="m-0">
         <b-col cols="12" lg="6" offset-lg="3">
-          <WizardProgress :active-stage="3" />
+          <client-only>
+            <WizardProgress :active-stage="3" class="d-none d-md-flex" />
+          </client-only>
           <h1 class="text-center">
             Finally, your email address
           </h1>
@@ -21,6 +23,10 @@
                   Privacy
                 </nuxt-link> for details.
               </p>
+              <p class="text-muted">
+                We may show this post to people who are not yet members of Freegle.
+                This helps the community grow by showing people what's happening and encouraging them to join.
+              </p>
               <EmailValidator :email.sync="email" :valid.sync="emailValid" center class="align-items-center font-weight-bold" />
               <EmailBelongsToSomeoneElse v-if="emailValid && emailBelongsToSomeoneElse" class="mb-2" :ours="me.email" :theirs="email" />
             </b-col>
@@ -32,7 +38,7 @@
           </div>
           <div class="d-none d-md-block">
             <div class="d-flex justify-content-between">
-              <b-btn variant="secondary" size="lg" to="/give/whatisit" class="d-none d-md-block">
+              <b-btn variant="secondary" size="lg" to="/give/whereami" class="d-none d-md-block">
                 <v-icon name="angle-double-left" /> Back
               </b-btn>
               <b-btn v-if="emailValid && !submitting" variant="primary" size="lg" @click="next">
@@ -104,7 +110,7 @@ export default {
   },
   mounted() {
     if (!this.valid) {
-      this.$router.push('/give/whatisit')
+      this.$router.push('/give/whereami')
     }
   },
   methods: {

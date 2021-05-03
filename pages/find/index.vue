@@ -1,110 +1,119 @@
 <template>
-  <b-row class="m-0">
-    <b-col cols="0" md="3" />
-    <b-col cols="12" lg="6">
-      <CovidWarning />
-      <h1 class="text-center">
-        First, tell us where you are
-      </h1>
-      <p class="text-center">
-        We'll use this to show you stuff nearby.  Don't worry, we won't give other people your postcode.
-      </p>
-      <client-only>
-        <b-row>
-          <b-col class="text-center">
-            <postcode class="justify-content-center" :value="initialPostcode" @selected="postcodeSelect" @cleared="postcodeClear" />
-          </b-col>
-        </b-row>
-        <b-row v-if="postcodeValid && !closed">
-          <b-col class="text-center">
-            <transition name="fade">
-              <a v-if="extgroup" :href="extgroup">
-                <v-icon name="check-circle" class="text-success mt-2 fa-bh" scale="5" />
-              </a>
-              <nuxt-link v-else to="/find/whatisit">
-                <v-icon name="check-circle" class="text-success mt-2 fa-bh" scale="5" />
-              </nuxt-link>
-            </transition>
-          </b-col>
-        </b-row>
-        <b-row v-if="postcodeValid && !closed" class="mt-1">
-          <b-col class="text-center">
-            Freegle has local communities for each area. We'll put anything you post on here, and search this community and others nearby.
-          </b-col>
-        </b-row>
-        <b-row v-if="postcodeValid" class="mt-1">
-          <b-col class="text-center">
-            <ComposeGroup />
-          </b-col>
-        </b-row>
-        <b-row v-if="postcodeValid && !closed" class="mt-1">
-          <b-col class="text-center text-muted">
-            Click on the name above to choose a different community.
-          </b-col>
-        </b-row>
-        <CovidClosed v-if="closed" class="mt-2" />
-        <div v-else-if="extgroup">
-          <transition name="fade">
-            <notice-message variant="info" class="mt-1">
-              This community is on a separate site. You can proceed or choose a different community using the dropdown
-              above.
-            </notice-message>
-            <b-row class="mt-1">
-              <b-col class="text-center mt-4" cols="12" md="6" offset-md="3">
-                <b-btn variant="primary" size="lg" block :href="extgroup">
-                  Proceed <v-icon name="angle-double-right" />
+  <div>
+    <b-row class="m-0">
+      <b-col cols="12" lg="6" class="p-0" offset-lg="3">
+        <client-only>
+          <WizardProgress :active-stage="1" class="d-none d-md-flex" />
+        </client-only>
+        <h1 class="text-center">
+          First, what are you looking for?
+        </h1>
+        <ul v-for="(id, index) in ids" :key="'post-' + id" class="p-0 pt-1 list-unstyled">
+          <li class="p-0">
+            <b-card no-body>
+              <b-card-body class="p-1">
+                <PostMessage :id="id" type="Wanted" />
+              </b-card-body>
+              <b-card-footer v-if="index === ids.length - 1" class="d-flex justify-content-between p-0 pt-1">
+                <b-btn v-if="ids.length === 1 && notblank" variant="link" size="sm" class="mr-1" @click="deleteItem">
+                  <v-icon name="trash-alt" />&nbsp;Clear item
                 </b-btn>
-              </b-col>
-            </b-row>
-          </transition>
-        </div>
-        <b-row v-else-if="postcodeValid && !closed" class="mt-1">
-          <b-col class="text-center mt-4" cols="12" md="6" offset-md="3">
-            <b-btn variant="primary" size="lg" block to="/find/whatisit">
+                <div>
+                  <b-btn v-if="ids.length > 1" variant="link" size="sm" class="mr-1" @click="deleteItem">
+                    <v-icon name="trash-alt" />&nbsp;Delete item
+                  </b-btn>
+                  <b-btn v-if="ids.length < 6 && valid" variant="secondary" size="sm" class="mb-1 mr-1" @click="addItem">
+                    <v-icon name="plus" />&nbsp;Add another item
+                  </b-btn>
+                </div>
+              </b-card-footer>
+            </b-card>
+          </li>
+        </ul>
+        <NoticeMessage v-if="invalid" variant="info mt-1 mb-2">
+          Please add the item name, and a description or photo (or both).
+        </NoticeMessage>
+        <div class="mt-3">
+          <div class="d-block d-md-none">
+            <b-btn
+              variant="primary"
+              :disabled="uploadingPhoto"
+              size="lg"
+              block
+              to="/find/whereami"
+            >
               Next <v-icon name="angle-double-right" />
             </b-btn>
-          </b-col>
-        </b-row>
-      </client-only>
-    </b-col>
-    <b-col cols="0" md="3" />
-  </b-row>
+          </div>
+          <div class="d-none d-md-flex justify-content-end">
+            <b-btn
+              v-if="valid"
+              variant="primary"
+              size="lg"
+              :disabled="uploadingPhoto"
+              to="/find/whereami"
+            >
+              Next <v-icon name="angle-double-right" />
+            </b-btn>
+            <NoticeMessage v-if="!valid" variant="info">
+              Please add the item name, and a description or photo (or both).
+            </NoticeMessage>
+          </div>
+        </div>
+      </b-col>
+      <b-col cols="0" md="3" />
+    </b-row>
+  </div>
 </template>
-<style scoped>
-select {
-  max-width: 400px !important;
-}
-</style>
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
-import buildHead from '@/mixins/buildHead.js'
 import compose from '@/mixins/compose.js'
+import buildHead from '@/mixins/buildHead.js'
 import NoticeMessage from '../../components/NoticeMessage'
-import CovidClosed from '../../components/CovidClosed'
-import CovidWarning from '~/components/CovidWarning'
-import Postcode from '~/components/Postcode'
-const ComposeGroup = () => import('~/components/ComposeGroup')
+
+const PostMessage = () => import('~/components/PostMessage')
+const WizardProgress = () => import('~/components/WizardProgress')
 
 export default {
   components: {
-    CovidWarning,
-    CovidClosed,
     NoticeMessage,
-    Postcode,
-    ComposeGroup
+    PostMessage,
+    WizardProgress
   },
   mixins: [loginOptional, buildHead, compose],
-  data() {
+  data: function() {
     return {
-      id: null,
-      source: process.env.API + '/locations?typeahead='
+      postType: 'Wanted',
+      editLocationOrGroup: false
+    }
+  },
+  async created() {
+    // Make sure we're not wrongly set as being in the middle of an upload
+    await this.$store.dispatch('compose/setUploading', false)
+
+    if (this.me) {
+      // Get our own posts so that we can spot duplicates.
+      await this.$store.dispatch('messages/clear')
+      this.$store.dispatch('messages/fetchMessages', {
+        collection: 'AllUser',
+        summary: true,
+        types: ['Wanted'],
+        fromuser: this.me.id,
+        limit: 15
+      })
     }
   },
   head() {
     return this.buildHead(
-      'Find something',
-      'See what people nearby are giving away for free'
+      'WANTED',
+      "Ask people nearby if they have what you're looking for"
     )
   }
 }
 </script>
+<style scoped>
+.cg {
+  flex-basis: 25%;
+  flex-grow: 1;
+}
+</style>

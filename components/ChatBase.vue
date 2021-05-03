@@ -16,6 +16,7 @@ export default {
       required: true
     },
     otheruser: {
+      type: Object,
       required: false,
       default: null
     },

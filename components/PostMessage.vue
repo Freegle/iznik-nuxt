@@ -1,96 +1,99 @@
 <template>
   <div>
-    <div class="d-flex flex-wrap">
-      <div class="photoholder bg-light d-flex flex-column align-items-center justify-items-center mr-1">
-        <v-icon name="camera" scale="8.75" class="text-faded" />
-        <b-btn
-          variant="primary"
-          size="lg"
-          :class="{
-            'ml-3': true,
-            'mr-3': true,
-            'invisible': uploading && hidingPhotoButton
-          }"
-          @click="photoAdd"
-          @drop.prevent="drop"
-          @dragover.prevent
-        >
-          Add photos
-        </b-btn>
+    <client-only>
+      <div class="d-flex flex-wrap">
+        <div class="photoholder bg-light d-flex flex-column align-items-center justify-items-center mr-1">
+          <client-only>
+            <v-icon name="camera" scale="8.75" class="text-faded" />
+          </client-only>
+          <b-btn
+            variant="primary"
+            size="lg"
+            :class="{
+              'ml-3': true,
+              'mr-3': true,
+              'invisible': uploading && hidingPhotoButton
+            }"
+            @click="photoAdd"
+            @drop.prevent="drop"
+            @dragover.prevent
+          >
+            Add photos
+          </b-btn>
+        </div>
+        <div v-for="att in attachments" :key="'image-' + att.id" class="bg-transparent p-0">
+          <PostPhoto v-bind="att" class="mr-1" @remove="removePhoto" />
+        </div>
+        <hr>
       </div>
-      <div v-for="att in attachments" :key="'image-' + att.id" class="bg-transparent p-0">
-        <PostPhoto v-bind="att" class="mr-1" @remove="removePhoto" />
+      <div v-if="uploading" class="bg-white">
+        <client-only>
+          <OurFilePond
+            ref="filepond"
+            imgtype="Message"
+            imgflag="message"
+            :identify="true"
+            :browse="pondBrowse"
+            :multiple="true"
+            @photoProcessed="photoProcessed"
+            @allProcessed="allProcessed"
+            @init="hidePhotoButton"
+          />
+        </client-only>
       </div>
-      <hr>
-    </div>
-    <div v-if="uploading" class="bg-white">
-      <OurFilePond
-        ref="filepond"
-        imgtype="Message"
-        imgflag="message"
-        :identify="true"
-        :browse="pondBrowse"
-        :multiple="true"
-        @photoProcessed="photoProcessed"
-        @allProcessed="allProcessed"
-        @init="hidePhotoButton"
-      />
-    </div>
-    <div v-if="suggestions.length && !item.length">
-      <b-card v-if="attachments.length" bg-variant="info" class="mb-1">
-        <p>Based on your photo, here are possible suggestions you can click:</p>
-        <b-btn v-for="suggestion in suggestions" :key="suggestion.id" variant="secondary" class="mr-1" @click="chooseSuggestion(suggestion)">
-          {{ suggestion.name }}
-        </b-btn>
-      </b-card>
-    </div>
-    <div class="subject-layout mb-1 mt-1">
-      <div class="d-flex flex-column">
-        <label :for="$id('posttype')" class="pl-1">
-          Type
-        </label>
-        <b-input :id="$id('posttype')" v-model="type" disabled class="type text-uppercase bg-white mt-1" size="lg" />
+      <div class="subject-layout mb-1 mt-1">
+        <div class="d-flex flex-column">
+          <label :for="$id('posttype')" class="pl-1">
+            Type
+          </label>
+          <b-input :id="$id('posttype')" v-model="type" disabled class="type text-uppercase bg-white mt-1" size="lg" />
+        </div>
+        <PostItem ref="item" v-model="item" class="item pt-1" @input="itemType" />
+        <client-only>
+          <NumberIncrementDecrement v-if="type === 'Offer'" :count.sync="availablenow" label="Quantity" append-text=" available" class="count pt-1" />
+        </client-only>
       </div>
-      <PostItem ref="item" v-model="item" class="item pt-1" @input="itemType" />
-      <NumberIncrementDecrement v-if="type === 'Offer'" :count.sync="availablenow" label="Quantity" append-text=" available" class="count pt-1" />
-    </div>
-    <NoticeMessage v-if="duplicate" variant="warning">
-      <p>You already have an open post <span class="font-weight-bold">{{ duplicate.subject }}</span>.</p>
-      <p>
-        If it's the same, please go to <nuxt-link to="/myposts">
-          My Posts
-        </nuxt-link> and use
-        the <em>Repost</em> button.
-      </p>
-      <p>
-        If it's different, please change the name slightly - then it'll be clearer for everyone
-        that it's not the same.
-      </p>
-    </NoticeMessage>
-    <div>
-      <NoticeMessage v-if="vague" variant="warning" class="mt-1 mb-1">
+      <NoticeMessage v-if="duplicate" variant="warning">
+        <p>You already have an open post <span class="font-weight-bold">{{ duplicate.subject }}</span>.</p>
         <p>
-          Please avoid very general terms.  Be precise - you'll get a better response.
+          If it's the same, please go to <nuxt-link to="/myposts">
+            My Posts
+          </nuxt-link> and use
+          the <em>Repost</em> button.
+        </p>
+        <p>
+          If it's different, please change the name slightly - then it'll be clearer for everyone
+          that it's not the same.
         </p>
       </NoticeMessage>
-      <NoticeMessage v-if="warn" variant="warning" class="mt-1">
-        <h1 class="header--size3">
-          <v-icon name="info-circle" scale="1.75" /> {{ warn.type }}
-        </h1>
-        <p>
-          {{ warn.message }}
-        </p>
-      </NoticeMessage>
-    </div>
-    <div class="d-flex flex-column mt-2">
-      <label :for="$id('description')">Please give a few details:</label>
-      <b-form-textarea
-        :id="$id('description')"
-        v-model="description"
-        :placeholder="placeholder"
-        rows="8"
-      />
-    </div>
+      <div>
+        <NoticeMessage v-if="vague" variant="warning" class="mt-1 mb-1">
+          <p>
+            Please avoid very general terms.  Be precise - you'll get a better response.
+          </p>
+        </NoticeMessage>
+        <NoticeMessage v-if="warn" variant="warning" class="mt-1">
+          <h1 class="header--size3">
+            <client-only>
+              <v-icon name="info-circle" scale="1.75" />
+            </client-only>
+            {{ warn.type }}
+          </h1>
+          <p>
+            {{ warn.message }}
+          </p>
+        </NoticeMessage>
+      </div>
+      <div class="d-flex flex-column mt-2">
+        <label :for="$id('description')">Please give a few details:</label>
+        <b-form-textarea
+          :id="$id('description')"
+          v-model="description"
+          :placeholder="placeholder"
+          rows="8"
+        />
+      </div>
+    </client-only>
   </div>
 </template>
 
@@ -126,7 +129,6 @@ export default {
     return {
       uploading: false,
       myFiles: [],
-      suggestions: [],
       pondBrowse: true,
       hidingPhotoButton: false,
       vagueness: [
@@ -311,8 +313,6 @@ export default {
         paththumb: imagethumb,
         path: image
       }
-
-      this.suggestions = suggestions
 
       this.$store.dispatch('compose/addAttachment', {
         id: this.id,
