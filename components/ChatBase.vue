@@ -16,8 +16,8 @@ export default {
       required: true
     },
     otheruser: {
-      required: true,
-      validator: prop => typeof prop === 'object' || prop === null
+      required: false,
+      default: null
     },
     last: {
       type: Boolean,
