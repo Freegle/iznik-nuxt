@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="themenu">
-      <span class="pl-1 mr-1 clickme d-none d-sm-inline-block" title="Popup chat window" @click="popup">
+      <span class="pl-2 mr-1 clickme d-none d-sm-inline-block" title="Popup chat window" @click="popup">
         <v-icon name="window-restore" />
       </span>
       <b-dropdown v-if="mod && chat.chattype === 'User2Mod'" size="sm" variant="transparent" right>
@@ -125,7 +125,7 @@ export default {
 
   @include media-breakpoint-up(sm) {
     // We want the ratings to use up all the residual space, hence the 1fr.
-    grid-template-columns: max-content 1fr max-content 70px;
+    grid-template-columns: max-content 1fr max-content 80px;
     grid-template-rows: max-content;
   }
 }
@@ -175,7 +175,14 @@ export default {
   color: white;
 }
 
-::v-deep .dropdown-toggle {
+/deep/ .dropdown-toggle {
   color: $color-white;
+
+  &::after {
+    border-top: 0.75em solid;
+    border-right: 0.75em solid transparent;
+    border-bottom: 0;
+    border-left: 0.75em solid transparent;
+  }
 }
 </style>
