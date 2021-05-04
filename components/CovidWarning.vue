@@ -34,9 +34,6 @@ export default {
   computed: {
     show() {
       return !this.$store.getters['misc/get']('hidecovidwarning')
-    },
-    voted() {
-      return this.$store.getters['misc/get']('paypalvoted')
     }
   },
   methods: {
@@ -50,12 +47,6 @@ export default {
       this.$store.dispatch('misc/set', {
         key: 'hidecovidwarning',
         value: false
-      })
-    },
-    vote() {
-      this.$store.dispatch('misc/set', {
-        key: 'paypalvoted',
-        value: true
       })
     }
   }

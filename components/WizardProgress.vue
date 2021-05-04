@@ -9,7 +9,7 @@
       </div>
       <a href="#" class="wizard__dot" />
       <div class="wizard__info text-center">
-        Where are you?
+        What is it?
       </div>
     </div>
     <div class="wizard__step" :class="{active : activeStage===2}">
@@ -21,7 +21,7 @@
       </div>
       <a href="#" class="wizard__dot" />
       <div class="wizard__info text-center">
-        What is it?
+        Where are you?
       </div>
     </div>
     <div class="wizard__step" :class="{active : activeStage===3}">

@@ -321,7 +321,9 @@ export default {
           })
 
           // Need to save message as store may get wiped.
-          this.message = this.$store.getters['messages/get'](this.task.msgid)
+          this.message = JSON.parse(
+            JSON.stringify(this.$store.getters['messages/get'](this.task.msgid))
+          )
 
           this.showTask = true
         } else if (this.task.type === 'SearchTerm') {

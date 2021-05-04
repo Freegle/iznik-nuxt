@@ -70,8 +70,6 @@ export default {
       )
 
       // Add this message to the compose store so that it will show up on the compose page.
-      console.log('Repost', message)
-
       await this.$store.dispatch('compose/setMessage', {
         id: message.id,
         type: message.type,
@@ -85,9 +83,7 @@ export default {
         attachments: message.attachments
       })
 
-      this.$router.push(
-        message.type === 'Offer' ? '/give/whatisit' : 'find/whatisit'
-      )
+      this.$router.push(message.type === 'Offer' ? '/give' : 'find')
     }
   }
 }

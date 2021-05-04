@@ -55,16 +55,20 @@
             </div>
           </div>
           <div>
-            <div v-if="expanded">
-              <b-btn v-if="message.source === 'Email'" variant="white" @click="viewSource">
-                <v-icon name="book-open" /><span class="d-none d-sm-inline"> View Email Source</span>
-              </b-btn>
-              <b-btn v-if="!editing" variant="white" @click="startEdit">
-                <v-icon name="pen" /><span class="d-none d-sm-inline"> Edit</span>
-              </b-btn>
-              <b-btn v-if="summary" variant="white" @click="expanded = !expanded">
-                <v-icon name="caret-up" />
-              </b-btn>
+            <div v-if="expanded" class="d-flex">
+              <div>
+                <b-btn v-if="message.source === 'Email'" variant="white" @click="viewSource">
+                  <v-icon name="book-open" /><span class="d-none d-sm-inline"> View Email Source</span>
+                </b-btn>
+                <b-btn v-if="!editing" variant="white" @click="startEdit">
+                  <v-icon name="pen" /><span class="d-none d-sm-inline"> Edit</span>
+                </b-btn>
+              </div>
+              <div class="ml-2">
+                <b-btn v-if="summary" variant="white" @click="expanded = !expanded">
+                  <v-icon name="caret-up" />
+                </b-btn>
+              </div>
             </div>
             <b-btn v-else variant="white" @click="expanded = !expanded">
               <v-icon name="caret-down" />
@@ -115,9 +119,6 @@
             </NoticeMessage>
             <NoticeMessage v-if="message.spamreason" variant="warning" class="mb-2">
               {{ message.spamreason }}
-            </NoticeMessage>
-            <NoticeMessage v-else-if="spam" variant="warning" class="mb-2">
-              We think this message might be spam.
             </NoticeMessage>
             <div v-if="message.microvolunteering && message.microvolunteering.length">
               <ModMessageMicroVolunteering v-for="m in message.microvolunteering" :key="'microvolunteering-' + m.id" :message="message" :microvolunteering="m" class="mb-1" />
@@ -452,9 +453,6 @@ export default {
     },
     approved() {
       return this.hasCollection('Approved')
-    },
-    spam() {
-      return this.hasCollection('Spam')
     },
     eSubject() {
       return twem.twem(this.$twemoji, this.message.subject)

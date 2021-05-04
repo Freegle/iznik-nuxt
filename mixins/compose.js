@@ -83,17 +83,16 @@ export default {
 
       return ret
     },
-    valid() {
+    messageValid() {
       const messages = Object.values(
         this.$store.getters['compose/getMessages']
       ).filter(m => {
         return m.id && m.type === this.postType
       })
 
-      const pc = this.$store.getters['compose/getPostcode']
       let valid = false
 
-      if (messages && messages.length && this.ids && pc) {
+      if (messages && messages.length && this.ids) {
         valid = true
 
         for (const message of messages) {
@@ -168,6 +167,8 @@ export default {
   created() {
     if (this.$route.query.postcode) {
       this.initialPostcode = this.$route.query.postcode
+    } else {
+      this.initialPostcode = this.postcode ? this.postcode.name : null
     }
   },
   mounted() {

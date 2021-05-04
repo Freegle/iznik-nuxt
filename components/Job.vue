@@ -85,7 +85,10 @@ export default {
         return ''
       }
 
-      return this.job.body.replace(/\\n/g, '\n').trim()
+      return this.job.body
+        .replace(/\\n/g, '\n')
+        .replace(/<br>/, '\n')
+        .trim()
     }
   },
   methods: {

@@ -6,10 +6,10 @@
           Forgotten your password?
         </h1>
         <p>
-          If you log in using Facebook, Google or Yahoo, then you don't use a password - just click those buttons.
+          If you usually log in using Facebook, Google or Yahoo, then you don't use a password - just click those buttons.
         </p>
         <p>
-          But if you log in with your email address and a password you set up for Freegle, then enter your email
+          But if you usually log in with your email address and a password you set up for Freegle, then enter your email
           address and we'll mail you a link so that you can log in.
         </p>
         <b-alert v-if="error" variant="danger" show>

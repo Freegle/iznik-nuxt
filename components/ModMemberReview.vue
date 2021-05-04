@@ -39,6 +39,9 @@
         </div>
         <ModComments :user="member" />
         <ModSpammer v-if="member.spammer" :user="member" />
+        <NoticeMessage v-if="member.systemrole !== 'User'" variant="info">
+          This freegler has role: {{ member.systemrole }}.
+        </NoticeMessage>
         <NoticeMessage v-if="member.suspectreason" variant="danger" class="mb-2">
           This freegler is flagged: {{ member.suspectreason }}
         </NoticeMessage>

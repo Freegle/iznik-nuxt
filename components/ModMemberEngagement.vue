@@ -8,11 +8,15 @@
       <b-badge :variant="variant">
         {{ engagement }}
       </b-badge>
+      <Supporter v-if="member.supporter" class="small" />
     </div>
   </div>
 </template>
 <script>
+import Supporter from '@/components/Supporter'
+
 export default {
+  components: { Supporter },
   props: {
     member: {
       type: Object,

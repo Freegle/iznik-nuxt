@@ -41,6 +41,7 @@
                 :max="maxDate"
                 nav-button-variant="primary"
                 reset-button
+                :reset-value="null"
                 close-button
                 button-only
                 label-reset-button="Clear"
@@ -88,7 +89,7 @@
       <b-button variant="white" @click="cancel">
         Cancel
       </b-button>
-      <b-button variant="primary" :disabled="!messages || messages.length === 0 || !message || (date && !time)" @click="promise">
+      <b-button variant="primary" :disabled="buttonDisabled" @click="promise">
         Promise
       </b-button>
     </template>
@@ -146,6 +147,17 @@ export default {
       return this.$dayjs()
         .add(14, 'day')
         .toDate()
+    },
+    buttonDisabled() {
+      console.log('Calc disabled', this.date && this.date.length && !this.time)
+      return (
+        !this.messages ||
+        this.messages.length === 0 ||
+        !this.message ||
+        // This is fun.  Because && returns one of the values, it doesn't return true or false.  Try hard.
+        // eslint-disable-next-line
+        (this.date && !this.time ? true : false)
+      )
     },
     messageOptions() {
       const options = []

@@ -67,11 +67,6 @@ export default {
       required: false,
       default: false
     },
-    spam: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
     hold: {
       type: Boolean,
       required: false,
@@ -83,11 +78,6 @@ export default {
       default: false
     },
     release: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    notspam: {
       type: Boolean,
       required: false,
       default: false
@@ -153,12 +143,6 @@ export default {
       } else if (this.delete) {
         // Standard delete button - no modal.
         await this.deleteIt()
-      } else if (this.spam) {
-        // Standard spam button - no modal.
-        await this.spamIt()
-      } else if (this.notspam) {
-        // Standard notspam button - no modal.
-        await this.notSpamIt()
       } else if (this.hold) {
         // Standard hold button - no modal.
         await this.holdIt()
@@ -202,18 +186,6 @@ export default {
       this.showDeleteModal = true
       this.waitForRef('deleteConfirm', () => {
         this.$refs.deleteConfirm.show()
-      })
-    },
-    spamIt() {
-      this.showSpamModal = true
-      this.waitForRef('spamConfirm', () => {
-        this.$refs.spamConfirm.show()
-      })
-    },
-    async notSpamIt() {
-      await this.$store.dispatch('messages/notspam', {
-        id: this.message.id,
-        groupid: this.groupid
       })
     },
     async deleteConfirmed() {

@@ -53,7 +53,6 @@
           </div>
           <ModMenuItemLeft link="/modtools/messages/pending" name="Pending" :count="['pending']" :othercount="['pendingother']" indent />
           <ModMenuItemLeft link="/modtools/messages/approved" name="Approved" indent />
-          <ModMenuItemLeft link="/modtools/messages/review" name="Review" :count="['spam']" :othercount="['spamother']" indent />
           <ModMenuItemLeft link="/modtools/messages/edits" name="Edits" :count="['editreview']" indent />
           <hr>
           <div class="pl-1">
