@@ -7,15 +7,7 @@
         </div>
       </div>
       <div class="media-body">
-        <div v-if="group.external">
-          <ExternalLink :href="group.external">
-            <b-btn variant="primary" class="float-right mr-2">
-              Explore
-            </b-btn>
-            {{ group.namedisplay }}
-          </ExternalLink>
-        </div>
-        <div v-else>
+        <div>
           <b-btn variant="primary" class="float-right mr-2" :to="'/explore/' + group.nameshort">
             Explore
           </b-btn>
@@ -27,11 +19,8 @@
           {{ group.tagline }}
         </div>
         <br v-else>
-        <span v-if="!group.external" class="text-muted">
+        <span class="text-muted">
           <ExternalLink :href="'mailto:' + group.modsmail"><v-icon name="envelope" title="Contact volunteers" /></ExternalLink>
-        </span>
-        <span v-else-if="group.contactmail">
-          <ExternalLink :href="'mailto:' + group.contactmail"><v-icon name="envelope" title="Contact volunteers" /></ExternalLink>
         </span>
       </div>
     </div>

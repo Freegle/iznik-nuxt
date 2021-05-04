@@ -21,15 +21,20 @@
         <b-row v-if="postcodeValid && !closed">
           <b-col class="text-center">
             <transition name="fade">
-              <a v-if="extgroup" :href="extgroup">
-                <v-icon name="check-circle" class="text-success mt-2 fa-bh" scale="5" />
-              </a>
-              <nuxt-link v-else to="/find">
+              <nuxt-link to="/find">
                 <v-icon name="check-circle" class="text-success mt-2 fa-bh" scale="5" />
               </nuxt-link>
             </transition>
           </b-col>
         </b-row>
+        <div v-else-if="noGroups">
+          <NoticeMessage variant="info">
+            We're really sorry, but there are no communities near there.  If you'd like to start one, please
+            <ExternalLink href="mailto:newgroups@ilovefreegle.org">
+              get in touch!
+            </ExternalLink>
+          </NoticeMessage>
+        </div>
         <b-row v-if="postcodeValid && !closed" class="mt-1">
           <b-col class="text-center">
             Freegle has local communities for each area. We'll put anything you post on here, and search this community and others nearby.
@@ -46,21 +51,6 @@
           </b-col>
         </b-row>
         <CovidClosed v-if="closed" class="mt-2" />
-        <div v-else-if="extgroup">
-          <transition name="fade">
-            <notice-message variant="info" class="mt-1">
-              This community is on a separate site. You can proceed or choose a different community using the dropdown
-              above.
-            </notice-message>
-            <b-row class="mt-1">
-              <b-col class="text-center mt-4" cols="12" md="6" offset-md="3">
-                <b-btn variant="primary" size="lg" block :href="extgroup">
-                  Proceed <v-icon name="angle-double-right" />
-                </b-btn>
-              </b-col>
-            </b-row>
-          </transition>
-        </div>
         <div class="mt-1 d-block d-md-none">
           <b-btn
             variant="primary"
@@ -94,6 +84,7 @@ import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import compose from '@/mixins/compose.js'
 import WizardProgress from '@/components/WizardProgress'
+import ExternalLink from '@/components/ExternalLink'
 import NoticeMessage from '../../components/NoticeMessage'
 import CovidClosed from '../../components/CovidClosed'
 import CovidWarning from '~/components/CovidWarning'
@@ -102,6 +93,7 @@ const ComposeGroup = () => import('~/components/ComposeGroup')
 
 export default {
   components: {
+    ExternalLink,
     WizardProgress,
     CovidWarning,
     CovidClosed,

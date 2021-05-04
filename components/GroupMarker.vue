@@ -49,11 +49,7 @@ export default {
   },
   methods: {
     goto() {
-      if (this.group.external) {
-        window.open(this.group.external)
-      } else {
-        this.$router.push('/explore/' + this.group.nameshort)
-      }
+      this.$router.push('/explore/' + this.group.nameshort)
     }
   }
 }
