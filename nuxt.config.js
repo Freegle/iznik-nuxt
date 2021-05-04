@@ -529,7 +529,10 @@ module.exports = {
             if (hint.originalException.message) {
               console.log('Message', hint.originalException.message)
 
-              if (hint.originalException.message.match(/_leaflet_pos/)) {
+              if (
+                hint.originalException.message.match(/_leaflet_pos/) ||
+                hint.originalException.message.match(/getPosition/)
+              ) {
                 // This exception can happen when a map is still in motion (e.g. zooming) and you navigate away from
                 // the page.  So far as I can tell, this is not properly fixed by either leaflet or vue2-leaflet, but
                 // causes no real problems, just Sentry clutter.  So suppress it here.
