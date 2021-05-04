@@ -509,6 +509,7 @@ module.exports = {
 
         if (isSafariExtension(event)) {
           // Honey extension causes errors, and we're not interested in any errors inside extensions.
+          console.log('Safari extension - suppress exception')
           return null
         }
 
@@ -518,7 +519,24 @@ module.exports = {
 
           if (!hint.originalException) {
             // There's basically no info to report, so there's nothing we can do.  Suppress it.
+            console.log('No info - suppress exception')
             return null
+          } else if (
+            hint.originalException.name &&
+            hint.originalException.name === 'TypeError'
+          ) {
+            console.log('TypeError')
+            if (hint.originalException.message) {
+              console.log('Message', hint.originalException.message)
+
+              if (hint.originalException.message.match(/_leaflet_pos/)) {
+                // This exception can happen when a map is still in motion (e.g. zooming) and you navigate away from
+                // the page.  So far as I can tell, this is not properly fixed by either leaflet or vue2-leaflet, but
+                // causes no real problems, just Sentry clutter.  So suppress it here.
+                console.log('Suppress leaflet exception')
+                return false
+              }
+            }
           }
         }
 
@@ -543,7 +561,6 @@ module.exports = {
             // Some errors seem benign, and so we ignore them on the client side rather than clutter our sentry logs.
             ignoreErrors: [
               'ResizeObserver loop limit exceeded', // Unclear where this happens.
-              "Cannot read property '_leaflet_pos' of undefined", // This happens if we transition pages while the map is loading.
               'Navigation cancelled from ' // This can happen if someone clicks twice in quick succession
             ]
           })
