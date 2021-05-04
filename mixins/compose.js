@@ -104,6 +104,13 @@ export default {
     uploadingPhoto() {
       return this.$store.getters['compose/getUploading']
     },
+    noGroups() {
+      return (
+        this.postcode &&
+        this.postcode.groupsnear &&
+        !this.postcode.groupsnear.length
+      )
+    },
     postcode: {
       get() {
         return this.$store.getters['compose/getPostcode']
@@ -180,13 +187,6 @@ export default {
     postcodeClear() {
       this.postcode = null
       this.group = null
-    },
-    noGroups() {
-      return (
-        this.postcode &&
-        this.postcode.groupsnear &&
-        !this.postcode.groupsnear.length
-      )
     },
     postcodeSelect(pc) {
       const currentpc = this.$store.getters['compose/getPostcode']

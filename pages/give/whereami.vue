@@ -27,7 +27,7 @@
           </b-col>
         </b-row>
         <CovidClosed v-if="closed" class="mt-2" />
-        <div v-else-if="noGroups">
+        <div v-else-if="postcodeValid && noGroups">
           <NoticeMessage variant="info">
             We're really sorry, but there are no communities near there.  If you'd like to start one, please
             <ExternalLink href="mailto:newgroups@ilovefreegle.org">
