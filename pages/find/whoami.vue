@@ -94,8 +94,12 @@ export default {
     }
   },
   mounted() {
-    if (!this.valid) {
-      this.$router.push('/find/whatisit')
+    if (!this.messageValid) {
+      this.$router.push('/find')
+    }
+
+    if (!this.postcodeValid) {
+      this.$router.push('/find/whereami')
     }
   },
   methods: {

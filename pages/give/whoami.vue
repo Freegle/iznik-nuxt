@@ -109,7 +109,11 @@ export default {
     }
   },
   mounted() {
-    if (!this.valid) {
+    if (!this.messageValid) {
+      this.$router.push('/give')
+    }
+
+    if (!this.postcodeValid) {
       this.$router.push('/give/whereami')
     }
   },

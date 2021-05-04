@@ -22,7 +22,7 @@
                   <b-btn v-if="ids.length > 1" variant="link" size="sm" class="mr-1" @click="deleteItem">
                     <v-icon name="trash-alt" />&nbsp;Delete item
                   </b-btn>
-                  <b-btn v-if="ids.length < 6 && valid" variant="secondary" size="sm" class="mb-1 mr-1" @click="addItem">
+                  <b-btn v-if="ids.length < 6 && messageValid" variant="secondary" size="sm" class="mb-1 mr-1" @click="addItem">
                     <v-icon name="plus" />&nbsp;Add another item
                   </b-btn>
                 </div>
@@ -30,9 +30,6 @@
             </b-card>
           </li>
         </ul>
-        <NoticeMessage v-if="invalid" variant="info mt-1 mb-2">
-          Please add the item name, and a description or photo (or both).
-        </NoticeMessage>
         <div class="mt-3">
           <div class="d-block d-md-none">
             <b-btn
@@ -47,7 +44,7 @@
           </div>
           <div class="d-none d-md-flex justify-content-end">
             <b-btn
-              v-if="valid"
+              v-if="messageValid"
               variant="primary"
               size="lg"
               :disabled="uploadingPhoto"
@@ -55,7 +52,7 @@
             >
               Next <v-icon name="angle-double-right" />
             </b-btn>
-            <NoticeMessage v-if="!valid" variant="info">
+            <NoticeMessage v-if="!messageValid" variant="info">
               Please add the item name, and a description or photo (or both).
             </NoticeMessage>
           </div>
