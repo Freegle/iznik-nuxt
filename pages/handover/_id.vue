@@ -104,7 +104,9 @@ export default {
         chattype: 'User2User'
       })
 
-      this.$router.push('/chats/' + chatid)
+      if (chatid) {
+        this.$router.push('/chats/' + chatid)
+      }
     }
   }
 }

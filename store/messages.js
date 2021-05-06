@@ -216,25 +216,27 @@ export const actions = {
       }
     )
 
-    await dispatch(
-      'chatmessages/clearContext',
-      {
-        chatid: chatid
-      },
-      {
-        root: true
-      }
-    )
+    if (chatid) {
+      await dispatch(
+        'chatmessages/clearContext',
+        {
+          chatid: chatid
+        },
+        {
+          root: true
+        }
+      )
 
-    await dispatch(
-      'chatmessages/fetch',
-      {
-        chatid: chatid
-      },
-      {
-        root: true
-      }
-    )
+      await dispatch(
+        'chatmessages/fetch',
+        {
+          chatid: chatid
+        },
+        {
+          root: true
+        }
+      )
+    }
   },
 
   async promise({ dispatch }, params) {

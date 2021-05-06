@@ -173,7 +173,7 @@ export const actions = {
   async openChatToUser({ dispatch, commit, rootGetters }, params) {
     const modtools = rootGetters['misc/get']('modtools')
 
-    // We migtht have a type override.  Otherwise open a user chat on FD and mod chat on MT.
+    // We migth have a type override.  Otherwise open a user chat on FD and mod chat on MT.
     const id = await dispatch('openChat', {
       chattype: params.chattype
         ? params.chattype
@@ -188,8 +188,19 @@ export const actions = {
   },
 
   async openChat({ dispatch, commit }, params) {
-    const { id } = await this.$api.chat.openChat(params)
-    await dispatch('fetch', { id })
+    const { id } = await this.$api.chat.openChat(params, function(data) {
+      if (data && data.ret === 4) {
+        // Don't log errors for banned users.
+        return false
+      } else {
+        return true
+      }
+    })
+
+    if (id) {
+      await dispatch('fetch', { id })
+    }
+
     return id
   },
 
