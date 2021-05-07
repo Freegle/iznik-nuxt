@@ -18,11 +18,9 @@ import map from '@/mixins/map.js'
 import HomeIcon from './HomeIcon'
 
 let L = null
-let Wkt = null
 
 if (process.browser) {
   L = require('leaflet')
-  Wkt = require('wicket')
   require('wicket/wicket-leaflet')
 }
 
