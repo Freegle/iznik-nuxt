@@ -55,7 +55,7 @@
             </div>
           </div>
           <div class="d-flex">
-            <div v-if="message && message.fromuser" class="text-info font-weight-bold mr-2">
+            <div v-if="summary && message && message.fromuser" class="text-info font-weight-bold mr-2">
               {{ message.fromuser.displayname }}
             </div>
             <div v-if="expanded" class="d-flex">
