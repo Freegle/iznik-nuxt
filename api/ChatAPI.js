@@ -31,8 +31,8 @@ export default class ChatAPI extends BaseAPI {
     return this.$post('/chatrooms', { id: chatid, lastmsgseen: lastmsg })
   }
 
-  openChat(params) {
-    return this.$put('/chat/rooms', params)
+  openChat(params, logError) {
+    return this.$put('/chat/rooms', params, logError)
   }
 
   send(data) {

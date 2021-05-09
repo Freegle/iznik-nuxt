@@ -16,9 +16,9 @@
       <b-select v-model="configid" :options="configOptions" class="mb-2 font-weight-bold" />
       <div>
         <b-input-group>
-          <b-input v-model="newconfigname" />
+          <b-input v-model="newconfigname" placeholder="Enter new name" />
           <b-input-group-append>
-            <SpinButton variant="white" name="plus" label="Create" :handler="create" />
+            <SpinButton variant="white" name="plus" label="Create" :handler="create" :disabled="!newconfigname" />
           </b-input-group-append>
         </b-input-group>
       </div>

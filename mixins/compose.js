@@ -28,19 +28,6 @@ export default {
 
       return ret
     },
-    extgroup() {
-      const groupid = this.$store.getters['compose/getGroup']
-
-      if (this.postcode && this.postcode.groupsnear) {
-        for (const group of this.postcode.groupsnear) {
-          if (group.id === groupid) {
-            return group.external
-          }
-        }
-      }
-
-      return null
-    },
     ids() {
       const messages = Object.values(this.$store.getters['compose/getMessages'])
 
@@ -116,6 +103,13 @@ export default {
     },
     uploadingPhoto() {
       return this.$store.getters['compose/getUploading']
+    },
+    noGroups() {
+      return (
+        this.postcode &&
+        this.postcode.groupsnear &&
+        !this.postcode.groupsnear.length
+      )
     },
     postcode: {
       get() {
@@ -216,7 +210,9 @@ export default {
           }
 
           if (!found) {
-            this.group = pc.groupsnear[0].id
+            if (pc.groupsnear.length) {
+              this.group = pc.groupsnear[0].id
+            }
           } else {
             this.group = groupid
           }

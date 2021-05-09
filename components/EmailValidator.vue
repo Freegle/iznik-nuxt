@@ -11,6 +11,7 @@
         type="email"
         name="email"
         :size="size"
+        :min-length="1"
         class="email"
         :validation="$v.email"
         validation-enabled

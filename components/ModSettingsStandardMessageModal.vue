@@ -5,7 +5,7 @@
         v-if="stdmsg"
         id="stdmsgmodal"
         v-model="showModal"
-        :title="(locked ? 'View \'' : 'Edit \'') + stdmsg.title + '\''"
+        :title="title"
         size="lg"
         no-stacking
       >
@@ -110,7 +110,7 @@
               <b-button variant="white" class="mr-2" @click="cancel">
                 Cancel
               </b-button>
-              <b-button v-if="!locked" variant="primary" @click="save">
+              <b-button v-if="!locked" variant="primary" :disabled="!stdmsg.title" @click="save">
                 <span v-if="id">Save</span>
                 <span v-else>Add</span>
               </b-button>
@@ -174,6 +174,15 @@ export default {
               return s.id === this.id
             })
           : null
+      }
+    },
+    title() {
+      if (!this.id) {
+        return 'Create a standard message'
+      } else if (this.locked) {
+        return 'View ' + this.stdmsg.title
+      } else {
+        return 'Edit ' + this.stdmsg.title
       }
     }
   },

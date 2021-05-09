@@ -61,9 +61,15 @@
                 - won't send mails
               </span>
             </div>
-            <div v-if="member.info && member.info.publiclocation">
-              Public location: {{ member.info.publiclocation.location }}
+            <div class="d-flex justify-content-between flex-wrap">
+              <div v-if="member.info && member.info.publiclocation">
+                Public location: {{ member.info.publiclocation.location }}
+              </div>
+              <div v-if="member.info && member.info.privateposition">
+                Private location: {{ member.info.privateposition.loc }}
+              </div>
             </div>
+            <MessageMap v-if="member.info && member.info.privateposition" :position="member.info.privateposition" class="mt-2" />
             <ModMemberLogins :member="member" />
             <b-btn v-if="member.emails && member.emails.length" variant="link" @click="showEmails = !showEmails">
               <v-icon name="envelope" />
@@ -139,6 +145,7 @@
   </div>
 </template>
 <script>
+import MessageMap from '@/components/MessageMap'
 import waitForRef from '../mixins/waitForRef'
 import NoticeMessage from './NoticeMessage'
 import ProfileImage from './ProfileImage'
@@ -159,6 +166,7 @@ const MEMBERSHIPS_SHOW = 3
 export default {
   name: 'ModMember',
   components: {
+    MessageMap,
     SpinButton,
     ModSpammerReport,
     ModMemberButton,

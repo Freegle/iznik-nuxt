@@ -25,6 +25,15 @@
             <!-- eslint-disable-next-line -->
             <ExternalLink href="mailto:media@ilovefreegle.org">media@ilovefreegle.org</ExternalLink>.
           </p>
+          <NoticeMessage variant="info">
+            <p>
+              Freegle sends out regular, quick read newsletters to councils. <strong>Freegle Bites</strong> gives councils
+              the latest reuse news plus practical help and advice on how you can support reuse in your community.
+            </p>
+            <b-btn variant="primary" size="lg" href="https://us20.campaign-archive.com/home/?u=dd0a44d9aa3f6ba0e4d439318&id=8edc47538e">
+              View the archive and sign up
+            </b-btn>
+          </NoticeMessage>
         </b-card-text>
       </b-card>
       <CouncilsContent class="mt-2" />
@@ -33,11 +42,13 @@
 </template>
 <script>
 import buildHead from '@/mixins/buildHead.js'
+import NoticeMessage from '@/components/NoticeMessage'
 const CouncilsContent = () => import('~/components/CouncilsContent')
 const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
   components: {
+    NoticeMessage,
     CouncilsContent,
     ExternalLink
   },

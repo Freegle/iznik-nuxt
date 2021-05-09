@@ -107,26 +107,28 @@ export default {
           chattype: this.chattype
         })
 
-        if (firstmessage) {
-          console.log('First message to send', firstmessage)
-          await this.$store.dispatch('chatmessages/send', {
-            roomid: chatid,
-            message: firstmessage,
-            refmsgid: firstmsgid
-          })
+        if (chatid) {
+          if (firstmessage) {
+            console.log('First message to send', firstmessage)
+            await this.$store.dispatch('chatmessages/send', {
+              roomid: chatid,
+              message: firstmessage,
+              refmsgid: firstmsgid
+            })
 
-          console.log('Sent')
-          this.$emit('sent')
-        }
+            console.log('Sent')
+            this.$emit('sent')
+          }
 
-        if (popup) {
-          await this.$store.dispatch('popupchats/popup', {
-            id: chatid
-          })
-        } else if (route) {
-          this.$router.push(
-            (modtools ? '/modtools/chats/' : '/chats/') + chatid
-          )
+          if (popup) {
+            await this.$store.dispatch('popupchats/popup', {
+              id: chatid
+            })
+          } else if (route) {
+            this.$router.push(
+              (modtools ? '/modtools/chats/' : '/chats/') + chatid
+            )
+          }
         }
       }
     }

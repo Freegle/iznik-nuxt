@@ -54,7 +54,10 @@
               <ModMessageRelated v-for="related in message.related" :key="'related-' + related.id" :message="related" />
             </div>
           </div>
-          <div>
+          <div class="d-flex">
+            <div v-if="summary && message && message.fromuser" class="text-info font-weight-bold mr-2">
+              {{ message.fromuser.displayname }}
+            </div>
             <div v-if="expanded" class="d-flex">
               <div>
                 <b-btn v-if="message.source === 'Email'" variant="white" @click="viewSource">
@@ -70,9 +73,11 @@
                 </b-btn>
               </div>
             </div>
-            <b-btn v-else variant="white" @click="expanded = !expanded">
-              <v-icon name="caret-down" />
-            </b-btn>
+            <div v-else>
+              <b-btn variant="white" @click="expanded = !expanded">
+                <v-icon name="caret-down" />
+              </b-btn>
+            </div>
           </div>
         </div>
       </b-card-header>
@@ -170,7 +175,6 @@
           <b-col cols="12" lg="3">
             <MessageMap
               v-if="group && position"
-              wales
               :centerat="{ lat: group.lat, lng: group.lng }"
               :position="{ lat: position.lat, lng: position.lng }"
               locked

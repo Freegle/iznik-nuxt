@@ -203,23 +203,25 @@ export default {
       let found = false
       for (const chat of chats) {
         if (parseInt(chat.id) === parseInt(this.reply.chatid)) {
-          found = true
+          found = chat.id
         }
       }
 
       if (!found) {
         // We did close it, so we need to reopen it.
-        await this.$store.dispatch('chats/openChatToUser', {
+        found = await this.$store.dispatch('chats/openChatToUser', {
           userid: this.reply.user.id
         })
       }
 
-      if (popup) {
-        await this.$store.dispatch('popupchats/popup', {
-          id: this.reply.chatid
-        })
-      } else {
-        this.$router.push('/chats/' + this.reply.chatid)
+      if (found) {
+        if (popup) {
+          await this.$store.dispatch('popupchats/popup', {
+            id: this.reply.chatid
+          })
+        } else {
+          this.$router.push('/chats/' + this.reply.chatid)
+        }
       }
     },
     promise() {
