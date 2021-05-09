@@ -120,7 +120,7 @@ export default {
 
         return {
           message: message,
-          error: false
+          error: message !== null
         }
       } catch (e) {
         return {
