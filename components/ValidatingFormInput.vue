@@ -4,6 +4,7 @@
       :id="id"
       :state="validationState"
       :aria-describedby="feedbackId"
+      :minlength="minLength"
       :maxlength="maxLength"
       v-bind="$attrs"
       v-on="$listeners"
@@ -24,6 +25,11 @@ export default {
     maxLength() {
       return this.validationTypes.includes('maxLength')
         ? this.validation.$params.maxLength.max
+        : null
+    },
+    minLength() {
+      return this.validationTypes.includes('minLength')
+        ? this.validation.$params.minLength.min
         : null
     }
   }

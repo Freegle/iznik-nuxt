@@ -190,7 +190,7 @@
                       :valid.sync="emailValid"
                       label="Your email address:"
                     />
-                    <b-button variant="white" class="mb-2" @click="saveEmail">
+                    <b-button variant="white" class="mb-2" :disabled="!emailValid" @click="saveEmail">
                       <v-icon v-if="savingEmail" name="sync" class="text-success fa-spin" />
                       <v-icon v-else-if="savedEmail" name="check" class="text-success" />
                       <v-icon v-else name="save" />
@@ -646,7 +646,8 @@ export default {
       uploading: false,
       emailValid: false,
       cacheBust: Date.now(),
-      userTimer: null
+      userTimer: null,
+      initialEmail: null
     }
   },
   computed: {
@@ -795,13 +796,18 @@ export default {
     otheremails() {
       return this.me.emails
         ? this.me.emails.filter(e => {
-            return !e.ourdomain && e.email !== this.me.email
+            return (
+              !e.ourdomain &&
+              e.email !== this.me.email &&
+              e.email !== this.initialEmail
+            )
           })
         : []
     }
   },
   async mounted() {
     await this.update()
+    this.initialEmail = this.me.email
     setTimeout(this.checkUser, 200)
   },
   methods: {
