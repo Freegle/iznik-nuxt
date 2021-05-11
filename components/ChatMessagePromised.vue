@@ -58,8 +58,15 @@
               <p v-if="trystdate" class="small text-info">
                 Handover arranged for <strong>{{ trystdate }}</strong>
               </p>
-              <div class="d-flex mt-1 mb-1">
-                <AddToCalendar v-if="tryst" :ics="tryst.ics" class="mr-2" />
+              <div class="d-flex mt-1 mb-1 flex-wrap">
+                <template v-if="tryst">
+                  <AddToCalendar :ics="tryst.ics" class="mr-2" />
+                  <b-btn v-if="refmsg.promisecount && !hasOutcome" variant="secondary" class="mr-2" @click="changeTime">
+                    <v-icon name="pen" />
+                    Change time
+                  </b-btn>
+                  <PromiseModal ref="promise" :messages="[ refmsg ]" :selected-message="refmsg.id" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
+                </template>
                 <b-btn v-if="refmsg.promisecount && !hasOutcome" variant="warning" class="align-middle" @click="unpromise">
                   <v-icon>
                     <v-icon name="handshake" />
@@ -90,18 +97,23 @@
 </template>
 
 <script>
+import waitForRef from '../mixins/waitForRef'
 import AddToCalendar from '~/components/AddToCalendar'
 import ChatBase from '~/components/ChatBase'
 import ProfileImage from '~/components/ProfileImage'
+
 const RenegeModal = () => import('./RenegeModal')
+const PromiseModal = () => import('~/components/PromiseModal')
 
 export default {
   components: {
     AddToCalendar,
     ProfileImage,
-    RenegeModal
+    RenegeModal,
+    PromiseModal
   },
   extends: ChatBase,
+  mixins: [waitForRef],
   computed: {
     hasOutcome() {
       return this.refmsg && this.refmsg.outcomes && this.refmsg.outcomes.length
@@ -120,6 +132,11 @@ export default {
   methods: {
     unpromise() {
       this.$refs.renege.show()
+    },
+    changeTime() {
+      this.waitForRef('promise', () => {
+        this.$refs.promise.show()
+      })
     }
   }
 }

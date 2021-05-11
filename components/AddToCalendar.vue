@@ -1,6 +1,7 @@
 <template>
   <div>
     <b-btn :variant="variant" :size="size" @click="download">
+      <v-icon name="calendar-alt" />
       Add to Calendar
     </b-btn>
   </div>
