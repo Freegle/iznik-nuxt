@@ -83,7 +83,6 @@ export default {
 
     if (this.comment.groupid && !this.group) {
       // Need to fetch group
-      console.log('Need to fetch group')
       this.$store.dispatch('group/fetch', {
         id: this.comment.groupid
       })
