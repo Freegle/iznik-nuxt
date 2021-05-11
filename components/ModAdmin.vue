@@ -96,7 +96,7 @@
         <b-btn v-if="!admin.heldby" variant="warning" @click="deleteIt">
           <v-icon name="trash-alt" /> Delete
         </b-btn>
-        <b-btn v-if="!admin.heldby" variant="secondary" @click="save">
+        <b-btn v-if="!admin.heldby" variant="white" @click="save">
           <v-icon v-if="saving" name="sync" class="text-success fa-spin" />
           <v-icon v-else-if="saved" name="check" class="text-success" />
           <v-icon v-else name="save" />
