@@ -216,7 +216,7 @@
                   </tbody>
                 </table>
                 <p v-else class="text-muted">
-                  No replies yet. <span v-if="!taken && !received && message.willautorepost && message.canrepostat">Will auto-repost {{ message.canrepostat | timeago }}.</span>
+                  No replies yet. <span v-if="!taken && !received && message.canrepostat">Will auto-repost {{ message.canrepostat | timeago }}.</span>
                 </p>
               </b-card-text>
             </b-card-body>
