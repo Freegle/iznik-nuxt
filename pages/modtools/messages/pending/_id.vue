@@ -13,8 +13,10 @@
       <NoticeMessage v-if="!messages.length && !busy" class="mt-2">
         There are no messages at the moment.  This will refresh automatically.
       </NoticeMessage>
-      <div v-for="message in visibleMessages" :key="'messagelist-' + message.id" class="p-0 mt-2">
-        <ModMessage :message="message" />
+      <div v-for="(message, ix) in visibleMessages" :key="'messagelist-' + message.id" class="p-0 mt-2">
+        <div :ref="'top' + message.id" />
+        <ModMessage :message="message" :next="ix < visibleMessages.length - 1 ? visibleMessages[ix + 1].id : null" :next-after-removed="nextAfterRemoved" @destroy="destroy" />
+        <div :ref="'bottom' + message.id" />
       </div>
 
       <infinite-loading :key="'infinite-' + groupid + '-' + messages.length" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
@@ -82,6 +84,10 @@ export default {
           })
         }
       })
+    },
+    destroy(oldid, nextid) {
+      console.log('In page, destroying', oldid, nextid)
+      this.nextAfterRemoved = nextid
     }
   }
 }
