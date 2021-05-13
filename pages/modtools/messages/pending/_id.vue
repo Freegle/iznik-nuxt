@@ -86,7 +86,6 @@ export default {
       })
     },
     destroy(oldid, nextid) {
-      console.log('In page, destroying', oldid, nextid)
       this.nextAfterRemoved = nextid
     }
   }

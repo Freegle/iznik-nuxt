@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div ref="top" style="position:absolute; top:-66px" />
+    <div ref="top" style="position:relative; top:-66px" />
     <b-card bg-variant="white" no-body>
       <b-card-header class="p-1 p-md-2">
         <div class="d-flex justify-content-between">
