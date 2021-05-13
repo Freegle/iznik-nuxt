@@ -240,6 +240,9 @@
           </b-col>
           <b-col cols="8" md="6" class="order-2 order-md-3 p-1">
             {{ message.subject }}
+            <span v-if="message.outcome" class="text-info small">
+              {{ message.outcome }}
+            </span>
           </b-col>
           <b-col cols="6" md="2" class="small order-4 p-1">
             {{ message.fromaddr }}
