@@ -44,6 +44,7 @@
 
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
+import jobs from '@/mixins/jobs'
 import Job from './Job'
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const DonationButton = () => import('~/components/DonationButton')
@@ -55,6 +56,7 @@ export default {
     InfiniteLoading,
     DonationButton
   },
+  mixins: [jobs],
   data: function() {
     return {
       location: null,
@@ -71,7 +73,7 @@ export default {
     visibleJobs() {
       if (process.browser) {
         // We have an infinite scroll - return as many as we're currently showing.
-        return this.jobs.slice(0, this.show)
+        return this.prioritise(this.jobs, this.show)
       } else {
         // SSR - return all for SEO.
         return this.job
