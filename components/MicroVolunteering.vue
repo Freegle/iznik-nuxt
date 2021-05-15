@@ -88,16 +88,15 @@
               <p>
                 This is someone else's post.  Does it look ok to you?
               </p>
-              <!--              TODO What do we do here for more details?-->
-              <Message
+              <MessageExpanded
                 v-if="message"
+                :id="message.id"
                 :key="'task-' + message.id"
-                v-bind="message"
-                expand-button-text="See more details"
+                :message-override="message"
                 :replyable="false"
-                start-expanded
                 :actions="false"
                 :record-view="false"
+                :show-map="false"
               />
               <div v-if="!showComments" class="d-flex justify-content-between flex-wrap w-100 mt-3">
                 <SpinButton
@@ -198,7 +197,7 @@
 </template>
 <script>
 import dayjs from 'dayjs'
-import Message from './Message'
+import MessageExpanded from '@/components/MessageExpanded'
 import SpinButton from './SpinButton'
 const MicroVolunteeringSimilarTerm = () =>
   import('./MicroVolunteeringSimilarTerm')
@@ -212,7 +211,7 @@ export default {
     FacebookPostToShare,
     MicroVolunteeringSimilarTerm,
     SpinButton,
-    Message
+    MessageExpanded
   },
   props: {
     force: {
@@ -252,16 +251,17 @@ export default {
       return this.me && this.me.trustlevel && this.me.trustlevel !== 'Declined'
     },
     askDue() {
+      return true
       // Ask no more than once per hour.  Only want to ask if we're logged in, because otherwise a) we don't know if we've
       // already declined and b) we couldn't save a decline.
-      const modtools = this.$store.getters['misc/get']('modtools')
-
-      return (
-        !modtools &&
-        this.me &&
-        (!this.lastAsk ||
-          Date.now() - new Date(this.lastAsk).getTime() > 60 * 60 * 1000)
-      )
+      // const modtools = this.$store.getters['misc/get']('modtools')
+      //
+      // return (
+      //   !modtools &&
+      //   this.me &&
+      //   (!this.lastAsk ||
+      //     Date.now() - new Date(this.lastAsk).getTime() > 60 * 60 * 1000)
+      // )
     }
   },
   mounted() {

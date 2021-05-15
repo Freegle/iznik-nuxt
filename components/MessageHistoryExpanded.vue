@@ -48,6 +48,11 @@ export default {
       type: Number,
       default: 0
     },
+    messageOverride: {
+      type: Object,
+      required: false,
+      default: null
+    },
     groups: {
       type: Array,
       default: () => []
@@ -55,7 +60,9 @@ export default {
   },
   computed: {
     message() {
-      return this.$store.getters['messages/get'](this.id)
+      return (
+        this.messageOverride ?? this.$store.getters['messages/get'](this.id)
+      )
     },
     today() {
       return this.$dayjs(this.message.date).isSame(this.$dayjs(), 'day')

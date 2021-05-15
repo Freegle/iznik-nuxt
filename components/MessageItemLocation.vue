@@ -47,6 +47,11 @@ export default {
       type: Number,
       required: true
     },
+    messageOverride: {
+      type: Object,
+      required: false,
+      default: null
+    },
     matchedon: {
       type: Object,
       required: false,
@@ -65,7 +70,9 @@ export default {
   },
   computed: {
     message() {
-      return this.$store.getters['messages/get'](this.id)
+      return (
+        this.messageOverride ?? this.$store.getters['messages/get'](this.id)
+      )
     },
     subject() {
       return this.message ? this.message.subject : null

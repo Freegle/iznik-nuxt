@@ -54,6 +54,11 @@ export default {
       type: Number,
       required: true
     },
+    messageOverride: {
+      type: Object,
+      required: false,
+      default: null
+    },
     attachments: {
       type: Array,
       default: () => []
@@ -76,7 +81,9 @@ export default {
   },
   computed: {
     message() {
-      return this.$store.getters['messages/get'](this.id)
+      return (
+        this.messageOverride ?? this.$store.getters['messages/get'](this.id)
+      )
     },
     group() {
       let ret = null

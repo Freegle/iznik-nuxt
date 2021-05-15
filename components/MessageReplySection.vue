@@ -146,6 +146,11 @@ export default {
     id: {
       type: Number,
       required: true
+    },
+    messageOverride: {
+      type: Object,
+      required: false,
+      default: null
     }
   },
   data: function() {
@@ -160,7 +165,9 @@ export default {
   },
   computed: {
     message() {
-      return this.$store.getters['messages/get'](this.id)
+      return (
+        this.messageOverride ?? this.$store.getters['messages/get'](this.id)
+      )
     },
     stillAvailable() {
       return (
