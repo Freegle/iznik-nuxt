@@ -4,7 +4,6 @@
     id="loginModal"
     ref="loginModal"
     v-model="showModal"
-    no-stacking
     size="lg"
     hide-footer
     no-close-on-backdrop

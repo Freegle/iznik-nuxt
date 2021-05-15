@@ -1,13 +1,12 @@
 <template>
   <div>
     <div v-if="defaultAttachments || !attachments.length">
-      <div class="tagbadge tagdef pl-2 pr-2 font-weight-bold">
+      <div class="tagbadge tagdef ml-2 pl-2 pr-2 font-weight-bold">
         {{ tag }}
       </div>
-      <div class="d-none d-sm-flex justify-content-around bg rounded">
+      <div class="d-flex justify-content-around bg rounded">
         <v-icon name="camera" scale="4" class="text-faded align-self-center justify-se" />
       </div>
-      <div class="d-block d-sm-none placeholder" />
     </div>
     <button v-else class="w-100 p-0 border-0" :disabled="disabled" @click="showPhotos">
       <div class="tagbadge pl-2 pr-2 font-weight-bold">
@@ -164,9 +163,5 @@ export default {
   background-color: $color-gray--light;
   width: 100%;
   height: 200px;
-}
-
-.placeholder {
-  height: 6rem;
 }
 </style>

@@ -93,16 +93,6 @@ export default {
 
       return ret
     },
-    replyToSend() {
-      let ret = null
-      const me = this.$store.getters['auth/user']
-
-      if (me) {
-        ret = this.$store.getters['reply/get']
-      }
-
-      return ret
-    },
     stillAvailable() {
       return (
         this.message.type === 'Offer' &&

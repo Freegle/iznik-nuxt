@@ -1,9 +1,9 @@
 <template>
   <div>
     <CovidClosed v-if="message.closed" />
-    <div v-else-if="!message.fromuser || message.fromuser.id !== myid" class="grey p-2">
+    <div v-else-if="!fromme" class="grey p-2">
       <EmailValidator
-        v-if="!me && !sent"
+        v-if="!me"
         ref="email"
         size="lg"
         label="Your email address:"
@@ -15,7 +15,6 @@
       </NoticeMessage>
       <MessageStillAvailable v-if="stillAvailable" class="mb-1 mt-1" />
       <b-form-group
-        v-if="!sent"
         class="flex-grow-1"
         label="Your reply:"
         :label-for="'replytomessage-' + message.id"
@@ -38,68 +37,67 @@
           class="flex-grow-1"
         />
       </b-form-group>
-      <MessageReplySent v-if="sent" />
-      <div v-if="!sent">
-        <div v-if="!me">
-          <NewFreegler />
+      <div v-if="!me">
+        <NewFreegler />
+      </div>
+      <div v-else>
+        <div class="d-flex justify-content-between flex-wrap">
+          <b-form-group
+            class="flex-grow-1"
+            label="Your postcode:"
+            :label-for="'replytomessage-' + message.id"
+            description=""
+          >
+            <Postcode @selected="savePostcode" />
+          </b-form-group>
+          <SettingsPhone
+            v-if="me"
+            label="Your mobile:"
+            size="lg"
+            hide-remove
+            auto-save
+            input-class="phone"
+          />
         </div>
-        <div v-else>
-          <div class="d-flex justify-content-between flex-wrap">
-            <b-form-group
-              class="flex-grow-1"
-              label="Your postcode:"
-              :label-for="'replytomessage-' + message.id"
-              description=""
-            >
-              <Postcode @selected="savePostcode" />
-            </b-form-group>
-            <SettingsPhone
-              v-if="me"
-              label="Your mobile:"
-              size="lg"
-              hide-remove
-              auto-save
-              input-class="phone"
-            />
-          </div>
-          <p class="text--small text-muted">
-            We ask for your postcode so that we know how far away you are - the closer the better.  Your mobile is
-            optional - we can notify you by text (SMS) so you don't miss replies.  We won't show it to the other freegler.
-          </p>
-        </div>
+        <p class="text--small text-muted">
+          We ask for your postcode so that we know how far away you are - the closer the better.  Your mobile is
+          optional - we can notify you by text (SMS) so you don't miss replies.  We won't show it to the other freegler.
+        </p>
       </div>
     </div>
     <hr>
     <div class="d-flex justify-content-between">
-      <b-btn variant="secondary" class="mr-2 w-50" size="lg">
-        Close
-      </b-btn>
-      <b-btn
-        v-if="!me"
-        size="lg"
-        variant="primary"
-        :disabled="disableSend"
-        block
-        class="ml-2"
-        @click="registerOrSend"
-      >
-        Send <span class="d-none d-md-inline">your</span> reply
-        <v-icon v-if="replying" name="sync" class="fa-spin" />
-        <v-icon v-else name="angle-double-right" />&nbsp;
-      </b-btn>
-      <b-btn
-        v-else
-        size="lg"
-        variant="primary"
-        block
-        :disabled="disableSend"
-        class="ml-2 w-50"
-        @click="sendReply"
-      >
-        Send <span class="d-none d-md-inline">your</span> reply
-        <v-icon v-if="replying" name="sync" class="fa-spin" />
-        <v-icon v-else name="angle-double-right" />&nbsp;
-      </b-btn>
+      <div class="pr-2 w-50">
+        <b-btn variant="secondary" size="lg" block @click="close">
+          Close
+        </b-btn>
+      </div>
+      <div v-if="!fromme" class="pl-2 w-50">
+        <b-btn
+          v-if="!me"
+          size="lg"
+          variant="primary"
+          :disabled="disableSend"
+          block
+          @click="registerOrSend"
+        >
+          Send <span class="d-none d-md-inline">your</span> reply
+          <v-icon v-if="replying" name="sync" class="fa-spin" />
+          <v-icon v-else name="angle-double-right" />&nbsp;
+        </b-btn>
+        <b-btn
+          v-else
+          size="lg"
+          variant="primary"
+          block
+          :disabled="disableSend"
+          @click="sendReply"
+        >
+          Send <span class="d-none d-md-inline">your</span> reply
+          <v-icon v-if="replying" name="sync" class="fa-spin" />
+          <v-icon v-else name="angle-double-right" />&nbsp;
+        </b-btn>
+      </div>
     </div>
     <b-modal
       v-if="showNewUser"
@@ -112,12 +110,14 @@
     >
       <NewUserInfo :password="newUserPassword" />
     </b-modal>
+    <span ref="breakpoint" class="d-inline d-sm-none" />
     <div class="d-none">
-      <ChatButton v-if="replyToUser" ref="chatbutton" :userid="replyToUser" @sent="sentReply" />
+      <ChatButton v-if="replyToUser" ref="replyToPostChatButton" :userid="replyToUser" @sent="sentReply" />
     </div>
   </div>
 </template>
 <script>
+import replyToPost from '@/mixins/replyToPost'
 import MessageStillAvailable from '@/components/MessageStillAvailable'
 import SettingsPhone from '@/components/SettingsPhone'
 import CovidClosed from '@/components/CovidClosed'
@@ -128,10 +128,10 @@ import NewUserInfo from '@/components/NewUserInfo'
 import ChatButton from '@/components/ChatButton'
 
 const NewFreegler = () => import('~/components/NewFreegler')
-const MessageReplySent = () => import('~/components/MessageReplySent')
 
 export default {
   components: {
+    ChatButton,
     MessageStillAvailable,
     SettingsPhone,
     CovidClosed,
@@ -139,10 +139,9 @@ export default {
     EmailValidator,
     NoticeMessage,
     NewFreegler,
-    MessageReplySent,
-    NewUserInfo,
-    ChatButton
+    NewUserInfo
   },
+  mixins: [replyToPost],
   props: {
     id: {
       type: Number,
@@ -153,7 +152,6 @@ export default {
     return {
       reply: null,
       replying: false,
-      sent: false,
       email: null,
       emailValid: false,
       showNewUser: false,
@@ -175,14 +173,8 @@ export default {
     disableSend() {
       return this.replying || !this.reply || (!this.me && !this.emailValid)
     },
-    replyToUser() {
-      const msg = this.$store.getters['messages/get'](this.id)
-
-      if (msg && msg.fromuser) {
-        return msg.fromuser.id
-      }
-
-      return null
+    fromme() {
+      return this.message.fromuser && this.message.fromuser.id === this.myid
     }
   },
   methods: {
@@ -227,101 +219,66 @@ export default {
       }
     },
     async sendReply() {
-      // We have different buttons which display at different screen sizes.  Which of those is visible and hence
-      // clicked tells us whether we want to open this chat in a popup or not.
-      const popup = this.sm()
-      console.log('Send reply', this.reply, popup)
+      console.log('sendReply', this.reply)
 
       if (this.reply) {
+        // Save the reply
+        const replyToSend = {
+          replyMsgId: this.id,
+          replyMessage: this.reply,
+          replyingAt: Date.now()
+        }
+        console.log('Save', replyToSend)
+        await this.$store.dispatch('reply/set', replyToSend)
+
         const me = this.$store.getters['auth/user']
 
         if (me && me.id) {
-          if (me.id !== this.replyToUser) {
-            // We have several things to do:
-            // - join a group if need be (doesn't matter which)
-            // - post our reply
-            // - open the popup chat so they see what happened
-            this.replying = true
-            const myGroups = this.$store.getters['auth/groups']
-            let found = false
-            let tojoin = null
+          // We have several things to do:
+          // - join a group if need be (doesn't matter which)
+          // - post our reply
+          // - show/go to the open the popup chat so they see what happened
+          this.replying = true
+          const myGroups = this.$store.getters['auth/groups']
+          let found = false
+          let tojoin = null
 
-            for (const messageGroup of this.message.groups) {
-              tojoin = messageGroup.groupid
-              Object.keys(myGroups).forEach(key => {
-                const group = myGroups[key]
+          for (const messageGroup of this.message.groups) {
+            tojoin = messageGroup.groupid
+            Object.keys(myGroups).forEach(key => {
+              const group = myGroups[key]
 
-                if (messageGroup.groupid === group.id) {
-                  found = true
-                }
-              })
-            }
-
-            if (!found) {
-              // Not currently a member.
-              console.log('Need to join')
-              await this.$store.dispatch('auth/joinGroup', {
-                userid: me.id,
-                groupid: tojoin
-              })
-
-              // Have to get the message back, because as a non-member we couldn't see who sent it, and therefore
-              // who to reply to.
-              await this.$store.dispatch('messages/fetch', {
-                id: this.id
-              })
-            }
-
-            // Now create the chat and send the first message.
-            console.log('Prepare chat', this.reply, this.id, this.replyToUser)
-            this.$nextTick(() => {
-              console.log(
-                'Now open chat',
-                this.reply,
-                this.id,
-                this.replyToUser,
-                popup
-              )
-
-              // Open the chat.  We don't want to move from this page - either we'll get a popup chat (so we can
-              // see the reply went) or we're on mobile and we'll display the sent message notice.
-              this.waitForRef('chatbutton', () => {
-                this.$refs.chatbutton.openChat(
-                  null,
-                  this.reply,
-                  this.id,
-                  popup,
-                  false
-                )
-              })
+              if (messageGroup.groupid === group.id) {
+                found = true
+              }
             })
           }
-        } else {
-          // We're not logged in yet.  We need to save the reply and force a sign in.
-          //
-          // Setting the reply text here will get persisted to the store.  Once we log in and return to the message
-          // page, then we will find this in the store and trigger the send of the reply.
-          await this.$store.dispatch('reply/set', {
-            replyTo: this.id,
-            replyMessage: this.reply
-          })
 
+          if (!found) {
+            // Not currently a member.
+            console.log('Need to join')
+            await this.$store.dispatch('auth/joinGroup', {
+              userid: me.id,
+              groupid: tojoin
+            })
+
+            // Have to get the message back, because as a non-member we couldn't see who sent it, and therefore
+            // who to reply to.
+            await this.$store.dispatch('messages/fetch', {
+              id: this.id
+            })
+          }
+
+          // Now we can send the reply via chat.
+          await this.replyToPost()
+          this.close()
+        } else {
+          // We're not logged in yet.  We need to force a sign in.  Once that completes then default.vue will
+          // spot we have a reply to send and make it happen.
+          console.log('Force login')
           this.$store.dispatch('auth/forceLogin', true)
         }
       }
-    },
-    async sentReply() {
-      // This gets invoked when we have sent a message we passed to ChatButton.
-      this.replying = false
-      this.sent = true
-
-      // Clear message now sent
-      this.reply = null
-
-      await this.$store.dispatch('reply/set', {
-        replyTo: null,
-        replyMessage: null
-      })
     },
     async savePostcode(pc) {
       const settings = this.me.settings
@@ -332,6 +289,9 @@ export default {
           settings: settings
         })
       }
+    },
+    close() {
+      this.$emit('close')
     }
   }
 }

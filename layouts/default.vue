@@ -6,9 +6,6 @@
     </main>
     <BouncingEmail />
     <LocalStorageMonitor />
-    <client-only>
-      <ChatPopups v-if="loggedIn" class="d-none d-sm-block" />
-    </client-only>
     <div class="navbar-toggle" style="display: none" />
     <div id="serverloader" class="bg-white">
       <b-img src="~/static/loader.gif" alt="Loading..." />
@@ -16,27 +13,37 @@
       <!-- eslint-disable-next-line -->
       <p><span class="font-weight-bold">Loading...</span><br>Stuck here? <ExternalLink href="mailto:support@ilovefreegle.org">Contact us</ExternalLink><br>Try refreshing.  Or Chrome.</p>
     </div>
+    <client-only>
+      <ChatPopups v-if="loggedIn" class="d-none d-sm-block" />
+      <span ref="breakpoint" class="d-inline d-sm-none" />
+      <div class="d-none">
+        <ChatButton v-if="replyToUser" ref="replyToPostChatButton" :userid="replyToUser" @sent="sentReply" />
+      </div>
+    </client-only>
   </div>
 </template>
 
 <script>
 import nchanHelper from '@/mixins/nchanHelper'
+import replyToPost from '@/mixins/replyToPost'
 import LocalStorageMonitor from '~/components/LocalStorageMonitor'
 import BouncingEmail from '~/components/BouncingEmail'
 import MainHeader from '~/components/MainHeader'
 
 const ChatPopups = () => import('~/components/ChatPopups')
+const ChatButton = () => import('~/components/ChatButton')
 const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
   components: {
     ChatPopups,
+    ChatButton,
     LocalStorageMonitor,
     BouncingEmail,
     ExternalLink,
     MainHeader
   },
-  mixins: [nchanHelper],
+  mixins: [nchanHelper, replyToPost],
   data: function() {
     return {
       complete: false,
@@ -46,7 +53,6 @@ export default {
       chatCount: 0
     }
   },
-
   head() {
     const totalCount = this.unreadNotificationCount + this.chatCount
     return {
@@ -60,8 +66,7 @@ export default {
       ]
     }
   },
-
-  mounted() {
+  async mounted() {
     if (process.browser) {
       // Add class for screen background.
       document.body.classList.add('fd')
@@ -132,8 +137,19 @@ export default {
     } catch (e) {
       console.log('Failed to set context', e)
     }
-  },
 
+    if (process.browser) {
+      if (this.replyToSend) {
+        // We have loaded the site with a reply that needs sending.  This happens if we force login in a way that
+        // causes us to navigate away and back again.  Fetch the relevant message.
+        await this.$store.dispatch('messages/fetch', {
+          id: this.replyToSend.replyMsgId
+        })
+
+        this.replyToPost()
+      }
+    }
+  },
   async beforeCreate() {
     if (this.$route.query.u && this.$route.query.k) {
       try {
@@ -153,12 +169,10 @@ export default {
       }
     }
   },
-
   beforeDestroy() {
     console.log('Destroy layout')
     clearTimeout(this.timeTimer)
   },
-
   methods: {
     updateTime() {
       this.$store.dispatch('misc/setTime')

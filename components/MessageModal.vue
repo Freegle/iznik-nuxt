@@ -11,10 +11,17 @@
         @shown="shown"
       >
         <template slot="modal-title" />
-        <template slot="default">
-          <MessageExpanded :id="id" :replyable="replyable" :hide-close="hideClose" :actions="actions" :show-map="modalShown" />
+        <template slot="default" slot-scope="{ cancel }">
+          <MessageExpanded
+            :id="id"
+            :replyable="replyable"
+            :hide-close="hideClose"
+            :actions="actions"
+            :show-map="modalShown"
+            @close="cancel"
+          />
         </template>
-        <template slot="modal-footer" slot-scope="{ ok, cancel }">
+        <template slot="modal-footer" slot-scope="{ cancel }">
           <b-button variant="white" @click="cancel">
             Close
           </b-button>

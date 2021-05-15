@@ -77,7 +77,8 @@ export default {
         firstmsgid,
         this.groupid,
         this.userid,
-        popup
+        popup,
+        route
       )
 
       const modtools = this.$store.getters['misc/get']('modtools')
@@ -120,6 +121,7 @@ export default {
             this.$emit('sent')
           }
 
+          console.log('Consider popup, route', popup, route, chatid)
           if (popup) {
             await this.$store.dispatch('popupchats/popup', {
               id: chatid

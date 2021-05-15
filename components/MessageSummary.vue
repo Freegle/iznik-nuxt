@@ -1,6 +1,5 @@
 <template>
   <div :id="'msg-' + id" class="position-relative ml-2 mr-2 ml-sm-0 mr-sm-0">
-    <span ref="breakpoint" class="d-inline d-sm-none" />
     <template v-if="message.successful">
       <MessageFreegled :id="id" />
     </template>
@@ -10,7 +9,7 @@
         freegled : message.successful,
         offer: message.type === 'Offer',
         wanted: message.type === 'Wanted',
-        clickme: true,
+        clickme: !message.successful,
         promisedfade: message.promised && replyable
       }"
       @click="expand"
@@ -42,6 +41,7 @@
 import Vue from 'vue'
 import { TooltipPlugin } from 'bootstrap-vue'
 import waitForRef from '@/mixins/waitForRef'
+import breakpoints from '@/mixins/breakpoints'
 import MessageItemLocation from '~/components/MessageItemLocation'
 import MessageFreegled from '~/components/MessageFreegled'
 import MessageAttachments from '~/components/MessageAttachments'
@@ -59,7 +59,7 @@ export default {
     MessageAttachments,
     MessageHistory
   },
-  mixins: [waitForRef],
+  mixins: [waitForRef, breakpoints],
   props: {
     id: {
       type: Number,
@@ -85,23 +85,6 @@ export default {
     }
   },
   methods: {
-    sm() {
-      // Detect breakpoint by checking computing style of an element which uses the bootstrap classes
-      let ret = false
-
-      if (process.client) {
-        const el = this.$refs.breakpoint
-        if (el) {
-          const display = getComputedStyle(el, null).display
-
-          if (display === 'none') {
-            ret = true
-          }
-        }
-      }
-
-      return ret
-    },
     expand() {
       this.$emit('expand')
     }

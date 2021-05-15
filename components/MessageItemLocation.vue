@@ -24,9 +24,11 @@
           {{ item }}
         </span>
       </div>
-      <b-badge v-if="message && message.availablenow > 1" variant="info" class="ml-3">
-        {{ message.availablenow ? message.availablenow : '0' }} left
-      </b-badge>
+      <div>
+        <b-badge v-if="message && message.availablenow > 1" variant="info" class="ml-2 mr-2 mt-0 align-top">
+          {{ message.availablenow ? message.availablenow : '0' }} left
+        </b-badge>
+      </div>
     </h3>
     <div class="location">
       {{ location }}

@@ -1,6 +1,5 @@
 <template>
   <div :id="'msg-' + id" class="position-relative ml-md-2 mr-md-2 ml-sm-0 mr-sm-0">
-    <span ref="breakpoint" class="d-inline d-sm-none" />
     <MessageAttachments
       :id="id"
       :attachments="message.attachments"
@@ -20,7 +19,7 @@
       <MessageReplyInfo :message="message" />
       <MessageMap v-if="showMap && validPosition" :home="home" :position="{ lat: message.lat, lng: message.lng }" class="mt-2" :height="150" />
       <MessageHistoryExpanded :id="id" class="d-block d-md-none" />
-      <MessageReplySection v-if="replyable" :id="id" class="mt-3" />
+      <MessageReplySection v-if="replyable" :id="id" class="mt-3" @close="$emit('close')" />
     </div>
   </div>
 </template>
@@ -125,25 +124,6 @@ export default {
           ret = {
             lat: this.message.lat,
             lng: this.message.lng
-          }
-        }
-      }
-
-      return ret
-    }
-  },
-  methods: {
-    sm() {
-      // Detect breakpoint by checking computing style of an element which uses the bootstrap classes
-      let ret = false
-
-      if (process.client) {
-        const el = this.$refs.breakpoint
-        if (el) {
-          const display = getComputedStyle(el, null).display
-
-          if (display === 'none') {
-            ret = true
           }
         }
       }
