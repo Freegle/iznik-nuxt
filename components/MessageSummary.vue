@@ -24,11 +24,13 @@
           {{ expandButtonText }} <v-icon name="angle-double-right" />
         </b-button>
       </div>
-      <div @click="zoom">
+      <div
+        class="image-wrapper"
+        @click="zoom"
+      >
         <MessageAttachments
           :id="id"
           :attachments="message.attachments"
-          class="image-wrapper"
           :disabled="message.successful"
           thumbnail
         />
