@@ -6,12 +6,10 @@
         v-model="showModal"
         size="lg"
         no-stacking
+        @shown="shown"
       >
-        <template slot="modal-title">
-          {{ message.subject }}
-        </template>
         <template slot="default">
-          <Message ref="message" :id="message.id" record-view />
+          <MessageExpanded :id="id" :replyable="replyable" :hide-close="hideClose" :actions="actions" :show-map="modalShown" />
         </template>
         <template slot="modal-footer" slot-scope="{ ok, cancel }">
           <b-button variant="white" @click="cancel">
@@ -24,29 +22,47 @@
 </template>
 <script>
 import modal from '@/mixins/modal'
-import waitForRef from '@/mixins/waitForRef'
-import Message from './Message'
+import MessageExpanded from '@/components/MessageExpanded'
 
 export default {
-  components: { Message },
-  mixins: [waitForRef, modal],
+  components: { MessageExpanded },
+  mixins: [modal],
   props: {
     id: {
       type: Number,
       required: true
+    },
+    hideClose: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    replyable: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    actions: {
+      type: Boolean,
+      required: false,
+      default: true
     }
   },
-  computed: {
-    message() {
-      return this.$store.getters['messages/get'](this.id)
+  data: function() {
+    return {
+      modalShown: false
     }
   },
   methods: {
     show() {
       this.showModal = true
-      this.waitForRef('message', () => {
-        this.$refs.message.expand()
-      })
+    },
+    shown() {
+      // We need to kick the Message component to show the map once the modakl has been shown, else it doesn't
+      // render correctly.
+      setTimeout(() => {
+        this.modalShown = true
+      }, 100)
     }
   }
 }

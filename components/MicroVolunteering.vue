@@ -88,6 +88,7 @@
               <p>
                 This is someone else's post.  Does it look ok to you?
               </p>
+              <!--              TODO What do we do here for more details?-->
               <Message
                 v-if="message"
                 :key="'task-' + message.id"
