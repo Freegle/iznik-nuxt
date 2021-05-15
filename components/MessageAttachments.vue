@@ -12,9 +12,14 @@
       <div class="tagbadge pl-2 pr-2 font-weight-bold">
         {{ tag }}
       </div>
-      <b-badge v-if="attachments.length > 1" class="photobadge">
-        {{ attachments.length }} <v-icon name="camera" />
-      </b-badge>
+      <div class="photobadge">
+        <div class="pl-2 pr-2">
+          <v-icon v-if="showZoom" name="search" />
+        </div>
+        <b-badge v-if="attachments.length > 1">
+          {{ attachments.length }} <v-icon name="camera" />
+        </b-badge>
+      </div>
       <b-img-lazy
         rounded
         class="d-none d-md-block attachment p-0"
@@ -69,6 +74,11 @@ export default {
       default: false
     },
     thumbnail: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    showZoom: {
       type: Boolean,
       required: false,
       default: false

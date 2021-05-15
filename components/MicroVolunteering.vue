@@ -251,17 +251,16 @@ export default {
       return this.me && this.me.trustlevel && this.me.trustlevel !== 'Declined'
     },
     askDue() {
-      return true
       // Ask no more than once per hour.  Only want to ask if we're logged in, because otherwise a) we don't know if we've
       // already declined and b) we couldn't save a decline.
-      // const modtools = this.$store.getters['misc/get']('modtools')
-      //
-      // return (
-      //   !modtools &&
-      //   this.me &&
-      //   (!this.lastAsk ||
-      //     Date.now() - new Date(this.lastAsk).getTime() > 60 * 60 * 1000)
-      // )
+      const modtools = this.$store.getters['misc/get']('modtools')
+
+      return (
+        !modtools &&
+        this.me &&
+        (!this.lastAsk ||
+          Date.now() - new Date(this.lastAsk).getTime() > 60 * 60 * 1000)
+      )
     }
   },
   mounted() {

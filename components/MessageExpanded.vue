@@ -6,6 +6,7 @@
       :attachments="message.attachments"
       class="image-wrapper"
       :disabled="message.successful"
+      show-zoom
     />
     <div class="d-flex mb-1 mt-2 justify-content-between p-2 p-md-0">
       <div>
