@@ -24,14 +24,15 @@
           {{ expandButtonText }} <v-icon name="angle-double-right" />
         </b-button>
       </div>
-      <MessageAttachments
-        :id="id"
-        :attachments="message.attachments"
-        class="image-wrapper"
-        :disabled="message.successful"
-        thumbnail
-        @click="expand"
-      />
+      <div @click="zoom">
+        <MessageAttachments
+          :id="id"
+          :attachments="message.attachments"
+          class="image-wrapper"
+          :disabled="message.successful"
+          thumbnail
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -87,6 +88,11 @@ export default {
   methods: {
     expand() {
       this.$emit('expand')
+    },
+    zoom(e) {
+      this.$emit('zoom')
+      e.preventDefault()
+      e.stopPropagation()
     }
   }
 }

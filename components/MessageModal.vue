@@ -12,19 +12,39 @@
       >
         <template slot="modal-title" />
         <template slot="default" slot-scope="{ cancel }">
+          <div @click="cancel">
+            <v-icon name="times-circle" scale="3" class="close clickme" />
+          </div>
+          <div v-if="showImages">
+            <ImageCarousel message-id="id" :attachments="message.attachments" />
+            <hr>
+            <div class="d-flex justify-content-between">
+              <div class="pr-2 w-50">
+                <b-btn variant="secondary" size="lg" block @click="cancel">
+                  Close
+                </b-btn>
+              </div>
+              <b-btn
+                size="lg"
+                variant="primary"
+                block
+                class="w-50 pl-2"
+                @click="showImages = false"
+              >
+                View description
+              </b-btn>
+            </div>
+          </div>
           <MessageExpanded
+            v-else
             :id="id"
             :replyable="replyable"
             :hide-close="hideClose"
             :actions="actions"
             :show-map="modalShown"
             @close="cancel"
+            @zoom="showImages = true"
           />
-        </template>
-        <template slot="modal-footer" slot-scope="{ cancel }">
-          <b-button variant="white" @click="cancel">
-            Close
-          </b-button>
         </template>
       </b-modal>
     </client-only>
@@ -33,9 +53,10 @@
 <script>
 import modal from '@/mixins/modal'
 import MessageExpanded from '@/components/MessageExpanded'
+import ImageCarousel from '@/components/ImageCarousel'
 
 export default {
-  components: { MessageExpanded },
+  components: { ImageCarousel, MessageExpanded },
   mixins: [modal],
   props: {
     id: {
@@ -60,12 +81,22 @@ export default {
   },
   data: function() {
     return {
-      modalShown: false
+      modalShown: false,
+      showImages: false
+    }
+  },
+  computed: {
+    message() {
+      return (
+        this.messageOverride ?? this.$store.getters['messages/get'](this.id)
+      )
     }
   },
   methods: {
-    show() {
+    show(showImages) {
       this.showModal = true
+      this.modalShown = false
+      this.showImages = showImages
     },
     shown() {
       // We need to kick the Message component to show the map once the modakl has been shown, else it doesn't
@@ -77,3 +108,14 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+.close {
+  top: -15px;
+  right: -15px;
+  position: absolute;
+  z-index: 10000;
+  opacity: 1;
+  background-color: white;
+  border-radius: 50%;
+}
+</style>

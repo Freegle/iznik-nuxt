@@ -7,12 +7,10 @@ export default {
     replyToSend() {
       // This is here because we can arrive back at the site after a login which was triggered because we were
       // trying to reply.
-      console.log('Compute replyToSend')
       const me = this.$store.getters['auth/user']
 
       if (me) {
         const ret = this.$store.getters['reply/get']
-        console.log('Got reply', ret)
 
         if (
           ret &&

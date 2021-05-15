@@ -8,14 +8,14 @@
         <v-icon name="camera" scale="4" class="text-faded align-self-center justify-se" />
       </div>
     </div>
-    <button v-else class="w-100 p-0 border-0" :disabled="disabled" @click="showPhotos">
+    <button v-else class="w-100 p-0 border-0" :disabled="disabled">
       <div class="tagbadge pl-2 pr-2 font-weight-bold">
         {{ tag }}
       </div>
-      <div class="photobadge">
-        <div class="pl-2 pr-2">
-          <v-icon v-if="showZoom" name="search" />
-        </div>
+      <div class="photozoom" @click="$emit('zoom')">
+        <v-icon v-if="showZoom" name="search" />
+      </div>
+      <div class="photobadge d-flex">
         <b-badge v-if="attachments.length > 1">
           {{ attachments.length }} <v-icon name="camera" />
         </b-badge>
@@ -38,21 +38,13 @@
         itemprop="image"
         @error.native="brokenImage"
       />
-      <MessagePhotosModal
-        v-if="message"
-        ref="photoModal"
-        :message="message"
-        :subject="message.subject"
-      />
     </button>
   </div>
 </template>
 <script>
 import waitForRef from '@/mixins/waitForRef'
-import MessagePhotosModal from '~/components/MessagePhotosModal'
 
 export default {
-  components: { MessagePhotosModal },
   mixins: [waitForRef],
   props: {
     id: {
@@ -123,11 +115,6 @@ export default {
     }
   },
   methods: {
-    showPhotos() {
-      this.waitForRef('photoModal', () => {
-        this.$refs.photoModal.show()
-      })
-    },
     brokenImage() {
       // If the attachment image is broken, we're best off just hiding it.
       this.defaultAttachments = true
@@ -155,6 +142,17 @@ export default {
   background-color: $color-gray--darker;
   color: white;
   border-radius: 4px;
+}
+
+.photozoom {
+  left: 10px;
+  position: absolute;
+  bottom: 10px;
+  background-color: $color-gray--darker;
+  color: white;
+  border-radius: 4px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .tagbadge {

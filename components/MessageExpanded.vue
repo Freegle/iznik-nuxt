@@ -7,6 +7,7 @@
       class="image-wrapper"
       :disabled="message.successful"
       show-zoom
+      @zoom="$emit('zoom')"
     />
     <div class="d-flex mb-1 mt-2 justify-content-between p-2 p-md-0">
       <div>

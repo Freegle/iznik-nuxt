@@ -5,7 +5,7 @@
       <span itemprop="price">0</span> |
       <span itemprop="availability">Instock</span>
     </div>
-    <MessageSummary :id="message.id" :expand-button-text="expandButtonText" :replyable="replyable" @expand="expand" />
+    <MessageSummary :id="message.id" :expand-button-text="expandButtonText" :replyable="replyable" @expand="expand" @zoom="zoom" />
     <MessageModal
       :id="message.id"
       ref="modal"
@@ -159,7 +159,7 @@ export default {
     }
   },
   methods: {
-    async expand() {
+    async expand(zoom) {
       if (!this.message.successful) {
         await Promise.all([
           this.$store.dispatch('messages/fetch', {
@@ -171,9 +171,13 @@ export default {
         this.expanded = true
 
         this.waitForRef('modal', () => {
-          this.$refs.modal.show()
+          this.$refs.modal.show(zoom)
         })
       }
+    },
+    zoom() {
+      console.log('Zoom')
+      this.expand(true)
     },
     async view() {
       if (this.recordView) {
@@ -185,127 +189,15 @@ export default {
           })
         }
       }
-    },
-    contract(e) {
-      this.expanded = null
-      e.preventDefault()
-      e.stopPropagation()
     }
   }
 }
 </script>
-
 <style scoped lang="scss">
 @import 'color-vars';
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins/_breakpoints';
-
-.card-body {
-  padding: 0px;
-}
-
-.header--size4 {
-  color: $colour-info-fg !important;
-  font-weight: bold;
-}
-
-.messagePhoto {
-  max-height: 600px !important;
-}
-
-.highlight {
-  color: $color-orange--dark;
-  background-color: initial;
-  padding: 0;
-}
-
-.promisedfade {
-  opacity: 0.3;
-}
-
-.grey {
-  color: $color-gray--base;
-}
-
-.messagecard {
-  padding: 16px;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-  border: solid 1px $color-gray--light;
-
-  display: grid;
-  align-items: start;
-  grid-template-columns: minmax(0, 1fr);
-
-  @include media-breakpoint-up(sm) {
-    grid-template-columns: 200px 1fr;
-    grid-column-gap: 1rem;
-    grid-template-rows: max-content max-content max-content auto auto auto;
-  }
-
-  &.offer {
-    background-color: $color-white;
-  }
-
-  &.wanted {
-    background-color: $color-green--light;
-  }
-
-  .header-title {
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
-
-    @include media-breakpoint-up(sm) {
-      grid-column: 2 / 3;
-    }
-  }
-
-  .header-history {
-    grid-column: 1 / 2;
-    grid-row: 2 / 3;
-
-    @include media-breakpoint-up(sm) {
-      grid-column: 2 / 3;
-    }
-  }
-
-  .header-description {
-    grid-column: 1 / 2;
-    grid-row: 4 / 5;
-
-    @include media-breakpoint-up(sm) {
-      grid-column: 2 / 3;
-      grid-row: 3 / 4;
-    }
-  }
-
-  .header-options {
-    grid-column: 1 / 2;
-    grid-row: 5 / 6;
-
-    @include media-breakpoint-up(sm) {
-      grid-column: 2 / 3;
-      grid-row: 4 / 5;
-    }
-  }
-
-  .header-expand {
-    grid-column: 1 / 2;
-    grid-row: 5 / 6;
-    align-self: end;
-    justify-self: end;
-
-    @include media-breakpoint-up(sm) {
-      grid-column: 2 / 3;
-      grid-row: 4 / 5;
-    }
-  }
-}
-
-.freegled {
-  filter: contrast(50%);
-}
 
 /deep/ label {
   font-weight: bold;
