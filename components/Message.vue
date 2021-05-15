@@ -6,7 +6,7 @@
       <span itemprop="availability">Instock</span>
     </div>
     <span ref="breakpoint" class="d-inline d-sm-none" />
-    <template v-if="successful">
+    <template v-if="message.successful">
       <MessageFreegled :id="id" />
     </template>
     <div
@@ -14,29 +14,29 @@
         'p-3': true,
         'mb-3': !expanded,
         messagecard: true,
-        freegled : successful,
-        offer: type === 'Offer',
-        wanted: type === 'Wanted',
+        freegled : message.successful,
+        offer: message.type === 'Offer',
+        wanted: message.type === 'Wanted',
         clickme: true,
-        promisedfade: ispromised && replyable
+        promisedfade: message.promised && replyable
       }"
       @click="expand"
     >
-      <MessageItemLocation :id="id" :matchedon="matchedon" class="mb-1 header-title" :type="type" :expanded="expanded !== null" />
+      <MessageItemLocation :id="id" :matchedon="message.matchedon" class="mb-1 header-title" :type="message.type" :expanded="expanded !== null" />
       <MessageHistory :message="$props" class="mb-1 header-history" :display-message-link="sm()" />
       <client-only>
-        <MessageDescription v-if="!expanded" :id="id" :matchedon="matchedon" class="mb-1 header-description" />
+        <MessageDescription v-if="!expanded" :id="id" :matchedon="message.matchedon" class="mb-1 header-description" />
       </client-only>
-      <div v-if="!successful && !expanded" class="header-expand mt-2 mt-sm-0">
+      <div v-if="!message.successful && !expanded" class="header-expand mt-2 mt-sm-0">
         <b-button variant="primary" class="mt-2" @click="expand">
           {{ expandButtonText }} <v-icon name="angle-double-right" />
         </b-button>
       </div>
       <MessageAttachments
         :id="id"
-        :attachments="attachments"
+        :attachments="message.attachments"
         class="image-wrapper"
-        :disabled="successful"
+        :disabled="message.successful"
         @click="expandIfNot"
       />
       <div v-if="!simple && expanded && actions" class="d-flex mt-1 header-options">
@@ -44,7 +44,7 @@
           Close post
         </b-button>
         <b-btn
-          v-if="expanded.groups && expanded.groups.length"
+          v-if="message.groups && message.groups.length"
           variant="link"
           class="grey p-0 mr-4"
           size="sm"
@@ -65,29 +65,29 @@
       </div>
     </div>
     <div v-if="expanded" class="bg-white mb-3 p-2">
-      <notice-message v-if="ispromised && replyable" variant="warning" class="mb-3 mt-1">
+      <notice-message v-if="message.promised && replyable" variant="warning" class="mb-3 mt-1">
         This item has already been promised to someone.  You can still reply - you might get it if someone
         else drops out.
       </notice-message>
       <div class="pl-1 d-flex flex-column justify-content-between">
         <div class="d-flex flex-column">
           <Highlighter
-            v-if="matchedon"
-            :search-words="[matchedon.word]"
-            :text-to-highlight="expanded.textbody"
+            v-if="message.matchedon"
+            :search-words="[message.matchedon.word]"
+            :text-to-highlight="message.textbody"
             highlight-class-name="highlight"
             auto-escape
             class="prewrap"
-          /><span v-else class="prewrap forcebreak">{{ expanded.textbody }}</span>
+          /><span v-else class="prewrap forcebreak">{{ message.textbody }}</span>
         </div>
         <div v-if="replyable" class="d-flex justify-content-between flex-wrap mt-2">
-          <MessageUserInfo v-if="!simple && expanded.fromuser" :user="expanded.fromuser" :milesaway="milesaway" />
+          <MessageUserInfo v-if="!simple && message.fromuser" :user="message.fromuser" :milesaway="message.milesaway" />
           <MessageReplyInfo :message="expanded" />
         </div>
       </div>
       <div v-if="replyable" class="p-1 pt-3 bg-white">
-        <CovidClosed v-if="expanded && expanded.closed" />
-        <div v-else-if="expanded.fromuser && expanded.fromuser.id === myid" />
+        <CovidClosed v-if="expanded && message.closed" />
+        <div v-else-if="message.fromuser && message.fromuser.id === myid" />
         <div v-else>
           <EmailValidator
             v-if="!me && !sent"
@@ -97,7 +97,7 @@
             :email.sync="email"
             :valid.sync="emailValid"
           />
-          <NoticeMessage v-if="milesaway > 10" variant="warning">
+          <NoticeMessage v-if="message.milesaway > 10" variant="warning">
             Remember: lockdown is easing but please stay local.
           </NoticeMessage>
           <notice-message v-if="stillAvailable" variant="info" class="mb-1 mt-1">
@@ -109,20 +109,20 @@
             v-if="!sent"
             class="flex-grow-1"
             label="Your reply:"
-            :label-for="'replytomessage-' + expanded.id"
-            :description="expanded.type === 'Offer' ? 'Interested?  Please explain why you\'d like it and when you can collect.  Always be polite and helpful, and remember it\'s not always first come first served.  If appropriate, ask if it\'s working.' : 'Can you help?  If you have what they\'re looking for, let them know.'"
+            :label-for="'replytomessage-' + message.id"
+            :description="message.type === 'Offer' ? 'Interested?  Please explain why you\'d like it and when you can collect.  Always be polite and helpful, and remember it\'s not always first come first served.  If appropriate, ask if it\'s working.' : 'Can you help?  If you have what they\'re looking for, let them know.'"
           >
             <b-form-textarea
-              v-if="expanded.type == 'Offer'"
-              :id="'replytomessage-' + expanded.id"
+              v-if="message.type == 'Offer'"
+              :id="'replytomessage-' + message.id"
               v-model="reply"
               rows="3"
               max-rows="8"
               class="border border-success"
             />
             <b-form-textarea
-              v-if="expanded.type == 'Wanted'"
-              :id="'replytomessage-' + expanded.id"
+              v-if="message.type == 'Wanted'"
+              :id="'replytomessage-' + message.id"
               v-model="reply"
               rows="3"
               max-rows="8"
@@ -151,7 +151,7 @@
                   </b-btn>
                 </div>
                 <div />
-                <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" />
+                <MessageMap v-if="showMap" :home="home" :position="{ lat: message.lat, lng: message.lng }" />
               </div>
               <p class="mt-1">
                 If you're a new freegler then welcome!  You'll get emails.  Name, approx. location, and profile picture are public - you
@@ -170,7 +170,7 @@
                   <b-form-group
                     class="flex-grow-1"
                     label="Your postcode:"
-                    :label-for="'replytomessage-' + expanded.id"
+                    :label-for="'replytomessage-' + message.id"
                     description="So that we know how far away you are.  The closer the better."
                   >
                     <Postcode @selected="savePostcode" />
@@ -202,7 +202,7 @@
                   </b-btn>
                 </div>
                 <div />
-                <MessageMap v-if="showMap" :home="home" :position="{ lat: expanded.lat, lng: expanded.lng }" class="border border-black rounded" />
+                <MessageMap v-if="showMap" :home="home" :position="{ lat: message.lat, lng: message.lng }" class="border border-black rounded" />
               </div>
             </div>
           </div>
@@ -220,7 +220,7 @@
     >
       <NewUserInfo :password="newUserPassword" />
     </b-modal>
-    <ShareModal v-if="expanded && expanded.url" :id="expanded.id" ref="shareModal" />
+    <ShareModal v-if="expanded && message.url" :id="message.id" ref="shareModal" />
     <div class="d-none">
       <ChatButton v-if="expanded && replyToUser" ref="chatbutton" :userid="replyToUser" @sent="sentReply" />
     </div>
@@ -282,46 +282,12 @@ export default {
   props: {
     id: {
       type: Number,
-      default: 0
+      required: true
     },
-    type: {
+    expandButtonText: {
       type: String,
       required: false,
-      default: null
-    },
-    subject: {
-      type: String,
-      default: null
-    },
-    textbody: {
-      type: String,
-      default: null
-    },
-    snippet: {
-      type: [String, Boolean],
-      default: null
-    },
-    groups: {
-      type: Array,
-      default: () => []
-    },
-    attachments: {
-      type: Array,
-      default: () => []
-    },
-    matchedon: {
-      type: Object,
-      default: null
-    },
-    successful: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    promised: {
-      type: Boolean,
-      required: false,
-      default: false
+      default: 'See details and reply'
     },
     startExpanded: {
       type: Boolean,
@@ -332,26 +298,6 @@ export default {
       type: Boolean,
       required: false,
       default: false
-    },
-    url: {
-      type: String,
-      required: false,
-      default: null
-    },
-    milesaway: {
-      type: Number,
-      required: false,
-      default: null
-    },
-    availablenow: {
-      type: Number,
-      required: false,
-      default: 1
-    },
-    expandButtonText: {
-      type: String,
-      required: false,
-      default: 'See details and reply'
     },
     replyable: {
       type: Boolean,
@@ -371,7 +317,7 @@ export default {
   data: function() {
     return {
       reply: null,
-      expanded: null,
+      expanded: false,
       replying: false,
       sent: false,
       email: null,
@@ -382,8 +328,11 @@ export default {
     }
   },
   computed: {
+    message() {
+      return this.$store.getters['messages/get'](this.id)
+    },
     showMap() {
-      return this.expanded.lat || this.expanded.lng
+      return this.message.lat || this.message.lng
     },
     home() {
       let ret = null
@@ -401,7 +350,7 @@ export default {
       return this.replying || !this.reply || (!this.me && !this.emailValid)
     },
     safeBody() {
-      return twem.twem(this.$twemoji, this.textbody)
+      return twem.twem(this.$twemoji, this.message.textbody)
     },
     replyToSend() {
       let ret = null
@@ -413,12 +362,9 @@ export default {
 
       return ret
     },
-    ispromised() {
-      return this.promised || (this.expanded && this.expanded.promised)
-    },
     stillAvailable() {
       return (
-        this.expanded.type === 'Offer' &&
+        this.message.type === 'Offer' &&
         this.reply &&
         this.reply.length <= 35 &&
         this.reply.toLowerCase().indexOf('still available') !== -1
@@ -466,7 +412,7 @@ export default {
   },
   async mounted() {
     if (this.startExpanded) {
-      this.expanded = this.$store.getters['messages/get'](this.id)
+      this.expanded = true
       this.view()
     }
 
@@ -486,7 +432,7 @@ export default {
       }
     },
     async expand() {
-      if (!this.successful) {
+      if (!this.message.successful) {
         await this.$store.dispatch('messages/fetch', {
           id: this.id
         })
@@ -579,7 +525,7 @@ export default {
             let found = false
             let tojoin = null
 
-            for (const messageGroup of this.groups) {
+            for (const messageGroup of this.message.groups) {
               tojoin = messageGroup.groupid
               Object.keys(myGroups).forEach(key => {
                 const group = myGroups[key]

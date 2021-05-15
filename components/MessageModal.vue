@@ -11,7 +11,7 @@
           {{ message.subject }}
         </template>
         <template slot="default">
-          <Message ref="message" v-bind="message" record-view />
+          <Message ref="message" :id="message.id" record-view />
         </template>
         <template slot="modal-footer" slot-scope="{ ok, cancel }">
           <b-button variant="white" @click="cancel">
@@ -24,16 +24,21 @@
 </template>
 <script>
 import modal from '@/mixins/modal'
-import Message from './Message'
 import waitForRef from '@/mixins/waitForRef'
+import Message from './Message'
 
 export default {
   components: { Message },
-  mixins: [waitForRef,modal],
+  mixins: [waitForRef, modal],
   props: {
-    message: {
-      type: Object,
+    id: {
+      type: Number,
       required: true
+    }
+  },
+  computed: {
+    message() {
+      return this.$store.getters['messages/get'](this.id)
     }
   },
   methods: {

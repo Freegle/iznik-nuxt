@@ -31,7 +31,7 @@
       </b-card>
 
       <div v-for="message in filteredMessages" :key="'message-' + message.id" class="p-0">
-        <Message v-bind="message" record-view />
+        <Message :id="message.id" record-view />
       </div>
 
       <client-only>

@@ -48,7 +48,7 @@ export default {
     },
     height: {
       type: Number,
-      required: true,
+      required: false,
       default: 200
     }
   },
