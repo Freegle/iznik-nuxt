@@ -8,10 +8,12 @@
       auto-escape
       class="prewrap"
     />
-    <span v-else class="prewrap forcebreak">{{ message.textbody }}</span>
+    <span v-else class="prewrap forcebreak font-weight-bold">{{ safeBody }}</span>
   </div>
 </template>
 <script>
+import twem from 'assets/js/twem'
+
 const Highlighter = () => import('vue-highlight-words')
 
 export default {
@@ -25,7 +27,19 @@ export default {
   computed: {
     message() {
       return this.$store.getters['messages/get'](this.id)
+    },
+    safeBody() {
+      return twem.twem(this.$twemoji, this.message.textbody)
     }
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+
+.highlight {
+  color: $color-orange--dark;
+  background-color: initial;
+  padding: 0;
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <div :id="'msg-' + id" class="position-relative ml-2 mr-2 ml-sm-0 mr-sm-0" itemscope itemtype="http://schema.org/Product">
+  <div v-if="message" :id="'msg-' + id" class="position-relative ml-2 mr-2 ml-sm-0 mr-sm-0" itemscope itemtype="http://schema.org/Product">
     <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="d-none">
       <meta itemprop="priceCurrency" content="GBP">
       <span itemprop="price">0</span> |
@@ -290,19 +290,6 @@ export default {
     }
   }
 
-  .image-wrapper {
-    position: relative;
-
-    grid-column: 1 / 2;
-    grid-row: 3 / 5;
-
-    @include media-breakpoint-up(sm) {
-      grid-column: 1 / 2;
-      grid-row: 1 / 5;
-      width: unset;
-    }
-  }
-
   .header-options {
     grid-column: 1 / 2;
     grid-row: 5 / 6;
@@ -324,15 +311,6 @@ export default {
       grid-row: 4 / 5;
     }
   }
-}
-
-.contents {
-  display: grid;
-  grid-template-columns: 2fr 10px 1fr;
-  //
-  //@include media-breakpoint-down(md) {
-  //  grid-template-columns: 1fr 0px 0px;
-  //}
 }
 
 .freegled {

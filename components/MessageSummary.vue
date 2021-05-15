@@ -30,6 +30,7 @@
         :attachments="message.attachments"
         class="image-wrapper"
         :disabled="message.successful"
+        thumbnail
         @click="expand"
       />
     </div>

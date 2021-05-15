@@ -55,7 +55,10 @@ export default {
   computed: {
     mapOptions() {
       return {
-        dragging: !this.locked
+        // On mobile require two-finger interaction.
+        dragging: !this.locked && !L.Browser.mobile,
+        touchZoom: !this.locked,
+        scrollWheelZoom: false
       }
     },
     homeicon() {

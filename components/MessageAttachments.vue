@@ -21,7 +21,7 @@
         class="d-none d-md-block attachment p-0"
         generator-unable-to-provide-required-alt=""
         title="Item picture"
-        :src="attachments[0].paththumb"
+        :src="thumbnail ? attachments[0].paththumb : attachments[0].path"
         itemprop="image"
         @error.native="brokenImage"
       />
@@ -60,6 +60,11 @@ export default {
       default: () => []
     },
     disabled: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    thumbnail: {
       type: Boolean,
       required: false,
       default: false

@@ -5,8 +5,11 @@
         id="messagemodal"
         v-model="showModal"
         size="lg"
+        hide-header
+        hide-footer
         @shown="shown"
       >
+        <template slot="modal-title" />
         <template slot="default">
           <MessageExpanded :id="id" :replyable="replyable" :hide-close="hideClose" :actions="actions" :show-map="modalShown" />
         </template>
