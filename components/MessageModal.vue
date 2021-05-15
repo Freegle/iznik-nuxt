@@ -7,6 +7,7 @@
         size="lg"
         hide-header
         hide-footer
+        body-class="p-0 p-md-2"
         @shown="shown"
       >
         <template slot="modal-title" />

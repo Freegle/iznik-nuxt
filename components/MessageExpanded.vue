@@ -1,5 +1,5 @@
 <template>
-  <div :id="'msg-' + id" class="position-relative ml-2 mr-2 ml-sm-0 mr-sm-0">
+  <div :id="'msg-' + id" class="position-relative ml-md-2 mr-md-2 ml-sm-0 mr-sm-0">
     <span ref="breakpoint" class="d-inline d-sm-none" />
     <MessageAttachments
       :id="id"
@@ -7,18 +7,19 @@
       class="image-wrapper"
       :disabled="message.successful"
     />
-    <div class="d-flex mb-1 mt-2 justify-content-between">
+    <div class="d-flex mb-1 mt-2 justify-content-between p-2 p-md-0">
       <div>
         <MessageItemLocation :id="id" :matchedon="message.matchedon" class="mb-1 header-title" :type="message.type" :expanded="true" />
         <MessageActions v-if="!simple && actions" :id="id" />
       </div>
-      <MessageHistoryExpanded :id="id" class="mb-1" />
+      <MessageHistoryExpanded :id="id" class="mb-1 d-none d-md-block" />
     </div>
-    <div class="bg-white mb-3">
+    <div class="bg-white mb-3 p-2 p-md-0">
       <MessagePromised v-if="message.promised && replyable" class="mb-3 mt-1" />
       <MessageTextBody :id="id" />
       <MessageReplyInfo :message="message" />
       <MessageMap v-if="showMap && validPosition" :home="home" :position="{ lat: message.lat, lng: message.lng }" class="mt-2" :height="150" />
+      <MessageHistoryExpanded :id="id" class="d-block d-md-none" />
       <MessageReplySection v-if="replyable" :id="id" class="mt-3" />
     </div>
   </div>

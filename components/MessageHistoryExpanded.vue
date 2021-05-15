@@ -1,42 +1,44 @@
 <template>
-  <div class="grey p-2 d-flex">
-    <ProfileImage :image="message.fromuser.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
-    <div>
-      <div class="d-flex justify-content-between flex-wrap order-0">
-        <nuxt-link :to="'/profile/' + message.fromuser.id" class="text-success decornone" :title="'Click to view membership for ' + message.fromuser.displayname">
-          <span class="text-muted d-flex justify-content-between">
-            <span class="flex-grow-1">
-              <span class="text-muted align-middle">
-                Posted by
+  <div>
+    <div class="grey p-2 d-flex">
+      <ProfileImage :image="message.fromuser.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
+      <div>
+        <div class="d-flex justify-content-between flex-wrap order-0">
+          <nuxt-link :to="'/profile/' + message.fromuser.id" class="text-success decornone" :title="'Click to view membership for ' + message.fromuser.displayname">
+            <span class="text-muted d-flex justify-content-between">
+              <span class="flex-grow-1">
+                <span class="text-muted align-middle">
+                  Posted by
+                </span>
+                <span class="align-middle font-weight-bold text-info text--medium">
+                  {{ message.fromuser.displayname }}
+                </span>
+                <br class="d-block d-sm-none">
               </span>
-              <span class="align-middle font-weight-bold text-info text--medium">
-                {{ message.fromuser.displayname }}
-              </span>
-              <br class="d-block d-sm-none">
             </span>
+          </nuxt-link>
+        </div>
+        <div v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id">
+          <span class="time" :title="group.arrival">{{ group.arrival | timeago }} on</span> <nuxt-link :to="'/explore/' + exploreLink(group)">
+            {{ group.namedisplay }}
+          </nuxt-link>
+        </div>
+        <div v-if="message.fromuser.info.openoffers + message.fromuser.info.openwanteds > 0">
+          <span v-if="message.fromuser.info.openoffers" class="text-success">
+            {{ message.fromuser.info.openoffers | pluralize([ 'open OFFER', 'open OFFERs' ], { includeNumber: true }) }}
           </span>
-        </nuxt-link>
-      </div>
-      <div v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id">
-        <span class="time" :title="group.arrival">{{ group.arrival | timeago }} on</span> <nuxt-link :to="'/explore/' + exploreLink(group)">
-          {{ group.namedisplay }}
-        </nuxt-link>
-      </div>
-      <div v-if="message.fromuser.info.openoffers + message.fromuser.info.openwanteds > 0">
-        <span v-if="message.fromuser.info.openoffers" class="text-success">
-          {{ message.fromuser.info.openoffers | pluralize([ 'open OFFER', 'open OFFERs' ], { includeNumber: true }) }}
-        </span>
-        <span v-if="message.fromuser.info.openoffers && message.fromuser.info.openwanteds">
-          &bull;
-        </span>
-        <span v-if="message.fromuser.info.openwanteds" class="text-success">
-          {{ message.fromuser.info.openwanteds | pluralize([ 'open WANTED', 'open WANTEDs' ], { includeNumber: true }) }}
+          <span v-if="message.fromuser.info.openoffers && message.fromuser.info.openwanteds">
+            &bull;
+          </span>
+          <span v-if="message.fromuser.info.openwanteds" class="text-success">
+            {{ message.fromuser.info.openwanteds | pluralize([ 'open WANTED', 'open WANTEDs' ], { includeNumber: true }) }}
+          </span>
+        </div>
+        <Supporter v-if="message.fromuser.supporter" class="d-inline" />
+        <span v-if="message.milesaway" class="align-middle">
+          about {{ message.milesaway | pluralize('mile', { includeNumber: true }) }} away
         </span>
       </div>
-      <Supporter v-if="message.fromuser.supporter" class="d-inline" />
-      <span v-if="message.milesaway" class="align-middle">
-        about {{ message.milesaway | pluralize('mile', { includeNumber: true }) }} away
-      </span>
     </div>
   </div>
 </template>
