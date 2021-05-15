@@ -1,5 +1,5 @@
 <template>
-  <div :id="'msg-' + id" class="position-relative ml-2 mr-2 ml-sm-0 mr-sm-0" itemscope itemtype="http://schema.org/Product">
+  <div :id="'msg-' + id" class="position-relative ml-2 mr-2 ml-sm-0 mr-sm-0">
     <span ref="breakpoint" class="d-inline d-sm-none" />
     <template v-if="message.successful">
       <MessageFreegled :id="id" />
@@ -16,7 +16,7 @@
       @click="expand"
     >
       <MessageItemLocation :id="id" :matchedon="message.matchedon" class="mb-1 header-title" :type="message.type" :expanded="false" />
-      <MessageHistory :message="$props" class="mb-1 header-history" :display-message-link="sm()" />
+      <MessageHistory :message="message" class="mb-1 header-history" :display-message-link="sm()" />
       <client-only>
         <MessageDescription :id="id" :matchedon="message.matchedon" class="mb-1 header-description" />
       </client-only>
@@ -184,16 +184,6 @@ export default {
       grid-column: 1 / 2;
       grid-row: 1 / 5;
       width: unset;
-    }
-  }
-
-  .header-options {
-    grid-column: 1 / 2;
-    grid-row: 5 / 6;
-
-    @include media-breakpoint-up(sm) {
-      grid-column: 2 / 3;
-      grid-row: 4 / 5;
     }
   }
 

@@ -70,7 +70,8 @@ export default {
   },
   data: function() {
     return {
-      expanded: false
+      expanded: false,
+      reply: null
     }
   },
   computed: {
@@ -138,20 +139,34 @@ export default {
       return ret
     }
   },
-  mounted() {
+  watch: {
+    async replyToSend(newVal, oldVal) {
+      // Because of the way persistent store is restored, we might only find out that we have a reply to send
+      // post-mount.
+      if (newVal && newVal.replyTo === this.id) {
+        this.reply = newVal.replyMessage
+        await this.expand()
+
+        this.$nextTick(() => {
+          this.sendReply()
+        })
+      }
+    }
+  },
+  async mounted() {
     if (this.startExpanded) {
       this.expand()
     }
 
-    // TODO Make replies work.
-    // const reply = this.replyToSend
+    const reply = this.replyToSend
 
-    // if (reply && reply.replyTo === this.id) {
-    //   // Because of the way persistent store is restored, we might or might not know that we have a reply to send here.
-    //   this.reply = reply.replyMessage
-    //   await this.expand()
-    //   this.sendReply()
-    // }
+    if (reply && reply.replyTo === this.id) {
+      // Because of the way persistent store is restored, we might or might not know that we have a reply to send
+      // in the mount, or we might only pick it up in the watch.
+      this.reply = reply.replyMessage
+      await this.expand()
+      this.sendReply()
+    }
   },
   methods: {
     async expand() {

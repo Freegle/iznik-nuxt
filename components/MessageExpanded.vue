@@ -1,20 +1,11 @@
 <template>
-  <div :id="'msg-' + id" class="position-relative ml-2 mr-2 ml-sm-0 mr-sm-0" itemscope itemtype="http://schema.org/Product">
-    <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="d-none">
-      <meta itemprop="priceCurrency" content="GBP">
-      <span itemprop="price">0</span> |
-      <span itemprop="availability">Instock</span>
-    </div>
+  <div :id="'msg-' + id" class="position-relative ml-2 mr-2 ml-sm-0 mr-sm-0">
     <span ref="breakpoint" class="d-inline d-sm-none" />
-    <template v-if="message.successful">
-      <MessageFreegled :id="id" />
-    </template>
     <div
       :class="{
         'p-3': true,
         'mb-3': true,
         messagecard: true,
-        freegled : message.successful,
         offer: message.type === 'Offer',
         wanted: message.type === 'Wanted',
         clickme: true,
@@ -22,50 +13,19 @@
       }"
     >
       <MessageItemLocation :id="id" :matchedon="message.matchedon" class="mb-1 header-title" :type="message.type" :expanded="true" />
-      <MessageHistory :message="$props" class="mb-1 header-history" :display-message-link="sm()" />
+      <MessageHistory :message="message" class="mb-1 header-history" :display-message-link="sm()" />
       <MessageAttachments
         :id="id"
         :attachments="message.attachments"
         class="image-wrapper"
         :disabled="message.successful"
       />
-      <div v-if="!simple && actions" class="d-flex mt-1 header-options">
-        <b-btn
-          v-if="message.groups && message.groups.length"
-          variant="link"
-          class="grey p-0 mr-4"
-          size="sm"
-          @click="report"
-        >
-          Report this post
-        </b-btn>
-        <b-btn
-          variant="link"
-          class="p-0 grey"
-          title="Share"
-          size="sm"
-          @click="share"
-        >
-          Share
-        </b-btn>
-      </div>
+      <MessageActions v-if="!simple && actions" :id="id" class="header-options" />
     </div>
     <div class="bg-white mb-3 p-2">
-      <notice-message v-if="message.promised && replyable" variant="warning" class="mb-3 mt-1">
-        This item has already been promised to someone.  You can still reply - you might get it if someone
-        else drops out.
-      </notice-message>
+      <MessagePromised v-if="message.promised && replyable" class="mb-3 mt-1" />
       <div class="pl-1 d-flex flex-column justify-content-between">
-        <div class="d-flex flex-column">
-          <Highlighter
-            v-if="message.matchedon"
-            :search-words="[message.matchedon.word]"
-            :text-to-highlight="message.textbody"
-            highlight-class-name="highlight"
-            auto-escape
-            class="prewrap"
-          /><span v-else class="prewrap forcebreak">{{ message.textbody }}</span>
-        </div>
+        <MessageTextBody :id="id" />
         <div v-if="replyable" class="d-flex justify-content-between flex-wrap mt-2">
           <MessageUserInfo v-if="!simple && message.fromuser" :user="message.fromuser" :milesaway="message.milesaway" />
           <MessageReplyInfo :message="message" />
@@ -73,8 +33,7 @@
       </div>
       <div v-if="replyable" class="p-1 pt-3 bg-white">
         <CovidClosed v-if="message.closed" />
-        <div v-else-if="message.fromuser && message.fromuser.id === myid" />
-        <div v-else>
+        <div v-else-if="!message.fromuser || message.fromuser.id !== myid">
           <EmailValidator
             v-if="!me && !sent"
             ref="email"
@@ -86,11 +45,7 @@
           <NoticeMessage v-if="message.milesaway > 10" variant="warning">
             Remember: lockdown is easing but please stay local.
           </NoticeMessage>
-          <notice-message v-if="stillAvailable" variant="info" class="mb-1 mt-1">
-            You don't need to ask if things are still available.  People can mark OFFERs as promised or TAKEN, and
-            you'd see that here.  So just write whatever you would have said next - explain why you'd like it and when
-            you could collect.
-          </notice-message>
+          <MessageStillAvailable v-if="stillAvailable" class="mb-1 mt-1" />
           <b-form-group
             v-if="!sent"
             class="flex-grow-1"
@@ -115,17 +70,7 @@
               class="flex-grow-1"
             />
           </b-form-group>
-          <BAlert v-if="sent" show variant="info" class="d-block d-sm-none mb-1">
-            <p class="font-weight-bold">
-              We've sent your message.
-            </p>
-            <p>
-              When they reply, it'll be in the
-              <nuxt-link to="/chats">
-                <v-icon name="comments" />&nbsp;Chats
-              </nuxt-link> section, and by email.  Check your spam folder!
-            </p>
-          </BAlert>
+          <MessageReplySent v-if="sent" />
           <div v-if="!sent">
             <div v-if="!me">
               <div class="contents">
@@ -139,16 +84,7 @@
                 <div />
                 <MessageMap v-if="showMap && validPosition" :home="home" :position="{ lat: message.lat, lng: message.lng }" />
               </div>
-              <p class="mt-1">
-                If you're a new freegler then welcome!  You'll get emails.  Name, approx. location, and profile picture are public - you
-                can hide your real name and picture from Settings.  This adds cookies and local
-                storage.  Read <nuxt-link target="_blank" to="/terms">
-                  Terms of Use
-                </nuxt-link> and
-                <nuxt-link target="_blank" to="/privacy">
-                  Privacy
-                </nuxt-link> for details.
-              </p>
+              <NewFreegler />
             </div>
             <div v-else>
               <div class="contents">
@@ -206,11 +142,9 @@
     >
       <NewUserInfo :password="newUserPassword" />
     </b-modal>
-    <ShareModal v-if="message.url" :id="message.id" ref="shareModal" />
     <div class="d-none">
       <ChatButton v-if="replyToUser" ref="chatbutton" :userid="replyToUser" @sent="sentReply" />
     </div>
-    <MessageReportModal ref="reportModal" :message="$props" />
   </div>
 </template>
 
@@ -219,9 +153,11 @@
 import Vue from 'vue'
 import { TooltipPlugin } from 'bootstrap-vue'
 import waitForRef from '@/mixins/waitForRef'
+import MessagePromised from '@/components/MessagePromised'
+import MessageActions from '@/components/MessageActions'
+import MessageTextBody from '@/components/MessageTextBody'
+import MessageStillAvailable from '@/components/MessageStillAvailable'
 import ChatButton from './ChatButton'
-import ShareModal from './ShareModal'
-import MessageReportModal from './MessageReportModal'
 
 import MessageReplyInfo from './MessageReplyInfo'
 import EmailValidator from './EmailValidator'
@@ -230,22 +166,25 @@ import Postcode from './Postcode'
 import MessageMap from './MessageMap'
 import CovidClosed from './CovidClosed'
 import MessageItemLocation from '~/components/MessageItemLocation'
-import MessageFreegled from '~/components/MessageFreegled'
 import MessageAttachments from '~/components/MessageAttachments'
 import SettingsPhone from '~/components/SettingsPhone'
 import twem from '~/assets/js/twem'
 
-const Highlighter = () => import('vue-highlight-words')
 const MessageUserInfo = () => import('~/components/MessageUserInfo')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const MessageHistory = () => import('~/components/MessageHistory')
+const NewFreegler = () => import('~/components/NewFreegler')
+const MessageReplySent = () => import('~/components/MessageReplySent')
 
 Vue.use(TooltipPlugin)
 
 export default {
   components: {
+    MessageStillAvailable,
+    MessageTextBody,
+    MessageActions,
+    MessagePromised,
     MessageItemLocation,
-    MessageFreegled,
     MessageAttachments,
     SettingsPhone,
     CovidClosed,
@@ -256,11 +195,10 @@ export default {
     MessageReplyInfo,
     ChatButton,
     MessageUserInfo,
-    Highlighter,
-    ShareModal,
-    MessageReportModal,
     NoticeMessage,
-    MessageHistory
+    MessageHistory,
+    NewFreegler,
+    MessageReplySent
   },
   mixins: [waitForRef],
   props: {
@@ -372,24 +310,7 @@ export default {
       return ret
     }
   },
-  watch: {
-    replyToSend(newVal, oldVal) {
-      // Because of the way persistent store is restored, we might only find out that we have a reply to send post-mount.
-      if (newVal && newVal.replyTo === this.id) {
-        this.reply = newVal.replyMessage
-        this.$nextTick(() => {
-          this.sendReply()
-        })
-      }
-    }
-  },
   methods: {
-    share() {
-      this.$refs.shareModal.show()
-    },
-    report() {
-      this.$refs.reportModal.show()
-    },
     async registerOrSend() {
       // We've got a reply and an email address.  Maybe the email address is a registered user, maybe it's new.  If
       // it's a registered user then we want to force them to sign in.
@@ -558,7 +479,6 @@ export default {
   }
 }
 </script>
-
 <style scoped lang="scss">
 @import 'color-vars';
 @import '~bootstrap/scss/functions';
@@ -586,10 +506,6 @@ export default {
 
 .promisedfade {
   opacity: 0.3;
-}
-
-.grey {
-  color: $color-gray--base;
 }
 
 .messagecard {
@@ -666,18 +582,6 @@ export default {
       grid-row: 4 / 5;
     }
   }
-
-  .header-expand {
-    grid-column: 1 / 2;
-    grid-row: 5 / 6;
-    align-self: end;
-    justify-self: end;
-
-    @include media-breakpoint-up(sm) {
-      grid-column: 2 / 3;
-      grid-row: 4 / 5;
-    }
-  }
 }
 
 .contents {
@@ -687,10 +591,6 @@ export default {
   //@include media-breakpoint-down(md) {
   //  grid-template-columns: 1fr 0px 0px;
   //}
-}
-
-.freegled {
-  filter: contrast(50%);
 }
 
 /deep/ label {

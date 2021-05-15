@@ -137,7 +137,7 @@
         </client-only>
         <div v-if="filteredMessages && filteredMessages.length">
           <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
-            <Message :id="message.id" record-view />
+            <Message :id="message.id" record-view class="mb-3" />
           </div>
         </div>
         <client-only>

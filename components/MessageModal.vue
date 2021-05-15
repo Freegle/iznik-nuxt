@@ -5,7 +5,6 @@
         id="messagemodal"
         v-model="showModal"
         size="lg"
-        no-stacking
         @shown="shown"
       >
         <template slot="default">
