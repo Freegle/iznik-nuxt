@@ -4,7 +4,7 @@
       <ScrollToTop />
       <ModCakeModal />
       <PreCovidModeration />
-      <NoticeMessage variant="info" class="mb-2">
+      <NoticeMessage variant="info" class="mb-2 d-block d-md-none">
         ZoomStock <span class="font-weight-bold">Thursdays @ 10am</span>.  Join other volunteers for a natter -
         <!-- eslint-disable-next-line-->
         <ExternalLink href="https://zoom.us/j/97817491680?pwd=VVh2eW1LL2JhbnB5MllQbHoyRUJ6UT09" class="text-info">click here</ExternalLink>.
