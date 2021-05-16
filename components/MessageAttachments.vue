@@ -12,7 +12,7 @@
       <div class="tagbadge pl-2 pr-2 font-weight-bold">
         {{ tag }}
       </div>
-      <div class="photozoom" @click="$emit('zoom')">
+      <div v-if="attachments && attachments.length" class="photozoom" @click="$emit('zoom')">
         <v-icon v-if="showZoom" name="search" />
       </div>
       <div class="photobadge d-flex">

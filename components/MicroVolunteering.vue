@@ -5,6 +5,7 @@
         v-model="showInvite"
         variant="info"
         size="lg"
+        no-stacking
       >
         <template v-slot:modal-header>
           <h1 class="w-100">

@@ -5,14 +5,31 @@
       <span itemprop="price">0</span> |
       <span itemprop="availability">Instock</span>
     </div>
-    <MessageSummary :id="message.id" :expand-button-text="expandButtonText" :replyable="replyable" @expand="expand" @zoom="zoom" />
-    <MessageModal
-      :id="message.id"
-      ref="modal"
-      :replyable="replyable"
-      :hide-close="hideClose"
-      :actions="actions"
-    />
+    <div v-if="startExpanded">
+      <MessageExpanded
+        :id="message.id"
+        :replyable="replyable"
+        :hide-close="hideClose"
+        :actions="actions"
+        :show-map="true"
+        class="bg-white p-2"
+        @zoom="showPhotosModal"
+      />
+      <MessagePhotosModal
+        :id="message.id"
+        ref="photoModal"
+      />
+    </div>
+    <div v-else>
+      <MessageSummary :id="message.id" :expand-button-text="expandButtonText" :replyable="replyable" @expand="expand" @zoom="zoom" />
+      <MessageModal
+        :id="message.id"
+        ref="modal"
+        :replyable="replyable"
+        :hide-close="hideClose"
+        :actions="actions"
+      />
+    </div>
   </div>
 </template>
 
@@ -24,13 +41,18 @@ import waitForRef from '@/mixins/waitForRef'
 import MessageSummary from '@/components/MessageSummary'
 
 import MessageModal from '@/components/MessageModal'
+import MessageExpanded from '@/components/MessageExpanded'
+
+const MessagePhotosModal = () => import('./MessagePhotosModal')
 
 Vue.use(TooltipPlugin)
 
 export default {
   components: {
+    MessageExpanded,
     MessageModal,
-    MessageSummary
+    MessageSummary,
+    MessagePhotosModal
   },
   mixins: [waitForRef],
   props: {
@@ -145,7 +167,7 @@ export default {
   },
   async mounted() {
     if (this.startExpanded) {
-      this.expand()
+      this.view()
     }
 
     const reply = this.replyToSend
@@ -176,8 +198,13 @@ export default {
       }
     },
     zoom() {
-      console.log('Zoom')
       this.expand(true)
+    },
+    showPhotosModal() {
+      console.log('Show photos modal')
+      this.waitForRef('photoModal', () => {
+        this.$refs.photoModal.show()
+      })
     },
     async view() {
       if (this.recordView) {

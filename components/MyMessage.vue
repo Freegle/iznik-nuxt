@@ -230,24 +230,11 @@
           </div>
         </b-collapse>
       </b-card>
-      <b-modal
+      <MessagePhotosModal
         v-if="expanded && message.attachments.length"
-        :id="'photoModal-' + message.id"
+        :id="message.id"
         ref="photoModal"
-        :title="message.subject"
-        size="lg"
-        no-stacking
-        ok-only
-      >
-        <template slot="default">
-          <ImageCarousel message-id="message.id" :attachments="message.attachments" />
-        </template>
-        <template slot="modal-footer" slot-scope="{ ok, cancel }">
-          <b-button variant="secondary" @click="cancel">
-            Close
-          </b-button>
-        </template>
-      </b-modal>
+      />
     </div>
     <OutcomeModal ref="outcomeModal" :message="message" @outcome="hide = true" />
     <ShareModal :id="message.id" ref="shareModal" />
@@ -258,13 +245,13 @@
 </template>
 <script>
 import waitForRef from '@/mixins/waitForRef'
+import MessagePhotosModal from '@/components/MessagePhotosModal'
 import OutcomeModal from './OutcomeModal'
 import AddToCalendar from '~/components/AddToCalendar'
 import PromiseModal from '~/components/PromiseModal'
 const MyMessageReply = () => import('./MyMessageReply.vue')
 const ShareModal = () => import('./ShareModal')
 const MessageEditModal = () => import('./MessageEditModal')
-const ImageCarousel = () => import('./ImageCarousel')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 const LoveJunkModal = () => import('~/components/LoveJunkModal')
 
@@ -279,13 +266,13 @@ export default {
     ResizeText
   },
   components: {
+    MessagePhotosModal,
     PromiseModal,
     AddToCalendar,
     OutcomeModal,
     ShareModal,
     MyMessageReply,
     MessageEditModal,
-    ImageCarousel,
     NoticeMessage,
     LoveJunkModal
   },
@@ -561,7 +548,9 @@ export default {
       this.$root.$emit('bv::toggle::collapse', 'mypost-' + this.message.id)
     },
     showPhotos() {
-      this.$bvModal.show('photoModal-' + this.message.id)
+      this.waitForRef('photoModal', () => {
+        this.$refs.photoModal.show()
+      })
     },
     countUnseen(reply) {
       let unseen = 0

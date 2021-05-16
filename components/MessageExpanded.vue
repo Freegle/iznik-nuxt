@@ -1,5 +1,5 @@
 <template>
-  <div v-if="message" :id="'msg-' + id" class="position-relative ml-md-2 mr-md-2 ml-sm-0 mr-sm-0">
+  <div v-if="message" :id="'msg-' + id" class="position-relative">
     <MessageAttachments
       :id="id"
       :message-override="messageOverride"
@@ -10,12 +10,12 @@
       @zoom="$emit('zoom')"
     />
     <div class="d-flex mb-1 mt-2 justify-content-between p-2 p-md-0">
-      <div>
+      <div class="d-flex flex-column justify-content-between w-100">
         <MessageItemLocation
           :id="id"
           :message-override="messageOverride"
           :matchedon="message.matchedon"
-          class="mb-1 header-title"
+          class="mb-1 header-title flex-grow-1"
           :type="message.type"
           :expanded="true"
         />
@@ -27,8 +27,10 @@
       <MessagePromised v-if="message.promised && replyable" class="mb-3 mt-1" />
       <MessageTextBody :id="id" :message-override="messageOverride" />
       <MessageReplyInfo :message="message" />
-      <MessageMap v-if="showMap && validPosition" :home="home" :position="{ lat: message.lat, lng: message.lng }" class="mt-2" :height="150" />
-      <MessageHistoryExpanded :id="id" :message-override="messageOverride" class="d-block d-md-none" />
+      <client-only>
+        <MessageMap v-if="showMap && validPosition" :home="home" :position="{ lat: message.lat, lng: message.lng }" class="mt-2" :height="150" />
+      </client-only>
+      <MessageHistoryExpanded :id="id" :message-override="messageOverride" class="d-block d-md-none mt-2 mt-md-0 " />
       <MessageReplySection v-if="replyable" :id="id" :message-override="messageOverride" class="mt-3" @close="$emit('close')" />
     </div>
   </div>

@@ -1,22 +1,27 @@
 <template>
-  <div class="d-flex mt-1">
-    <b-btn
-      v-if="message.groups && message.groups.length"
-      variant="link"
-      class="grey p-0 mr-4"
-      size="sm"
-      @click="report"
-    >
-      Report this post
-    </b-btn>
-    <b-btn
-      variant="link"
-      class="p-0 grey"
-      title="Share"
-      size="sm"
-      @click="share"
-    >
-      Share
+  <div class="d-flex mt-1 justify-content-between">
+    <div class="flex-grow-1">
+      <b-btn
+        v-if="message.groups && message.groups.length"
+        variant="link"
+        class="grey p-0 mr-4"
+        size="sm"
+        @click="report"
+      >
+        Report this post
+      </b-btn>
+      <b-btn
+        variant="link"
+        class="p-0 grey"
+        title="Share"
+        size="sm"
+        @click="share"
+      >
+        Share
+      </b-btn>
+    </div>
+    <b-btn variant="link" class="p-0 text-faded mr-2" size="sm" target="_blank" :to="'/message/' + message.id">
+      <v-icon name="hashtag" scale="0.8" />{{ message.id }}
     </b-btn>
     <ShareModal v-if="message.url" :id="message.id" ref="shareModal" />
     <MessageReportModal ref="reportModal" :message="message" />
