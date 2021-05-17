@@ -4,6 +4,11 @@
       <ScrollToTop />
       <ModCakeModal />
       <PreCovidModeration />
+      <NoticeMessage variant="info" class="mb-2 d-block d-md-none">
+        ZoomStock <span class="font-weight-bold">Thursdays @ 10am</span>.  Join other volunteers for a natter -
+        <!-- eslint-disable-next-line-->
+        <ExternalLink href="https://zoom.us/j/97817491680?pwd=VVh2eW1LL2JhbnB5MllQbHoyRUJ6UT09" class="text-info">click here</ExternalLink>.
+      </NoticeMessage>
       <div class="d-flex justify-content-between">
         <GroupSelect v-model="groupid" all modonly :work="['pending', 'pendingother']" remember="pending" />
         <b-btn variant="link" @click="loadAll">
@@ -13,8 +18,10 @@
       <NoticeMessage v-if="!messages.length && !busy" class="mt-2">
         There are no messages at the moment.  This will refresh automatically.
       </NoticeMessage>
-      <div v-for="message in visibleMessages" :key="'messagelist-' + message.id" class="p-0 mt-2">
-        <ModMessage :message="message" />
+      <div v-for="(message, ix) in visibleMessages" :key="'messagelist-' + message.id" class="p-0 mt-2">
+        <div :ref="'top' + message.id" />
+        <ModMessage :message="message" :next="ix < visibleMessages.length - 1 ? visibleMessages[ix + 1].id : null" :next-after-removed="nextAfterRemoved" @destroy="destroy" />
+        <div :ref="'bottom' + message.id" />
       </div>
 
       <infinite-loading :key="'infinite-' + groupid + '-' + messages.length" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
@@ -32,6 +39,7 @@
 import loginRequired from '@/mixins/loginRequired'
 import modMessagesPage from '@/mixins/modMessagesPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
+import ExternalLink from '@/components/ExternalLink'
 import NoticeMessage from '../../../../components/NoticeMessage'
 import GroupSelect from '../../../../components/GroupSelect'
 import ModMessage from '../../../../components/ModMessage'
@@ -41,6 +49,7 @@ import ScrollToTop from '~/components/ScrollToTop'
 
 export default {
   components: {
+    ExternalLink,
     ScrollToTop,
     PreCovidModeration,
     ModCakeModal,
@@ -82,6 +91,9 @@ export default {
           })
         }
       })
+    },
+    destroy(oldid, nextid) {
+      this.nextAfterRemoved = nextid
     }
   }
 }

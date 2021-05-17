@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import jobs from '@/mixins/jobs'
 const Job = () => import('./Job')
 const NoticeMessage = () => import('./NoticeMessage')
 const DonationButton = () => import('./DonationButton')
@@ -42,6 +43,7 @@ export default {
     Job,
     DonationButton
   },
+  mixins: [jobs],
   data: function() {
     return {
       location: null
@@ -49,9 +51,8 @@ export default {
   },
   computed: {
     jobs() {
-      let jobs = this.$store.getters['jobs/list']
-      jobs = jobs.slice(0, 3)
-      return jobs
+      const jobs = this.$store.getters['jobs/list']
+      return this.prioritise(jobs, 3)
     },
     blocked() {
       return this.$store.getters['jobs/blocked']

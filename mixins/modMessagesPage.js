@@ -20,7 +20,8 @@ export default {
       memberTerm: null,
       modalOpen: false,
       scrollHeight: null,
-      scrollTop: null
+      scrollTop: null,
+      nextAfterRemoved: null
     }
   },
   computed: {

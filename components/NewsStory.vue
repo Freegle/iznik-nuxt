@@ -17,10 +17,10 @@
               :src="newsfeed.story.photo.paththumb"
               class="clickme float-right ml-2"
               @click="showPhotoModal"
-            />{{ story }}
+            />
+            <read-more v-if="story" :text="story" :max-chars="500" class="font-weight-bold preline forcebreak nopara" />
           </b-card-text>
         </b-card>
-        <read-more v-if="emessage" :text="emessage" :max-chars="500" class="font-weight-bold preline forcebreak nopara" />
       </b-col>
     </b-row>
     <div class="mt-2 d-flex flex-wrap justify-content-between">

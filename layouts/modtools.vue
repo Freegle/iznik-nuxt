@@ -13,6 +13,11 @@
           />
           <ModStatus class="status" />
         </b-navbar-brand>
+        <div class="text-white font-weight-bold d-none d-md-block">
+          ZoomStock Thursdays @ 10am.  Join other volunteers for a natter -
+          <!-- eslint-disable-next-line-->
+          <ExternalLink href="https://zoom.us/j/97817491680?pwd=VVh2eW1LL2JhbnB5MllQbHoyRUJ6UT09" class="text-white">click here</ExternalLink>.
+        </div>
         <b-navbar-nav class="d-flex align-items-center">
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse2" class="text-center p-0 mr-4" @click="discourse">
             <div class="position-relative small">

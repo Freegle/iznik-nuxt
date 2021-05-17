@@ -57,11 +57,20 @@
             Heatmap
           </h3>
           <p>
-            We are currently developing a heatmap, which will enable you to better direct your communications by
-            showing you where and how much Freegle activity is taking place in a given area (see example below).  You can
-            find this at <a href="https://www.ilovefreegle.org/stats/heatmap" rel="noopener noreferrer">https://www.ilovefreegle.org/stats/heatmap</a>.
+            Our <nuxt-link to="/stats/heatmap">
+              Freegling Heatmap
+            </nuxt-link>
+            shows how much reuse activity is taking place in any given area. We are able to
+            provide a range of reuse data to councils, free of charge, as standard.  In addition, for councils
+            who sponsor their local Freegle communities, we can supply detailed quarterly reuse data,
+            including data at postcode level. For more information on how we can help support your local authority get
+            in touch here:-
+            <!-- eslint-disable-next-line -->
+            <ExternalLink href="mailto:councils@ilovefreegle.org">councils@ilovefreegle.org</ExternalLink>.
           </p>
-          <b-img fluid class="mt-1" src="~static/councils/heatmap.png" />
+          <nuxt-link to="/stats/heatmap">
+            <b-img fluid class="mt-1" src="~static/councils/heatmap.png" />
+          </nuxt-link>
         </b-card-text>
       </b-card>
     </b-col>
@@ -73,10 +82,11 @@
 <script>
 import buildHead from '@/mixins/buildHead.js'
 import sectionScroll from '@/mixins/sectionScroll.js'
+import ExternalLink from '@/components/ExternalLink'
 import CouncilsContent from '../../components/CouncilsContent'
 
 export default {
-  components: { CouncilsContent },
+  components: { ExternalLink, CouncilsContent },
   mixins: [buildHead, sectionScroll],
   head() {
     return this.buildHead(

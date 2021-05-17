@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div ref="top" style="position:relative; top:-66px" />
     <b-card bg-variant="white" no-body>
       <b-card-header class="p-1 p-md-2">
         <div class="d-flex justify-content-between">
@@ -309,6 +310,7 @@
       </b-card-footer>
     </b-card>
     <ModMessageEmailModal v-if="message.source === 'Email'" :id="message.id" ref="original" />
+    <div ref="bottom" />
   </div>
 </template>
 <script>
@@ -394,6 +396,16 @@ export default {
     },
     search: {
       type: String,
+      required: false,
+      default: null
+    },
+    next: {
+      type: Number,
+      required: false,
+      default: null
+    },
+    nextAfterRemoved: {
+      type: Number,
       required: false,
       default: null
     }
@@ -610,12 +622,23 @@ export default {
       } else if (!newVal && !this.expanded) {
         this.expanded = true
       }
+    },
+    nextAfterRemoved(newVal, oldVal) {
+      if (newVal === this.message.id) {
+        // This message is the one after one which has just been removed.  Make sure the top is visible.
+        this.$refs.bottom.scrollIntoView()
+        this.$refs.top.scrollIntoView(true)
+      }
     }
   },
   mounted() {
     this.expanded = !this.summary
     this.attachments = this.message.attachments
     this.findHomeGroup()
+  },
+  beforeDestroy() {
+    console.log('Destroying ', this.message.id)
+    this.$emit('destroy', this.message.id, this.next)
   },
   methods: {
     hasCollection(coll) {

@@ -122,7 +122,14 @@
                         , handover arranged for<strong>&nbsp;{{ p.trystdate }}</strong>
                       </div>
                     </div>
-                    <AddToCalendar v-if="p.tryst" :ics="p.tryst.ics" variant="link" />
+                    <div v-if="p.tryst" class="d-flex flex-wrap small">
+                      <AddToCalendar :ics="p.tryst.ics" variant="link" />
+                      <b-btn variant="link" @click="changeTime">
+                        <v-icon name="pen" />
+                        Change time
+                      </b-btn>
+                      <PromiseModal ref="promiseModalChange" :messages="[ message ]" :selected-message="message.id" :users="replyusers" :selected-user="getPromisee(p.tryst)" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -216,7 +223,7 @@
                   </tbody>
                 </table>
                 <p v-else class="text-muted">
-                  No replies yet. <span v-if="!taken && !received && message.willautorepost && message.canrepostat">Will auto-repost {{ message.canrepostat | timeago }}.</span>
+                  No replies yet. <span v-if="!taken && !received && message.canrepostat">Will auto-repost {{ message.canrepostat | timeago }}.</span>
                 </p>
               </b-card-text>
             </b-card-body>
@@ -682,6 +689,22 @@ export default {
         this.message.id +
         '?signature=' +
         message.lovejunkhash
+    },
+    changeTime() {
+      this.$refs.promiseModalChange.show()
+    },
+    getPromisee(tryst) {
+      let ret = null
+
+      if (tryst) {
+        if (tryst.user1 === this.myid) {
+          ret = tryst.user2
+        } else {
+          ret = tryst.user1
+        }
+      }
+
+      return ret
     }
   }
 }
