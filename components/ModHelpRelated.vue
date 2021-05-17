@@ -33,7 +33,7 @@
         If these are both you, then you might miss replies or see other confusing things. Shall we combine them for you?
         If you don't recognise one of them, just ignore this email.
       </p>
-      <b-btn variant="success" class="mb-2">
+      <b-btn variant="primary" class="mb-2">
         Click here to let us know
       </b-btn>
     </em>
