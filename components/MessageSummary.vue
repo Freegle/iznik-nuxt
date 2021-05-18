@@ -92,9 +92,17 @@ export default {
       this.$emit('expand')
     },
     zoom(e) {
-      this.$emit('zoom')
-      e.preventDefault()
-      e.stopPropagation()
+      if (this.message) {
+        if (!this.message.attachments || !this.message.attachments.length) {
+          // No photos - show the description.
+          this.$emit('expand')
+        } else {
+          this.$emit('zoom')
+        }
+
+        e.preventDefault()
+        e.stopPropagation()
+      }
     }
   }
 }

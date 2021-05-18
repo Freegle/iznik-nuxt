@@ -18,7 +18,7 @@
           <div v-if="showImages">
             <ImageCarousel message-id="id" :attachments="message.attachments" />
             <hr>
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between p-2 mb-2 p-md-0 mb-md-0">
               <div class="pr-2 w-50">
                 <b-btn variant="secondary" size="lg" block @click="cancel">
                   Close
@@ -110,6 +110,11 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+@import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
 .close {
   top: -15px;
   right: -15px;
@@ -118,5 +123,10 @@ export default {
   opacity: 1;
   background-color: white;
   border-radius: 50%;
+
+  @include media-breakpoint-down(sm) {
+    top: 3px;
+    right: 3px;
+  }
 }
 </style>

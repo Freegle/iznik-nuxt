@@ -12,32 +12,36 @@
       <div class="tagbadge pl-2 pr-2 font-weight-bold">
         {{ tag }}
       </div>
-      <div v-if="attachments && attachments.length" class="photozoom" @click="$emit('zoom')">
-        <v-icon v-if="showZoom" name="search" />
+      <div v-if="!thumbnail && attachments && attachments.length" class="photozoom" @click="$emit('zoom')">
+        View larger image
       </div>
       <div class="photobadge d-flex">
         <b-badge v-if="attachments.length > 1">
           {{ attachments.length }} <v-icon name="camera" />
         </b-badge>
       </div>
-      <b-img-lazy
-        rounded
-        class="d-none d-md-block attachment p-0"
-        generator-unable-to-provide-required-alt=""
-        title="Item picture"
-        :src="thumbnail ? attachments[0].paththumb : attachments[0].path"
-        itemprop="image"
-        @error.native="brokenImage"
-      />
-      <b-img-lazy
-        rounded
-        class="d-block d-md-none attachment p-0"
-        generator-unable-to-provide-required-alt=""
-        title="Item picture"
-        :src="attachments[0].path"
-        itemprop="image"
-        @error.native="brokenImage"
-      />
+      <div :class="{ thumbnail: thumbnail, notThumbnail: !thumbnail }">
+        <b-img-lazy
+          rounded
+          class="d-none d-md-block attachment p-0"
+          generator-unable-to-provide-required-alt=""
+          title="Item picture"
+          :src="thumbnail ? attachments[0].paththumb : attachments[0].path"
+          itemprop="image"
+          @error.native="brokenImage"
+          @click.native="$emit('zoom')"
+        />
+        <b-img-lazy
+          rounded
+          class="d-block d-md-none attachment p-0"
+          generator-unable-to-provide-required-alt=""
+          title="Item picture"
+          :src="attachments[0].path"
+          itemprop="image"
+          @error.native="brokenImage"
+          @click.native="$emit('zoom')"
+        />
+      </div>
     </button>
   </div>
 </template>
@@ -131,8 +135,23 @@ export default {
 .attachment {
   object-fit: cover;
   width: 100%;
-  height: 200px;
   box-shadow: 0 0 1 $color-gray--dark;
+}
+
+.thumbnail {
+  .attachment {
+    height: 200px;
+  }
+}
+
+.notThumbnail {
+  .attachment {
+    height: 200px;
+
+    @include media-breakpoint-up(sm) {
+      height: 360px;
+    }
+  }
 }
 
 .photobadge {
