@@ -27,8 +27,9 @@
         <preference name="Orientation" value="all" />
     </platform>
     <platform name="ios">
-        <not-set-preference name="deployment-target" value="10.0" />
+        <not-set-preference name="deployment-target" value="11.0" />
         <preference name="enableViewportScale" value="true" />
+        <preference name="hostname" value="www.ilovefreegle.org" />
     </platform>
     <platform name="ios">
         <splash src="package-assets/Default@2x~universal~anyany.png" />

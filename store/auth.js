@@ -7,6 +7,7 @@ import { appAppleLogout } from '@/plugins/app-apple' // CC
 let first = true
 
 export const state = () => ({
+  session: null,
   forceLogin: false,
   user: null,
   userFetched: null,
@@ -26,6 +27,11 @@ export const mutations = {
     if (state.forceLogin !== value) {
       state.forceLogin = value
     }
+  },
+
+  setSession(state, session) {
+    console.log('SET SESSION',session)
+    state.session = session
   },
 
   setUser(state, user, components) {
@@ -127,6 +133,10 @@ export const mutations = {
 }
 
 export const getters = {
+  session: state => {
+    return state.session
+  },
+
   forceLogin: state => {
     return state.forceLogin
   },
@@ -203,6 +213,7 @@ export const actions = {
     appAppleLogout() // CC
     logoutPushId() // CC
     commit('setUser', null)
+    commit('setSession', null) // CC
     this.$api.session.logout()
     this.$axios.defaults.headers.common.Authorization = null
     this.$axios.setToken(false)
@@ -236,7 +247,9 @@ export const actions = {
       params.mobile = true
       params.appversion = process.env.MOBILE_VERSION
     }
+    console.log('TRYING')
     const res = await this.$api.session.login(params)
+    console.log('GOT',ret,persistent)
     const { ret, status, user, persistent } = res
 
     if (ret === 0) {
@@ -345,14 +358,17 @@ export const actions = {
       const currentTotal = countWork(state.work)
       const currentData = JSON.stringify(state.work)
 
+console.log('FECTHER')
       const {
         me,
+        session,
         persistent,
         groups,
         work,
         discourse
       } = await this.$api.session.fetch(params)
-
+console.log('GOT',session)
+if( session) document.cookie ='PHPSESSID='+session
       const newTotal = countWork(work)
 
       if (
@@ -411,6 +427,8 @@ export const actions = {
         dispatch('compose/setEmail', me.email, {
           root: true
         })
+      } else if (session){
+        commit('setSession', session)
       }
 
       if (work) {

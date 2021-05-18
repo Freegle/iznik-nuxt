@@ -44,6 +44,14 @@ export default class BaseAPI {
     }
     const mobilePushId = this.store.getters['mobileapp/mobilePushId']
 
+    const session = this.store.getters['auth/session']
+    if( session){
+      console.log('SETTING SESSION')
+      if( !('headers' in config)) config.headers = {}
+      config.headers['X-Iznik-PHP-Session'] = session
+      console.log(config.headers)
+    }
+
     // Ensure we tell the API whether we are FD or MT.  Doing it here avoids all the calling code needing to know.
     if (method !== 'POST') {
       if (config.params) {

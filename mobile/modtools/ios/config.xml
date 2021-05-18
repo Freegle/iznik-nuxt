@@ -21,7 +21,7 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <platform name="ios">
-        <not-set-preference name="deployment-target" value="10.0" />
+        <not-set-preference name="deployment-target" value="11.0" />
         <preference name="enableViewportScale" value="true" />
     </platform>
     <platform name="ios">
