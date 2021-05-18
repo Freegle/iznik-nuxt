@@ -25,7 +25,7 @@
           :valid.sync="emailValid"
         />
         <SpinButton
-          v-if="emailValid"
+          v-if="emailValid && !response"
           name="envelope"
           spinclass="success"
           variant="success"
