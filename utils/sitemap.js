@@ -202,7 +202,7 @@ export default {
       'wheelchair'
     ].forEach(i => {
       routes.push({
-        url: '/what-to-do-with-a/' + encodeURIComponent(i),
+        url: '/what-to-do-with-an-old/' + encodeURIComponent(i),
         changefreq: 'daily',
         priority: 0.2
       })
