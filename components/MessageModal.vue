@@ -12,40 +12,45 @@
       >
         <template slot="modal-title" />
         <template slot="default" slot-scope="{ cancel }">
-          <div @click="cancel">
-            <v-icon name="times-circle" scale="3" class="close clickme" />
-          </div>
-          <div v-if="showImages">
-            <ImageCarousel message-id="id" :attachments="message.attachments" />
-            <hr>
-            <div class="d-flex justify-content-between p-2 mb-2 p-md-0 mb-md-0">
-              <div class="pr-2 w-50">
-                <b-btn variant="secondary" size="lg" block @click="cancel">
-                  Close
+          <div v-if="message">
+            <div @click="cancel">
+              <v-icon name="times-circle" scale="3" class="close clickme" />
+            </div>
+            <div v-if="showImages">
+              <ImageCarousel message-id="id" :attachments="message.attachments" />
+              <hr>
+              <div class="d-flex justify-content-between p-2 mb-2 p-md-0 mb-md-0">
+                <div class="pr-2 w-50">
+                  <b-btn variant="secondary" size="lg" block @click="cancel">
+                    Close
+                  </b-btn>
+                </div>
+                <b-btn
+                  size="lg"
+                  variant="primary"
+                  block
+                  class="w-50 pl-2"
+                  @click="showImages = false"
+                >
+                  View description
                 </b-btn>
               </div>
-              <b-btn
-                size="lg"
-                variant="primary"
-                block
-                class="w-50 pl-2"
-                @click="showImages = false"
-              >
-                View description
-              </b-btn>
             </div>
+            <MessageExpanded
+              v-else
+              :id="id"
+              :replyable="replyable"
+              :hide-close="hideClose"
+              :actions="actions"
+              :show-map="modalShown"
+              class="ml-md-2 mr-md-2 mt-md-2 ml-0 mr-0 mt-0"
+              @close="cancel"
+              @zoom="showImages = true"
+            />
           </div>
-          <MessageExpanded
-            v-else
-            :id="id"
-            :replyable="replyable"
-            :hide-close="hideClose"
-            :actions="actions"
-            :show-map="modalShown"
-            class="ml-md-2 mr-md-2 mt-md-2 ml-0 mr-0 mt-0"
-            @close="cancel"
-            @zoom="showImages = true"
-          />
+          <div v-else class="d-flex flex-column -justify-content-around align-content-center">
+            <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+          </div>
         </template>
       </b-modal>
     </client-only>

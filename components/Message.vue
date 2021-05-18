@@ -181,20 +181,18 @@ export default {
     }
   },
   methods: {
-    async expand(zoom) {
+    expand(zoom) {
       if (!this.message.successful) {
-        await Promise.all([
-          this.$store.dispatch('messages/fetch', {
-            id: this.id
-          }),
-          this.view()
-        ])
-
         this.expanded = true
 
         this.waitForRef('modal', () => {
           this.$refs.modal.show(zoom)
+          this.$store.dispatch('messages/fetch', {
+            id: this.id
+          })
         })
+
+        this.view()
       }
     },
     zoom() {

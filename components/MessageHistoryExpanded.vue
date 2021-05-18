@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="grey p-2 d-flex">
-      <ProfileImage v-if="message.fromuser" :image="message.fromuser.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
+      <ProfileImage v-if="message.fromuser && message.fromuser.profile" :image="message.fromuser.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
       <div>
         <div v-if="message.fromuser">
           <div class="d-flex justify-content-between flex-wrap order-0">
@@ -12,7 +12,7 @@
             </nuxt-link>
           </div>
           <Supporter v-if="message.fromuser.supporter" class="d-inline" />
-          <div v-if="message.fromuser.info.openoffers + message.fromuser.info.openwanteds > 0">
+          <div v-if="message.fromuser && message.fromuser.info && message.fromuser.info.openoffers + message.fromuser.info.openwanteds > 0">
             <span v-if="message.fromuser.info.openoffers" class="text-success">
               {{ message.fromuser.info.openoffers | pluralize([ 'open OFFER', 'open OFFERs' ], { includeNumber: true }) }}
             </span>

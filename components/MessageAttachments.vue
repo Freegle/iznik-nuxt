@@ -16,7 +16,7 @@
         View larger image
       </div>
       <div class="photobadge d-flex">
-        <b-badge v-if="attachments.length > 1">
+        <b-badge v-if="attachments.length > 1" @click="$emit('zoom')">
           {{ attachments.length }} <v-icon name="camera" />
         </b-badge>
       </div>
