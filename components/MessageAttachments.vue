@@ -17,7 +17,7 @@
       </div>
       <div class="photobadge d-flex">
         <b-badge v-if="attachments.length > 1" @click="$emit('zoom')">
-          {{ attachments.length }} <v-icon name="camera" />
+          1 / {{ attachments.length }} <v-icon name="camera" />
         </b-badge>
       </div>
       <div :class="{ thumbnail: thumbnail, notThumbnail: !thumbnail }">
