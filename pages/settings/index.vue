@@ -574,9 +574,11 @@
     <div v-else class="text-center">
       <b-img-lazy src="~/static/loader.gif" alt="Loading" />
       <p>
-        <span class="font-weight-bold">Loading...</span><br>Stuck here? <ExternalLink href="mailto:support@ilovefreegle.org">
+        <span>Loading...</span><br><span class="font-weight-bold">Stuck here?  Try refreshing.  Or Chrome.</span>
+        <br> No luck?
+        <ExternalLink href="mailto:support@ilovefreegle.org" style="color: black;">
           Contact us
-        </ExternalLink><br>Try refreshing.  Or Chrome.
+        </ExternalLink>
       </p>
     </div>
   </div>
