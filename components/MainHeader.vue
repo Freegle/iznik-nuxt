@@ -51,7 +51,7 @@
             </div>
           </client-only>
           <b-navbar-nav class="mainnav mainnav--right">
-            <NotificationOptions v-if="!simple" :distance="distance" :small-screen="false" :unread-notification-count.sync="unreadNotificationCount" @showAboutMe="showAboutMe" />
+            <NotificationOptions :distance="distance" :small-screen="false" :unread-notification-count.sync="unreadNotificationCount" @showAboutMe="showAboutMe" />
             <ChatMenu id="menu-option-chat" :is-list-item="true" :chat-count.sync="chatCount" />
             <b-nav-item v-if="!simple" id="menu-option-spread" class="text-center small p-0" to="/promote" @mousedown="maybeReload('/promote')">
               <div class="position-relative">
