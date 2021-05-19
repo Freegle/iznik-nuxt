@@ -58,7 +58,7 @@
               <p v-if="trystdate" class="small text-info">
                 Handover arranged for <strong>{{ trystdate }}</strong>
               </p>
-              <div class="d-flex mt-1 mb-1 flex-wrap">
+              <div class="d-flex mt-1 mb-1 flex-wrap justify-content-between">
                 <template v-if="tryst">
                   <AddToCalendar :ics="tryst.ics" class="mr-2" />
                   <b-btn v-if="refmsg.promisecount && !hasOutcome" variant="secondary" class="mr-2" @click="changeTime">
@@ -68,14 +68,10 @@
                   <PromiseModal ref="promise" :messages="[ refmsg ]" :selected-message="refmsg.id" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
                 </template>
                 <b-btn v-if="refmsg.promisecount && !hasOutcome" variant="warning" class="align-middle" @click="unpromise">
-                  <v-icon>
-                    <v-icon name="handshake" />
-                    <v-icon
-                      name="slash"
-                      class="unpromise__slash"
-                    />
-                  </v-icon>
                   Unpromise
+                </b-btn>
+                <b-btn variant="primary" class="mr-1" @click="outcome('Taken')">
+                  Mark as TAKEN
                 </b-btn>
               </div>
             </b-card-title>
@@ -93,10 +89,12 @@
       </b-col>
     </b-row>
     <RenegeModal ref="renege" :messages="[ refmsg ]" :selected-message="refmsg.id" :users="[otheruser ]" :selected-user="otheruser.id" />
+    <OutcomeModal ref="outcomeModal" :message="refmsg" :taken-by="takenBy" />
   </div>
 </template>
 
 <script>
+import OutcomeModal from '@/components/OutcomeModal'
 import waitForRef from '../mixins/waitForRef'
 import AddToCalendar from '~/components/AddToCalendar'
 import ChatBase from '~/components/ChatBase'
@@ -107,6 +105,7 @@ const PromiseModal = () => import('~/components/PromiseModal')
 
 export default {
   components: {
+    OutcomeModal,
     AddToCalendar,
     ProfileImage,
     RenegeModal,
@@ -127,6 +126,17 @@ export default {
       return this.tryst
         ? this.$dayjs(this.tryst.arrangedfor).format('dddd Do HH:mm a')
         : null
+    },
+    takenBy() {
+      let ret = null
+
+      if (this.otheruser) {
+        ret = this.otheruser
+        ret.userid = this.otheruser.id
+        ret.count = 1
+      }
+
+      return ret
     }
   },
   methods: {
@@ -136,6 +146,15 @@ export default {
     changeTime() {
       this.waitForRef('promise', () => {
         this.$refs.promise.show()
+      })
+    },
+    async outcome(type) {
+      await this.$store.dispatch('messages/fetch', {
+        id: this.refmsg.id
+      })
+
+      this.waitForRef('outcomeModal', () => {
+        this.$refs.outcomeModal.show(type)
       })
     }
   }
