@@ -149,7 +149,6 @@ export default {
         .toDate()
     },
     buttonDisabled() {
-      console.log('Calc disabled', this.date && this.date.length && !this.time)
       return (
         !this.messages ||
         this.messages.length === 0 ||

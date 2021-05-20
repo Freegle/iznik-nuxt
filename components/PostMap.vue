@@ -215,8 +215,9 @@ export default {
     mapOptions() {
       return {
         zoomControl: !this.locked,
-        dragging: !this.locked,
-        scrollWheelZoom: !this.locked
+        dragging: !this.locked && !L.Browser.mobile,
+        touchZoom: !this.locked,
+        scrollWheelZoom: false
       }
     },
     mapHidden() {

@@ -1,12 +1,14 @@
 export const state = () => ({
-  replyTo: null,
-  replyMessage: null
+  replyMsgId: null,
+  replyMessage: null,
+  replyingAt: null
 })
 
 export const mutations = {
   set(state, params) {
-    state.replyTo = params.replyTo
+    state.replyMsgId = params.replyMsgId
     state.replyMessage = params.replyMessage
+    state.replyingAt = params.replyingAt
   }
 }
 

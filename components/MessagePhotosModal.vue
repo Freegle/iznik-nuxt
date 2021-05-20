@@ -1,39 +1,45 @@
 <template>
-  <div>
-    <b-modal
-      :id="'photoModal-' + message.id"
-      v-model="showModal"
-      :title="subject"
-      size="lg"
-      no-stacking
-      ok-only
-    >
-      <template slot="default">
-        <ImageCarousel message-id="message.id" :attachments="message.attachments" />
-      </template>
-      <template slot="modal-footer" slot-scope="{ ok, cancel }">
-        <b-button variant="white" @click="cancel">
-          Close
-        </b-button>
-      </template>
-    </b-modal>
-  </div>
+  <b-modal
+    v-if="message"
+    id="photoModal"
+    v-model="showModal"
+    :title="message.subject"
+    size="lg"
+    ok-only
+  >
+    <template slot="default">
+      <ImageCarousel message-id="message.id" :attachments="message.attachments" />
+    </template>
+    <template slot="modal-footer" slot-scope="{ ok, cancel }">
+      <b-button variant="secondary" @click="cancel">
+        Close
+      </b-button>
+    </template>
+  </b-modal>
 </template>
 <script>
 import modal from '@/mixins/modal'
-const ImageCarousel = () => import('./ImageCarousel')
+import ImageCarousel from '@/components/ImageCarousel'
 
 export default {
   components: { ImageCarousel },
   mixins: [modal],
   props: {
-    message: {
-      type: Object,
+    id: {
+      type: Number,
       required: true
     },
-    subject: {
-      type: String,
-      required: true
+    messageOverride: {
+      type: Object,
+      required: false,
+      default: null
+    }
+  },
+  computed: {
+    message() {
+      return (
+        this.messageOverride ?? this.$store.getters['messages/get'](this.id)
+      )
     }
   }
 }

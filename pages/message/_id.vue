@@ -110,6 +110,7 @@ export default {
     }
   },
   async asyncData({ app, params, store }) {
+    console.log('GEt message', params.id)
     if (params.id) {
       try {
         await store.dispatch('messages/fetch', {
@@ -120,7 +121,7 @@ export default {
 
         return {
           message: message,
-          error: message !== null
+          error: message === null
         }
       } catch (e) {
         return {
