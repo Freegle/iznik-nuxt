@@ -442,6 +442,15 @@ export default {
     doneForNow() {
       this.showTask = false
       this.$emit('verified')
+
+      // Snooze this for a day.
+      const tomorrow = new Date()
+      tomorrow.setDate(tomorrow.getDate() + 1)
+
+      this.$store.dispatch('misc/set', {
+        key: 'microvolunteeringlastask',
+        value: tomorrow.getTime()
+      })
     },
     isSimilar(term) {
       return this.similarTerms.find(t => t.id === term.id)
