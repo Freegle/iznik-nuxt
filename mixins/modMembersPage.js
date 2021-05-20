@@ -29,8 +29,10 @@ export default {
       const ret = []
 
       membs.forEach(m => {
-        if (!userids[m.userid]) {
-          userids[m.userid] = true
+        const id = m.userid ?? m.fromuser
+
+        if (!userids[id]) {
+          userids[id] = true
           ret.push(m)
         }
       })
