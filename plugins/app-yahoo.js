@@ -29,7 +29,7 @@ export function appYahooLogin(returnPath, callback) {
   }
 
   let authGiven = false
-  const here = 'https://www.ilovefreegle.org'
+  const here = process.env.IS_MTAPP ? 'https://modtools.org' : 'https://www.ilovefreegle.org'
 
   const yauthurl =
     'https://api.login.yahoo.com/oauth2/request_auth?client_id=' +
@@ -45,6 +45,7 @@ export function appYahooLogin(returnPath, callback) {
     if (e && e.url) {
       // Catch redirect after auth back to ilovefreegle
       if (
+        e.url.indexOf('https://modtools.org/') === 0 ||
         e.url.indexOf('https://www.ilovefreegle.org/') === 0 ||
         e.url.indexOf('https://iznik.ilovefreegle.org/') === 0 ||
         e.url.indexOf('https://fdnuxt.ilovefreegle.org/') === 0 ||
