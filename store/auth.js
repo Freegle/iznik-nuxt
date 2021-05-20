@@ -30,7 +30,6 @@ export const mutations = {
   },
 
   setSession(state, session) {
-    console.log('SET SESSION',session)
     state.session = session
   },
 
@@ -247,9 +246,7 @@ export const actions = {
       params.mobile = true
       params.appversion = process.env.MOBILE_VERSION
     }
-    console.log('TRYING')
     const res = await this.$api.session.login(params)
-    console.log('GOT',ret,persistent)
     const { ret, status, user, persistent } = res
 
     if (ret === 0) {
@@ -358,7 +355,6 @@ export const actions = {
       const currentTotal = countWork(state.work)
       const currentData = JSON.stringify(state.work)
 
-console.log('FECTHER')
       const {
         me,
         session,
@@ -367,8 +363,7 @@ console.log('FECTHER')
         work,
         discourse
       } = await this.$api.session.fetch(params)
-console.log('GOT',session)
-if( session) document.cookie ='PHPSESSID='+session
+
       const newTotal = countWork(work)
 
       if (
@@ -427,7 +422,7 @@ if( session) document.cookie ='PHPSESSID='+session
         dispatch('compose/setEmail', me.email, {
           root: true
         })
-      } else if (session){
+      } else if (session){ // Store sessionid for iOS apps
         commit('setSession', session)
       }
 
