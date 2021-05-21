@@ -45,6 +45,7 @@
                 close-button
                 button-only
                 label-reset-button="Clear"
+                :label-help="null"
                 @context="onContext"
               >
                 <template slot="button-content">
@@ -329,5 +330,9 @@ export default {
 <style scoped>
 label {
   font-weight: bold;
+}
+
+/deep/ .b-calendar-nav {
+  display: none !important;
 }
 </style>
