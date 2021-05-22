@@ -73,7 +73,9 @@ export default {
     visibleJobs() {
       if (process.browser) {
         // We have an infinite scroll - return as many as we're currently showing.
-        return this.prioritise(this.jobs, this.show)
+        //
+        // Don't prioritise otherwise this makes them jump around when scrolling down.
+        return this.jobs.slice(0, this.show)
       } else {
         // SSR - return all for SEO.
         return this.job
