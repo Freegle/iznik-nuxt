@@ -35,6 +35,7 @@
           <b-input v-model="subject" class="mt-2" />
         </b-input-group>
       </div>
+      Warning {{ warning }}
       <NoticeMessage v-if="warning" variant="warning" class="mt-1 mb-1">
         <p>Please check your message in case it needs updating:</p>
         <p>
@@ -225,7 +226,7 @@ export default {
     warning() {
       let ret = null
 
-      if (this.stdmsg && this.stdmsg.body) {
+      if (this.body) {
         const checks = {
           yahoo:
             'Yahoo Groups is no longer supported, so any mention of it is probably out of date.',
@@ -237,11 +238,16 @@ export default {
             'The ChitChat area of the site is the place for cafe-type requests now.',
           newsfeed: 'Newsfeed is now called ChitChat.',
           freegledirect:
-            'Freegle Direct is no longer an active term; we just talk about "our website" now.'
+            'Freegle Direct is no longer an active term; we just talk about "our website" or "www.ilovefreegle.org" now.',
+          'www.freegle.in':
+            "www.freegle.in should just be freegle.in - it won't work with the www.",
+          'http://':
+            "It's better to use https:// links rather than http:// links."
         }
 
-        const trimmed = this.stdmsg.body.replace(/\s/g, '').toLowerCase()
+        const trimmed = this.body.replace(/\s/g, '').toLowerCase()
         for (const keyword in checks) {
+          console.log('Check', trimmed, keyword, trimmed.indexOf(keyword))
           if (trimmed.indexOf(keyword) !== -1) {
             ret = checks[keyword]
           }
@@ -362,7 +368,7 @@ export default {
 
       this.showModal = true
 
-      if (this.autosend) {
+      if (this.autosend && !this.warning) {
         // Start doing stuff.
         this.waitForRef('process', () => {
           this.$refs.process.click()
