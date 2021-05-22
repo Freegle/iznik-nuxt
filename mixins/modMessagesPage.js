@@ -73,13 +73,34 @@ export default {
         })
       }
     },
-    work(newVal, oldVal) {
+    async work(newVal, oldVal) {
+      console.log('Work changed', newVal, oldVal, this.modalOpen)
+      let doFetch = false
+
       if (!this.modalOpen) {
         if (newVal > oldVal) {
           // There's new stuff to fetch.
-          this.$store.dispatch('messages/clearContext')
+          console.log('Fetch')
+          await this.$store.dispatch('messages/clearContext')
+          doFetch = true
+        } else {
+          const visible = this.$store.getters['misc/get']('visible')
+          console.log('Visible', visible)
 
-          this.$store.dispatch('messages/fetchMessages', {
+          if (!visible) {
+            // If we're not visible, then clear what we have in the store.  We don't want to do that under our own
+            // feet, but if we do this then we will pick up changes from other people and avoid confusion.
+            await this.$store.dispatch('messages/clear')
+            doFetch = true
+          }
+        }
+
+        if (doFetch) {
+          console.log('Fetch')
+          await this.$store.dispatch('messages/clearContext')
+          this.context = null
+
+          await this.$store.dispatch('messages/fetchMessages', {
             groupid: this.groupid,
             collection: this.collection,
             modtools: true,
@@ -97,17 +118,6 @@ export default {
           }
 
           this.show = messages.length
-        } else {
-          const visible = this.$store.getters['misc/get']('visible')
-
-          if (!visible) {
-            // If we're not visible, then clear what we have in the store.  We don't want to do that under our own
-            // feet, but if we do this then we will pick up changes from other people and avoid confusion.
-            this.$store.dispatch('messages/clearContext')
-            this.context = null
-            this.show = 0
-            this.$store.dispatch('messages/clear')
-          }
         }
       }
     }
