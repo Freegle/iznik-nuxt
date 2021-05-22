@@ -188,7 +188,7 @@
               Don't ask me again
             </b-btn>
             <b-btn variant="secondary" class="mb-1" @click="doneForNow">
-              I'm done for now
+              Ask again tomorrow
             </b-btn>
           </div>
         </template>
@@ -443,9 +443,11 @@ export default {
       this.showTask = false
       this.$emit('verified')
 
-      // Snooze this for a day.
+      // Snooze this until tomorrow.
       const tomorrow = new Date()
       tomorrow.setDate(tomorrow.getDate() + 1)
+      tomorrow.setHours(0)
+      tomorrow.setMinutes(0)
 
       this.$store.dispatch('misc/set', {
         key: 'microvolunteeringlastask',
