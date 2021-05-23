@@ -35,7 +35,6 @@
           <b-input v-model="subject" class="mt-2" />
         </b-input-group>
       </div>
-      Warning {{ warning }}
       <NoticeMessage v-if="warning" variant="warning" class="mt-1 mb-1">
         <p>Please check your message in case it needs updating:</p>
         <p>
