@@ -42,6 +42,7 @@
             :type="type"
             :msgid="message.id"
             :left="left"
+            :taken-by="takenBy"
             @tookUsers="tookUsers = $event"
           />
           <hr>
@@ -102,6 +103,11 @@ export default {
     message: {
       type: Object,
       required: true
+    },
+    takenBy: {
+      type: Object,
+      required: false,
+      default: null
     }
   },
   data: function() {

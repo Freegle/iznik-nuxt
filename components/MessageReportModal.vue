@@ -5,7 +5,6 @@
       v-model="showModal"
       :title="'Report ' + message.subject"
       size="lg"
-      no-stacking
     >
       <template slot="default">
         <p>

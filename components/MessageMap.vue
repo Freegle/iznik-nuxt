@@ -48,14 +48,17 @@ export default {
     },
     height: {
       type: Number,
-      required: true,
+      required: false,
       default: 200
     }
   },
   computed: {
     mapOptions() {
       return {
-        dragging: !this.locked
+        // On mobile require two-finger interaction.
+        dragging: !this.locked && !L.Browser.mobile,
+        touchZoom: !this.locked,
+        scrollWheelZoom: false
       }
     },
     homeicon() {

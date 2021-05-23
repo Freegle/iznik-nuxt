@@ -72,6 +72,11 @@ export default {
     left: {
       type: Number,
       required: true
+    },
+    takenBy: {
+      type: Object,
+      required: false,
+      default: null
     }
   },
   data: function() {
@@ -189,6 +194,10 @@ export default {
     if (message && message.by) {
       this.selectedUsers = message.by
       this.$emit('tookUsers', this.selectedUsers)
+    }
+
+    if (this.takenBy) {
+      this.selectedUsers.push(this.takenBy)
     }
 
     this.showSelect = true

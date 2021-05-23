@@ -4,7 +4,6 @@
     v-model="showModal"
     title="Share a post"
     size="lg"
-    no-stacking
   >
     <template slot="default">
       <div v-if="message">

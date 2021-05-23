@@ -13,11 +13,7 @@
           />
           <ModStatus class="status" />
         </b-navbar-brand>
-        <div class="text-white font-weight-bold d-none d-md-block">
-          ZoomStock Thursdays @ 10am.  Join other volunteers for a natter -
-          <!-- eslint-disable-next-line-->
-          <ExternalLink href="https://zoom.us/j/97817491680?pwd=VVh2eW1LL2JhbnB5MllQbHoyRUJ6UT09" class="text-white">click here</ExternalLink>.
-        </div>
+        <ModZoomStock class="d-none d-md-block text-white" />
         <b-navbar-nav class="d-flex align-items-center">
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse2" class="text-center p-0 mr-4" @click="discourse">
             <div class="position-relative small">
@@ -111,6 +107,8 @@ import waitForRef from '../mixins/waitForRef'
 import LoginModal from '~/components/LoginModal'
 import ModStatus from '~/components/ModStatus'
 import ChatMenu from '~/components/ChatMenu'
+import ModZoomStock from '~/components/ModZoomStock'
+
 const ExternalLink = () => import('~/components/ExternalLink')
 import { setBadgeCount } from '../plugins/app-init-push' // CC
 
@@ -123,7 +121,8 @@ export default {
     LoginModal,
     ModStatus,
     ChatMenu,
-    ExternalLink
+    ExternalLink,
+    ModZoomStock
   },
   mixins: [waitForRef],
   data: function() {

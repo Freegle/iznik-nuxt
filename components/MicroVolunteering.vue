@@ -5,6 +5,7 @@
         v-model="showInvite"
         variant="info"
         size="lg"
+        no-stacking
       >
         <template v-slot:modal-header>
           <h1 class="w-100">
@@ -88,15 +89,15 @@
               <p>
                 This is someone else's post.  Does it look ok to you?
               </p>
-              <Message
+              <MessageExpanded
                 v-if="message"
+                :id="message.id"
                 :key="'task-' + message.id"
-                v-bind="message"
-                expand-button-text="See more details"
+                :message-override="message"
                 :replyable="false"
-                start-expanded
                 :actions="false"
                 :record-view="false"
+                :show-map="false"
               />
               <div v-if="!showComments" class="d-flex justify-content-between flex-wrap w-100 mt-3">
                 <SpinButton
@@ -187,7 +188,7 @@
               Don't ask me again
             </b-btn>
             <b-btn variant="secondary" class="mb-1" @click="doneForNow">
-              I'm done for now
+              Ask again tomorrow
             </b-btn>
           </div>
         </template>
@@ -197,7 +198,7 @@
 </template>
 <script>
 import dayjs from 'dayjs'
-import Message from './Message'
+import MessageExpanded from '@/components/MessageExpanded'
 import SpinButton from './SpinButton'
 const MicroVolunteeringSimilarTerm = () =>
   import('./MicroVolunteeringSimilarTerm')
@@ -211,7 +212,7 @@ export default {
     FacebookPostToShare,
     MicroVolunteeringSimilarTerm,
     SpinButton,
-    Message
+    MessageExpanded
   },
   props: {
     force: {
@@ -441,6 +442,17 @@ export default {
     doneForNow() {
       this.showTask = false
       this.$emit('verified')
+
+      // Snooze this until tomorrow.
+      const tomorrow = new Date()
+      tomorrow.setDate(tomorrow.getDate() + 1)
+      tomorrow.setHours(0)
+      tomorrow.setMinutes(0)
+
+      this.$store.dispatch('misc/set', {
+        key: 'microvolunteeringlastask',
+        value: tomorrow.getTime()
+      })
     },
     isSimilar(term) {
       return this.similarTerms.find(t => t.id === term.id)

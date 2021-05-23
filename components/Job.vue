@@ -87,7 +87,7 @@ export default {
 
       return this.job.body
         .replace(/\\n/g, '\n')
-        .replace(/<br>/, '\n')
+        .replace(/<br>/g, '\n')
         .trim()
     }
   },

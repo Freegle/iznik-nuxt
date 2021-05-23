@@ -24,9 +24,11 @@
           {{ item }}
         </span>
       </div>
-      <b-badge v-if="message && message.availablenow > 1" variant="info" class="ml-3">
-        {{ message.availablenow ? message.availablenow : '0' }} left
-      </b-badge>
+      <div>
+        <b-badge v-if="message && message.availablenow > 1" variant="info" class="ml-2 mr-2 mt-0 align-top">
+          {{ message.availablenow ? message.availablenow : '0' }} left
+        </b-badge>
+      </div>
     </h3>
     <div class="location">
       {{ location }}
@@ -44,6 +46,11 @@ export default {
     id: {
       type: Number,
       required: true
+    },
+    messageOverride: {
+      type: Object,
+      required: false,
+      default: null
     },
     matchedon: {
       type: Object,
@@ -63,7 +70,9 @@ export default {
   },
   computed: {
     message() {
-      return this.$store.getters['messages/get'](this.id)
+      return (
+        this.messageOverride ?? this.$store.getters['messages/get'](this.id)
+      )
     },
     subject() {
       return this.message ? this.message.subject : null

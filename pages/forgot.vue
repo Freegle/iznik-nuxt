@@ -25,10 +25,10 @@
           :valid.sync="emailValid"
         />
         <SpinButton
-          v-if="emailValid"
+          v-if="emailValid && !response"
           name="envelope"
           spinclass="success"
-          variant="success"
+          variant="primary"
           size="lg"
           :handler="mail"
           label="Mail login link"
