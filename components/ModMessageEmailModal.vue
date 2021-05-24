@@ -62,7 +62,9 @@ export default {
       return this.$store.getters['messages/get'](this.id)
     },
     parsed() {
-      return this.message ? extract(this.message.message) : null
+      return this.message && this.message.message
+        ? extract(this.message.message)
+        : null
     },
     text() {
       return this.parsed ? this.parsed.text : null
