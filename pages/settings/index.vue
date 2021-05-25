@@ -22,8 +22,11 @@
                 </p>
                 <b-row>
                   <b-col cols="12">
+                    <label>
+                      Your name (or to make things more fun, use a nickname):
+                    </label>
                     <b-input-group>
-                      <b-input v-model="me.displayname" placeholder="Your name" />
+                      <b-input id="myname" v-model="me.displayname" placeholder="Your name" />
                       <b-input-group-append>
                         <b-button variant="white" @click="saveName">
                           <v-icon name="save" />&nbsp;Save
