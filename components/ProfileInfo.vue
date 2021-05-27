@@ -174,11 +174,14 @@ export default {
         : null
     },
     messages() {
-      return this.$store.getters['messages/getAll']
+      return this.$store.getters['messages/getAll'].filter(
+        m => m.fromuser.id === this.user.id
+      )
     }
   },
   async mounted() {
-    // Get the user and their messages.
+    // Get the user and their messages.  Don't clear the store of messages, as there are cases where that would
+    // end up destroying ourselves (view message, opens modal, click to view info).
     await this.$store.dispatch('user/fetch', {
       id: this.id,
       info: true
@@ -187,7 +190,6 @@ export default {
     const user = this.$store.getters['user/get'](this.id)
 
     if (user) {
-      await this.$store.dispatch('messages/clear')
       await this.$store.dispatch('messages/fetchMessages', {
         fromuser: this.id,
         limit: 1000,
