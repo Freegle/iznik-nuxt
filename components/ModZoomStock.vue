@@ -1,6 +1,10 @@
 <template>
   <div class="font-weight-bold">
-    <div v-if="now" class="pulsate d-flex">
+    <div v-if="today" class="pulsate d-flex">
+      <!-- eslint-disable-next-line-->
+      <ExternalLink href="https://zoom.us/j/97817491680?pwd=VVh2eW1LL2JhbnB5MllQbHoyRUJ6UT09" class="text-white">ZoomStock Thursdays - join other volunteers for a natter.  Click here at 10am.</ExternalLink>
+    </div>
+    <div v-else-if="now" class="pulsate d-flex">
       <!-- eslint-disable-next-line-->
       <ExternalLink href="https://zoom.us/j/97817491680?pwd=VVh2eW1LL2JhbnB5MllQbHoyRUJ6UT09" class="text-white">ZoomStock happening now! Join other volunteers for a natter - click here.</ExternalLink>
     </div>
@@ -27,6 +31,10 @@ export default {
   computed: {
     fromNow() {
       return this.nextOne ? this.nextOne.fromNow() : null
+    },
+    today() {
+      const d = this.$dayjs()
+      return d.day() === DAY_OF_WEEK && d.hour() < HOUR_OF_DAY
     },
     now() {
       const d = this.$dayjs()
