@@ -102,6 +102,7 @@ const cordovaApp = {
                 id: 'PushPluginChannel',
                 description: process.env.IS_MTAPP ? 'Moderation tasks' : 'Chat messages',
                 importance: 3,
+                sound: 'alert.mp3',
                 vibration: false
               }
             )
