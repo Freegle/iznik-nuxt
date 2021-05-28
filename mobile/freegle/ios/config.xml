@@ -110,7 +110,6 @@
     </platform>
     <platform name="ios">
         <resource-file src="GoogleService-Info.plist" />
-        <resource-file src="alert.caf" />
         <preference name="BackupWebStorage" value="none" />
     </platform>
     <platform name="ios">
