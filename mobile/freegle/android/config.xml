@@ -48,7 +48,7 @@
   </platform>
   <platform name="android">
     <resource-file src="google-services.json" target="app/google-services.json" />
-    <resource-file src="../iznik-nuxt/mobile/freegle/alert.mp3" target="app/alert.mp3" />
+    <resource-file src="alert.mp3" target="app/alert.mp3" />
   </platform>
   <hook src="scripts/before_build.sh" type="before_build" />
   <hook src="scripts/remove_permissions.js" platform="android" type="after_prepare" />

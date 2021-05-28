@@ -265,6 +265,7 @@ jobs:
         chmod +x scripts/before_build.sh;
         chmod +x scripts/remove_permissions.js;
         cp ../project/mobile/secrets/google-services.json google-services.json;
+        cp ../project/mobile/freegle/alert.mp3 alert.mp3;
         ln -s ../project/dist www;
         cordova platform rm android;
         cordova platform add android@8.1.0
@@ -305,6 +306,7 @@ jobs:
         ln -s ../project/mobile/modtools/scripts scripts;
         chmod +x scripts/before_build.sh;
         cp ../project/mobile/secrets/google-services.json google-services.json;
+        cp ../project/mobile/modtools/alert.mp3 alert.mp3;
         ln -s ../project/dist www;
         cordova platform rm android;
         cordova platform add android@8.1.0
