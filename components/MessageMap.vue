@@ -9,7 +9,7 @@
   >
     <l-tile-layer :url="osmtile" :attribution="attribution" />
     <l-marker v-if="home" :lat-lng="[home.lat, home.lng]" :interactive="false" :icon="homeicon" class="bg-none" />
-    <l-marker :lat-lng="[position.lat, position.lng]" :interactive="false" />
+    <l-marker :lat-lng="[position.lat, position.lng]" :interactive="false" :icon="blurmarker" />
   </l-map>
 </template>
 <script>
@@ -71,6 +71,12 @@ export default {
       return new L.DivIcon({
         html: re.outerHTML,
         className: 'bg-none'
+      })
+    },
+    blurmarker() {
+      return new L.Icon({
+        iconUrl: '/blurmarker.png',
+        iconSize: [50, 50]
       })
     }
   },
