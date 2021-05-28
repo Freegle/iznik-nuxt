@@ -8,42 +8,44 @@
       />
     </div>
     <div>
-      <div v-if="showNotices && (badratings || expectedreply || otheruser && otheruser.hasReneged || !spammer && replytime || spammer && spammer.collection !== 'Whitelisted' || mod && chat && chat.chattype === 'User2Mod' && otheruser)" class="bg-info mb-2">
-        <span class="float-right mr-2 mt-2 clickme" title="Hide warnings" @click="showNotices = false">
-          <v-icon name="times-circle" scale="1.5" />
-        </span>
-        <notice-message v-if="badratings" variant="warning" class="clickme" @click.native="showInfo">
-          <p>
-            <v-icon name="exclamation-triangle" />&nbsp;This freegler has a lot of thumbs down ratings.
-            That might not be their fault, but please make very clear arrangements.  If you have a good
-            experience with them, give them a thumbs up.
-          </p>
-          <Ratings v-if="otheruser" :id="otheruserid" :key="'otheruser-' + otheruserid" />
-        </notice-message>
-        <notice-message v-else-if="expectedreply" variant="warning" class="clickme" @click.native="showInfo">
-          <v-icon name="exclamation-triangle" />&nbsp;{{ expectedreply | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} still waiting for them to reply on here.
-        </notice-message>
-        <notice-message v-else-if="otheruser && otheruser.hasReneged" variant="warning" class="clickme" @click.native="showInfo">
-          <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
-        </notice-message>
-        <notice-message v-if="!spammer && (replytime || milesaway)" class="clickme d-flex flex-wrap justify-content-between" :variant="milesaway < 3 ? 'info': 'danger'" @click.native="showInfo">
-          <span v-if="milesaway">
-            <!--            COVID lockdown 2-->
-            <v-icon name="map-marker-alt" class="fa-fw" />&nbsp;About <strong>{{ milesaway | pluralize('mile', { includeNumber: true }) }} away</strong>.
-            <span v-if="milesaway > 10">
-              Remember: please keep it local, and respect any COVID-19 restrictions in your area.
+      <div v-if="showNotices && (badratings || expectedreply || otheruser && otheruser.hasReneged || !spammer && replytime || spammer && spammer.collection !== 'Whitelisted' || mod && chat && chat.chattype === 'User2Mod' && otheruser)" class="d-flex">
+        <div class="flex-grow-1">
+          <notice-message v-if="badratings" variant="warning" class="clickme" @click.native="showInfo">
+            <p>
+              <v-icon name="exclamation-triangle" />&nbsp;This freegler has a lot of thumbs down ratings.
+              That might not be their fault, but please make very clear arrangements.  If you have a good
+              experience with them, give them a thumbs up.
+            </p>
+            <Ratings v-if="otheruser" :id="otheruserid" :key="'otheruser-' + otheruserid" />
+          </notice-message>
+          <notice-message v-else-if="expectedreply" variant="warning" class="clickme" @click.native="showInfo">
+            <v-icon name="exclamation-triangle" />&nbsp;{{ expectedreply | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} still waiting for them to reply on here.
+          </notice-message>
+          <notice-message v-else-if="otheruser && otheruser.hasReneged" variant="warning" class="clickme" @click.native="showInfo">
+            <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
+          </notice-message>
+          <notice-message v-if="!spammer && (replytime || milesaway)" class="clickme d-flex flex-wrap justify-content-between" variant="info" @click.native="showInfo">
+            <span v-if="milesaway">
+              <!--            COVID lockdown 2-->
+              <v-icon name="map-marker-alt" class="fa-fw" />&nbsp;About <strong>{{ milesaway | pluralize('mile', { includeNumber: true }) }} away</strong>.
+              <span v-if="milesaway > 10">
+                Remember: please keep it local, and respect any COVID-19 restrictions in your area.
+              </span>
             </span>
-          </span>
-          <span v-if="replytime">
-            <v-icon name="info-circle" class="fa-fw" />&nbsp;Typically replies in <strong>{{ replytime }}</strong>.
-          </span>
-          Click for more info.
-        </notice-message>
-        <notice-message v-if="spammer && spammer.collection !== 'Whitelisted'" variant="danger">
-          This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
-          send them any money.  Do not arrange anything by courier.
-        </notice-message>
-        <ModComments v-if="mod && chat && chat.chattype === 'User2Mod' && otheruser" :user="otheruser" class="mt-1" />
+            <span v-if="replytime">
+              <v-icon name="info-circle" class="fa-fw" />&nbsp;Typically replies in <strong>{{ replytime }}</strong>.
+            </span>
+            Click for more info.
+          </notice-message>
+          <notice-message v-if="spammer && spammer.collection !== 'Whitelisted'" variant="danger">
+            This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
+            send them any money.  Do not arrange anything by courier.
+          </notice-message>
+          <ModComments v-if="mod && chat && chat.chattype === 'User2Mod' && otheruser" :user="otheruser" class="mt-1" />
+        </div>
+        <div class="float-right ml-2 mr-2 mt-2 clickme" title="Hide warnings" @click="showNotices = false">
+          <v-icon name="times-circle" scale="1.5" />
+        </div>
       </div>
       <b-alert
         v-if="otheruser && showHandoverPrompt"

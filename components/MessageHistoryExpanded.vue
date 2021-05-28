@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="grey p-2 d-flex">
+    <div class="grey p-2 d-flex clickme" :title="'Click to view profile for ' + message.fromuser.displayname" @click="showProfileModal">
       <ProfileImage v-if="message.fromuser && message.fromuser.profile" :image="message.fromuser.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
       <div>
         <div v-if="message.fromuser">
           <div class="d-flex justify-content-between flex-wrap order-0">
-            <nuxt-link :to="'/profile/' + message.fromuser.id" class="text-muted align-middle decornone d-flex clickme" :title="'Click to view membership for ' + message.fromuser.displayname">
+            <nuxt-link :to="'/profile/' + message.fromuser.id" class="text-muted align-middle decornone d-flex clickme">
               <div class="">
                 Posted by {{ message.fromuser.displayname }}
               </div>
@@ -33,16 +33,21 @@
           About {{ message.milesaway | pluralize('mile', { includeNumber: true }) }} away
         </span>
       </div>
+      <ProfileModal v-if="showProfile && message && message.fromuser" :id="message.fromuser.id" ref="profile" />
     </div>
   </div>
 </template>
 <script>
 import ProfileImage from '@/components/ProfileImage'
 import Supporter from '@/components/Supporter'
+import waitForRef from '@/mixins/waitForRef'
+
+const ProfileModal = () => import('~/components/ProfileModal')
 
 export default {
   name: 'MessageHistory',
-  components: { Supporter, ProfileImage },
+  components: { Supporter, ProfileImage, ProfileModal },
+  mixins: [waitForRef],
   props: {
     id: {
       type: Number,
@@ -56,6 +61,11 @@ export default {
     groups: {
       type: Array,
       default: () => []
+    }
+  },
+  data: function() {
+    return {
+      showProfile: false
     }
   },
   computed: {
@@ -92,6 +102,13 @@ export default {
       } else {
         return group.groupid
       }
+    },
+    showProfileModal(e) {
+      this.showProfile = true
+
+      this.waitForRef('profile', () => {
+        this.$refs.profile.show()
+      })
     }
   }
 }

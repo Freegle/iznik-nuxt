@@ -7,8 +7,8 @@
           <span v-if="chatmessage.reviewrequired" class="text-danger small">
             Pending review
           </span>
-          <span v-if="chatmessage.bymailid" class="clickme" :title="'Received by email #' + chatmessage.bymailid + ' click to view'" @click="viewOriginal">
-            <v-icon name="info-circle" />
+          <span v-if="mod && chatmessage.bymailid" class="btn btn-sm mb-2 btn-white clickme" :title="'Received by email #' + chatmessage.bymailid + ' click to view'" @click="viewOriginal">
+            <v-icon name="info-circle" /> View original email
           </span>
         </span>
         <b-badge v-if="chatmessage.replyexpected && !chatmessage.replyreceived" variant="danger">
@@ -45,8 +45,8 @@
             Pending review
           </span>
           <span :title="chatmessage.date | datetimeshort">{{ timeago }}</span>
-          <span v-if="chatmessage.bymailid" class="clickme" :title="'Received by email #' + chatmessage.bymailid + ' click to view'" @click="viewOriginal">
-            <v-icon name="info-circle" />
+          <span v-if="mod && chatmessage.bymailid" class="btn btn-sm btn-white mb-2 clickme" :title="'Received by email #' + chatmessage.bymailid + ' click to view'" @click="viewOriginal">
+            <v-icon name="info-circle" /> View original email
           </span>
           <b-badge v-if="chatmessage.replyexpected && !chatmessage.replyreceived" variant="info">
             RSVP - reply requested

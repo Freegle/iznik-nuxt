@@ -325,6 +325,7 @@ export default {
           this.message = JSON.parse(
             JSON.stringify(this.$store.getters['messages/get'](this.task.msgid))
           )
+          console.log('Saved message', this.message)
 
           this.showTask = true
         } else if (this.task.type === 'SearchTerm') {

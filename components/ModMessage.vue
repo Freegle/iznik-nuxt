@@ -16,11 +16,11 @@
                   <Postcode :value="message.location.name" :find="false" @selected="postcodeSelect" />
                 </b-input-group>
               </div>
-              <div v-else class="d-flex flex-grow-1">
+              <div v-else class="flex-grow-1 pl-0 pl-md-2 pr-0 pr-md-2 fullsubject">
+                <label class="mr-2">Subject:</label>
+                <b-input v-model="message.subject" size="lg" />
+                <label class="mr-2">Post type:</label>
                 <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
-                <b-input-group class="flex-grow-1 mr-1">
-                  <b-input v-model="message.subject" size="lg" />
-                </b-input-group>
               </div>
             </div>
             <Diff v-else-if="editreview && oldSubject && newSubject" :old="oldSubject" :new="newSubject" class="font-weight-bold" />
@@ -841,5 +841,20 @@ export default {
 
 .location {
   max-width: 250px;
+}
+
+.fullsubject {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+
+  grid-column: 2 / 3;
+
+  label {
+    grid-column: 1 / 2;
+  }
+
+  @include media-breakpoint-down(md) {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
