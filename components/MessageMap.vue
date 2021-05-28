@@ -76,7 +76,7 @@ export default {
     blurmarker() {
       return new L.Icon({
         iconUrl: '/blurmarker.png',
-        iconSize: [50, 50]
+        iconSize: [100, 100]
       })
     }
   },
