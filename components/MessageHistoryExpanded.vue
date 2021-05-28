@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="grey p-2 d-flex clickme" :title="'Click to view profile for ' + message.fromuser.displayname" @click="showProfileModal">
+    <div v-if="message.fromuser" class="grey p-2 d-flex clickme" :title="'Click to view profile for ' + message.fromuser.displayname" @click="showProfileModal">
       <ProfileImage v-if="message.fromuser && message.fromuser.profile" :image="message.fromuser.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
       <div>
         <div v-if="message.fromuser">
