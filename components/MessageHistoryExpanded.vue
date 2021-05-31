@@ -1,17 +1,22 @@
 <template>
   <div>
-    <div v-if="message.fromuser" class="grey p-2 d-flex clickme" :title="'Click to view profile for ' + message.fromuser.displayname" @click="showProfileModal">
-      <ProfileImage v-if="message.fromuser && message.fromuser.profile" :image="message.fromuser.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
+    <div v-if="message.fromuser" class="grey p-2 d-flex clickme" :title="'Click to view profile for ' + message.fromuser.displayname">
+      <ProfileImage
+        v-if="message.fromuser && message.fromuser.profile"
+        :image="message.fromuser.profile.turl"
+        class="ml-1 mb-1 inline"
+        is-thumbnail
+        size="sm"
+        @click="showProfileModal"
+      />
       <div>
-        <div class="d-flex justify-content-between flex-wrap order-0">
+        <div class="d-flex justify-content-between flex-wrap order-0" @click="showProfileModal">
           <div class="text-muted align-middle decornone d-flex">
-            <div class="">
-              Posted by {{ message.fromuser.displayname }}
-            </div>
+            Posted by {{ message.fromuser.displayname }}
           </div>
         </div>
         <Supporter v-if="message.fromuser.supporter" class="d-inline" />
-        <div v-if="message.fromuser && message.fromuser.info && message.fromuser.info.openoffers + message.fromuser.info.openwanteds > 0">
+        <div v-if="message.fromuser && message.fromuser.info && message.fromuser.info.openoffers + message.fromuser.info.openwanteds > 0" @click="showProfileModal">
           <span v-if="message.fromuser.info.openoffers" class="text-success">
             {{ message.fromuser.info.openoffers | pluralize([ 'open OFFER', 'open OFFERs' ], { includeNumber: true }) }}
           </span>
@@ -27,7 +32,7 @@
             {{ group.namedisplay }}
           </nuxt-link>
         </div>
-        <span v-if="message.milesaway" class="align-middle">
+        <span v-if="message.milesaway" class="align-middle" @click="showProfileModal">
           About {{ message.milesaway | pluralize('mile', { includeNumber: true }) }} away
         </span>
       </div>
