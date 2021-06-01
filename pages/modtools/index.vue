@@ -224,7 +224,7 @@ export default {
 
       setTimeout(() => {
         this.showVolunteersWeek = false
-      }, 300000)
+      }, 30000)
     }
 
     this.update()
