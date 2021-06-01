@@ -1,5 +1,8 @@
 <template>
   <div v-if="me">
+    <div class="d-flex justify-content-around w-100">
+      <b-img-lazy v-if="showVolunteersWeek" ref="volunteersWeek" src="/VolunteersWeek.gif" />
+    </div>
     <h2>Hello, {{ me.displayname }}</h2>
     <p>Here's your dashboard, where you can see what your communities have been doing recently.</p>
     <p>
@@ -173,7 +176,8 @@ export default {
       endi: null,
       start: null,
       end: null,
-      dateFormat: null
+      dateFormat: null,
+      showVolunteersWeek: false
     }
   },
   computed: {
@@ -215,6 +219,14 @@ export default {
     }
   },
   mounted() {
+    if (this.$dayjs().isBetween('2021-06-01', '2021-06-07', null, '[]')) {
+      this.showVolunteersWeek = true
+
+      setTimeout(() => {
+        this.showVolunteersWeek = false
+      }, 30000)
+    }
+
     this.update()
   },
   methods: {
