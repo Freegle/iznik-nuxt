@@ -17,7 +17,7 @@
       <ChatPopups v-if="loggedIn" class="d-none d-sm-block" />
       <span ref="breakpoint" class="d-inline d-sm-none" />
       <div class="d-none">
-        <ChatButton v-if="replyToUser" ref="replyToPostChatButton" :userid="replyToUser" @sent="sentReply" />
+        <ChatButton ref="replyToPostChatButton" :userid="replyToUser" />
       </div>
     </client-only>
   </div>

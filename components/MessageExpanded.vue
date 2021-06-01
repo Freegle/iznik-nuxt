@@ -31,7 +31,14 @@
         <MessageMap v-if="showMap && validPosition" :home="home" :position="{ lat: message.lat, lng: message.lng }" class="mt-2" :height="150" />
       </client-only>
       <MessageHistoryExpanded :id="id" :message-override="messageOverride" class="d-block d-md-none mt-2 mt-md-0 " />
-      <MessageReplySection v-if="replyable" :id="id" :message-override="messageOverride" class="mt-3" @close="$emit('close')" />
+      <MessageReplySection
+        v-if="replyable"
+        :id="id"
+        :message-override="messageOverride"
+        class="mt-3"
+        @close="$emit('close')"
+        @sent="$emit('close')"
+      />
     </div>
   </div>
 </template>
