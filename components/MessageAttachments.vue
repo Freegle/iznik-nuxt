@@ -1,17 +1,13 @@
 <template>
   <div>
     <div v-if="defaultAttachments || !attachments.length">
-      <div class="tagbadge tagdef ml-2 pl-2 pr-2 font-weight-bold">
-        {{ tag }}
-      </div>
+      <MessageTag :id="id" def :message-override="messageOverride" class="pl-2 pr-2" />
       <div class="d-flex justify-content-around bg rounded">
         <v-icon name="camera" scale="4" class="text-faded align-self-center justify-se" />
       </div>
     </div>
     <button v-else class="w-100 p-0 border-0" :disabled="disabled">
-      <div class="tagbadge pl-2 pr-2 font-weight-bold">
-        {{ tag }}
-      </div>
+      <MessageTag :id="id" :message-override="messageOverride" class="pl-2 pr-2" />
       <div v-if="!thumbnail && attachments && attachments.length" class="photozoom" @click="$emit('zoom')">
         View larger image
       </div>
@@ -47,8 +43,10 @@
 </template>
 <script>
 import waitForRef from '@/mixins/waitForRef'
+import MessageTag from '@/components/MessageTag'
 
 export default {
+  components: { MessageTag },
   mixins: [waitForRef],
   props: {
     id: {
@@ -101,21 +99,6 @@ export default {
       }
 
       return ret
-    },
-    tag() {
-      // Get the tag from the group if we can
-      if (this.message) {
-        if (this.group && this.group.settings && this.group.settings.keywords) {
-          const type = this.group.settings.keywords[
-            this.message.type.toUpperCase()
-          ]
-          return type || this.message.type
-        } else {
-          return this.message.type
-        }
-      } else {
-        return null
-      }
     }
   },
   methods: {
@@ -172,25 +155,6 @@ export default {
   border-radius: 4px;
   padding-left: 10px;
   padding-right: 10px;
-}
-
-.tagbadge {
-  left: 10px;
-  position: absolute;
-  top: 10px;
-  background-color: $color-green--mid;
-  font-size: 1.25rem;
-  color: white;
-  border-radius: 4px;
-  text-transform: uppercase;
-
-  &.tagdef {
-    left: 0px;
-
-    @include media-breakpoint-up(sm) {
-      left: 10px;
-    }
-  }
 }
 
 .bg {
