@@ -127,9 +127,10 @@ export default {
 
       if (fn.indexOf('.heic') !== -1) {
         // If we have an HEIC file, then the server can't cope with it as it will fail imagecreatefromstring, so
-        // convert it to a PNG file on the client before upload.
+        // convert it to a PNG file on the client before upload.  We have to restrict the quality to keep the cconversion
+        // time reasonable.
         const blob = file.slice(0, file.size, 'image/heic')
-        const png = await heic2any({ blob })
+        const png = await heic2any({ blob, toType: 'image/jpeg', quality: 0.1 })
         data.append('photo', png, 'photo')
       } else {
         data.append('photo', file, 'photo')
