@@ -5,14 +5,12 @@
     <div v-if="newsfeed.html" v-html="newsfeed.html" />
     <read-more v-else-if="newsfeed.message && emessage" :text="emessage" :max-chars="1024" class="font-weight-bold preline forcebreak nopara" />
     <div>
-      <b-img
+      <b-img-lazy
         v-if="newsfeed.image"
         v-b-modal="'photoModal-' + newsfeed.id"
-        thumbnail
         rounded
-        lazy
-        :src="newsfeed.image.paththumb"
-        class="clickme"
+        :src="newsfeed.image.path"
+        class="clickme imgthumb mt-1"
       />
     </div>
     <div class="mt-2 d-flex justify-content-between">
@@ -70,3 +68,17 @@ export default {
   extends: NewsBase
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+.imgthumb {
+  width: 100%;
+
+  @include media-breakpoint-up(md) {
+    width: 400px;
+  }
+}
+</style>
