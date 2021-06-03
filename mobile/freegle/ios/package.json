@@ -29,7 +29,7 @@
     "cordova-ios": "^6.2.0",
     "cordova-plugin-inappbrowser": "^5.0.0",
     "cordova-plugin-whitelist": "^1.3.4",
-    "ionic-plugin-deeplinks": "^1.0.22"
+    "ionic-plugin-deeplinks": "file:../ionic-plugin-deeplinks"
   },
   "cordova": {
     "plugins": {
@@ -63,12 +63,12 @@
         "CALENDAR_USAGE_DESCRIPTION": "To save handover appointments",
         "CONTACTS_USAGE_DESCRIPTION": " "
       },
+      "cordova-plugin-inappbrowser": {},
       "ionic-plugin-deeplinks": {
         "URL_SCHEME": "freegle",
         "DEEPLINK_SCHEME": "https",
         "DEEPLINK_HOST": "www.ilovefreegle.org"
-      },
-      "cordova-plugin-inappbrowser": {}
+      }
     },
     "platforms": [
       "ios"
