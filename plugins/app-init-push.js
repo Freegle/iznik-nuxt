@@ -378,6 +378,9 @@ export default ({ app, store }) => { // route
                   force: true
                 })
                 console.log('FORGOTPASS SUCCESS')
+                if (app.router.currentRoute.path !== route) {
+                  app.router.push({ path: route })
+                }
               }
             } catch (e) {
               // Login failed.  Usually this is because they're logged in as someone else. Ignore it.

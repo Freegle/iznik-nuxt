@@ -118,6 +118,7 @@ export default {
             })
 
             console.log('Sent')
+
             this.$emit('sent')
           }
 

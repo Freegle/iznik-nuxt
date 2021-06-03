@@ -52,12 +52,12 @@
           <ReplyTime :user="user" />
         </b-card-body>
       </b-card>
-      <b-card border-variant="success" header-text-variant="text-success" class="mt-2">
+      <b-card border-variant="success" header-text-variant="text-success" class="mt-2" no-body>
         <template v-slot:header>
           <v-icon name="gift" />
           {{ activeOffers.length }} active {{ activeOffers.length | pluralize(['OFFER', 'OFFERs']) }}
         </template>
-        <b-card-body class="p-0">
+        <b-card-body class="p-0 pt-2 pb-2">
           <div v-if="activeOffers.length">
             <div v-for="message in activeOffers" :key="'message-' + message.id" class="p-0">
               <Message :id="message.id" record-view />
@@ -68,12 +68,12 @@
           </p>
         </b-card-body>
       </b-card>
-      <b-card border-variant="success" header-text-variant="text-info" class="mt-2">
+      <b-card border-variant="success" header-text-variant="text-info" class="mt-2" no-body>
         <template v-slot:header>
           <v-icon name="search" />
           {{ activeWanteds.length }} active {{ activeWanteds.length | pluralize(['WANTED', 'WANTEDs']) }}
         </template>
-        <b-card-body class="p-0">
+        <b-card-body class="p-0 pt-2 pb-2">
           <div v-if="activeWanteds.length">
             <div v-for="message in activeWanteds" :key="'message-' + message.id" class="p-0">
               <Message :id="message.id" record-view />

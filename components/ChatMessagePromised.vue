@@ -67,7 +67,14 @@
                   </b-btn>
                   <PromiseModal ref="promise" :messages="[ refmsg ]" :selected-message="refmsg.id" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
                 </template>
-                <b-btn v-if="refmsg.promisecount && !hasOutcome" variant="warning" class="align-middle" @click="unpromise">
+                <template v-else-if="refmsg.promisecount && !hasOutcome">
+                  <b-btn variant="secondary" class="mr-2" @click="changeTime">
+                    <v-icon name="pen" />
+                    Set time
+                  </b-btn>
+                  <PromiseModal ref="promise" :messages="[ refmsg ]" :selected-message="refmsg.id" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
+                </template>
+                <b-btn v-if="refmsg.promisecount && !hasOutcome" variant="warning" class="align-middle mr-2" @click="unpromise">
                   Unpromise
                 </b-btn>
                 <b-btn variant="primary" class="mr-1" @click="outcome('Taken')">
@@ -141,7 +148,9 @@ export default {
   },
   methods: {
     unpromise() {
-      this.$refs.renege.show()
+      this.waitForRef('renege', () => {
+        this.$refs.renege.show()
+      })
     },
     changeTime() {
       this.waitForRef('promise', () => {

@@ -1,35 +1,38 @@
 <template>
   <div>
-    <div class="grey p-2 d-flex clickme" :title="'Click to view profile for ' + message.fromuser.displayname" @click="showProfileModal">
-      <ProfileImage v-if="message.fromuser && message.fromuser.profile" :image="message.fromuser.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
+    <div v-if="message.fromuser" class="grey p-2 d-flex clickme" :title="'Click to view profile for ' + message.fromuser.displayname">
+      <ProfileImage
+        v-if="message.fromuser && message.fromuser.profile"
+        :image="message.fromuser.profile.turl"
+        class="ml-1 mb-1 inline"
+        is-thumbnail
+        size="sm"
+        @click="showProfileModal"
+      />
       <div>
-        <div v-if="message.fromuser">
-          <div class="d-flex justify-content-between flex-wrap order-0">
-            <nuxt-link :to="'/profile/' + message.fromuser.id" class="text-muted align-middle decornone d-flex clickme">
-              <div class="">
-                Posted by {{ message.fromuser.displayname }}
-              </div>
-            </nuxt-link>
+        <div class="d-flex justify-content-between flex-wrap order-0" @click="showProfileModal">
+          <div class="text-muted align-middle decornone d-flex">
+            Posted by {{ message.fromuser.displayname }}
           </div>
-          <Supporter v-if="message.fromuser.supporter" class="d-inline" />
-          <div v-if="message.fromuser && message.fromuser.info && message.fromuser.info.openoffers + message.fromuser.info.openwanteds > 0">
-            <span v-if="message.fromuser.info.openoffers" class="text-success">
-              {{ message.fromuser.info.openoffers | pluralize([ 'open OFFER', 'open OFFERs' ], { includeNumber: true }) }}
-            </span>
-            <span v-if="message.fromuser.info.openoffers && message.fromuser.info.openwanteds">
-              &bull;
-            </span>
-            <span v-if="message.fromuser.info.openwanteds" class="text-success">
-              {{ message.fromuser.info.openwanteds | pluralize([ 'open WANTED', 'open WANTEDs' ], { includeNumber: true }) }}
-            </span>
-          </div>
+        </div>
+        <Supporter v-if="message.fromuser.supporter" class="d-inline" />
+        <div v-if="message.fromuser && message.fromuser.info && message.fromuser.info.openoffers + message.fromuser.info.openwanteds > 0" @click="showProfileModal">
+          <span v-if="message.fromuser.info.openoffers" class="text-success">
+            {{ message.fromuser.info.openoffers | pluralize([ 'open OFFER', 'open OFFERs' ], { includeNumber: true }) }}
+          </span>
+          <span v-if="message.fromuser.info.openoffers && message.fromuser.info.openwanteds">
+            &bull;
+          </span>
+          <span v-if="message.fromuser.info.openwanteds" class="text-success">
+            {{ message.fromuser.info.openwanteds | pluralize([ 'open WANTED', 'open WANTEDs' ], { includeNumber: true }) }}
+          </span>
         </div>
         <div v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id">
           <span :title="group.arrival">{{ group.arrival | timeago }} on</span> <nuxt-link :to="'/explore/' + exploreLink(group)">
             {{ group.namedisplay }}
           </nuxt-link>
         </div>
-        <span v-if="message.milesaway" class="align-middle">
+        <span v-if="message.milesaway" class="align-middle" @click="showProfileModal">
           About {{ message.milesaway | pluralize('mile', { includeNumber: true }) }} away
         </span>
       </div>

@@ -145,7 +145,8 @@ export default {
         "don't know",
         'items',
         'browsing',
-        'browse'
+        'browse',
+        '^any$'
       ],
       warnings: [
         {
@@ -220,7 +221,7 @@ export default {
         item = item.toLowerCase()
 
         this.vagueness.forEach(v => {
-          if (item.indexOf(v) !== -1) {
+          if (item.match(v)) {
             ret = true
           }
         })

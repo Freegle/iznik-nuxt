@@ -140,10 +140,12 @@ export default {
     // Keep track of whether we have a modal open, so that we don't clear messages under its feet.
     this.$root.$on('bv::modal::show', (bvEvent, modalId) => {
       this.modalOpen = true
+      console.log('Modal open')
     })
 
     this.$root.$on('bv::modal::hidden', (bvEvent, modalId) => {
       this.modalOpen = false
+      console.log('Modal closed')
     })
   },
   methods: {

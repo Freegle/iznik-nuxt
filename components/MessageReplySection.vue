@@ -112,7 +112,7 @@
     </b-modal>
     <span ref="breakpoint" class="d-inline d-sm-none" />
     <div class="d-none">
-      <ChatButton v-if="replyToUser" ref="replyToPostChatButton" :userid="replyToUser" @sent="sentReply" />
+      <ChatButton ref="replyToPostChatButton" :userid="replyToUser" />
     </div>
   </div>
 </template>
@@ -184,6 +184,16 @@ export default {
       return this.message.fromuser && this.message.fromuser.id === this.myid
     }
   },
+  watch: {
+    me(newVal, oldVal) {
+      console.log('Login change', newVal, oldVal)
+      if (!oldVal && newVal && this.reply) {
+        // We have now logged in - resume our send.
+        console.log('Resume send')
+        this.sendReply()
+      }
+    }
+  },
   methods: {
     async registerOrSend() {
       // We've got a reply and an email address.  Maybe the email address is a registered user, maybe it's new.  If
@@ -198,6 +208,8 @@ export default {
         console.log('Returned', ret)
         if (ret.ret === 0 && ret.password) {
           // We registered a new user and logged in.
+          this.$store.dispatch('auth/loggedInEver', true)
+
           console.log('New user')
           await this.$store.dispatch('auth/fetchUser', {
             components: ['me'],
@@ -215,14 +227,15 @@ export default {
             // Once the modal is closed, we will send the reply.
           })
         } else {
-          // If anything else happens, then we call sendReply which will force us to log in.
-          this.$store.dispatch('auth/loggedInEver', true)
-          this.sendReply()
+          // If anything else happens, then we call sendReply which will force us to log in.  Then the watch will
+          // spot that we're logged in and trigger the send, so we don't need to do that here.
+          console.log('Failed to register - force login', ret)
+          this.$store.dispatch('auth/forceLogin', true)
         }
       } catch (e) {
-        // Probably an existing user.  Force ourselves to log in.
-        this.$store.dispatch('auth/loggedInEver', true)
-        this.sendReply()
+        // Probably an existing user.  Force ourselves to log in as above.
+        console.log('Register exception, force login', e.message)
+        this.$store.dispatch('auth/forceLogin', true)
       }
     },
     async sendReply() {
@@ -235,7 +248,7 @@ export default {
           replyMessage: this.reply,
           replyingAt: Date.now()
         }
-        console.log('Save', replyToSend)
+        console.log('Save', JSON.stringify(replyToSend))
         await this.$store.dispatch('reply/set', replyToSend)
 
         const me = this.$store.getters['auth/user']
@@ -278,10 +291,10 @@ export default {
 
           // Now we can send the reply via chat.
           await this.replyToPost()
-          this.close()
+          this.sent()
         } else {
-          // We're not logged in yet.  We need to force a sign in.  Once that completes then default.vue will
-          // spot we have a reply to send and make it happen.
+          // We're not logged in yet.  We need to force a sign in.  Once that completes then either the watch in here
+          // or default.vue will spot we have a reply to send and make it happen.
           console.log('Force login')
           this.$store.dispatch('auth/forceLogin', true)
         }
@@ -299,6 +312,9 @@ export default {
     },
     close() {
       this.$emit('close')
+    },
+    sent() {
+      this.$emit('sent')
     }
   }
 }

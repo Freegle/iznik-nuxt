@@ -1,5 +1,8 @@
 <template>
   <div v-if="me">
+    <div class="d-flex justify-content-around w-100">
+      <b-img v-if="showVolunteersWeek" ref="volunteersWeek" fluid src="/VolunteersWeek.gif" />
+    </div>
     <h2>Hello, {{ me.displayname }}</h2>
     <p>Here's your dashboard, where you can see what your communities have been doing recently.</p>
     <!-- eslint-disable-next-line -->
@@ -170,7 +173,8 @@ export default {
       endi: null,
       start: null,
       end: null,
-      dateFormat: null
+      dateFormat: null,
+      showVolunteersWeek: false
     }
   },
   computed: {

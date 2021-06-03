@@ -16,7 +16,7 @@
           {{ error }}
         </b-alert>
         <b-alert v-if="response" variant="warning" show>
-          We've sent you a link to log in. Please check your spam folder!
+          We've sent you a link to log in. If you don't see it, please check your spam folder!
         </b-alert>
         <EmailValidator
           ref="email"
