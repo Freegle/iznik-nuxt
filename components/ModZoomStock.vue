@@ -17,7 +17,7 @@
 import ExternalLink from '@/components/ExternalLink'
 
 const DAY_OF_WEEK = 4
-const HOUR_OF_DAY = 10
+const HOUR_OF_DAY = 14
 const MINUTE_START = 0
 const MINUTE_END = 40
 
