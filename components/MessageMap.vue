@@ -15,6 +15,7 @@
 <script>
 import Vue from 'vue'
 import map from '@/mixins/map.js'
+import { MAX_MAP_ZOOM } from '../utils/constants'
 import HomeIcon from './HomeIcon'
 
 let L = null
@@ -44,7 +45,7 @@ export default {
     maxZoom: {
       type: Number,
       required: false,
-      default: 14
+      default: MAX_MAP_ZOOM
     },
     height: {
       type: Number,
@@ -58,7 +59,8 @@ export default {
         // On mobile require two-finger interaction.
         dragging: !this.locked && !L.Browser.mobile,
         touchZoom: !this.locked,
-        scrollWheelZoom: false
+        scrollWheelZoom: false,
+        bounceAtZoomLimits: true
       }
     },
     homeicon() {
@@ -101,7 +103,7 @@ export default {
         ])
 
         themap.fitBounds(fg.getBounds().pad(0.1))
-        themap.setZoom(13)
+        themap.setZoom(MAX_MAP_ZOOM)
       }
 
       const zoomControl = this.$el.querySelector('.leaflet-top.leaflet-left')

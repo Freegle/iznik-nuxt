@@ -177,6 +177,7 @@ import Vue from 'vue'
 import VueObserveVisibility from 'vue-observe-visibility'
 import InfiniteLoading from 'vue-infinite-loading'
 import map from '@/mixins/map.js'
+import { MAX_MAP_ZOOM } from '../utils/constants'
 import JoinWithConfirm from '~/components/JoinWithConfirm'
 const AdaptiveMapGroup = () => import('./AdaptiveMapGroup')
 const ExternalLink = () => import('./ExternalLink')
@@ -264,7 +265,7 @@ export default {
     maxZoom: {
       type: Number,
       required: false,
-      default: 15
+      default: MAX_MAP_ZOOM
     },
     showMany: {
       type: Boolean,

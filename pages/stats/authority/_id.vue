@@ -171,7 +171,7 @@
                   :center="center"
                   :style="'width: ' + mapWidth + '; height: ' + mapHeight + 'px'"
                   :min-zoom="5"
-                  :max-zoom="13"
+                  :max-zoom="maxZoom"
                   @ready="idle"
                 >
                   <l-tile-layer :url="osmtile" :attribution="attribution" />
@@ -272,6 +272,7 @@ import 'vue2-datepicker/index.css'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
+import { MAX_MAP_ZOOM } from '../../../utils/constants'
 import Impact from '~/components/Impact'
 
 const GroupMarker = () => import('~/components/GroupMarker')
@@ -294,6 +295,7 @@ export default {
   mixins: [loginOptional, buildHead, map],
   data() {
     return {
+      maxZoom: MAX_MAP_ZOOM,
       tables: false,
       startDate: null,
       endDate: null,

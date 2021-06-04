@@ -217,7 +217,8 @@ export default {
         zoomControl: !this.locked,
         dragging: !this.locked && !L.Browser.mobile,
         touchZoom: !this.locked,
-        scrollWheelZoom: false
+        scrollWheelZoom: false,
+        bounceAtZoomLimits: true
       }
     },
     mapHidden() {

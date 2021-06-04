@@ -15,10 +15,10 @@
             ref="map"
             :zoom="5"
             :min-zoom="5"
-            :max-zoom="13"
+            :max-zoom="maxZoom"
             :center="center"
             :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
-            :options="{ zoomControl: false, scrollWheelZoom: false}"
+            :options="{ zoomControl: false, scrollWheelZoom: false, bounceAtZoomLimits: true}"
             @ready="idle"
           >
             <l-tile-layer :url="osmtile" :attribution="attribution" />
@@ -33,6 +33,7 @@
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
+import { MAX_MAP_ZOOM } from '../utils/constants'
 const LiveMessageMarker = () => import('../components/LiveMessageMarker')
 
 export default {
@@ -46,7 +47,8 @@ export default {
       firstMessageTime: null,
       firstMessageDate: null,
       nowTime: Date.now(),
-      pollTimer: null
+      pollTimer: null,
+      maxZoom: MAX_MAP_ZOOM
     }
   },
   computed: {
