@@ -42,4 +42,4 @@ export const DAY_WORDS = [
   'tonight'
 ]
 
-export const MAX_MAP_ZOOM = 13
+export const MAX_MAP_ZOOM = 14
