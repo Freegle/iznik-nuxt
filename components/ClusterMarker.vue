@@ -22,6 +22,7 @@
 <script>
 import Supercluster from 'supercluster/dist/supercluster'
 import Vue from 'vue'
+import { MAX_MAP_ZOOM } from '../utils/constants'
 import ClusterIcon from './ClusterIcon'
 
 let L = null
@@ -59,7 +60,7 @@ export default {
     maxZoom: {
       type: Number,
       required: false,
-      default: 16
+      default: MAX_MAP_ZOOM
     },
     minCluster: {
       type: Number,
@@ -189,9 +190,12 @@ export default {
       })
     },
     clusterClick(cluster) {
-      const zoom = this.index.getClusterExpansionZoom(
+      let zoom = this.index.getClusterExpansionZoom(
         cluster.properties.cluster_id
       )
+
+      // Don't allow us to zoom in too far.
+      zoom = Math.min(zoom, this.maxZoom)
 
       this.map.flyTo(
         [cluster.geometry.coordinates[1], cluster.geometry.coordinates[0]],

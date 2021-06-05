@@ -41,3 +41,5 @@ export const DAY_WORDS = [
   'this evening',
   'tonight'
 ]
+
+export const MAX_MAP_ZOOM = 13
