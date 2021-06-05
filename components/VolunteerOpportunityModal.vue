@@ -46,15 +46,14 @@
             </b-row>
           </div>
           <b-row>
-            <b-col class="mb-2 prewrap font-weight-bold">
-              {{ description }}
-            </b-col>
+            <!-- eslint-disable-next-line-->
+            <b-col class="mb-2 prewrap font-weight-bold forcebreak">{{ description }}</b-col>
           </b-row>
           <b-row class="mt-2">
             <b-col cols="4" md="3" class="field">
               Time commitment
             </b-col>
-            <b-col cols="8" md="9">
+            <b-col cols="8" md="9" class="forcebreak">
               {{ volunteering.timecommitment }}
             </b-col>
           </b-row>
@@ -62,7 +61,7 @@
             <b-col cols="4" md="3" class="field">
               Where
             </b-col>
-            <b-col cols="8" md="9">
+            <b-col cols="8" md="9" class="forcebreak">
               {{ volunteering.location }}
             </b-col>
           </b-row>
