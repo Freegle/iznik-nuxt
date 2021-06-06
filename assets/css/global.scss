@@ -6,6 +6,13 @@
 @import 'typography';
 @import 'buttons';
 
+/* Very basic dark mode implementation */
+@media (prefers-color-scheme: dark) {
+  body {
+    filter: grayscale(0.8)
+  }
+}
+
 .strike {
   text-decoration: line-through;
   text-decoration-style: double;
