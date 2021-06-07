@@ -6,13 +6,6 @@
 @import 'typography';
 @import 'buttons';
 
-/* Very basic dark mode implementation */
-@media (prefers-color-scheme: dark) {
-  body {
-    filter: grayscale(0.8)
-  }
-}
-
 .strike {
   text-decoration: line-through;
   text-decoration-style: double;
@@ -61,6 +54,13 @@ body.fd {
 
 body.modtools {
   background-color: $color-modtools-green--light;
+}
+
+/* Very basic dark mode implementation for MT */
+@media (prefers-color-scheme: dark) {
+  body.modtools {
+    filter: grayscale(0.8)
+  }
 }
 
 // We have to go to some effort to style the resize grip.  We can't have it in a scoped style otherwise it won't
