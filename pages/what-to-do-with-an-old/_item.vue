@@ -33,7 +33,7 @@
           style="width: 100%; height: 400px"
           :zoom="5"
           :min-zoom="5"
-          :max-zoom="13"
+          :max-zoom="maxZoom"
           @ready="ready"
         >
           <l-tile-layer :url="osmtile" :attribution="attribution" />
@@ -47,6 +47,7 @@
 <script>
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
+import { MAX_MAP_ZOOM } from '../../utils/constants'
 import ClusterMarker from '~/components/ClusterMarker'
 import RandomImage from '~/components/RandomImage'
 
@@ -70,7 +71,8 @@ export default {
   data: function() {
     return {
       showCluster: false,
-      mapObject: null
+      mapObject: null,
+      maxZoom: MAX_MAP_ZOOM
     }
   },
   computed: {

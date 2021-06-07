@@ -5,7 +5,7 @@
         ref="map"
         :zoom="8"
         :center="center"
-        :options="{ zoomControl: false, scrollWheelZoom: false}"
+        :options="{ zoomControl: false, scrollWheelZoom: false, bounceAtZoomLimits: true}"
         :min-zoom="8"
         :max-zoom="15"
         class="flex-grow-1"
