@@ -100,9 +100,11 @@
                 <span v-if="refmsg.type === 'Offer'">asked about:</span>
                 <span v-else>replied to:</span>
               </span>
-              <h4 class="mt-1">
-                {{ refmsg.subject }}
-              </h4>
+              <a :href="'/message/' + refmsg.id">
+                <h4 class="mt-1">
+                  {{ refmsg.subject }}
+                </h4>
+              </a>
             </b-card-title>
             <b-card-text>
               <notice-message v-if="refmsg.outcomes && refmsg.outcomes.length" class="mb-3">
