@@ -27,6 +27,7 @@
             :style="'width: ' + mapWidth + 'px; height: ' + mapHeight + 'px'"
             :min-zoom="groups ? 5 : 12"
             :max-zoom="17"
+            :options="{ dragging: selectedWKT, touchZoom: true }"
             @update:bounds="boundsChanged"
             @update:zoom="boundsChanged"
             @ready="idle"
