@@ -175,7 +175,7 @@ export default {
     },
     messages() {
       return this.$store.getters['messages/getAll'].filter(
-        m => m.fromuser.id === this.user.id
+        m => m.fromuser && m.fromuser.id === this.user.id
       )
     }
   },
