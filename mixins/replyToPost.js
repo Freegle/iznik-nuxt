@@ -46,38 +46,42 @@ export default {
       // We have different buttons which display at different screen sizes.  Which of those is visible and hence
       // clicked tells us whether we want to open this chat in a popup or not.
       console.log('Execute reply to post', JSON.stringify(this.replyToSend))
-      const popup = this.sm()
 
-      // Create the chat and send the first message.
-      console.log(
-        'Now open chat',
-        this.replyToSend.replyMessage,
-        this.replyToSend.replyMsgId,
-        this.replyToUser,
-        popup
-      )
+      if (this.replyToSend) {
+        // Double-check can result in coming through here after the reply has been sent and cleared.
+        const popup = this.sm()
 
-      // Open the chat, which will send the message.  We will either end up with a popup chat, or go to the
-      // chat page.  The chat will clear the store.
-      await this.$refs.replyToPostChatButton.openChat(
-        null,
-        this.replyToSend.replyMessage,
-        this.replyToSend.replyMsgId,
-        popup,
-        true
-      )
+        // Create the chat and send the first message.
+        console.log(
+          'Now open chat',
+          this.replyToSend.replyMessage,
+          this.replyToSend.replyMsgId,
+          this.replyToUser,
+          popup
+        )
 
-      // Clear the store of any message to avoid repeatedly sending it.
-      console.log('Clear reply from store.')
-      await this.$store.dispatch('reply/set', {
-        replyMsgId: null,
-        replyMessage: null,
-        replyingAt: Date.now()
-      })
+        // Open the chat, which will send the message.  We will either end up with a popup chat, or go to the
+        // chat page.  The chat will clear the store.
+        await this.$refs.replyToPostChatButton.openChat(
+          null,
+          this.replyToSend.replyMessage,
+          this.replyToSend.replyMsgId,
+          popup,
+          true
+        )
 
-      this.replying = false
+        // Clear the store of any message to avoid repeatedly sending it.
+        console.log('Clear reply from store.')
+        await this.$store.dispatch('reply/set', {
+          replyMsgId: null,
+          replyMessage: null,
+          replyingAt: Date.now()
+        })
 
-      this.$emit('sent')
+        this.replying = false
+
+        this.$emit('sent')
+      }
     }
   }
 }
