@@ -10,8 +10,8 @@
       <template slot="default">
         <div v-if="variant === 'video'">
           <p class="font-weight-bold">
-            We've made little video to explain that Freegle is running out of funds.  It's
-            just this guy Edward in his living room, because we don't waste your donations on fancy PR agencies.
+            We've made little video to explain why we ask for donations.  It's
+            just this guy Edward in his living room, because we don't waste your money on fancy PR agencies.
           </p>
           <div class="embed-responsive embed-responsive-16by9">
             <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/TByrRQdLVD8" allowfullscreen />
@@ -51,9 +51,6 @@
           </client-only>
         </div>
         <div v-else>
-          <NoticeMessage variant="info" class="mb-2">
-            <strong>Freegle is running out of funds.</strong>  Please help us keep going, so that we can all help those who need it.
-          </NoticeMessage>
           <div class="d-flex justify-content-between">
             <div v-if="variant === 'whatyoucanrunning'" style="width:250px" class="mr-4 pt-4 d-none d-sm-block">
               <b-img-lazy fluid src="/running.gif" alt="Keep freegle running" />
@@ -142,7 +139,6 @@
 import modal from '@/mixins/modal'
 import DonationThermometer from './DonationThermometer'
 import DonationButton from './DonationButton'
-import NoticeMessage from '~/components/NoticeMessage'
 import Supporter from '~/components/Supporter'
 
 const OurToggle = () => import('~/components/OurToggle')
@@ -151,7 +147,6 @@ export default {
   components: {
     OurToggle,
     Supporter,
-    NoticeMessage,
     DonationThermometer,
     DonationButton
   },

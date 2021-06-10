@@ -46,9 +46,8 @@
             </b-row>
           </div>
           <b-row>
-            <b-col class="mb-2 prewrap font-weight-bold">
-              {{ description }}
-            </b-col>
+            <!-- eslint-disable-next-line-->
+            <b-col class="mb-2 prewrap font-weight-bold forcebreak">{{ description }}</b-col>
           </b-row>
           <b-row>
             <b-col cols="4" md="3" class="field">
