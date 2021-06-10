@@ -400,6 +400,10 @@ export default {
 
       return msgs
     },
+    messagesForListIds() {
+      // Remember that Vue2 doesn't support reactivity on Map() so we can't use that.
+      return this.messagesForList.map(m => parseInt(m.id))
+    },
     filteredMessages() {
       const ret = []
       const dups = []
@@ -413,24 +417,34 @@ export default {
         // - Do show completed posts - makes us look good.
         //
         // Filter out dups by subject (for crossposting).
-        this.messagesForList.forEach(m => {
-          if (this.wantMessage(m)) {
-            const message = this.$store.getters['messages/get'](m.id)
+        //
+        // messagesForList is ordered (good) but long (bad).  So we iterate through the messages in the store
+        // (likely not many) and then sort.
+        const messages = this.$store.getters['messages/getAll']
 
-            if (message) {
+        messages.forEach(message => {
+          const order = this.messagesForListIds.indexOf(parseInt(message.id))
+          const m = this.messagesForList[order]
+
+          if (this.wantMessage(m)) {
+            const key = message.fromuser + '|' + message.subject
+            const already =
+              key in dups && message.groups[0].groupid !== dups[key]
+
+            if (!already && !message.deleted) {
+              message.order = order
+
               // Pass whether the message has been freegled, which is returned in the summary call.
               message.successful = !!m.successful
 
-              const key = message.fromuser + '|' + message.subject
-              const already =
-                key in dups && message.groups[0].groupid !== dups[key]
-
-              if (!already && !message.deleted) {
-                dups[key] = message.groups[0].groupid
-                ret.push(message)
-              }
+              dups[key] = message.groups[0].groupid
+              ret.push(message)
             }
           }
+        })
+
+        ret.sort((a, b) => {
+          return a.order - b.order
         })
       } else {
         // We are searching.  We get the messages from the store.
