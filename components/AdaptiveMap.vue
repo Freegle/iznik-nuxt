@@ -424,21 +424,24 @@ export default {
 
         messages.forEach(message => {
           const order = this.messagesForListIds.indexOf(parseInt(message.id))
-          const m = this.messagesForList[order]
 
-          if (this.wantMessage(m)) {
-            const key = message.fromuser + '|' + message.subject
-            const already =
-              key in dups && message.groups[0].groupid !== dups[key]
+          if (order >= 0) {
+            const m = this.messagesForList[order]
 
-            if (!already && !message.deleted) {
-              message.order = order
+            if (this.wantMessage(m)) {
+              const key = message.fromuser + '|' + message.subject
+              const already =
+                key in dups && message.groups[0].groupid !== dups[key]
 
-              // Pass whether the message has been freegled, which is returned in the summary call.
-              message.successful = !!m.successful
+              if (!already && !message.deleted) {
+                message.order = order
 
-              dups[key] = message.groups[0].groupid
-              ret.push(message)
+                // Pass whether the message has been freegled, which is returned in the summary call.
+                message.successful = !!m.successful
+
+                dups[key] = message.groups[0].groupid
+                ret.push(message)
+              }
             }
           }
         })
