@@ -46,6 +46,27 @@ const cordovaApp = {
     try {
       console.log('cordovaApp: onDeviceReady')
 
+      /*
+      // https://github.com/apache/cordova-android/issues/747
+      if (window.matchMedia('(prefers-color-scheme)').media !== 'not all') {
+          console.log('Dark mode is supported');
+      }
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+      console.log('prefersDark', prefersDark);
+      const prefersLight = window.matchMedia('(prefers-color-scheme: light)');
+      console.log('prefersLight', prefersLight);
+
+      console.log('prefers-color-scheme', window.matchMedia('(prefers-color-scheme)').media);
+
+      // Java: https://stackoverflow.com/questions/57449900/letting-webview-on-android-work-with-prefers-color-scheme-dark
+      int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+      if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+          webSettings.setForceDark(WebSettings.FORCE_DARK_ON);
+        }
+      }*/
+      
+
       mobilestate.isiOS = window.device.platform === 'iOS'
       pushstate.isiOS = mobilestate.isiOS
 
