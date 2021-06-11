@@ -16,7 +16,7 @@
               </b-card-body>
               <b-card-footer v-if="index === ids.length - 1" class="d-flex justify-content-between p-0 pt-1">
                 <b-btn v-if="ids.length === 1 && notblank" variant="link" size="sm" class="mr-1" @click="deleteItem">
-                  <v-icon name="trash-alt" />&nbsp;Clear item
+                  <v-icon name="trash-alt" />&nbsp;Clear form
                 </b-btn>
                 <div>
                   <b-btn v-if="ids.length > 1" variant="link" size="sm" class="mr-1" @click="deleteItem">
