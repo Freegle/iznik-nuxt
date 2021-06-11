@@ -62,6 +62,12 @@ body.modtools {
     filter: grayscale(0.8)
   }
 }
+/*  Android:  show light and dark supported: https: //developer.android.com/guide/webapps/dark-theme#customize
+              https: //drafts.csswg.org/css-color-adjust-1/#color-scheme-prop
+  but doesn't seem to work, even when crow-barred into dist/index.html
+:root {
+  color-scheme: light dark;
+} */
 
 // We have to go to some effort to style the resize grip.  We can't have it in a scoped style otherwise it won't
 // apply to the grip, and the image is small enough that it gets inlined into base64, so we can't use an
