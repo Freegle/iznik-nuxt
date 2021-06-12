@@ -4,9 +4,8 @@
       <div class="d-flex flex-column align-content-around">
         <div class="d-flex">
           <span v-if="chat.chattype === 'User2Mod' && mod && chat.group" class="d-inline clickme hidelink align-self-center">
-            <nuxt-link :to="'/modtools/members/approved/search/' + chat.group.id + '/' + otheruserid">
-              {{ chat.name }}
-            </nuxt-link>
+            <!-- eslint-disable-next-line -->
+            <pre><nuxt-link :to="'/modtools/members/approved/search/' + chat.group.id + '/' + otheruserid">{{ chat.name }}</nuxt-link></pre>
           </span>
           <span v-else-if="(chat.chattype == 'User2User' || chat.chattype == 'User2Mod')" class="d-inline clickme align-self-center">
             <span @click="showInfo">
@@ -54,9 +53,11 @@
       <Ratings :id="otheruserid" :key="'otheruser-' + otheruserid" class="pl-1 mt-1" size="sm" />
       <Supporter v-if="otheruser.supporter" class="ml-2 align-self-center" />
     </div>
-    <b-btn variant="primary" size="sm" class="thebutton mr-1 mt-1" @click="markRead">
-      Mark read
-    </b-btn>
+    <div class="thebutton mr-1 mt-1">
+      <b-btn variant="primary" size="sm" @click="markRead">
+        Mark read
+      </b-btn>
+    </div>
     <ChatBlockModal v-if="chat && chat.chattype === 'User2User' && otheruser" :id="id" ref="chatblock" :user="otheruser" @confirm="block" />
     <ChatHideModal v-if="chat && otheruser && ((chat.chattype === 'User2User') || (chat.chattype === 'User2Mod' && mod))" :id="id" ref="chathide" :user="otheruser" @confirm="hide" />
     <ChatReportModal
@@ -183,6 +184,23 @@ export default {
     border-right: 0.75em solid transparent;
     border-bottom: 0;
     border-left: 0.75em solid transparent;
+  }
+}
+
+pre {
+  white-space: pre-wrap; /* css-3 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
+  width: 200px;
+
+  @include media-breakpoint-up(md) {
+    width: 300px;
+  }
+
+  @include media-breakpoint-up(lg) {
+    width: 450px;
   }
 }
 </style>
