@@ -637,7 +637,6 @@ export default {
     this.findHomeGroup()
   },
   beforeDestroy() {
-    console.log('Destroying ', this.message.id)
     this.$emit('destroy', this.message.id, this.next)
   },
   methods: {
