@@ -32,10 +32,12 @@ export default class UserAPI extends BaseAPI {
     return this.$put('/user', { email: email }, logError)
   }
 
-  merge(email1, email2, reason) {
+  merge(email1, email2, id1, id2, reason) {
     return this.$post('/user', {
       email1,
       email2,
+      id1,
+      id2,
       reason,
       action: 'Merge'
     })

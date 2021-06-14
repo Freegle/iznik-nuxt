@@ -172,6 +172,12 @@ export const actions = {
   },
 
   async merge({ commit, dispatch }, params) {
-    await this.$api.user.merge(params.email1, params.email2, params.reason)
+    await this.$api.user.merge(
+      params.email1,
+      params.email2,
+      params.id1,
+      params.id2,
+      params.reason
+    )
   }
 }
