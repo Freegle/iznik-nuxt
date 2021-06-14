@@ -35,7 +35,7 @@ export const mutations = {
       if (components) {
         // Just merge in what we fetched; leave other things there.  Otherwise we lose info for some pages.
         for (const component of components) {
-          state.user[component] = user[component]
+          Vue.set(state.user, component, user[component])
         }
       } else {
         // Merge everything, because that's what we fetched.  We need to merge because there are some codepaths
