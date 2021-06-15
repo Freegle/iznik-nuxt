@@ -42,7 +42,7 @@ export default {
     }
   },
   methods: {
-    async replyToPost() {
+    replyToPost() {
       // We have different buttons which display at different screen sizes.  Which of those is visible and hence
       // clicked tells us whether we want to open this chat in a popup or not.
       console.log('Execute reply to post', JSON.stringify(this.replyToSend))
