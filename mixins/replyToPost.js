@@ -62,25 +62,27 @@ export default {
 
         // Open the chat, which will send the message.  We will either end up with a popup chat, or go to the
         // chat page.  The chat will clear the store.
-        await this.$refs.replyToPostChatButton.openChat(
-          null,
-          this.replyToSend.replyMessage,
-          this.replyToSend.replyMsgId,
-          popup,
-          true
-        )
+        this.waitForRef('replyToPostChatButton', async () => {
+          await this.$refs.replyToPostChatButton.openChat(
+            null,
+            this.replyToSend.replyMessage,
+            this.replyToSend.replyMsgId,
+            popup,
+            true
+          )
 
-        // Clear the store of any message to avoid repeatedly sending it.
-        console.log('Clear reply from store.')
-        await this.$store.dispatch('reply/set', {
-          replyMsgId: null,
-          replyMessage: null,
-          replyingAt: Date.now()
+          // Clear the store of any message to avoid repeatedly sending it.
+          console.log('Clear reply from store.')
+          await this.$store.dispatch('reply/set', {
+            replyMsgId: null,
+            replyMessage: null,
+            replyingAt: Date.now()
+          })
+
+          this.replying = false
+
+          this.$emit('sent')
         })
-
-        this.replying = false
-
-        this.$emit('sent')
       }
     }
   }
