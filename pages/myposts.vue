@@ -201,7 +201,6 @@ export default {
     return {
       justPosted: null,
       id: null,
-      messages: [],
       busy: true,
       context: null,
       showOldOffers: false,
@@ -215,22 +214,26 @@ export default {
     }
   },
   computed: {
+    messages() {
+      // We need to filter for ours in case we have other stuff in store.
+      const messages = this.$store.getters['messages/getAll']
+      return messages.filter(m => {
+        return m.mine
+      })
+    },
     postcode() {
       return this.$store.getters['compose/getPostcode']
     },
-
     wanteds() {
       const ret = this.messages.filter(m => m.type === 'Wanted' && !m.isdraft)
       ret.sort(this.postSort)
       return ret
     },
-
     offers() {
       const ret = this.messages.filter(m => m.type === 'Offer' && !m.isdraft)
       ret.sort(this.postSort)
       return ret
     },
-
     oldOfferCount() {
       let count = 0
 
@@ -387,7 +390,6 @@ export default {
 
           this.busy = false
 
-          this.messages = this.$store.getters['messages/getAll']
           this.context = this.$store.getters['messages/getContext']
 
           if (currentCount !== this.messages.length) {
