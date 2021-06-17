@@ -2,17 +2,20 @@
   <div v-if="!me" class="grid m-0 pl-1 pr-1 pl-sm-0 pr-sm-0 mt-0 mt-lg-5 ml-4 mr-4">
     <div class="map justify-content-start flex-column d-none d-sm-flex">
       <VisualiseMap v-if="type === 'Map'" class="shadow flex-grow-1" />
-      <b-embed
-        v-else
-        ref="video"
-        type="video"
-        autoplay
-        controls
-        poster="/songpreview.png"
-        loop
-        class="shadow flex-grow-1"
-        src="/song.mp4"
-      />
+      <div v-else>
+        <b-img v-if="!timeToPlay" fluid src="/songpreview.png" class="flex-grow-1 w-100" />
+        <b-embed
+          v-else
+          ref="video"
+          type="video"
+          autoplay
+          controls
+          poster="/songpreview.png"
+          loop
+          class="shadow flex-grow-1"
+          src="/song.mp4"
+        />
+      </div>
     </div>
     <div class="info">
       <h1 class="text--largest-responsive">
@@ -71,7 +74,8 @@ export default {
     return {
       userWatch: null,
       ourBackground: false,
-      type: 'Map'
+      type: 'Map',
+      timeToPlay: false
     }
   },
   async mounted() {
@@ -87,10 +91,14 @@ export default {
 
       if (this.type !== 'Map') {
         // The video plays with sound, wrongly, even if the muted attribute is set.  So set it here.
-        this.waitForRef('video', () => {
-          const videoEl = document.querySelector('video')
-          videoEl.muted = true
-        })
+        setTimeout(() => {
+          this.timeToPlay = true
+          this.waitForRef('video', () => {
+            const videoEl = document.querySelector('video')
+            videoEl.muted = true
+            videoEl.play()
+          })
+        }, 1000)
       }
 
       const user = this.$store.getters['auth/user']
@@ -98,12 +106,6 @@ export default {
       if (user) {
         this.goHome()
       } else {
-        // Start the video.
-        this.waitForRef('video', () => {
-          console.log(this.$refs)
-          // this.$refs.video.el.play()
-        })
-
         // Set up a watch on the store.  We do this because initially the store hasn't yet been reloaded from local
         // storage, so we don't know if we're logged in. When it does get loaded, this watch will fire.
         this.userWatch = this.$store.watch(
