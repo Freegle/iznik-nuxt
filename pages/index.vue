@@ -3,7 +3,7 @@
     <div class="map justify-content-start flex-column d-none d-sm-flex">
       <VisualiseMap v-if="type === 'Map'" class="shadow flex-grow-1" />
       <div v-else>
-        <b-img v-if="!timeToPlay" fluid src="/songpreview.png" class="flex-grow-1 w-100" />
+        <b-img v-if="!timeToPlay" fluid src="/songpreview.png" class="flex-grow-1 w-100" @click="play" />
         <b-embed
           v-else
           ref="video"
@@ -93,11 +93,7 @@ export default {
         // The video plays with sound, wrongly, even if the muted attribute is set.  So set it here.
         setTimeout(() => {
           this.timeToPlay = true
-          this.waitForRef('video', () => {
-            const videoEl = document.querySelector('video')
-            videoEl.muted = true
-            videoEl.play()
-          })
+          this.play()
         }, 1000)
       }
 
@@ -176,6 +172,17 @@ export default {
         name: 'explore-place-place',
         params: {
           place: JSON.stringify(place)
+        }
+      })
+    },
+    play() {
+      this.waitForRef('video', () => {
+        try {
+          const videoEl = document.querySelector('video')
+          videoEl.muted = true
+          videoEl.play()
+        } catch (e) {
+          console.log('Video play failed', e)
         }
       })
     }
