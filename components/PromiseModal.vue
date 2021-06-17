@@ -83,7 +83,8 @@
       </b-alert>
       <p class="mt-2 text-muted">
         If you say when the handover is happening we can remind both of you, which makes things go more smoothly.
-        If you've not arranged a time yet, you can come back here later by clicking on the <em>Promise</em> button again.
+        If you don't want to specify a precise day/time yet, you can still click the <em>Promise</em> button.  And
+        you can come back here later.
       </p>
     </template>
     <template slot="modal-footer" slot-scope="{ ok, cancel }">
