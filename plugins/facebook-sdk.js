@@ -22,19 +22,21 @@ VueFB.install = function install(Vue, options) {
     }
   }
   ;(function(d, s, id) {
-    try {
-      const fjs = d.getElementsByTagName(s)[0]
-      if (d.getElementById(id)) {
-        return
-      }
+    setTimeout(() => {
+      try {
+        const fjs = d.getElementsByTagName(s)[0]
+        if (d.getElementById(id)) {
+          return
+        }
 
-      const js = d.createElement(s)
-      js.id = id
-      js.src = '//connect.facebook.net/en_US/sdk.js'
-      fjs.parentNode.insertBefore(js, fjs)
-    } catch (e) {
-      console.error('Failed to load Facebook SDK', e)
-    }
+        const js = d.createElement(s)
+        js.id = id
+        js.src = '//connect.facebook.net/en_US/sdk.js'
+        fjs.parentNode.insertBefore(js, fjs)
+      } catch (e) {
+        console.error('Failed to load Facebook SDK', e)
+      }
+    }, 1000)
   })(document, 'script', 'facebook-jssdk')
 }
 
