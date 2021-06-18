@@ -176,11 +176,11 @@ export default {
       })
     },
     play() {
-      this.waitForRef('video', () => {
+      this.waitForRef('video', async () => {
         try {
           const videoEl = document.querySelector('video')
           videoEl.muted = true
-          videoEl.play()
+          await videoEl.play()
         } catch (e) {
           console.log('Video play failed', e)
         }
