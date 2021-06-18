@@ -219,7 +219,12 @@ export default {
     }
   },
   mounted() {
-    if (this.$dayjs().isBetween('2021-06-01', '2021-06-07', null, '[]')) {
+    // Volunteers' Week is between 1st and 7th June every year.
+    if (
+      this.$dayjs().get('month') === 5 &&
+      this.$dayjs().get('date') >= 1 &&
+      this.$dayjs().get('date') <= 7
+    ) {
       this.showVolunteersWeek = true
 
       setTimeout(() => {
