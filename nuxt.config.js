@@ -513,7 +513,7 @@ module.exports = {
 
         // Sentry logs unhelpful exceptions - see https://github.com/getsentry/sentry-javascript/issues/2210.
         if (hint) {
-          console.log('Original exception is', hint.originalException)
+          console.log('Original exception is', hint.originalException, hint.originalException.message ? hint.originalException : 'no message')
 
           if (!hint.originalException) {
             // There's basically no info to report, so there's nothing we can do.  Suppress it.
