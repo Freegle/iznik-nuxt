@@ -516,8 +516,8 @@ module.exports = {
           console.log(
             'Original exception is',
             hint.originalException,
-            hint.originalException.message
-              ? hint.originalException
+            hint.originalException.reason
+              ? hint.originalException.reason
               : 'no message'
           )
 
@@ -526,10 +526,10 @@ module.exports = {
             console.log('No info - suppress exception')
             return null
           } else if (
-            hint.originalException.message &&
-            hint.originalException.message.match(/Object Not Found Matching Id/)
+            hint.originalException.reason &&
+            hint.originalException.reason.match(/Object Not Found Matching Id/)
           ) {
-            // This seems to be a spurious error caused by a password manager.  SEe
+            // This seems to be a spurious error caused by a password manager.  See
             // https://github.com/getsentry/sentry-javascript/issues/3440
             console.log(
               'Suppress Object Not Found Matching Id, probable password manager'
