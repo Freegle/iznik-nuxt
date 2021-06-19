@@ -11,7 +11,7 @@
   </b-row>
 </template>
 <script>
-import NoticeMessage from '../components/NoticeMessage'
+const NoticeMessage = () => import('../components/NoticeMessage')
 
 export default {
   components: {

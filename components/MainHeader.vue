@@ -47,12 +47,12 @@
           </b-navbar-nav>
           <client-only>
             <div class="simplewrapper pb-2">
-              <SimpleView :key="'simpleview-' + simple" navbar />
+              <SimpleView v-if="loggedIn" :key="'simpleview-' + simple" navbar />
             </div>
           </client-only>
           <b-navbar-nav class="mainnav mainnav--right">
-            <NotificationOptions :distance="distance" :small-screen="false" :unread-notification-count.sync="unreadNotificationCount" @showAboutMe="showAboutMe" />
-            <ChatMenu id="menu-option-chat" :is-list-item="true" :chat-count.sync="chatCount" />
+            <NotificationOptions v-if="loggedIn" :distance="distance" :small-screen="false" :unread-notification-count.sync="unreadNotificationCount" @showAboutMe="showAboutMe" />
+            <ChatMenu v-if="loggedIn" id="menu-option-chat" :is-list-item="true" :chat-count.sync="chatCount" />
             <b-nav-item v-if="!simple" id="menu-option-spread" class="text-center small p-0" to="/promote" @mousedown="maybeReload('/promote')">
               <div class="position-relative">
                 <v-icon name="bullhorn" scale="2" /><br>
@@ -180,12 +180,12 @@
 </template>
 
 <script>
-import SimpleView from '../components/SimpleView'
-import NotificationOptions from '~/components/NotificationOptions'
-import ChatMenu from '~/components/ChatMenu'
 // Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.
 import LoginModal from '~/components/LoginModal'
 const AboutMeModal = () => import('~/components/AboutMeModal')
+const ChatMenu = () => import('~/components/ChatMenu')
+const SimpleView = () => import('../components/SimpleView')
+const NotificationOptions = () => import('~/components/NotificationOptions')
 
 export default {
   name: 'MainHeader',

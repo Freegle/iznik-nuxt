@@ -102,15 +102,13 @@
 </template>
 
 <script>
-import ModMenuItemLeft from '../components/ModMenuItemLeft'
 import waitForRef from '../mixins/waitForRef'
 import LoginModal from '~/components/LoginModal'
-import ModStatus from '~/components/ModStatus'
-import ChatMenu from '~/components/ChatMenu'
-import ModZoomStock from '~/components/ModZoomStock'
-
+const ModMenuItemLeft = () => import('../components/ModMenuItemLeft')
+const ModStatus = () => import('~/components/ModStatus')
+const ChatMenu = () => import('~/components/ChatMenu')
+const ModZoomStock = () => import('~/components/ModZoomStock')
 const ExternalLink = () => import('~/components/ExternalLink')
-
 const ChatPopups = () => import('~/components/ChatPopups')
 
 export default {

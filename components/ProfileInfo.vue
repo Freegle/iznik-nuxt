@@ -63,7 +63,7 @@
               <Message :id="message.id" record-view />
             </div>
           </div>
-          <p class="pl-3" v-else>
+          <p v-else class="pl-3">
             None at the moment.
           </p>
         </b-card-body>
@@ -79,7 +79,7 @@
               <Message :id="message.id" record-view />
             </div>
           </div>
-          <p class="pl-3" v-else>
+          <p v-else class="pl-3">
             None at the moment.
           </p>
         </b-card-body>
