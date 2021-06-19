@@ -204,8 +204,6 @@ module.exports = {
     { src: '~/plugins/vue2-google-maps.js', ssr: false },
     { src: '~/plugins/vue-awesome.js', ssr: false },
     { src: '~/plugins/vue-read-more', ssr: false },
-    { src: '~/plugins/facebook-sdk', ssr: false },
-    { src: '~/plugins/google-sdk', ssr: false },
     { src: '~/plugins/vue-social-sharing', ssr: false },
     { src: '~/plugins/vue-lazy-youtube-video', ssr: false },
     { src: '~/plugins/inspectlet', ssr: false },
