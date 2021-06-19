@@ -513,20 +513,16 @@ module.exports = {
 
         // Sentry logs unhelpful exceptions - see https://github.com/getsentry/sentry-javascript/issues/2210.
         if (hint) {
-          console.log(
-            'Original exception was',
-            hint.originalException,
-            hint.originalException.reason
-              ? hint.originalException.reason
-              : 'no message'
-          )
+          console.log('Original exception was', hint.originalException)
 
           if (!hint.originalException) {
             // There's basically no info to report, so there's nothing we can do.  Suppress it.
             console.log('No info - suppress exception')
             return null
           } else if (
-            hint.originalException.toString().match(/Object Not Found Matching Id/)
+            hint.originalException
+              .toString()
+              .match(/Object Not Found Matching Id/)
           ) {
             // This seems to be a spurious error caused by a password manager.  See
             // https://github.com/getsentry/sentry-javascript/issues/3440
