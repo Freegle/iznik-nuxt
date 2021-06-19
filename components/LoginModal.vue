@@ -302,11 +302,6 @@ export default {
     // Get the login type here rather than a computed property to avoid it flickering on the screen when you click
     // the login button.
     this.loginType = this.$store.getters['auth/loginType']
-
-    // We only use the Google and Facebook SDKs in login, so we can install them here in the modal.  This means we
-    // don't load the scripts for every page.
-    this.installGoogleSDK()
-    this.installFacebookSDK()
   },
   methods: {
     tryLater(native) {
@@ -327,6 +322,11 @@ export default {
       this.pleaseShowModal = true
       this.nativeLoginError = null
       this.socialLoginError = null
+
+      // We only use the Google and Facebook SDKs in login, so we can install them here in the modal.  This means we
+      // don't load the scripts for every page.
+      this.installGoogleSDK()
+      this.installFacebookSDK()
     },
     hide() {
       this.pleaseShowModal = false
