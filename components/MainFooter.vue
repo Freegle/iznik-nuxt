@@ -16,27 +16,39 @@
       </div>
       <div class="d-flex justify-content-between navlinks">
         <nuxt-link to="/about" class="menu__link">
-          <v-icon name="info-circle" class="link__icon" />
+          <client-only>
+            <v-icon name="info-circle" class="link__icon" />
+          </client-only>
           About
         </nuxt-link>
         <nuxt-link to="/terms" class="menu__link">
-          <v-icon name="book-open" class="link__icon" />
+          <client-only>
+            <v-icon name="book-open" class="link__icon" />
+          </client-only>
           Terms
         </nuxt-link>
         <nuxt-link to="/privacy" class="menu__link">
-          <v-icon name="lock" class="link__icon" />
+          <client-only>
+            <v-icon name="lock" class="link__icon" />
+          </client-only>
           Privacy
         </nuxt-link>
         <nuxt-link to="/disclaimer" class="menu__link">
-          <v-icon name="gavel" class="link__icon" />
+          <client-only>
+            <v-icon name="gavel" class="link__icon" />
+          </client-only>
           Disclaimer
         </nuxt-link>
         <nuxt-link to="/donate" class="menu__link">
-          <v-icon name="hand-holding-heart" class="link__icon" />
+          <client-only>
+            <v-icon name="hand-holding-heart" class="link__icon" />
+          </client-only>
           Donate
         </nuxt-link>
         <nuxt-link to="/help" class="menu__link">
-          <v-icon name="envelope" class="link__icon" />
+          <client-only>
+            <v-icon name="envelope" class="link__icon" />
+          </client-only>
           Contact
         </nuxt-link>
       </div>
