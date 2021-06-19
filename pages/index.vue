@@ -2,7 +2,7 @@
   <div v-if="!me" class="grid m-0 pl-1 pr-1 pl-sm-0 pr-sm-0 mt-0 mt-lg-5 ml-4 mr-4">
     <div class="map justify-content-start flex-column d-none d-sm-flex">
       <VisualiseMap v-if="type === 'Map'" class="shadow flex-grow-1" />
-      <div v-else>
+      <div v-else-if="type === 'Song'">
         <b-img v-if="!timeToPlay" fluid src="/songpreview.png" class="flex-grow-1 w-100" @click="play" />
         <b-embed
           v-else
@@ -59,8 +59,8 @@
 </template>
 <script>
 import waitForRef from '@/mixins/waitForRef'
-import VisualiseMap from '../components/VisualiseMap'
 import PlaceAutocomplete from '../components/PlaceAutocomplete'
+const VisualiseMap = () => import('../components/VisualiseMap')
 const MainFooter = () => import('~/components/MainFooter.vue')
 
 export default {
@@ -74,7 +74,7 @@ export default {
     return {
       userWatch: null,
       ourBackground: false,
-      type: 'Map',
+      type: null,
       timeToPlay: false
     }
   },
