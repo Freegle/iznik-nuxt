@@ -514,7 +514,7 @@ module.exports = {
         // Sentry logs unhelpful exceptions - see https://github.com/getsentry/sentry-javascript/issues/2210.
         if (hint) {
           console.log(
-            'Original exception is',
+            'Original exception is now',
             hint.originalException,
             hint.originalException.reason
               ? hint.originalException.reason
