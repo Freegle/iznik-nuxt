@@ -520,6 +520,16 @@ module.exports = {
             console.log('No info - suppress exception')
             return null
           } else if (
+            hint.originalException.message &&
+            hint.originalException.message.match(/Object Not Found Matching Id/)
+          ) {
+            // This seems to be a spurious error caused by a password manager.  SEe
+            // https://github.com/getsentry/sentry-javascript/issues/3440
+            console.log(
+              'Suppress Object Not Found Matching Id, probable password manager'
+            )
+            return false
+          } else if (
             hint.originalException.name &&
             hint.originalException.name === 'TypeError'
           ) {
@@ -549,19 +559,6 @@ module.exports = {
                 }
               }
             }
-          } else if (
-            hint.originalException.name &&
-            hint.originalException.name === 'UnhandledRejection' &&
-            hint.originalException.message.indexOf(
-              'Object Not Found Matching Id'
-            ) === 0
-          ) {
-            // This seems to be a spurious error caused by a password manager.  SEe
-            // https://github.com/getsentry/sentry-javascript/issues/3440
-            console.log(
-              'Suppress Object Not Found Matching Id, probable password manager'
-            )
-            return false
           }
         }
 
