@@ -108,12 +108,14 @@
   </div>
 </template>
 <script>
+import waitForRef from '@/mixins/waitForRef'
 import SpinButton from './SpinButton'
 import ModCake from '~/components/ModCake'
 const OurToggle = () => import('~/components/OurToggle')
 
 export default {
   components: { SpinButton, OurToggle, ModCake },
+  mixins: [ waitForRef ],
   data: function() {
     return {
       modNotifOptions: [
