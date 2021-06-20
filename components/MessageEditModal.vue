@@ -146,8 +146,8 @@ export default {
     },
     placeholder() {
       return this.message && this.type === 'Offer'
-        ? "Please give a few details, e.g. colour, condition, size, whether it's working etc."
-        : "Please give a few more details about what you're looking for, and why you'd like it."
+        ? "e.g. colour, condition, size, whether it's working etc."
+        : "Explain what you're looking for, and why you'd like it."
     },
     count() {
       return this.message ? this.message.availablenow : null

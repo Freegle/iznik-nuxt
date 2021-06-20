@@ -16,7 +16,7 @@
         <l-tile-layer :url="osmtile" :attribution="attribution" />
         <div v-if="item">
           <VisualiseUser
-            v-if="showFrom"
+            v-if="showFrom && item"
             :id="item.from.id"
             ref="fromuser"
             :lat="item.fromlat"
@@ -60,7 +60,7 @@
             v-if="showMessage"
             :id="item.msgid"
             ref="message"
-            :icon="item.attachment.path"
+            :icon="item.attachment.thumb"
             :lat="item.fromlat"
             :lng="item.fromlng"
           />

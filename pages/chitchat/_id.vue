@@ -6,6 +6,7 @@
       </b-col>
       <b-col cols="12" lg="6" class="newsfeedHolder p-0">
         <CovidWarning />
+        <AppUpdateAvailable />
         <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
         <b-card v-if="!id" body-class="p-2 p-md-4">
           <b-card-text>
@@ -40,27 +41,23 @@
           <b-card no-body class="mb-2">
             <b-card-text class="p-2 pb-0 mb-0">
               <label class="font-weight-bold" for="startThread">Chat to nearby freeglers! <span class="d-none d-sm-inline">Ask for advice, recommendations, or just have a natter:</span></label>
-              <b-textarea
-                id="startThread"
-                v-model="startThread"
-                rows="2"
-                max-rows="8"
-                placeholder="What's going on in your world?"
-                class="border border-primary"
-              />
+              <b-textarea id="startThread"
+                          v-model="startThread"
+                          rows="2"
+                          max-rows="8"
+                          placeholder="What's going on in your world?"
+                          class="border border-primary" />
               <div class="small text-muted">
                 Everything here is public.  Be kind <span class="d-none d-sm-inline">to each other</span>; occasionally we may moderate to ensure things stay friendly.
               </div>
               <b-img v-if="imageid" lazy thumbnail :src="imagethumb" class="image__uploaded" />
             </b-card-text>
             <hr class="mt-1 mb-1">
-            <OurFilePond
-              v-if="uploading"
-              class="bg-white m-0 pondrow"
-              imgtype="Newsfeed"
-              imgflag="newsfeed"
-              @photoProcessed="photoProcessed"
-            />
+            <OurFilePond v-if="uploading"
+                         class="bg-white m-0 pondrow"
+                         imgtype="Newsfeed"
+                         imgflag="newsfeed"
+                         @photoProcessed="photoProcessed" />
             <div class="pb-1 d-flex justify-content-end">
               <b-btn variant="secondary" class="mr-2" @click="photoAdd">
                 Add photo
@@ -107,8 +104,10 @@ import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead'
 import NoticeMessage from '../../components/NoticeMessage'
 import CovidWarning from '../../components/CovidWarning'
+import AppUpdateAvailable from '~/components/AppUpdateAvailable.vue'
 import twem from '~/assets/js/twem'
 import NewsThread from '~/components/NewsThread.vue'
+
 Vue.use(TooltipPlugin)
 
 const OurFilePond = () => import('~/components/OurFilePond')
@@ -121,6 +120,7 @@ const ExpectedRepliesWarning = () =>
 export default {
   components: {
     CovidWarning,
+    AppUpdateAvailable,
     ExpectedRepliesWarning,
     NoticeMessage,
     InfiniteLoading,

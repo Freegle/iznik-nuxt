@@ -207,7 +207,8 @@
                     give an item to.
                   </p>
                   <p>
-                    This helps people who aren't online all the time to get a fair chance.
+                    This helps people who aren't online all the time to get a fair chance.  It's nothing to do with
+                    money!
                   </p>
                 </template>
               </Question>

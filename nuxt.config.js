@@ -6,7 +6,7 @@ const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
-const MOBILE_VERSION = '2.0.77'
+const MOBILE_VERSION = '2.0.78'
 const MODTOOLS_VERSION = '0.3.52'
 
 require('dotenv').config()
@@ -213,8 +213,6 @@ const config = {
     { src: '~/plugins/vue2-google-maps.js', ssr: false },
     { src: '~/plugins/vue-awesome.js', ssr: false },
     { src: '~/plugins/vue-read-more', ssr: false },
-    { src: '~/plugins/facebook-sdk', ssr: false },
-    { src: '~/plugins/google-sdk', ssr: false },
     { src: '~/plugins/vue-social-sharing', ssr: false },
     { src: '~/plugins/vue-lazy-youtube-video', ssr: false },
     { src: '~/plugins/inspectlet', ssr: false },
@@ -529,11 +527,19 @@ const config = {
 
         // Sentry logs unhelpful exceptions - see https://github.com/getsentry/sentry-javascript/issues/2210.
         if (hint) {
-          console.log('Original exception', hint.originalException)
+          console.log('Original exception was', hint.originalException)
 
           if (!hint.originalException) {
             // There's basically no info to report, so there's nothing we can do.  Suppress it.
             console.log('No info - suppress exception')
+            return null
+            // eslint-disable-next-line
+          } else if (hint.originalException.toString().match(/Object Not Found Matching Id/)) {
+            // This seems to be a spurious error caused by a password manager.  See
+            // https://github.com/getsentry/sentry-javascript/issues/3440
+            console.log(
+              'Suppress Object Not Found Matching Id, probable password manager'
+            )
             return null
           } else if (
             hint.originalException.name &&
@@ -543,15 +549,26 @@ const config = {
             if (hint.originalException.message) {
               console.log('Message', hint.originalException.message)
 
-              if (
-                hint.originalException.message.match(/_leaflet_pos/) ||
-                hint.originalException.message.match(/getPosition/)
-              ) {
-                // This exception can happen when a map is still in motion (e.g. zooming) and you navigate away from
-                // the page.  So far as I can tell, this is not properly fixed by either leaflet or vue2-leaflet, but
-                // causes no real problems, just Sentry clutter.  So suppress it here.
-                console.log('Suppress leaflet exception')
-                return false
+              if (hint.originalException.message) {
+                if (
+                  hint.originalException.message.match(/_leaflet_pos/) ||
+                  hint.originalException.message.match(/getPosition/)
+                ) {
+                  // This exception can happen when a map is still in motion (e.g. zooming) and you navigate away from
+                  // the page.  So far as I can tell, this is not properly fixed by either leaflet or vue2-leaflet, but
+                  // causes no real problems, just Sentry clutter.  So suppress it here.
+                  console.log('Suppress leaflet exception')
+                  return null
+                } else if (
+                  hint.originalException.message.match(
+                    /TypeError: can't redefine non-configurable property "userAgent"/
+                  )
+                ) {
+                  // This exception happens a lot, and the best guess I can find is that it is a bugged browser
+                  // extension.
+                  console.log('Suppress userAgent')
+                  return null
+                }
               }
             }
           }

@@ -10,20 +10,19 @@
     <p v-if="isApp">
       ModTools app version: {{ modtoolsVersion }}.
     </p>
+    <AppUpdateAvailable />
     <ModMissingFacebook />
     <ModMissingTwitter class="mt-1" />
     <ModMissingProfile class="mt-1" />
     <div class="d-flex mb-2 mt-2 flex-wrap">
       <div class="borderit d-flex flex-column">
         <label for="dashboardgroup">Choose community:</label>
-        <GroupSelect
-          id="dashboardgroup"
-          v-model="groupidi"
-          all
-          modonly
-          :systemwide="admin"
-          active
-        />
+        <GroupSelect id="dashboardgroup"
+                     v-model="groupidi"
+                     all
+                     modonly
+                     :systemwide="admin"
+                     active />
       </div>
       <div class="borderit d-flex flex-column">
         <label for="showInfo">Show info from:</label>
@@ -85,20 +84,18 @@
         </b-col>
       </b-row>
       <ModDashboardImpact :groupid="groupid" :start="start" :group-name="groupName" :end="end" class="mt-2" />
-      <ActivityGraph
-        :groupid="groupidi"
-        :group-name="groupName"
-        :start="start"
-        :end="end"
-        offers
-        wanteds
-        weights
-        donations
-        successful
-        activeusers
-        approvedmembers
-        :systemwide="groupidi < 0"
-      />
+      <ActivityGraph :groupid="groupidi"
+                     :group-name="groupName"
+                     :start="start"
+                     :end="end"
+                     offers
+                     wanteds
+                     weights
+                     donations
+                     successful
+                     activeusers
+                     approvedmembers
+                     :systemwide="groupidi < 0" />
       <!--      TODO MT POSTLAUNCH TN vs email vs web stats-->
     </div>
   </div>
@@ -116,6 +113,7 @@ import ModMissingProfile from '../../components/ModMissingProfile'
 import ActivityGraph from '../../components/ActivityGraph'
 import ModDashboardImpact from '../../components/ModDashboardImpact'
 const ExternalLink = () => import('~/components/ExternalLink')
+import AppUpdateAvailable from '~/components/AppUpdateAvailable.vue'
 
 // We lazy load these components below, but by importing them here it means they can render their own
 // loading indicators rather than using the lazyload text.
@@ -161,6 +159,7 @@ export default {
       loading: ModDashboardSkeleton
     }),
     DatePicker,
+    AppUpdateAvailable,
     ExternalLink
   },
   layout: 'modtools',
@@ -223,6 +222,19 @@ export default {
   },
   mounted() {
     console.log('MODTOOLS INDEX MOUNTED')
+    // Volunteers' Week is between 1st and 7th June every year.
+    if (
+      this.$dayjs().get('month') === 5 &&
+      this.$dayjs().get('date') >= 1 &&
+      this.$dayjs().get('date') <= 7
+    ) {
+      this.showVolunteersWeek = true
+
+      setTimeout(() => {
+        this.showVolunteersWeek = false
+      }, 30000)
+    }
+
     this.update()
   },
   methods: {

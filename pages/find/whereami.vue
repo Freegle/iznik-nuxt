@@ -21,7 +21,7 @@
         <b-row v-if="postcodeValid && !closed">
           <b-col class="text-center">
             <transition name="fade">
-              <nuxt-link to="/find">
+              <nuxt-link to="/find/whoami">
                 <v-icon name="check-circle" class="text-success mt-2 fa-bh" scale="5" />
               </nuxt-link>
             </transition>

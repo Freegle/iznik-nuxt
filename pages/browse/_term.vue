@@ -11,6 +11,7 @@
         <MicroVolunteering />
         <div v-if="showRest">
           <CovidWarning />
+          <AppUpdateAvailable />
           <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
           <div class="bg-white d-block d-xl-none">
             <div class="d-flex justify-content-between flex-wrap">
@@ -52,6 +53,7 @@ import MicroVolunteering from '~/components/MicroVolunteering'
 import AdaptiveMap from '~/components/AdaptiveMap'
 
 const CovidWarning = () => import('~/components/CovidWarning')
+import AppUpdateAvailable from '~/components/AppUpdateAvailable.vue'
 const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
 const ExpectedRepliesWarning = () =>
@@ -70,6 +72,7 @@ export default {
     MicroVolunteering,
     AdaptiveMap,
     CovidWarning,
+    AppUpdateAvailable,
     SidebarLeft,
     SidebarRight,
     ExpectedRepliesWarning

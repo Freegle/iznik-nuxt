@@ -563,6 +563,27 @@
                     color="#61AE24"
                   />
                 </b-form-group>
+                <b-form-group v-if="!simple">
+                  <h3 class="header--size5 header5__color">
+                    Auto-reposts
+                  </h3>
+                  <p>
+                    In most Freegle communities, your OFFER/WANTED posts will be automatically reposted (or "bumped")
+                    unless you've marked them as TAKEN/RECEIVED/Withdrawn from
+                    <!-- eslint-disable-next-line-->
+                    <nuxt-link to="/myposts">My Posts</nuxt-link>.
+                  </p>
+                  <OurToggle
+                    v-model="autoreposts"
+                    :height="30"
+                    :width="150"
+                    :font-size="14"
+                    :sync="true"
+                    :labels="{checked: 'Autorepost On', unchecked: 'Autorepost Off'}"
+                    color="#61AE24"
+                    @change="changeAutorepost"
+                  />
+                </b-form-group>
               </b-card-body>
             </b-card>
             <br class="mb-2">
@@ -654,7 +675,8 @@ export default {
       emailValid: false,
       cacheBust: Date.now(),
       userTimer: null,
-      initialEmail: null
+      initialEmail: null,
+      autoresposts: true
     }
   },
   computed: {
@@ -824,6 +846,8 @@ export default {
   async mounted() {
     await this.update()
     this.initialEmail = this.me.email
+    this.autoreposts = !this.me.settings.autorepostsdisable
+
     setTimeout(this.checkUser, 200)
   },
   methods: {
@@ -1006,6 +1030,13 @@ export default {
     async changeEngagement(e) {
       const settings = this.me.settings
       settings.engagement = e.value
+      await this.$store.dispatch('auth/saveAndGet', {
+        settings: settings
+      })
+    },
+    async changeAutorepost(e) {
+      const settings = this.me.settings
+      settings.autorepostsdisable = !e.value
       await this.$store.dispatch('auth/saveAndGet', {
         settings: settings
       })

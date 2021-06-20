@@ -44,8 +44,8 @@
       </li>
       <li>
         We will make your post public to publicise Freegle, but not your email address - see <nuxt-link to="/privacy">
-          privacy page
-        </nuxt-link>.
+          privacy page.
+        </nuxt-link>
       </li>
     </ol>
   </div>

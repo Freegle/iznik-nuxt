@@ -104,6 +104,7 @@ export const getters = {
   getAll: state => {
     return state.list
   },
+  getIndex: state => state.index,
   getViewed: state => {
     return state.viewed
   }

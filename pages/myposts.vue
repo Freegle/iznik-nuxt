@@ -8,6 +8,7 @@
         <SidebarLeft v-if="me && !justPosted" :show-community-events="true" :show-bot-left="true" />
       </b-col>
       <b-col cols="12" lg="6" class="p-0">
+        <AppUpdateAvailable />
         <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
         <div v-if="justPosted && justPosted.length">
           <JustPosted :ids="justPosted" :newuser="newuser" :newpassword="newpassword" />
@@ -22,14 +23,12 @@
           <b-card v-if="contactPicker" border-variant="info">
             <Invite class="bg-white" />
           </b-card>
-          <b-card
-            class="mt-2"
-            border-variant="info"
-            header="info"
-            header-bg-variant="info"
-            header-text-variant="white"
-            no-body
-          >
+          <b-card class="mt-2"
+                  border-variant="info"
+                  header="info"
+                  header-bg-variant="info"
+                  header-text-variant="white"
+                  no-body>
             <template slot="header">
               <h2 class="d-inline header--size3">
                 <v-icon name="gift" scale="2" /> Your OFFERs
@@ -75,14 +74,12 @@
               </b-card-text>
             </b-card-body>
           </b-card>
-          <b-card
-            class="mt-2"
-            border-variant="info"
-            header="info"
-            header-bg-variant="info"
-            header-text-variant="white"
-            no-body
-          >
+          <b-card class="mt-2"
+                  border-variant="info"
+                  header="info"
+                  header-bg-variant="info"
+                  header-text-variant="white"
+                  no-body>
             <template slot="header">
               <h2 class="d-inline header--size3">
                 <v-icon name="shopping-cart" scale="2" /> Your WANTEDs
@@ -121,15 +118,13 @@
               </b-card-text>
             </b-card-body>
           </b-card>
-          <b-card
-            v-if="!simple"
-            class="mt-2"
-            border-variant="info"
-            header="info"
-            header-bg-variant="info"
-            header-text-variant="white"
-            no-body
-          >
+          <b-card v-if="!simple"
+                  class="mt-2"
+                  border-variant="info"
+                  header="info"
+                  header-bg-variant="info"
+                  header-text-variant="white"
+                  no-body>
             <template slot="header">
               <h2 class="d-inline header--size3">
                 <v-icon name="search" scale="2" /> Your Searches
@@ -176,6 +171,7 @@
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
+import AppUpdateAvailable from '~/components/AppUpdateAvailable.vue'
 import Invite from '../components/Invite'
 const JustPosted = () => import('~/components/JustPosted')
 const JobsTopBar = () => import('~/components/JobsTopBar')
@@ -189,6 +185,7 @@ const ExpectedRepliesWarning = () =>
 
 export default {
   components: {
+    AppUpdateAvailable,
     Invite,
     JustPosted,
     JobsTopBar,
@@ -204,7 +201,6 @@ export default {
     return {
       justPosted: null,
       id: null,
-      messages: [],
       busy: true,
       context: null,
       showOldOffers: false,
@@ -218,22 +214,26 @@ export default {
     }
   },
   computed: {
+    messages() {
+      // We need to filter for ours in case we have other stuff in store.
+      const messages = this.$store.getters['messages/getAll']
+      return messages.filter(m => {
+        return m.mine
+      })
+    },
     postcode() {
       return this.$store.getters['compose/getPostcode']
     },
-
     wanteds() {
       const ret = this.messages.filter(m => m.type === 'Wanted' && !m.isdraft)
       ret.sort(this.postSort)
       return ret
     },
-
     offers() {
       const ret = this.messages.filter(m => m.type === 'Offer' && !m.isdraft)
       ret.sort(this.postSort)
       return ret
     },
-
     oldOfferCount() {
       let count = 0
 
@@ -390,7 +390,6 @@ export default {
 
           this.busy = false
 
-          this.messages = this.$store.getters['messages/getAll']
           this.context = this.$store.getters['messages/getContext']
 
           if (currentCount !== this.messages.length) {

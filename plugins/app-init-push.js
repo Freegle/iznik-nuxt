@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { setTimeout } from 'core-js';
 
 const querystring = require('querystring')
 
@@ -172,6 +173,23 @@ const cordovaApp = {
       window.plugins.webintent.onNewIntent(function(url) {
         console.log('INTENT onNewIntent: ', url)
       }) */
+
+      // Get current app version
+      // https://github.com/sampart/cordova-plugin-app-version
+      // Check app version Android
+      // https://play.google.com/store/apps/details?id=org.ilovefreegle.direct&hl=en
+      // https://stackoverflow.com/questions/34309564/how-to-get-app-market-version-information-from-google-play-store
+      // https://www.npmjs.com/package/cordova-plugin-codeplay-in-app-update
+
+      /*setTimeout(function () {
+        cordova.InAppBrowser.open('https://itunes.apple.com/gb/lookup?bundleId=org.ilovefreegle.iphone'
+          this.loginWindow.addEventListener('loadstart', event => {
+                  this.loginWindowLoadStartHandler(event)
+          })
+      },5000)*/
+
+      
+
     } catch (e) {
       console.log('onDeviceReady catch', e)
     }
@@ -423,6 +441,35 @@ export default ({ app, store }) => { // route
         }
       }
     )
+  }
+}
+
+export async function checkForAppUpdate(axios, store) {
+  try {
+    if (process.env.IS_APP || process.env.IS_MTAPP) {
+      if (mobilestate.isiOS) {
+        const FD_LOOKUP = 'https://itunes.apple.com/gb/lookup?bundleId=org.ilovefreegle.iphone'
+        const MT_LOOKUP = 'https://itunes.apple.com/lookup?bundleId=org.ilovefreegle.modtools'
+        const res = await axios.get(process.env.IS_MTAPP ? MT_LOOKUP : FD_LOOKUP )
+        if (res.data && res.data.resultCount && res.data.resultCount === 1) {
+          // { "resultCount": 1, "results": [ { "currentVersionReleaseDate":"2021-06-10T15:46:35Z", "version":"0.3.52",
+          const info = res.data.results[0]
+          const currentVersionReleaseDate = info.currentVersionReleaseDate
+          const version = info.version
+          console.log('iOS currentVersionReleaseDate', currentVersionReleaseDate, 'version', version)
+          store.dispatch('misc/set', {
+            key: 'appupdateversion',
+            value: version
+          })
+          store.dispatch('misc/set', {
+            key: 'appupdateversiondate',
+            value: currentVersionReleaseDate
+          })
+        }
+      }
+    }
+  } catch (e) {
+    console.log('checkForAppUpdate ERROR', e)
   }
 }
 

@@ -17,7 +17,7 @@
       <ChatPopups v-if="loggedIn" class="d-none d-sm-block" />
       <span ref="breakpoint" class="d-inline d-sm-none" />
       <div class="d-none">
-        <ChatButton ref="replyToPostChatButton" :userid="replyToUser" />
+        <ChatButton v-if="replyToSend" ref="replyToPostChatButton" :userid="replyToUser" />
       </div>
     </client-only>
   </div>
@@ -33,6 +33,9 @@ import MainHeader from '~/components/MainHeader'
 const ChatPopups = () => import('~/components/ChatPopups')
 const ChatButton = () => import('~/components/ChatButton')
 const ExternalLink = () => import('~/components/ExternalLink')
+
+import { checkForAppUpdate } from '@/plugins/app-init-push' // CC
+let checkedForUpdate = false
 
 export default {
   components: {
@@ -151,6 +154,12 @@ export default {
 
         this.replyToPost()
       }
+    }
+
+    // CC
+    if (!checkedForUpdate) {
+      checkedForUpdate = true
+      await checkForAppUpdate(this.$axios, this.$store)
     }
   },
   async beforeCreate() {

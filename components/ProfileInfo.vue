@@ -63,7 +63,7 @@
               <Message :id="message.id" record-view />
             </div>
           </div>
-          <p v-else>
+          <p v-else class="pl-3">
             None at the moment.
           </p>
         </b-card-body>
@@ -79,7 +79,7 @@
               <Message :id="message.id" record-view />
             </div>
           </div>
-          <p v-else>
+          <p v-else class="pl-3">
             None at the moment.
           </p>
         </b-card-body>
@@ -175,7 +175,7 @@ export default {
     },
     messages() {
       return this.$store.getters['messages/getAll'].filter(
-        m => m.fromuser.id === this.user.id
+        m => m.fromuser && m.fromuser.id === this.user.id
       )
     }
   },

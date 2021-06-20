@@ -9,6 +9,7 @@
         class="mb-1"
         :disabled="disabled"
         :handler="click"
+        :confirm="message.heldby"
       />
       <v-icon v-if="autosend" name="chevron-circle-right" title="Autosend - configured to send immediately without edit" class="autosend" />
     </div>

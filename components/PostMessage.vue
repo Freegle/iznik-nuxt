@@ -18,7 +18,12 @@
             @drop.prevent="drop"
             @dragover.prevent
           >
-            Add photos
+            <span v-if="attachments && attachments.length === 1">
+              Add more photos
+            </span>
+            <span v-else>
+              Add photos
+            </span>
           </b-btn>
         </div>
         <div v-for="att in attachments" :key="'image-' + att.id" class="bg-transparent p-0">
@@ -266,8 +271,8 @@ export default {
     },
     placeholder() {
       return this.type === 'Offer'
-        ? "Please give a few details, e.g. colour, condition, size, whether it's working etc."
-        : "Please give a few more details about what you're looking for, and why you'd like it."
+        ? "e.g. colour, condition, size, whether it's working etc."
+        : "Explain what you're looking for, and why you'd like it."
     },
     duplicate() {
       let ret = null

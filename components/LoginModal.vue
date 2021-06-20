@@ -365,6 +365,11 @@ export default {
       this.pleaseShowModal = true
       this.nativeLoginError = null
       this.socialLoginError = null
+
+      // We only use the Google and Facebook SDKs in login, so we can install them here in the modal.  This means we
+      // don't load the scripts for every page.
+      this.installGoogleSDK()
+      this.installFacebookSDK()
     },
     hide() {
       this.pleaseShowModal = false
@@ -559,7 +564,6 @@ export default {
         this.socialLoginError = 'Facebook login error: ' + e.message
       }
     },
-
     async loginGoogle() { // CC
       this.$store.dispatch('auth/setLoginType', 'Google')
 
@@ -615,7 +619,6 @@ export default {
         window.gapi.auth.signIn(params)
       }
     },
-
     loginYahoo() {
       this.$store.dispatch('auth/setLoginType', 'Yahoo')
 
@@ -697,29 +700,111 @@ export default {
         window.location = url
       }
     },
-
     clickShowSignUp(e) {
       this.showSignUp = true
       this.forceSignIn = false
       e.preventDefault()
       e.stopPropagation()
     },
-
     clickShowSignIn(e) {
       this.showSignUp = false
       this.forceSignIn = true
       e.preventDefault()
       e.stopPropagation()
     },
-
     togglePassword() {
       this.showPassword = !this.showPassword
     },
-
     forgot() {
       this.hide()
       this.$store.dispatch('auth/forceLogin', false)
       this.$router.push('/forgot')
+    },
+    installGoogleSDK() {
+      ;(function(d, s, id) {
+        const fjs = d.getElementsByTagName(s)[0]
+        if (d.getElementById(id)) {
+          return
+        }
+        const js = d.createElement(s)
+        js.id = id
+        js.src = 'https://apis.google.com/js/platform.js'
+        js.onload = e => {
+          setTimeout(() => {
+            if (window.gapi) {
+              try {
+                window.gapi.load('client', {
+                  callback: function() {
+                    window.gapi.client.init({
+                      apiKey: process.env.GOOGLE_API_KEY
+                    })
+                    window.gapiLoaded = true
+                  },
+                  onerror: function() {
+                    console.error('gapi.client failed to load!')
+                  },
+                  timeout: 30000,
+                  ontimeout: function() {
+                    console.error('GAPI client load timed out')
+                  }
+                })
+
+                window.gapi.load('auth2')
+              } catch (e) {
+                console.error('GAPI load failed', e)
+              }
+            }
+          }, 10)
+        }
+        fjs.parentNode.insertBefore(js, fjs)
+      })(document, 'script', 'google-jssdk')
+    },
+    installFacebookSDK() {
+      const VueFB = {}
+
+      VueFB.install = function install(Vue, options) {
+        Vue.FB = undefined
+
+        window.fbAsyncInit = function() {
+          window.FB.init(options)
+          window.FB.AppEvents.logPageView()
+          Vue.FB = window.FB
+
+          // We need to have some special code for IE11 - see https://stackoverflow.com/questions/27176983/dispatchevent-not-working-in-ie11.
+          let event
+
+          if (typeof Event === 'function') {
+            event = new Event('fb-sdk-ready')
+          } else {
+            event = document.createEvent('Event')
+            event.initEvent('fb-sdk-ready', true, true)
+          }
+        }
+        ;(function(d, s, id) {
+          setTimeout(() => {
+            try {
+              const fjs = d.getElementsByTagName(s)[0]
+              if (d.getElementById(id)) {
+                return
+              }
+
+              const js = d.createElement(s)
+              js.id = id
+              js.src = '//connect.facebook.net/en_US/sdk.js'
+              fjs.parentNode.insertBefore(js, fjs)
+            } catch (e) {
+              console.error('Failed to load Facebook SDK', e)
+            }
+          }, 1000)
+        })(document, 'script', 'facebook-jssdk')
+      }
+
+      Vue.use(VueFB, {
+        appId: process.env.FACEBOOK_APPID,
+        autoLogAppEvents: true,
+        xfbml: true,
+        version: 'v4.0'
+      })
     }
   }
 }

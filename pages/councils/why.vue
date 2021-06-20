@@ -8,120 +8,111 @@
           </h1>
         </b-card-header>
         <b-card-text class="pl-2 pr-2">
-          <client-only>
-            <LazyYoutubeVideo src="https://www.youtube.com/embed/hXNWj2sZ7ZM" />
-          </client-only>
-          <p>
-            There are many charities and other organisations that councils promote and work with to encourage reuse
-            amongst their residents.  Freegle is just one of those, so why should councils work with us?
+          <h2>
+            Support Reuse - Build Resilience - Tackle Furniture Poverty
+          </h2>
+          <b-img fluid-grow src="/councils/NeedFurniture.png" />
+          <p class="mt-2">
+            Join a growing number of forward thinking councils who are working with Freegle - the reuse experts. Make reuse your priority and provide residents with the help they need to become more resilient. By sponsoring your local Freegle communities you will facilitate a fantastic amount of reuse locally in a highly cost effective way.
           </p>
-
-          <h4>A free and established reuse organisation</h4>
-          <p>
-            Freegle is an established resource for encouraging and facilitating a culture of reuse in the community.
-            At a time when staff are stretched in local authorities, it is of value to have free support from an
-            external organisation that already has the infrastructure in place, a bank of dedicated volunteers,
-            as well as free statistics and other resources that can be tailored to your needs.
-          </p>
-
-          <h4>Easy to join, easy to use</h4>
-
-          <p>
-            Freegle is web and app-based, making it a low barrier to entry for residents.  Our volunteers provide
-            support to the members of each Freegle community.
-          </p>
-
-          <h4>Reducing waste through HWRCs, bulky and household collections</h4>
-
-          <p>
-            Freegle is an example of an alternative route to waste disposal for certain items.  Residents can
-            be directed there to help reduce the amount of waste received by the council through HWRCs, household
-            and bulky collections.  Some residents do not have easy access to HWRCs or may find it difficult to pay
-            for items to be collected.  Pointing residents towards Freegle can result in cost savings for residents
-            and the council, whilst keeping the items in use for longer, encouraging repair and upcycling.
-          </p>
-
-          <h4>Helping to reduce fly-tipping and contamination</h4>
-
-          <p>
-            Freegle can help to reduce incidences of fly-tipping and contamination by providing a simple solution to
-            passing items on.  The whole process can be completed online and items can be collected from members’
-            homes.  Freegle can work particularly well for flatted properties and estates where urban fly-tipping and
-            communal bin contamination can be a real issue.  We can even provide publicity and trackable links to our
-            website that will help you monitor such properties.
-          </p>
-
-          <h4>Talking of stats…</h4>
-
-          <p>
-            We have lots of them and they are all free for councils:
-          </p>
-          <ul>
-            <li>Monthly reuse data summaries.</li>
-            <li>Freegle activity Heatmap.</li>
-            <li>
-              Time-specific data, area-specific data (including by postcode), data on request and we can even overlay
-              it with a range of demographic indicators.
-            </li>
-          </ul>
-          <p>
-            We also use WRAP's Benefits of Reuse tool to generate CO2 and cost savings data.
-          </p>
-
-          <h4>Opening up lines of communication in the community</h4>
-
-          <p>
-            Freegle is integrated into the local community and so can provide a useful communication channel for
-            councils to utilise and connect with residents that may have otherwise been out of reach.
-            Freegle is also an established and trusted community tool.  It can be used to deliver and 'soften'
-            council communications.  We can publicise council events and campaigns on each Freegle community
-            webpage and send out admin messages to members of individual communities to support your work.
-          </p>
-
-          <h4>Why run a project with Freegle?</h4>
-
-          <p>
-            Freegle is likely to be a more cost-effective way of delivering reuse campaigns because councils can
-            utilise Freegle’s existing infrastructure and network of volunteers.  Freegle is an established community
-            reuse tool; we already have 2.7 million members of which over 600,000 are active annually and so is a
-            valuable resource for councils to tap into.
-          </p>
-
-          <p>
-            Our volunteers are a direct link with the community and can provide an additional (free) resource for
-            councils.  Some may also be able to help at your local events.
-          </p>
-
-          <p>
-            We can help your run campaigns using this Communications Toolkit; we can assist you to
-            monitor your work by providing free high and low-level tailored stats based on the Reuse Network’s Product
-            Weight Protocols; provide trackable links to monitor specific campaigns or communities and provide
-            data output for these.  We can also put you in touch with other councils who are already working with
-            Freegle so that you can share ideas.
-          </p>
-
-          <p>
-            You can further boost what can be achieved by funding specific projects or campaigns; we are happy
-            to discuss any ideas you may have.
-          </p>
-
-          <h4>Freegle and reuse data</h4>
-
-          <p>
-            Freegle facilitates peer-to-peer reuse, but Freegle does not take ownership of this waste at any time
-            and so we have been advised by WasteDataFlow that our data cannot be submitted to WDF. We are however,
-            continuing to explore with Defra how the contribution to waste prevention, by organisations such
-            as Freegle, is recognised.
+          <div class="even">
+            <b-img src="/sponsors/BlackpoolCouncil.jpg" thumbnail />
+            <b-img src="/sponsors/LoveEssex.jpg" thumbnail />
+            <b-img src="/sponsors/LancashireCountyCouncil.jpg" thumbnail />
+            <b-img src="/sponsors/LancasterCityCouncil.jpg" thumbnail />
+          </div>
+          <p class="mt-2">
+            A word from one of our sponsors -
           </p>
           <p>
-            Our data can of course be reported internally and externally as a measure of active waste prevention in
-            your area and can be used to help monitor any campaigns you might run in partnership with us.
+            <em><strong>
+              &quot;Local Freegle communities have been active within our community for several years now and as a local authority we felt compelled to support and encourage them. There are some excellent examples of reuse already happening within the groups. The fact that residents can pass on a range of useful resources such as furniture, clothing or children's toys, means that those in our community who are most in need, get to access such items for no cost.&quot;
+            </strong></em>
+            <br>
+            Cathryn Wood, Senior Sustainability & Resilience Officer, Essex County Council
           </p>
-
           <p>
-            We are trying to find out if and how councils across the UK use Freegle data to measure waste diversion
-            and support their waste minimisation campaigns. Please get in touch to let us know if you use our
-            data and if not, how we could make it more useful for you at
+            Choose to work with us and your organisation will experience a range of impactful environmental, social and cost benefits. Read on to find out more about how you can help us, to help you.
+          </p>
+          <h2>
+            Your residents will know that YOU are helping to keep their community running
+          </h2>
+          <p>
+            Your council’s logo will be featured on the local community Freegle website pages and in regular email alerts to members, detailing new items being given or requested.
+          </p>
+          <p>
+            Our active social media channels will regularly celebrate your organisation as one which promotes a more sustainable way of living and one which is actively helping to alleviate issues such as furniture poverty. If you have an event or a good news story that you would like us to share, we can do that too.
+          </p>
+          <h2>
+            You will have access to detailed data about the reuse that is happening in your area
+          </h2>
+          <p>
+            We will provide detailed data on how well the community (or communities) that you sponsor are doing by generating a range of membership and reuse data on a quarterly basis, including by postcode specific area. With the data we collect, we can calculate tonnages reused, avoided costs and CO2 savings for your particular locality
+          </p>
+          <h2>
+            We can share your news with the freeglers living in your area
+          </h2>
+          <p>
+            We can send information directly to the freeglers in your local communities to tie in with your messages, campaigns and new initiatives. Perhaps you are launching a new service, changing the entry requirements at your HWRC or you have a consultation coming up. This is a great new way for you to keep in touch with a broad spectrum of residents who share a common interest in reuse.
+          </p>
+          <h2>
+            You will save money on waste disposal
+          </h2>
+          <b-img fluid-grow src="/councils/NoQueuesHere.png" />
+          <p>
+            For every freegled item that <em>doesn’t</em> enter the waste stream, councils can count on savings in collection, handling and disposal. Our Freegle communities are incredibly self-sufficient and extremely accessible. Run by volunteers, the platform supports reuse activity between local householders with no external input required. Anyone with access to the internet can use Freegle to dispose of an item they no longer need, without leaving their home.
+          </p>
+          <h2>
+            You will demonstrate your commitment to waste prevention
+          </h2>
+          <p>
+            The UK’s waste hierarchy requires us to ‘prevent waste’ first and foremost. Reuse and ‘keeping things in use for longer’ falls firmly into this top priority category. By specifically supporting reuse alongside the provision of recycling schemes you will demonstrate that your local authority is doing the right thing by emphasising the importance of waste prevention.
+          </p>
+          <h2>
+            You will help to reduce CO2 emissions
+          </h2>
+          <p>
+            By keeping items in use, for longer, you will demonstrate to your residents that you are committed to sustainability and to the reduction of CO2 emissions.
+          </p>
+          <h2>
+            Reduce fly tipping and the associated costs
+          </h2>
+          <p>
+            By sponsoring Freegle you are supporting a highly accessible and free to use option for the disposal of residents’ unwanted items. In 2019, our statistician friends at Defra carried out some pro-bono analysis on fly-tipping. Results showed that the fly-tipping cost saving in 2019 due to freegled items was £167,910. Read more detail about the calculation
+            <!-- eslint-disable-next-line -->
+            <ExternalLink href="/Freegle_fly_tipping_method_statement.docx">here</ExternalLink>
+          </p>
+          <h2>
+            Encourage community resilience and change lives for the better
+          </h2>
+          <b-img fluid-grow src="/councils/BookHandover.jpg" />
+          <p>
+            When reuse is facilitated by Freegle, the benefits to your community are far reaching. Freegle is an easy-to-use, accessible and convenient way for people to find homes for unwanted items and a fun way to find new things. But also remember, Freegle helps people who are really struggling with issues such as furniture poverty, to find the things they desperately need, for free.
+          </p>
+          <p>
+            Freeglers speak - Your trash, my treasure!
+          </p>
+          <p>
+            <em><strong>
+              &quot;Many years ago I was homeless and got given a flat. All my furniture and white goods came from other people. There’s always someone who will be able to use stuff, even if it’s broken. I was extremely grateful to receive all those things then. And now that I am in a position where I can help, I do it with pleasure.&quot;
+            </strong></em>
+          </p>
+          <p>
+            Read more recent <nuxt-link to="/stories">
+              Freegle user stories
+            </nuxt-link> to discover more about how Freegle helps communities.
+          </p>
+          <h2>
+            Further Information
+          </h2>
+          <p>
+            Freegle is a charity, free to use but not free to run. Local Freegle groups are run entirely by volunteers from the community however there are still costs associated with running this national network.
+          </p>
+          <p>
+            Local Freegle communities have running costs of between £250 and £750 per year, depending on size.
+          </p>
+          <p>
+            Get in touch!  Mail us at
             <!-- eslint-disable-next-line -->
             <ExternalLink href="mailto:councils@ilovefreegle.org">councils@ilovefreegle.org</ExternalLink>.
           </p>
@@ -149,3 +140,10 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+.even {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+}
+</style>
