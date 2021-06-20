@@ -526,7 +526,7 @@ module.exports = {
             console.log(
               'Suppress Object Not Found Matching Id, probable password manager'
             )
-            return false
+            return null
           } else if (
             hint.originalException.name &&
             hint.originalException.name === 'TypeError'
@@ -544,7 +544,7 @@ module.exports = {
                   // the page.  So far as I can tell, this is not properly fixed by either leaflet or vue2-leaflet, but
                   // causes no real problems, just Sentry clutter.  So suppress it here.
                   console.log('Suppress leaflet exception')
-                  return false
+                  return null
                 } else if (
                   hint.originalException.message.match(
                     /TypeError: can't redefine non-configurable property "userAgent"/
@@ -553,7 +553,7 @@ module.exports = {
                   // This exception happens a lot, and the best guess I can find is that it is a bugged browser
                   // extension.
                   console.log('Suppress userAgent')
-                  return false
+                  return null
                 }
               }
             }
