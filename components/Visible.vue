@@ -8,12 +8,26 @@ export default {
   props: {
     at: {
       type: Array,
-      required: true
+      required: false,
+      default: null
+    },
+    not: {
+      type: Array,
+      required: false,
+      default: null
     }
   },
   computed: {
     show() {
-      return this.at.indexOf(this.breakpoint) !== -1
+      if (process.server) {
+        // Drop all optional components for SSR, otherwise we might start to render them on the client when we
+        // don't need to.
+        return false
+      } else if (this.at) {
+        return this.at.indexOf(this.breakpoint) !== -1
+      } else {
+        return this.not.indexOf(this.breakpoint) === -1
+      }
     }
   }
 }

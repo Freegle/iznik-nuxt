@@ -1,6 +1,6 @@
 <template>
   <div v-if="!me" class="grid m-0 pl-1 pr-1 pl-sm-0 pr-sm-0 mt-0 mt-lg-5 ml-4 mr-4">
-    <Visible :at="['sm', 'md', 'lg', 'xl']" class="map justify-content-start flex-column d-flex">
+    <Visible :not="['xs']" class="map justify-content-start flex-column d-flex">
       <VisualiseMap v-if="type === 'Map'" class="shadow flex-grow-1" />
       <div v-else-if="type === 'Song'">
         <b-img v-if="!timeToPlay" fluid src="/songpreview.png" class="flex-grow-1 w-100" @click="play" />
