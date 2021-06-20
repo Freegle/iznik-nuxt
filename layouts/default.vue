@@ -19,6 +19,7 @@
       <div class="d-none">
         <ChatButton v-if="replyToSend" ref="replyToPostChatButton" :userid="replyToUser" />
       </div>
+      <Breakpoint />
     </client-only>
   </div>
 </template>
@@ -29,6 +30,7 @@ import replyToPost from '@/mixins/replyToPost'
 import LocalStorageMonitor from '~/components/LocalStorageMonitor'
 import BouncingEmail from '~/components/BouncingEmail'
 import MainHeader from '~/components/MainHeader'
+import Breakpoint from '~/components/Breakpoint'
 
 const ChatPopups = () => import('~/components/ChatPopups')
 const ChatButton = () => import('~/components/ChatButton')
@@ -36,6 +38,7 @@ const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
   components: {
+    Breakpoint,
     ChatPopups,
     ChatButton,
     LocalStorageMonitor,
