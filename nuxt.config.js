@@ -522,7 +522,7 @@ module.exports = {
           } else if (
             hint.originalException
               .toString()
-              .match(/Object Not Found Matching Id/)
+              .indexOf('Object Not Found Matching Id') !== -1
           ) {
             // This seems to be a spurious error caused by a password manager.  See
             // https://github.com/getsentry/sentry-javascript/issues/3440
