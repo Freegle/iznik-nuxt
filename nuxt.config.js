@@ -519,11 +519,8 @@ module.exports = {
             // There's basically no info to report, so there's nothing we can do.  Suppress it.
             console.log('No info - suppress exception')
             return null
-          } else if (
-            hint.originalException
-              .toString()
-              .indexOf('Object Not Found Matching Id') !== -1
-          ) {
+            // eslint-disable-next-line
+          } else if (hint.originalException.toString().match(/Object Not Found Matching Id/)) {
             // This seems to be a spurious error caused by a password manager.  See
             // https://github.com/getsentry/sentry-javascript/issues/3440
             console.log(
