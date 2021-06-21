@@ -10,13 +10,21 @@
 <script>
 export default {
   mounted() {
+    // Spot when the elements become visible/hidden.
+    const ro = new ResizeObserver(this.check)
+    ;['xs', 'sm', 'md', 'lg', 'xl'].forEach(breakpoint => {
+      console.log('Observe', breakpoint, this.$refs[breakpoint])
+      ro.observe(this.$refs[breakpoint])
+      console.log('Observed')
+    })
+
     this.check()
   },
   methods: {
     check() {
       const oldBreakpoint = this.$store.getters['misc/get']('breakpoint')
       let currentBreakpoint = oldBreakpoint
-      ;['xs', 'sm', 'md', 'ld', 'xl'].forEach(breakpoint => {
+      ;['xs', 'sm', 'md', 'lg', 'xl'].forEach(breakpoint => {
         if (this.$refs[breakpoint]) {
           if (getComputedStyle(this.$refs[breakpoint]).display === 'block') {
             // This breakpoint is visible and is therefore the current one.
@@ -31,8 +39,6 @@ export default {
           })
         }
       })
-
-      setTimeout(this.check, 100)
     }
   }
 }
