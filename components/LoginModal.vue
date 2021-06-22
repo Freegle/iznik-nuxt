@@ -208,7 +208,9 @@ export default {
       nativeLoginError: null,
       socialLoginError: null,
       showPassword: false,
-      loginType: null
+      loginType: null,
+      initialisedSocialLogin: false,
+      showSocialLoginBlocked: false
     }
   },
 
@@ -219,11 +221,19 @@ export default {
     // Use of this.bump means we will recompute when we need to, i.e. when the modal is shown.  This is overriding
     // normal reactivity but that's because the SDKs we use aren't written in Vue.
     facebookDisabled() {
-      return this.bump && typeof Vue.FB === 'undefined'
+      return (
+        this.bump &&
+        this.showSocialLoginBlocked &&
+        typeof Vue.FB === 'undefined'
+      )
     },
 
     googleDisabled() {
-      return this.bump && (!window || !window.gapi || !window.gapi.client)
+      return (
+        this.bump &&
+        this.showSocialLoginBlocked &&
+        (!window || !window.gapi || !window.gapi.client)
+      )
     },
 
     yahooDisabled() {
@@ -275,6 +285,19 @@ export default {
       immediate: true,
       handler(newVal) {
         this.pleaseShowModal = newVal
+
+        if (newVal && !this.initialisedSocialLogin) {
+          // We only use the Google and Facebook SDKs in login, so we can install them here in the modal.  This means we
+          // don't load the scripts for every page.
+          console.log('Load SDK')
+          this.installGoogleSDK()
+          this.installFacebookSDK()
+          this.initialisedSocialLogin = true
+
+          setTimeout(() => {
+            this.showSocialLoginBlocked = true
+          }, 5000)
+        }
       }
     },
     pleaseShowModal: {
@@ -318,15 +341,9 @@ export default {
       this.bumpTimer = setTimeout(this.bumpIt, 500)
     },
     show() {
-      console.log('Show login modal')
       this.pleaseShowModal = true
       this.nativeLoginError = null
       this.socialLoginError = null
-
-      // We only use the Google and Facebook SDKs in login, so we can install them here in the modal.  This means we
-      // don't load the scripts for every page.
-      this.installGoogleSDK()
-      this.installFacebookSDK()
     },
     hide() {
       this.pleaseShowModal = false

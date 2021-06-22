@@ -115,7 +115,7 @@ const OurToggle = () => import('~/components/OurToggle')
 
 export default {
   components: { SpinButton, OurToggle, ModCake },
-  mixins: [ waitForRef ],
+  mixins: [waitForRef],
   data: function() {
     return {
       modNotifOptions: [
