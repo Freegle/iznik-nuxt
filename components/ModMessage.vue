@@ -298,7 +298,7 @@
         <b-btn v-if="editing" variant="secondary" class="mr-auto" @click="photoAdd">
           <v-icon name="camera" />&nbsp;Add photo
         </b-btn>
-        <b-btn v-if="editing" variant="white" @click="editing = false">
+        <b-btn v-if="editing" variant="white" @click="cancelEdit">
           <v-icon name="times" /> Cancel
         </b-btn>
         <b-button v-if="editing" variant="primary" @click="save">
@@ -825,6 +825,14 @@ export default {
           this.homegroup = loc.groupsnear[0].namedisplay
         }
       }
+    },
+    cancelEdit() {
+      this.editing = false
+
+      // Fetch the message again to revert any changes.
+      this.$store.dispatch('messages/fetch', {
+        id: this.message.id
+      })
     }
   }
 }
