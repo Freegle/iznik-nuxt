@@ -1,4 +1,5 @@
 import Router from 'vue-router'
+import Vue from 'vue'
 
 // The Vue router has changed in a way that forces errors to be handled.  See
 // https://github.com/vuejs/vue-router/issues/2881
@@ -26,3 +27,11 @@ Router.prototype.push = function push(location, onResolve, onReject) {
 
   return ret
 }
+
+Vue.mixin({
+  computed: {
+    breakpoint() {
+      return this.$store.getters['misc/get']('breakpoint')
+    }
+  }
+})
