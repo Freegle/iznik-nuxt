@@ -486,7 +486,7 @@ module.exports = {
     dsn: SENTRY_DSN,
     publishRelease: false,
     config: {
-      beforeSend(event, hint) {
+      beforeSemnd(event, hint) {
         function isSafariExtension(event, hint) {
           if (
             !hint ||

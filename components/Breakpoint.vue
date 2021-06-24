@@ -8,6 +8,8 @@
   </span>
 </template>
 <script>
+import ResizeObserver from 'resize-observer-polyfill'
+
 export default {
   mounted() {
     // Spot when the elements become visible/hidden.
