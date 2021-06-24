@@ -547,7 +547,7 @@ module.exports = {
                   return null
                 } else if (
                   hint.originalException.message.match(
-                    /TypeError: can't redefine non-configurable property "userAgent"/
+                    /can't redefine non-configurable property "userAgent"/
                   )
                 ) {
                   // This exception happens a lot, and the best guess I can find is that it is a bugged browser
