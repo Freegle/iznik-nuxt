@@ -17,12 +17,25 @@
           </p>
           <div class="even">
             <b-img src="/sponsors/BlackpoolCouncil.jpg" thumbnail />
+            <b-img src="/sponsors/Buckinghamshire.png" thumbnail />
             <b-img src="/sponsors/LoveEssex.jpg" thumbnail />
             <b-img src="/sponsors/LancashireCountyCouncil.jpg" thumbnail />
             <b-img src="/sponsors/LancasterCityCouncil.jpg" thumbnail />
           </div>
           <p class="mt-2">
             A word from one of our sponsors -
+          </p>
+          <p>
+            <em><strong>
+              &quot;The statistics provided are one of the biggest benefits to us partnering with Freegle as reuse is
+              notoriously difficult to measure. The statistics show the impact of our investment, whether it's carbon,
+              money, waste etc. and enables us to validate the investment."
+            </strong></em>
+            <br>
+            Andrew Jenkins, Waste Promotions Lead Officer, Buckinghamshire Council
+          </p>
+          <p class="mt-2">
+            And another -
           </p>
           <p>
             <em><strong>
