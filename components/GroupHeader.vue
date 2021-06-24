@@ -99,9 +99,8 @@
               </div>
             </div>
           </div>
-          <div v-if="sponsor.description" class="small text-wrap">
-            {{ sponsor.description }}
-          </div>
+          <!-- eslint-disable-next-line -->
+          <div v-if="sponsor.description" class="small text-wrap" v-html="sponsor.description" />
         </b-card-body>
       </b-card>
     </div>
