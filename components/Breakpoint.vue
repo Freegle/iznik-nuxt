@@ -15,9 +15,7 @@ export default {
     // Spot when the elements become visible/hidden.
     const ro = new ResizeObserver(this.check)
     ;['xs', 'sm', 'md', 'lg', 'xl'].forEach(breakpoint => {
-      console.log('Observe', breakpoint, this.$refs[breakpoint])
       ro.observe(this.$refs[breakpoint])
-      console.log('Observed')
     })
 
     this.check()
