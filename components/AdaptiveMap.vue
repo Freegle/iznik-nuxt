@@ -610,6 +610,15 @@ export default {
     this.postMapInitialBounds = this.locked ? this.locked : this.initialBounds
     // this.postMapInitialBounds = this.initialBounds
 
+    const mygroups = this.$store.getters['auth/groups']
+
+    if (mygroups && mygroups.length === 1) {
+      // We will be showing the single group; make sure we have any description.
+      this.$store.dispatch('group/fetch', {
+        id: mygroups[0].id
+      })
+    }
+
     if (!this.startOnGroups) {
       this.context = null
 
