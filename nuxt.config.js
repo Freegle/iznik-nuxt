@@ -207,8 +207,8 @@ module.exports = {
     { src: '~/plugins/vue-social-sharing', ssr: false },
     { src: '~/plugins/vue-lazy-youtube-video', ssr: false },
     { src: '~/plugins/inspectlet', ssr: false },
-    { src: '@/plugins/vue-fabric-wrapper', ssr: false },
-    { src: '@/plugins/vue2-leaflet', ssr: false }
+    { src: '~/plugins/vue-fabric-wrapper', ssr: false },
+    { src: '~/plugins/vue2-leaflet', ssr: false }
   ],
 
   // Can't use redirect as this doesn't work with nuxt generate, so redirects are done as rewrites in nginx config.

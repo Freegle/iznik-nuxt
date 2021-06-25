@@ -82,8 +82,10 @@
           @click="registerOrSend"
         >
           Send <span class="d-none d-md-inline">your</span> reply
-          <v-icon v-if="replying" name="sync" class="fa-spin" />
-          <v-icon v-else name="angle-double-right" />&nbsp;
+          <client-only>
+            <v-icon v-if="replying" name="sync" class="fa-spin" />
+            <v-icon v-else name="angle-double-right" />&nbsp;
+          </client-only>
         </b-btn>
         <b-btn
           v-else
@@ -94,8 +96,10 @@
           @click="sendReply"
         >
           Send <span class="d-none d-md-inline">your</span> reply
-          <v-icon v-if="replying" name="sync" class="fa-spin" />
-          <v-icon v-else name="angle-double-right" />&nbsp;
+          <client-only>
+            <v-icon v-if="replying" name="sync" class="fa-spin" />
+            <v-icon v-else name="angle-double-right" />&nbsp;
+          </client-only>
         </b-btn>
       </div>
     </div>

@@ -1,23 +1,25 @@
 <template>
   <div>
-    <NoticeMessage v-if="show" variant="danger">
-      <b-btn variant="link" class="float-right" @click="hideit">
-        Hide this
-      </b-btn>
-      <p>
-        We hope you and yours are safe.  Please freegle responsibly and help keep it that way.  Respect local
-        rules and lockdowns.
-      </p>
-      <b-btn variant="link" @click="showModal = true">
-        Read our advice on safe freegling
-      </b-btn>
-      <b-modal v-model="showModal" ok-only size="lg" title="Safe Freegling" ok-title="Close">
-        <CovidSafeFreegling />
-      </b-modal>
-    </NoticeMessage>
-    <div v-else class="text-danger text-right clickme" @click="showit">
-      Show COVID-19 warning.
-    </div>
+    <client-only>
+      <NoticeMessage v-if="show" variant="danger">
+        <b-btn variant="link" class="float-right" @click="hideit">
+          Hide this
+        </b-btn>
+        <p>
+          We hope you and yours are safe.  Please freegle responsibly and help keep it that way.  Respect local
+          rules and lockdowns.
+        </p>
+        <b-btn variant="link" @click="showModal = true">
+          Read our advice on safe freegling
+        </b-btn>
+        <b-modal v-model="showModal" ok-only size="lg" title="Safe Freegling" ok-title="Close">
+          <CovidSafeFreegling />
+        </b-modal>
+      </NoticeMessage>
+      <div v-else class="text-danger text-right clickme" @click="showit">
+        Show COVID-19 warning.
+      </div>
+    </client-only>
   </div>
 </template>
 <script>

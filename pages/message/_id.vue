@@ -13,13 +13,13 @@
           <b-row>
             <b-col cols="5" class="mt-1">
               <b-button to="/give" class="mt-1" size="lg" block variant="primary">
-                <v-icon name="gift" />&nbsp;Give stuff
+                <client-only><v-icon name="gift" /></client-only>&nbsp;Give stuff
               </b-button>
             </b-col>
             <b-col cols="2" />
             <b-col cols="5">
               <b-button to="/find" class="mt-1" size="lg" block variant="secondary">
-                <v-icon name="shopping-cart" />&nbsp;Ask for stuff
+                <client-only><v-icon name="shopping-cart" /></client-only>&nbsp;Ask for stuff
               </b-button>
             </b-col>
           </b-row>
@@ -39,13 +39,13 @@
           <b-row>
             <b-col cols="5" class="mt-1">
               <b-button to="/give" class="mt-1" size="lg" block variant="primary">
-                <v-icon name="gift" />&nbsp;Give stuff
+                <client-only><v-icon name="gift" /></client-only>&nbsp;Give stuff
               </b-button>
             </b-col>
             <b-col cols="2" />
             <b-col cols="5">
               <b-button to="/find" class="mt-1" size="lg" block variant="secondary">
-                <v-icon name="shopping-cart" />&nbsp;Ask for stuff
+                <client-only><v-icon name="shopping-cart" /></client-only>&nbsp;Ask for stuff
               </b-button>
             </b-col>
           </b-row>
@@ -110,7 +110,6 @@ export default {
     }
   },
   async asyncData({ app, params, store }) {
-    console.log('GEt message', params.id)
     if (params.id) {
       try {
         await store.dispatch('messages/fetch', {
