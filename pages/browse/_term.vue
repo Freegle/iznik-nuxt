@@ -10,7 +10,9 @@
         </Visible>
       </b-col>
       <b-col cols="12" xl="6" class="p-0">
-        <MicroVolunteering />
+        <client-only>
+          <MicroVolunteering />
+        </client-only>
         <div v-if="showRest">
           <CovidWarning />
           <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
@@ -53,7 +55,6 @@ import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
 import Visible from '../../components/Visible'
-import MicroVolunteering from '~/components/MicroVolunteering'
 import AdaptiveMap from '~/components/AdaptiveMap'
 
 const CovidWarning = () => import('~/components/CovidWarning')
@@ -61,6 +62,7 @@ const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
 const ExpectedRepliesWarning = () =>
   import('~/components/ExpectedRepliesWarning')
+const MicroVolunteering = () => import('~/components/MicroVolunteering.vue')
 
 let Wkt = null
 let L = null

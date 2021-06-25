@@ -1,6 +1,8 @@
 <template>
   <b-col>
-    <MicroVolunteering />
+    <client-only>
+      <MicroVolunteering />
+    </client-only>
     <b-row class="m-0">
       <b-col cols="0" xl="3" class="d-none d-xl-block" />
       <b-col cols="12" xl="6" class="p-0">
@@ -73,10 +75,10 @@ import buildHead from '@/mixins/buildHead.js'
 import NoticeMessage from '../../components/NoticeMessage'
 import CovidWarning from '../../components/CovidWarning'
 import MyMessage from '../../components/MyMessage'
-import MicroVolunteering from '../../components/MicroVolunteering'
 import twem from '~/assets/js/twem'
 
 const Message = () => import('~/components/Message.vue')
+const MicroVolunteering = () => import('~/components/MicroVolunteering.vue')
 
 export default {
   components: {

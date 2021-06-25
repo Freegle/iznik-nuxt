@@ -357,7 +357,8 @@ module.exports = {
           // This is necessary to ensure we don't need cookie consent - see /privacy.
           Vue.$ga.set('anonymizeIp', true)
         }
-      }
+      },
+      '@nuxtjs/html-validator'
     ]
   ],
 
