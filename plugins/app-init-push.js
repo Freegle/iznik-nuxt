@@ -14,7 +14,8 @@ const pushstate = Vue.observable({
   modtools: false,
   mobilePushId: false, // Note: mobilePushId is the same regardless of which user is logged in
   inlineReply: false,
-  chatid: false
+  chatid: false,
+  checkForUpdate: false
 })
 
 const linkstate = Vue.observable({
@@ -25,6 +26,7 @@ const linkstate = Vue.observable({
 let acceptedMobilePushId = false
 let mobilePush = false
 let lastPushMsgid = false
+let checkedForUpdate = false
 
 window.iznikroot = location.pathname.substring(0, location.pathname.lastIndexOf('/') + 1)
 window.iznikroot = decodeURI(window.iznikroot.replace(/%25/g, '%2525'))
@@ -173,22 +175,7 @@ const cordovaApp = {
       window.plugins.webintent.onNewIntent(function(url) {
         console.log('INTENT onNewIntent: ', url)
       }) */
-
-      // Get current app version
-      // https://github.com/sampart/cordova-plugin-app-version
-      // Check app version Android
-      // https://play.google.com/store/apps/details?id=org.ilovefreegle.direct&hl=en
-      // https://stackoverflow.com/questions/34309564/how-to-get-app-market-version-information-from-google-play-store
-      // https://www.npmjs.com/package/cordova-plugin-codeplay-in-app-update
-
-      /*setTimeout(function () {
-        cordova.InAppBrowser.open('https://itunes.apple.com/gb/lookup?bundleId=org.ilovefreegle.iphone'
-          this.loginWindow.addEventListener('loadstart', event => {
-                  this.loginWindowLoadStartHandler(event)
-          })
-      },5000)*/
-
-      
+      pushstate.checkForUpdate = true
 
     } catch (e) {
       console.log('onDeviceReady catch', e)
@@ -330,7 +317,7 @@ export function setBadgeCount(badgeCount) {
 
 // When the plugin is loaded at runtime, watches are setup...
 // https://github.com/vuejs/rfcs/blob/function-apis/active-rfcs/0000-function-api.md#watchers
-export default ({ app, store }) => { // route
+export default ({ app, store, $api, $axios }) => { // route
   if (process.env.IS_APP) {
 
     // When isiOS changed, tell mobileapp
@@ -441,31 +428,71 @@ export default ({ app, store }) => { // route
         }
       }
     )
+
+    // When pushstate.checkForUpdate set, check for app update
+    store.watch(
+      () => pushstate.checkForUpdate,
+      async checkForUpdate => {
+        if (checkForUpdate && !checkedForUpdate) {
+          console.log('========', checkForUpdate)
+          checkedForUpdate = true
+          await checkForAppUpdate($api, $axios, store)
+        }
+      }
+    )
   }
 }
 
-export async function checkForAppUpdate(axios, store) {
+/*
+ * Get required and latest app versions fromn the server
+  app_fd_version_ios_required
+  app_fd_version_ios_latest
+	app_mt_version_ios_required
+	app_mt_version_ios_latest
+	app_fd_version_android_required
+	app_fd_version_android_latest
+	app_mt_version_android_required
+	app_mt_version_android_latest
+ */
+async function checkForAppUpdate($api, $axios, store) {
   try {
     if (process.env.IS_APP || process.env.IS_MTAPP) {
-      if (mobilestate.isiOS) {
-        const FD_LOOKUP = 'https://itunes.apple.com/gb/lookup?bundleId=org.ilovefreegle.iphone'
-        const MT_LOOKUP = 'https://itunes.apple.com/lookup?bundleId=org.ilovefreegle.modtools'
-        const res = await axios.get(process.env.IS_MTAPP ? MT_LOOKUP : FD_LOOKUP )
-        if (res.data && res.data.resultCount && res.data.resultCount === 1) {
-          // { "resultCount": 1, "results": [ { "currentVersionReleaseDate":"2021-06-10T15:46:35Z", "version":"0.3.52",
-          const info = res.data.results[0]
-          const currentVersionReleaseDate = info.currentVersionReleaseDate
-          const version = info.version
-          console.log('iOS currentVersionReleaseDate', currentVersionReleaseDate, 'version', version)
+      console.log('AAAA', mobilestate.isiOS)
+      const requiredKey = process.env.IS_MTAPP ? (mobilestate.isiOS ? 'app_mt_version_ios_required' : 'app_mt_version_android_required') :
+        (mobilestate.isiOS ? 'app_fd_version_ios_required' : 'app_fd_version_android_required')
+      const latestKey = process.env.IS_MTAPP ? (mobilestate.isiOS ? 'app_mt_version_ios_latest' : 'app_mt_version_android_latest') :
+        (mobilestate.isiOS ? 'app_fd_version_ios_latest' : 'app_fd_version_android_latest')
+
+      const required = await $api.config.fetch({ key: requiredKey })
+      console.log(required)
+      console.log(required.values)
+      if (required && required.values && required.values.length === 1) {
+        const requiredVersion = required.values[0].value
+        console.log(requiredVersion)
+        if (requiredVersion) {
           store.dispatch('misc/set', {
-            key: 'appupdateversion',
-            value: version
-          })
-          store.dispatch('misc/set', {
-            key: 'appupdateversiondate',
-            value: currentVersionReleaseDate
+            key: 'apprequiredversion',
+            value: requiredVersion
           })
         }
+      }
+
+      const latest = await $api.config.fetch({ key: latestKey })
+      console.log(latest)
+      console.log(latest.values)
+      if (latest && latest.values && latest.values.length === 1) {
+        const latestVersion = latest.values[0].value
+        console.log(latestVersion)
+        if (latestVersion) {
+          store.dispatch('misc/set', {
+            key: 'applatestversion',
+            value: latestVersion
+          })
+        }
+        //store.dispatch('misc/set', {
+        //  key: 'applatestversiondate',
+        //  value: currentVersionReleaseDate
+        //})
       }
     }
   } catch (e) {

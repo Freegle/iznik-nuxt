@@ -34,9 +34,6 @@ const ChatPopups = () => import('~/components/ChatPopups')
 const ChatButton = () => import('~/components/ChatButton')
 const ExternalLink = () => import('~/components/ExternalLink')
 
-import { checkForAppUpdate } from '@/plugins/app-init-push' // CC
-let checkedForUpdate = false
-
 export default {
   components: {
     ChatPopups,
@@ -154,12 +151,6 @@ export default {
 
         this.replyToPost()
       }
-    }
-
-    // CC
-    if (!checkedForUpdate) {
-      checkedForUpdate = true
-      await checkForAppUpdate(this.$axios, this.$store)
     }
   },
   async beforeCreate() {

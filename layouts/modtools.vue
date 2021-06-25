@@ -112,9 +112,6 @@ const ExternalLink = () => import('~/components/ExternalLink')
 const ChatPopups = () => import('~/components/ChatPopups')
 import { setBadgeCount } from '../plugins/app-init-push' // CC
 
-import { checkForAppUpdate } from '@/plugins/app-init-push' // CC
-let checkedForUpdate = false
-
   export default {
   components: {
     ModMenuItemLeft,
@@ -212,12 +209,6 @@ let checkedForUpdate = false
     this.$store.dispatch('chats/fetchLatestChats')
 
     setTimeout(this.updateFavicon, 1000)
-
-    // CC
-    if (!checkedForUpdate) {
-      checkedForUpdate = true
-      await checkForAppUpdate(this.$axios, this.$store)
-    }
   },
   beforeDestroy() {
     if (this.workTimer) {

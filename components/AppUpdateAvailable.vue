@@ -1,6 +1,6 @@
 <template>
   <NoticeMessage v-if="show" variant="danger">
-    Please update your app to version {{appupdateversion}}.
+    Please update your app to version {{applatestversion}}.
   </NoticeMessage>
 </template>
 <script>
@@ -9,11 +9,11 @@ import NoticeMessage from './NoticeMessage'
 export default {
   components: { NoticeMessage },
   computed: {
-    appupdateversion() {
-      return this.$store.getters['misc/get']('appupdateversion')
+    applatestversion() {
+      return this.$store.getters['misc/get']('applatestversion')
     },
     show() {
-      const newver = this.$store.getters['misc/get']('appupdateversion')
+      const newver = this.$store.getters['misc/get']('applatestversion')
       if( !newver) return false
       const anewver = newver.split('.')
       const currentver = process.env.IS_APP ? process.env.MOBILE_VERSION : process.env.MODTOOLS_VERSION
