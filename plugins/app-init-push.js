@@ -180,6 +180,8 @@ const cordovaApp = {
       window.plugins.webintent.onNewIntent(function(url) {
         console.log('INTENT onNewIntent: ', url)
       }) */
+
+      // Prompt a check for the latest app versions
       pushstate.checkForUpdate = true
 
     } catch (e) {
@@ -439,7 +441,6 @@ export default ({ app, store, $api, $axios }) => { // route
       () => pushstate.checkForUpdate,
       async checkForUpdate => {
         if (checkForUpdate && !checkedForUpdate) {
-          console.log('========', checkForUpdate)
           checkedForUpdate = true
           await checkForAppUpdate($api, $axios, store, app.router)
         }
@@ -462,7 +463,7 @@ export default ({ app, store, $api, $axios }) => { // route
 async function checkForAppUpdate($api, $axios, store, router) {
   try {
     if (process.env.IS_APP || process.env.IS_MTAPP) {
-      console.log('checkForAppUpdate isIOS', mobilestate.isiOS)
+      //console.log('checkForAppUpdate isIOS', mobilestate.isiOS)
       const requiredKey = process.env.IS_MTAPP ? (mobilestate.isiOS ? 'app_mt_version_ios_required' : 'app_mt_version_android_required') :
         (mobilestate.isiOS ? 'app_fd_version_ios_required' : 'app_fd_version_android_required')
       const latestKey = process.env.IS_MTAPP ? (mobilestate.isiOS ? 'app_mt_version_ios_latest' : 'app_mt_version_android_latest') :
@@ -503,7 +504,7 @@ async function checkForAppUpdate($api, $axios, store, router) {
 
 export function versionOutOfDate(newver) {
   const currentver = process.env.IS_MTAPP ? process.env.MODTOOLS_VERSION : process.env.MOBILE_VERSION
-  console.log('versionOutOfDate now:' + currentver + ' vs ' + newver)
+  // console.log('versionOutOfDate now:' + currentver + ' vs ' + newver)
   if (!newver) return false
   const anewver = newver.split('.')
   const acurrentver = currentver.split('.')
