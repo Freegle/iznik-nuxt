@@ -5,23 +5,27 @@
         <div v-if="chatmessage.userid != myid" class="media">
           <b-card border-variant="success">
             <b-card-title>
-              <b-img
-                v-if="refmsg && refmsg.attachments && refmsg.attachments.length > 0"
-                class="float-right ml-1"
-                rounded
-                thumbnail
-                generator-unable-to-provide-required-alt=""
-                lazy
-                :src="refmsg.attachments[0].paththumb"
-                width="70px"
-                @error="brokenImage"
-              />
+              <nuxt-link :to="(messageIsFromCurrentUser ? '/myposts' : '/message/') + refmsg.id">
+                <b-img
+                  v-if="refmsg && refmsg.attachments && refmsg.attachments.length > 0"
+                  class="float-right ml-1"
+                  rounded
+                  thumbnail
+                  generator-unable-to-provide-required-alt=""
+                  lazy
+                  :src="refmsg.attachments[0].paththumb"
+                  width="70px"
+                  @error="brokenImage"
+                />
+              </nuxt-link>
               <ProfileImage :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
               <span class="small black">Good news! You've been promised this:</span>
               <br>
-              <h4>
-                {{ refmsg.subject }}
-              </h4>
+              <nuxt-link :to="(messageIsFromCurrentUser ? '/myposts' : '/message/') + refmsg.id">
+                <h4>
+                  {{ refmsg.subject }}
+                </h4>
+              </nuxt-link>
               <AddToCalendar v-if="tryst" :ics="tryst.ics" class="mr-2" />
             </b-card-title>
             <b-card-text>
@@ -38,23 +42,27 @@
         <div v-else class="media float-right">
           <b-card border-variant="success">
             <b-card-title>
-              <b-img
-                v-if="refmsg && refmsg.attachments && refmsg.attachments.length > 0"
-                class="float-right"
-                rounded
-                thumbnail
-                generator-unable-to-provide-required-alt=""
-                lazy
-                :src="refmsg.attachments[0].paththumb"
-                width="70px"
-                @error="brokenImage"
-              />
+              <nuxt-link :to="(messageIsFromCurrentUser ? '/myposts' : '/message/') + refmsg.id">
+                <b-img
+                  v-if="refmsg && refmsg.attachments && refmsg.attachments.length > 0"
+                  class="float-right"
+                  rounded
+                  thumbnail
+                  generator-unable-to-provide-required-alt=""
+                  lazy
+                  :src="refmsg.attachments[0].paththumb"
+                  width="70px"
+                  @error="brokenImage"
+                />
+              </nuxt-link>
               <ProfileImage :image="me.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
               <span class="small black">You promised <strong>{{ otheruser.displayname }}</strong>:</span>
               <br>
-              <h4>
-                {{ refmsg.subject }}
-              </h4>
+              <nuxt-link :to="(messageIsFromCurrentUser ? '/myposts' : '/message/') + refmsg.id">
+                <h4>
+                  {{ refmsg.subject }}
+                </h4>
+              </nuxt-link>
               <p v-if="trystdate" class="small text-info">
                 Handover arranged for <strong>{{ trystdate }}</strong>
               </p>
