@@ -1,6 +1,6 @@
 <template>
   <b-col>
-    <client-only>
+    <client-only v-if="me">
       <MicroVolunteering />
     </client-only>
     <b-row class="m-0">
