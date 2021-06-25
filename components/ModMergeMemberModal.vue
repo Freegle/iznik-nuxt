@@ -62,7 +62,7 @@
         <b-button variant="white" @click="cancel">
           Close
         </b-button>
-        <b-button v-if="!merged" variant="primary" :disabled="!email1 || !email2 || !reason || tn" @click="merge">
+        <b-button v-if="!merged" variant="primary" :disabled="cantMerge" @click="merge">
           Merge
         </b-button>
       </template>
@@ -95,6 +95,21 @@ export default {
         (this.email1 && this.email1.indexOf('trashnothing') !== -1) ||
         (this.email2 && this.email2.indexOf('trashnothing') !== -1)
       )
+    },
+    cantMerge() {
+      if (!this.reason || this.tn) {
+        return true
+      }
+
+      if (this.email1 && this.email2) {
+        return false
+      }
+
+      if (this.id1 && this.id2) {
+        return false
+      }
+
+      return true
     }
   },
   methods: {
