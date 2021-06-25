@@ -57,7 +57,6 @@
       </a>
     </div>
     <main-footer class="thefooter" />
-    </visible>
   </div>
 </template>
 <script>
