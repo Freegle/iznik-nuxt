@@ -235,7 +235,13 @@ export default {
       }
 
       ms.sort(function(a, b) {
-        return new Date(b.added).getTime() - new Date(a.added).getTime()
+        if (a.reviewreason && !b.reviewreason) {
+          return -1
+        } else if (b.reviewreason && !a.reviewreason) {
+          return 1
+        } else {
+          return new Date(b.added).getTime() - new Date(a.added).getTime()
+        }
       })
 
       return ms
