@@ -1,8 +1,10 @@
 <template>
   <b-container v-if="me" fluid>
     <b-row class="m-0">
-      <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pr-1">
-        <SidebarLeft :show-community-events="true" :show-bot-left="true" />
+      <b-col cols="0" lg="3" class="p-0 pr-1">
+        <Visible :at="['lg', 'xl']">
+          <SidebarLeft :show-community-events="true" :show-bot-left="true" />
+        </Visible>
       </b-col>
       <b-col cols="12" lg="6" class="newsfeedHolder p-0">
         <CovidWarning />
@@ -89,8 +91,10 @@
           </client-only>
         </div>
       </b-col>
-      <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pl-1">
-        <sidebar-right show-volunteer-opportunities show-job-opportunities />
+      <b-col cols="0" lg="3" class="p-0 pl-1">
+        <Visible :at="['lg', 'xl']">
+          <sidebar-right show-volunteer-opportunities show-job-opportunities />
+        </Visible>
       </b-col>
     </b-row>
   </b-container>
@@ -105,6 +109,7 @@ import buildHead from '@/mixins/buildHead'
 import NoticeMessage from '../../components/NoticeMessage'
 import CovidWarning from '../../components/CovidWarning'
 import AppUpdateAvailable from '~/components/AppUpdateAvailable.vue'
+import Visible from '../../components/Visible'
 import twem from '~/assets/js/twem'
 import NewsThread from '~/components/NewsThread.vue'
 
@@ -119,6 +124,7 @@ const ExpectedRepliesWarning = () =>
 
 export default {
   components: {
+    Visible,
     CovidWarning,
     AppUpdateAvailable,
     ExpectedRepliesWarning,

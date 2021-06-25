@@ -5,17 +5,19 @@
         <div v-if="chatmessage.userid != myid" class="media">
           <b-card border-variant="success">
             <b-card-title>
-              <b-img
-                v-if="refmsg && refmsg.attachments && refmsg.attachments.length > 0"
-                class="float-right"
-                rounded
-                thumbnail
-                generator-unable-to-provide-required-alt=""
-                lazy
-                :src="refmsg.attachments[0].paththumb"
-                width="70px"
-                @error="brokenImage"
-              />
+              <nuxt-link :to="(!messageIsFromCurrentUser ? '/mypost/' : '/message/') + refmsg.id">
+                <b-img
+                  v-if="refmsg && refmsg.attachments && refmsg.attachments.length > 0"
+                  class="float-right"
+                  rounded
+                  thumbnail
+                  generator-unable-to-provide-required-alt=""
+                  lazy
+                  :src="refmsg.attachments[0].paththumb"
+                  width="70px"
+                  @error="brokenImage"
+                />
+              </nuxt-link>
               <div v-if="otheruser">
                 <ProfileImage :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
                 <span class="small black"><strong>{{ otheruser.displayname }}</strong> has
@@ -24,7 +26,7 @@
                   about:
                 </span>
               </div>
-              <nuxt-link :to="!messageIsFromCurrentUser ? '/myposts' : ('/message/' + refmsg.id)">
+              <nuxt-link :to="(!messageIsFromCurrentUser ? '/mypost/' : '/message/') + refmsg.id">
                 <h4 class="mt-1">
                   {{ refmsg.subject }}
                   <b-badge v-if="refmsg.availableinitially > 1" variant="info">

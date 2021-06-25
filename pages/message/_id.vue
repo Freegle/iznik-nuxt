@@ -1,6 +1,8 @@
 <template>
   <b-col>
-    <MicroVolunteering />
+    <client-only v-if="me">
+      <MicroVolunteering />
+    </client-only>
     <b-row class="m-0">
       <b-col cols="0" xl="3" class="d-none d-xl-block" />
       <b-col cols="12" xl="6" class="p-0">
@@ -13,13 +15,13 @@
           <b-row>
             <b-col cols="5" class="mt-1">
               <b-button to="/give" class="mt-1" size="lg" block variant="primary">
-                <v-icon name="gift" />&nbsp;Give stuff
+                <client-only><v-icon name="gift" /></client-only>&nbsp;Give stuff
               </b-button>
             </b-col>
             <b-col cols="2" />
             <b-col cols="5">
               <b-button to="/find" class="mt-1" size="lg" block variant="secondary">
-                <v-icon name="shopping-cart" />&nbsp;Ask for stuff
+                <client-only><v-icon name="shopping-cart" /></client-only>&nbsp;Ask for stuff
               </b-button>
             </b-col>
           </b-row>
@@ -39,13 +41,13 @@
           <b-row>
             <b-col cols="5" class="mt-1">
               <b-button to="/give" class="mt-1" size="lg" block variant="primary">
-                <v-icon name="gift" />&nbsp;Give stuff
+                <client-only><v-icon name="gift" /></client-only>&nbsp;Give stuff
               </b-button>
             </b-col>
             <b-col cols="2" />
             <b-col cols="5">
               <b-button to="/find" class="mt-1" size="lg" block variant="secondary">
-                <v-icon name="shopping-cart" />&nbsp;Ask for stuff
+                <client-only><v-icon name="shopping-cart" /></client-only>&nbsp;Ask for stuff
               </b-button>
             </b-col>
           </b-row>
@@ -73,10 +75,10 @@ import buildHead from '@/mixins/buildHead.js'
 import NoticeMessage from '../../components/NoticeMessage'
 import CovidWarning from '../../components/CovidWarning'
 import MyMessage from '../../components/MyMessage'
-import MicroVolunteering from '../../components/MicroVolunteering'
 import twem from '~/assets/js/twem'
 
 const Message = () => import('~/components/Message.vue')
+const MicroVolunteering = () => import('~/components/MicroVolunteering.vue')
 
 export default {
   components: {
@@ -110,7 +112,6 @@ export default {
     }
   },
   async asyncData({ app, params, store }) {
-    console.log('GEt message', params.id)
     if (params.id) {
       try {
         await store.dispatch('messages/fetch', {

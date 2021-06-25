@@ -38,7 +38,7 @@
         </nuxt-link>
       </li>
       <li>
-        We will email you posts, replies, events, newsletters, etc - control these in <nuxt-link to="/settings">
+        We will email you posts, replies, events, newsletters, etc. - control these in <nuxt-link to="/settings">
           Settings.
         </nuxt-link>
       </li>

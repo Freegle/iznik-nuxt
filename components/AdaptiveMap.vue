@@ -342,9 +342,14 @@ export default {
   },
   computed: {
     group: function() {
-      const ret = this.selectedGroup
-        ? this.$store.getters['group/get'](this.selectedGroup)
-        : null
+      let ret = null
+      const mygroups = this.$store.getters['auth/groups']
+
+      if (this.selectedGroup) {
+        ret = this.$store.getters['group/get'](this.selectedGroup)
+      } else if (mygroups && mygroups.length === 1) {
+        ret = this.$store.getters['group/get'](mygroups[0].id)
+      }
 
       return ret
     },
@@ -554,6 +559,13 @@ export default {
     }
   },
   watch: {
+    selectedGroup(newVal) {
+      if (newVal) {
+        this.$store.dispatch('group/fetch', {
+          id: newVal
+        })
+      }
+    },
     selectedType: function(newVal) {
       this.$store.dispatch('misc/set', {
         key: 'postType',

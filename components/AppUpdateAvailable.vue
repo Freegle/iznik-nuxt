@@ -5,25 +5,23 @@
 </template>
 <script>
 import NoticeMessage from './NoticeMessage'
+import { pushstate, versionOutOfDate } from '../plugins/app-init-push'
 
 export default {
   components: { NoticeMessage },
   computed: {
     applatestversion() {
-      return this.$store.getters['misc/get']('applatestversion')
+      return pushstate.applatestversion
     },
     show() {
-      const newver = this.$store.getters['misc/get']('applatestversion')
-      if( !newver) return false
-      const anewver = newver.split('.')
-      const currentver = process.env.IS_APP ? process.env.MOBILE_VERSION : process.env.MODTOOLS_VERSION
-      const acurrentver = currentver.split('.')
-      for (let vno = 0; vno < 3; vno++) {
-        const cv = parseInt(acurrentver[vno])
-        const nv = parseInt(anewver[vno])
-        if( nv>cv) return true
+      const requiredVersion = pushstate.apprequiredversion
+      console.log('AppUpdateAvailable requiredVersion', requiredVersion)
+      if (versionOutOfDate(requiredVersion)) {
+        console.log('appupdate required!')
+        this.$router.push({ path: '/appupdate' })
       }
-      return false
+      console.log('AppUpdateAvailable applatestversion', pushstate.applatestversion)
+      return versionOutOfDate(pushstate.applatestversion)
     }
   }
 }

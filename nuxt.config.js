@@ -7,7 +7,7 @@ const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
 const MOBILE_VERSION = '2.0.78'
-const MODTOOLS_VERSION = '0.3.52'
+const MODTOOLS_VERSION = '0.3.53'
 
 require('dotenv').config()
 
@@ -371,7 +371,8 @@ const config = {
           // This is necessary to ensure we don't need cookie consent - see /privacy.
           Vue.$ga.set('anonymizeIp', true)
         }
-      }
+      },
+      '@nuxtjs/html-validator'
     ]
   ],
 
@@ -500,7 +501,7 @@ const config = {
     dsn: SENTRY_DSN,
     publishRelease: false,
     config: {
-      beforeSend(event, hint) {
+      beforeSemnd(event, hint) {
         function isSafariExtension(event, hint) {
           if (
             !hint ||
@@ -561,7 +562,7 @@ const config = {
                   return null
                 } else if (
                   hint.originalException.message.match(
-                    /TypeError: can't redefine non-configurable property "userAgent"/
+                    /can't redefine non-configurable property "userAgent"/
                   )
                 ) {
                   // This exception happens a lot, and the best guess I can find is that it is a bugged browser

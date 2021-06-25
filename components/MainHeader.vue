@@ -87,9 +87,11 @@
     <!-- Navbar for small screens -->
     <b-navbar id="navbar_small" toggleable="xl" type="dark" class="ourBack d-flex justify-content-between d-xl-none" fixed="top">
       <b-navbar-brand v-if="showBackButton" class="p-0">
-        <b-btn ref="backButton" variant="white" class="nohover" @click="backButton">
-          <v-icon name="arrow-left" />
-        </b-btn>
+        <client-only>
+          <b-btn ref="backButton" variant="white" class="nohover" @click="backButton">
+            <v-icon name="arrow-left" />
+          </b-btn>
+        </client-only>
       </b-navbar-brand>
       <b-navbar-brand v-else to="/" class="p-0">
         <b-img

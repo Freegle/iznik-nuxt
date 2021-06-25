@@ -18,7 +18,8 @@
     <b-btn v-if="supportOrAdmin" variant="white" @click="purge">
       <v-icon name="trash-alt" /> Purge
     </b-btn>
-    <ConfirmModal v-if="removeConfirm" ref="removeConfirm" :title="'Remove ' + displayname + ' from ' + groupname + '?'" @confirm="removeConfirmed" />
+    <ConfirmModal v-if="removeConfirm && groupname" ref="removeConfirm" :title="'Remove ' + displayname + ' from ' + groupname + '?'" @confirm="removeConfirmed" />
+    <ConfirmModal v-if="removeConfirm && !groupname" ref="removeConfirm" title="Please select a group first." />
     <ConfirmModal v-if="banConfirm" ref="banConfirm" :title="'Ban ' + displayname + ' from ' + groupname + '?'" @confirm="banConfirmed" />
     <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + displayname + ' from the system?'" message="<p><strong>This can't be undone.</strong></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
     <ModCommentAddModal v-if="addComment" ref="addComment" :user="user" :groupid="groupid" @added="updateComments" />

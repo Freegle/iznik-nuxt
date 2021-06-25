@@ -4,8 +4,10 @@
       My posts
     </h1>
     <b-row class="m-0">
-      <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pr-1">
-        <SidebarLeft v-if="me && !justPosted" :show-community-events="true" :show-bot-left="true" />
+      <b-col cols="0" lg="3" class="p-0 pr-1">
+        <Visible :at="['lg', 'xl']">
+          <SidebarLeft v-if="me && !justPosted" :show-community-events="true" :show-bot-left="true" />
+        </Visible>
       </b-col>
       <b-col cols="12" lg="6" class="p-0">
         <AppUpdateAvailable />
@@ -158,8 +160,10 @@
           </b-card>
         </div>
       </b-col>
-      <b-col cols="0" lg="3" class="d-none d-lg-block p-0 pl-1">
-        <sidebar-right v-if="me && !justPosted" show-volunteer-opportunities />
+      <b-col cols="0" lg="3" class="p-0 pl-1">
+        <Visible :at="['lg', 'xl']">
+          <sidebar-right v-if="me && !justPosted" show-volunteer-opportunities />
+        </Visible>
       </b-col>
     </b-row>
     <DonationAskModal ref="askmodal" :groupid="donationGroup" />
@@ -173,6 +177,7 @@ import buildHead from '@/mixins/buildHead.js'
 import waitForRef from '@/mixins/waitForRef'
 import AppUpdateAvailable from '~/components/AppUpdateAvailable.vue'
 import Invite from '../components/Invite'
+import Visible from '../components/Visible'
 const JustPosted = () => import('~/components/JustPosted')
 const JobsTopBar = () => import('~/components/JobsTopBar')
 const MyMessage = () => import('~/components/MyMessage.vue')
@@ -186,6 +191,7 @@ const ExpectedRepliesWarning = () =>
 export default {
   components: {
     AppUpdateAvailable,
+    Visible,
     Invite,
     JustPosted,
     JobsTopBar,

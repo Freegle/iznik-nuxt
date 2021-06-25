@@ -3,11 +3,14 @@ import { setTimeout } from 'core-js';
 
 const querystring = require('querystring')
 
+//export let apprequiredversion = false
+//export let applatestversion = false
+
 export const mobilestate = {
   isiOS: false
 }
 
-const pushstate = Vue.observable({
+export const pushstate = Vue.observable({
   pushed: false, // Set to true to handle push in Vue context
   isiOS: false,
   route: false,
@@ -15,6 +18,8 @@ const pushstate = Vue.observable({
   mobilePushId: false, // Note: mobilePushId is the same regardless of which user is logged in
   inlineReply: false,
   chatid: false,
+  apprequiredversion: false,
+  applatestversion: false,
   checkForUpdate: false
 })
 
@@ -436,7 +441,7 @@ export default ({ app, store, $api, $axios }) => { // route
         if (checkForUpdate && !checkedForUpdate) {
           console.log('========', checkForUpdate)
           checkedForUpdate = true
-          await checkForAppUpdate($api, $axios, store)
+          await checkForAppUpdate($api, $axios, store, app.router)
         }
       }
     )
@@ -454,26 +459,28 @@ export default ({ app, store, $api, $axios }) => { // route
 	app_mt_version_android_required
 	app_mt_version_android_latest
  */
-async function checkForAppUpdate($api, $axios, store) {
+async function checkForAppUpdate($api, $axios, store, router) {
   try {
     if (process.env.IS_APP || process.env.IS_MTAPP) {
-      console.log('AAAA', mobilestate.isiOS)
+      console.log('checkForAppUpdate isIOS', mobilestate.isiOS)
       const requiredKey = process.env.IS_MTAPP ? (mobilestate.isiOS ? 'app_mt_version_ios_required' : 'app_mt_version_android_required') :
         (mobilestate.isiOS ? 'app_fd_version_ios_required' : 'app_fd_version_android_required')
       const latestKey = process.env.IS_MTAPP ? (mobilestate.isiOS ? 'app_mt_version_ios_latest' : 'app_mt_version_android_latest') :
         (mobilestate.isiOS ? 'app_fd_version_ios_latest' : 'app_fd_version_android_latest')
 
       const required = await $api.config.fetch({ key: requiredKey })
-      console.log(required)
-      console.log(required.values)
+      //console.log(required)
+      //console.log(required.values)
       if (required && required.values && required.values.length === 1) {
         const requiredVersion = required.values[0].value
         console.log(requiredVersion)
         if (requiredVersion) {
-          store.dispatch('misc/set', {
-            key: 'apprequiredversion',
-            value: requiredVersion
-          })
+          console.log("SET pushstate.apprequiredversion", requiredVersion)
+          pushstate.apprequiredversion = requiredVersion
+          if (versionOutOfDate(requiredVersion)) {
+            console.log('appupdate required!')
+            router.push({ path: '/appupdate' })
+          }
         }
       }
 
@@ -484,20 +491,28 @@ async function checkForAppUpdate($api, $axios, store) {
         const latestVersion = latest.values[0].value
         console.log(latestVersion)
         if (latestVersion) {
-          store.dispatch('misc/set', {
-            key: 'applatestversion',
-            value: latestVersion
-          })
+          console.log("SET pushstate.applatestversion", latestVersion)
+          pushstate.applatestversion = latestVersion
         }
-        //store.dispatch('misc/set', {
-        //  key: 'applatestversiondate',
-        //  value: currentVersionReleaseDate
-        //})
       }
     }
   } catch (e) {
     console.log('checkForAppUpdate ERROR', e)
   }
+}
+
+export function versionOutOfDate(newver) {
+  const currentver = process.env.IS_MTAPP ? process.env.MODTOOLS_VERSION : process.env.MOBILE_VERSION
+  console.log('versionOutOfDate now:' + currentver + ' vs ' + newver)
+  if (!newver) return false
+  const anewver = newver.split('.')
+  const acurrentver = currentver.split('.')
+  for (let vno = 0; vno < 3; vno++) {
+    const cv = parseInt(acurrentver[vno])
+    const nv = parseInt(anewver[vno])
+    if (nv > cv) return true
+  }
+  return false
 }
 
 if (process.env.IS_APP) {

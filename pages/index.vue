@@ -1,22 +1,24 @@
 <template>
   <div v-if="!me" class="grid m-0 pl-1 pr-1 pl-sm-0 pr-sm-0 mt-0 mt-lg-5 ml-4 mr-4">
-    <div class="map justify-content-start flex-column d-none d-sm-flex">
-      <VisualiseMap v-if="type === 'Map'" class="shadow flex-grow-1" />
-      <div v-else-if="type === 'Song'">
-        <b-img v-if="!timeToPlay" fluid src="/songpreview.png" class="flex-grow-1 w-100" @click="play" />
-        <b-embed
-          v-else
-          ref="video"
-          type="video"
-          autoplay
-          controls
-          poster="/songpreview.png"
-          loop
-          class="shadow flex-grow-1"
-          src="/song.mp4"
-        />
-      </div>
-    </div>
+    <client-only>
+      <Visible :not="['xs']" class="map justify-content-start flex-column d-flex">
+        <VisualiseMap v-if="type === 'Map'" class="shadow flex-grow-1" />
+        <div v-else-if="type === 'Song'">
+          <b-img v-if="!timeToPlay" fluid src="/songpreview.png" class="flex-grow-1 w-100" @click="play" />
+          <b-embed
+            v-else
+            ref="video"
+            type="video"
+            autoplay
+            controls
+            poster="/songpreview.png"
+            loop
+            class="shadow flex-grow-1"
+            src="/song.mp4"
+          />
+        </div>
+      </Visible>
+    </client-only>
     <div class="info">
       <h1 class="text--largest-responsive">
         Freegle - like online dating for stuff.
@@ -60,11 +62,13 @@
 <script>
 import waitForRef from '@/mixins/waitForRef'
 import PlaceAutocomplete from '../components/PlaceAutocomplete'
+import Visible from '../components/Visible'
 const VisualiseMap = () => import('../components/VisualiseMap')
 const MainFooter = () => import('~/components/MainFooter.vue')
 
 export default {
   components: {
+    Visible,
     PlaceAutocomplete,
     VisualiseMap,
     MainFooter

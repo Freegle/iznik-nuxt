@@ -9,7 +9,9 @@
       they may just be perfectly good members who just happen to be caught in the net.
     </p>
     <p>
-      Please review their posting history and logs.
+      Please review their posting history and logs. There is no national rule about how many groups it is
+      reasonable for one person to join, that is up to group discretion. Please don't ban a multijoiner unless
+      you have clear evidence of 'wrongdoing'.
     </p>
     <p>
       You may or may not want to do something about them on your group:

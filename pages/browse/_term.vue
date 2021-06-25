@@ -4,11 +4,15 @@
       Browse items
     </h1>
     <b-row class="m-0">
-      <b-col cols="0" xl="3" class="d-none d-xl-block p-0 pr-1">
-        <SidebarLeft v-if="showRest" :show-community-events="true" :show-bot-left="true" />
+      <b-col cols="0" lg="3" class="p-0 pr-1">
+        <Visible :at="['lg', 'xl']">
+          <SidebarLeft v-if="showRest" :show-community-events="true" :show-bot-left="true" />
+        </Visible>
       </b-col>
       <b-col cols="12" xl="6" class="p-0">
-        <MicroVolunteering />
+        <client-only>
+          <MicroVolunteering />
+        </client-only>
         <div v-if="showRest">
           <CovidWarning />
           <AppUpdateAvailable />
@@ -37,8 +41,10 @@
           can-hide
         />
       </b-col>
-      <b-col cols="0" xl="3" class="d-none d-xl-block p-0 pl-1">
-        <sidebar-right v-if="showRest" show-volunteer-opportunities />
+      <b-col cols="0" lg="3" class="p-0 pl-1">
+        <Visible :at="['lg', 'xl']">
+          <sidebar-right v-if="showRest" show-volunteer-opportunities />
+        </Visible>
       </b-col>
     </b-row>
   </b-container>
@@ -49,7 +55,7 @@ import leafletPip from '@mapbox/leaflet-pip'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
-import MicroVolunteering from '~/components/MicroVolunteering'
+import Visible from '../../components/Visible'
 import AdaptiveMap from '~/components/AdaptiveMap'
 
 const CovidWarning = () => import('~/components/CovidWarning')
@@ -58,6 +64,7 @@ const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
 const ExpectedRepliesWarning = () =>
   import('~/components/ExpectedRepliesWarning')
+const MicroVolunteering = () => import('~/components/MicroVolunteering.vue')
 
 let Wkt = null
 let L = null
@@ -69,6 +76,7 @@ if (process.browser) {
 
 export default {
   components: {
+    Visible,
     MicroVolunteering,
     AdaptiveMap,
     CovidWarning,
