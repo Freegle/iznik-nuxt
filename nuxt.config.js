@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Sentry from '@nuxtjs/sentry'
+import { Dedupe as DedupeIntegration } from "@sentry/integrations"
 import sitemap from './utils/sitemap.js'
 
 const FACEBOOK_APPID = '134980666550322'
@@ -485,6 +486,7 @@ module.exports = {
 
   sentry: {
     dsn: SENTRY_DSN,
+    integrations: [new DedupeIntegration()],
     publishRelease: false,
     ignoreErrors: [
       // Triggered by Microsoft crawler, see https://forum.sentry.io/t/unhandledrejection-non-error-promise-rejection-captured-with-value/14062/17
