@@ -500,6 +500,11 @@ const config = {
   sentry: {
     dsn: SENTRY_DSN,
     publishRelease: false,
+    ignoreErrors: [
+      // Triggered by Microsoft crawler, see https://forum.sentry.io/t/unhandledrejection-non-error-promise-rejection-captured-with-value/14062/17
+      'Non-Error exception captured',
+      'Non-Error promise rejection captured'
+    ],
     config: {
       beforeSemnd(event, hint) {
         function isSafariExtension(event, hint) {
