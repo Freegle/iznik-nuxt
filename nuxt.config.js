@@ -692,7 +692,7 @@ const config = {
 if ((process.env.NUXT_BUILD_TYPE === 'fdapp') || (process.env.NUXT_BUILD_TYPE === 'mtapp')) {
   console.log('NUXT_BUILD_TYPE', process.env.NUXT_BUILD_TYPE)
 
-  config.mode = 'spa'
+  config.ssr = false
 
   config.head.meta = []
   config.head.link.splice(0, 1)
