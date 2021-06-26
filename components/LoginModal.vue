@@ -507,15 +507,22 @@ export default {
           if (authResult.access_token) {
             console.log('Signed in')
 
-            await this.$store.dispatch('auth/login', {
-              googleauthcode: authResult.code,
-              googlelogin: true
-            })
+            try {
+              await this.$store.dispatch('auth/login', {
+                googleauthcode: authResult.code,
+                googlelogin: true
+              })
 
-            // We are now logged in.
-            console.log('Logged in')
-            self.pleaseShowModal = false
-          } else if (authResult.error) {
+              // We are now logged in.
+              console.log('Logged in')
+              self.pleaseShowModal = false
+            } catch (e) {
+              this.socialLoginError = 'Google login failed: ' + e.message
+            }
+          } else if (
+            authResult.error &&
+            authResult.error !== 'immediate_failed'
+          ) {
             this.socialLoginError = 'Google login failed: ' + authResult.error
           }
         },
