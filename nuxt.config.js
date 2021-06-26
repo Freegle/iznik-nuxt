@@ -491,7 +491,8 @@ module.exports = {
     ignoreErrors: [
       // Triggered by Microsoft crawler, see https://forum.sentry.io/t/unhandledrejection-non-error-promise-rejection-captured-with-value/14062/17
       'Non-Error exception captured',
-      'Non-Error promise rejection captured'
+      'Non-Error promise rejection captured',
+      'can\'t redefine non-configurable property "userAgent"'
     ],
     config: {
       beforeSemnd(event, hint) {
