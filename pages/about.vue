@@ -123,7 +123,8 @@
                 <p>
                   <strong>Freegle is free to use, but not free to run.</strong>  We provide a free service, and keep costs
                   <em>phenomenally</em> low thanks to our
-                  large number of committed volunteers - <strong>our annual budget averages around £80,000 each year</strong>.
+                  large number of committed volunteers - <strong>our annual budget averages around £80,000 each year</strong>
+                  for the whole of the UK.
                   You can see our accounts <a target="_blank" href="https://freegle.in/Accounts" rel="noopener noreferrer">here</a>.
                 </p>
                 <p>
