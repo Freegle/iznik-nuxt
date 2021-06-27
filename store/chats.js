@@ -254,7 +254,7 @@ export const actions = {
   async markSeen({ commit, getters, dispatch }, params) {
     const chat = getters.get(params.id)
 
-    if (chat.unseen > 0) {
+    if (chat && chat.unseen > 0) {
       await this.$api.chat.markSeen(chat.id, chat.lastmsg)
       await dispatch('fetch', {
         id: params.id
