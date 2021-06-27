@@ -26,9 +26,11 @@ export default {
   },
   methods: {
     show() {
+      console.log('modal mixin show')
       this.showModal = true
     },
     hide() {
+      console.log('modal mixin hide')
       this.showModal = false
     },
     back(next) {
