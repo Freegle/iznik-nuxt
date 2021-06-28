@@ -638,8 +638,8 @@ export default {
         this.notVisible = true
       }
     },
-    block() {
-      this.$store.dispatch('chats/block', {
+    async block() {
+      await this.$store.dispatch('chats/block', {
         id: this.id
       })
 
