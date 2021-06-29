@@ -393,12 +393,17 @@ export default {
       }
     },
     newline: function() {
+      console.log('Newline', this.$refs.chatarea)
       const p = this.$refs.chatarea.selectionStart
       if (p) {
         this.sendmessage =
           this.sendmessage.substring(0, p) +
           '\n' +
           this.sendmessage.substring(p)
+        this.$nextTick(() => {
+          this.$refs.chatarea.selectionStart = p - 1
+          this.$refs.chatarea.selectionEnd = p - 1
+        })
       } else {
         this.sendmessage += '\n'
       }
