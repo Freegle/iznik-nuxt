@@ -4,16 +4,6 @@
       <b-col ref="mapcont" class="p-0">
         <client-only>
           <div class="d-flex justify-content-between">
-            <!--            TODO MAPS AUTOCOMPLETE -->
-            <!--            <gmap-autocomplete-->
-            <!--              id="autocomplete"-->
-            <!--              class="form-control form-control-lg"-->
-            <!--              placeholder="Enter a location"-->
-            <!--              :options="gb"-->
-            <!--              size="lg"-->
-            <!--              :types="['(cities)']"-->
-            <!--              @place_changed="getAddressData"-->
-            <!--            />-->
             <b-button variant="secondary" size="lg" class="mb-2 ml-2" title="Find my location" @click="findLoc">
               <v-icon v-if="locating" name="sync" class="fa-spin" />
               <v-icon v-else-if="locationFailed" name="exclamation-triangle" />
@@ -27,6 +17,7 @@
             :center="center"
             :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
             @update:bounds="boundsChanged"
+            @ready="ready"
           >
             <l-tile-layer :url="osmtile" :attribution="attribution" />
             <l-marker :lat-lng="center" :interactive="false" />
@@ -38,6 +29,14 @@
 </template>
 <script>
 import map from '@/mixins/map.js'
+
+let L = null
+
+if (process.browser) {
+  L = require('leaflet')
+  require('leaflet-control-geocoder')
+  require('leaflet-control-geocoder/dist/Control.Geocoder.css')
+}
 
 export default {
   components: {},
@@ -53,12 +52,7 @@ export default {
     return {
       locating: false,
       locationFailed: false,
-      // TODO MAPS AUTOCOMPLETE
-      gb: {
-        componentRestrictions: {
-          country: ['gb']
-        }
-      }
+      mapObject: null
     }
   },
   created() {
@@ -101,18 +95,47 @@ export default {
 
       this.locating = false
     },
+    ready() {
+      this.waitForRef('map', () => {
+        const self = this
+        this.mapObject = this.$refs.map.mapObject
 
-    getAddressData: function(addressData, placeResultData, id) {
-      // TODO MAPS AUTOCOMPLETE
-      if (
-        addressData &&
-        addressData.geometry &&
-        addressData.geometry.location
-      ) {
-        this.lat = addressData.geometry.location.lat()
-        this.lng = addressData.geometry.location.lng()
-        this.zoom = 16
-      }
+        if (process.client) {
+          L.Control.geocoder({
+            placeholder: 'Search for a place...',
+            defaultMarkGeocode: false,
+            geocoder: L.Control.Geocoder.photon({
+              geocodingQueryParams: {
+                bbox:
+                  '-7.57216793459, 49.959999905, 1.68153079591, 58.6350001085'
+              },
+              nameProperties: [
+                'name',
+                'street',
+                'suburb',
+                'hamlet',
+                'town',
+                'city'
+              ],
+              serviceUrl:
+                process.env.GEOCODE || 'https://geocode.ilovefreegle.org/api'
+            }),
+            collapsed: false
+          })
+            .on('markgeocode', function(e) {
+              if (e && e.geocode && e.geocode.bbox) {
+                // Empty out the query box so that the dropdown closes.
+                this.setQuery('')
+
+                self.$nextTick(() => {
+                  // Move the map to the location we've found.
+                  self.mapObject.flyToBounds(e.geocode.bbox)
+                })
+              }
+            })
+            .addTo(this.mapObject)
+        }
+      })
     }
   }
 }

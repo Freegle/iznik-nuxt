@@ -55,7 +55,6 @@
   </div>
 </template>
 <script>
-import { gmapApi } from 'vue2-google-maps'
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
@@ -81,11 +80,6 @@ export default {
     }
   },
   computed: {
-    google: {
-      get() {
-        return process.browser ? gmapApi : []
-      }
-    },
     noticeboard() {
       return this.id ? this.$store.getters['noticeboards/get'](this.id) : null
     },
