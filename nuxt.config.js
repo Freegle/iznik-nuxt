@@ -208,7 +208,6 @@ module.exports = {
     { src: '~/plugins/vue-social-sharing', ssr: false },
     { src: '~/plugins/vue-lazy-youtube-video', ssr: false },
     { src: '~/plugins/inspectlet', ssr: false },
-    { src: '~/plugins/vue-fabric-wrapper', ssr: false },
     { src: '~/plugins/vue2-leaflet', ssr: false }
   ],
 
@@ -660,7 +659,6 @@ module.exports = {
       /^\/story/,
       /^\/stories\/fornewsletter/,
       /^\/message/,
-      /^\/booktastic/,
       /^\/chitchat/,
 
       // Excluded for now as slow.
