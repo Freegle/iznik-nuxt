@@ -335,14 +335,16 @@ export default ({ app, store, $api, $axios }) => { // route
       }
     )
 
-    // When mobilePushId changed, tell server our push notification id
+    // When mobilePushId changed...
     store.watch(
       () => pushstate.mobilePushId,
       mobilePushId => {
+        // tell server our push notification id
         if (mobilePushId) {
           savePushId(store)
         }
-        store.commit('mobileapp/setmobilePushId', mobilePushId)
+        // and remember whether pushAccepted
+        store.commit('mobileapp/setpushAccepted', mobilePushId)
       }
     )
     // When push received, refetch notification and chat counts, and go to route if given
@@ -486,8 +488,8 @@ async function checkForAppUpdate($api, $axios, store, router) {
       }
 
       const latest = await $api.config.fetch({ key: latestKey })
-      console.log(latest)
-      console.log(latest.values)
+      //console.log(latest)
+      //console.log(latest.values)
       if (latest && latest.values && latest.values.length === 1) {
         const latestVersion = latest.values[0].value
         console.log(latestVersion)

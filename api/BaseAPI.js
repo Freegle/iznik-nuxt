@@ -42,7 +42,7 @@ export default class BaseAPI {
     } else {
       modtools = this.store.getters['misc/get']('modtools') // 0=not yet set, 1=no, 2=yes
     }
-    const mobilePushId = this.store.getters['mobileapp/mobilePushId']
+    const pushAccepted = this.store.getters['mobileapp/pushAccepted']
 
     if (process.env.IS_APP) { // iOS apps don't do cookies, so sent sessionid in header
       const isiOS = this.store.getters['mobileapp/isiOS']
@@ -58,7 +58,7 @@ export default class BaseAPI {
       if (config.params) {
         config.params.modtools = modtools
         config.params.app = process.env.IS_APP ? true : false
-        if (mobilePushId) config.params.apppushid = mobilePushId == 2
+        if (pushAccepted) config.params.pushAccepted = (pushAccepted === 2)
       }
     } else {
       if (!config.data) {
@@ -67,7 +67,7 @@ export default class BaseAPI {
 
       config.data.modtools = modtools
       config.data.app = process.env.IS_APP ? true : false
-      if (mobilePushId) config.data.apppushid = mobilePushId == 2
+      if (pushAccepted) config.data.pushAccepted = (pushAccepted === 2)
     }
 
     try {
