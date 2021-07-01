@@ -493,7 +493,7 @@ module.exports = {
       'can\'t redefine non-configurable property "userAgent"'
     ],
     config: {
-      beforeSemnd(event, hint) {
+      beforeSend(event, hint) {
         function isSafariExtension(event, hint) {
           if (
             !hint ||
