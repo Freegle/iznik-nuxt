@@ -37,7 +37,7 @@ export default {
   },
   async fetch() {
     await this.$store.dispatch('stories/fetch', {
-      reviewed: 0,
+      reviewed: 1,
       newsletter: true
     })
   },
