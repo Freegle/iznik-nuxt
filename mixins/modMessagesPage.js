@@ -161,7 +161,10 @@ export default {
     loadMore: function($state) {
       this.busy = true
 
-      if (this.show < this.messages.length) {
+      if (!this.me) {
+        console.log('Ignore load more on MT page with no session.')
+        $state.complete()
+      } else if (this.show < this.messages.length) {
         // This means that we will gradually add the messages that we have fetched from the server into the DOM.
         // Doing that means that we will complete our initial render more rapidly and thus appear faster.
         this.show++
