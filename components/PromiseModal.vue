@@ -152,6 +152,7 @@ export default {
     },
     buttonDisabled() {
       return (
+        this.selectedUser <= 0 ||
         !this.messages ||
         this.messages.length === 0 ||
         !this.message ||
