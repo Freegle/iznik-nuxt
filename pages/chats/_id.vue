@@ -9,12 +9,12 @@
           <Visible :at="selectedChatId ? ['md', 'lg', 'xl'] : ['xs', 'sm', 'md', 'lg', 'xl']">
             <b-card class="p-0">
               <b-card-body class="p-0">
-                <div class="d-flex justify-content-between">
-                  <form role="search">
+                <div class="d-flex justify-content-between flex-wrap">
+                  <form role="search" class="mb-1 mr-1">
                     <label for="search-bar" class="sr-only">Search chats</label>
                     <b-form-input id="search-bar" v-model="search" placeholder="Search chats" class="flex-shrink-1" />
                   </form>
-                  <b-btn class="float-right" variant="primary" @click="markAllRead">
+                  <b-btn variant="primary" class="mb-1" @click="markAllRead">
                     <v-icon name="check" /> Mark all read
                   </b-btn>
                 </div>
