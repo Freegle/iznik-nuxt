@@ -9,6 +9,7 @@
       <!-- eslint-disable-next-line -->
       Need temporary help moderating?  Mail <ExternalLink href="mailto:mentors@ilovefreegle.org">mentors@ilovefreegle.org</ExternalLink>.
     </p>
+    <ModDashboardDiscourseTopics :groupid="groupid" :group-name="groupName" :start="start" :end="end" class="mb-2" />
     <ModMissingFacebook />
     <ModMissingTwitter class="mt-1" />
     <ModMissingProfile class="mt-1" />
@@ -109,6 +110,7 @@
 <script>
 import DatePicker from 'vue2-datepicker'
 import lazyLoadComponent from '@/utils/lazy-load-component'
+import ModDashboardDiscourseTopics from '@/components/ModDashboardDiscourseTopics'
 import loginRequired from '../../mixins/loginRequired'
 import GroupSelect from '../../components/GroupSelect'
 import 'vue2-datepicker/index.css'
@@ -132,6 +134,7 @@ export default {
   // We use a lazy-loading trick from https://markus.oberlehner.net/blog/lazy-load-vue-components-when-they-become-visible/.
   // This avoids hitting the server with expensive calls if people don't scroll down.
   components: {
+    ModDashboardDiscourseTopics,
     ModDashboardImpact,
     ActivityGraph,
     ModMissingProfile,
