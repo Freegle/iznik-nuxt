@@ -44,7 +44,7 @@ export default {
       )
     },
     snippet() {
-      return this.topic.raw.replace('\n', ' ')
+      return this.topic.raw.replace('\n', ' ').replace(/!\[image.*?\)/g, '')
     },
     link() {
       return (
