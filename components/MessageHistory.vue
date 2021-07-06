@@ -66,6 +66,8 @@ export default {
         this.message.fromaddr.indexOf('trashnothing.com') !== -1
       ) {
         return 'TrashNothing'
+      } else if (this.message.sourceheader === 'Freegle App') {
+        return 'Freegle Mobile App'
       } else if (this.message.source === 'Platform') {
         return 'website or app'
       } else {
