@@ -22,18 +22,19 @@
             </b-card>
             <ChatListEntry v-for="chat in visibleChats" :id="chat.id" :key="'chat-' + chat.id" :class="{ active: chat && parseInt(selectedChatId) === parseInt(chat.id) }" />
             <p v-if="!visibleChats || !visibleChats.length" class="ml-2">
-              No chats to show.
+              <span v-if="searching" class="pulsate">
+                Searching...
+              </span>
+              <span v-else>
+                No chats to show.
+              </span>
             </p>
             <infinite-loading :identifier="bump" force-use-infinite-wrapper="#chatlist" :distance="distance" @infinite="loadMore">
               <span slot="no-results" />
               <span slot="no-more" />
             </infinite-loading>
             <div class="d-flex justify-content-around">
-              <b-btn v-if="search && complete" variant="secondary" class="mt-2" @click="searchMore">
-                <v-icon v-if="searching" name="sync" class="text-success fa-spin" />
-                <v-icon v-else name="search" /> Search old chats
-              </b-btn>
-              <b-btn v-else-if="mightBeOldChats && complete && !showingOlder" variant="link" size="sm" @click="fetchOlder">
+              <b-btn v-if="!search && mightBeOldChats && complete && !showingOlder" variant="link" size="sm" @click="fetchOlder">
                 Show older chats
               </b-btn>
             </div>
