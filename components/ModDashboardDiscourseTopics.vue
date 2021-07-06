@@ -5,7 +5,7 @@
         Latest Discourse Topics
       </b-card-title>
       <p>
-        Discourse is where we can chat to each other and ask questions.
+        Discourse is where we can chat to each other and ask questions.  Join in!
       </p>
       <ModDashboardDiscourseTopic v-for="topic in top5" :key="topic.id" :topic="topic" />
     </b-card-body>
