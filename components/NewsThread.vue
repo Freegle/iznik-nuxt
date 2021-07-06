@@ -402,8 +402,8 @@ export default {
           '\n' +
           this.threadcomment.substring(p)
         this.$nextTick(() => {
-          this.$refs.threadcomment.selectionStart = p - 1
-          this.$refs.threadcomment.selectionEnd = p - 1
+          this.$refs.threadcomment.selectionStart = p + 1
+          this.$refs.threadcomment.selectionEnd = p + 1
         })
       } else {
         this.threadcomment += '\n'

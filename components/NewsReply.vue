@@ -430,8 +430,8 @@ export default {
         this.replybox =
           this.replybox.substring(0, p) + '\n' + this.replybox.substring(p)
         this.$nextTick(() => {
-          this.$refs.replybox.selectionStart = p - 1
-          this.$refs.replybox.selectionEnd = p - 1
+          this.$refs.replybox.selectionStart = p + 1
+          this.$refs.replybox.selectionEnd = p + 1
         })
       } else {
         this.replybox += '\n'
