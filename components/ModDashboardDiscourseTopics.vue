@@ -21,7 +21,8 @@ export default {
   data: function() {
     return {
       askfor: ['DiscourseTopics'],
-      DiscourseTopics: null
+      DiscourseTopics: null,
+      refreshTimer: null
     }
   },
   computed: {
@@ -36,6 +37,21 @@ export default {
       }
 
       return ret
+    }
+  },
+  mounted() {
+    this.refreshTimer = setTimeout(this.doRefresh, 10 * 60 * 1000)
+  },
+  beforeDestroy() {
+    if (this.refreshTimer) {
+      clearTimeout(this.refreshTimer)
+      this.refreshTimer = null
+    }
+  },
+  methods: {
+    doRefresh() {
+      this.maybeFetch()
+      this.refreshTimer = setTimeout(this.doRefresh, 10 * 60 * 1000)
     }
   }
 }

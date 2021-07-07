@@ -9,7 +9,7 @@
       <ExternalLink href="https://zoom.us/j/97817491680?pwd=VVh2eW1LL2JhbnB5MllQbHoyRUJ6UT09" class="text-white">ZoomStock happening now! Join other volunteers for a natter - click here.</ExternalLink>
     </div>
     <div v-else class="d-flex">
-      ZoomStock Thursdays @ 2pm, next {{ fromNow }}. Join other volunteers for a natter.  Link will be here.
+      ZoomStock Thursdays @ 2pm, next {{ fromNow | timeago }}. Join other volunteers for a natter.  Link will be here.
     </div>
   </div>
 </template>
@@ -30,7 +30,9 @@ export default {
   },
   computed: {
     fromNow() {
-      return this.nextOne ? this.nextOne.fromNow() : null
+      return this.$store.getters['misc/time'] && this.nextOne
+        ? this.nextOne
+        : null
     },
     today() {
       const d = this.$dayjs()
