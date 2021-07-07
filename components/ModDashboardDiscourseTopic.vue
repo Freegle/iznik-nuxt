@@ -44,7 +44,14 @@ export default {
       )
     },
     snippet() {
-      return this.topic.raw.replace('\n', ' ').replace(/!\[image.*?\)/g, '')
+      let ret = this.topic.raw.replace('\n', ' ').replace(/!\[image.*?\)/g, '')
+      const p = ret.indexOf('>')
+
+      if (p !== -1) {
+        ret = ret.substring(0, p)
+      }
+
+      return ret.substring(0, 120) + '...'
     },
     link() {
       return (
