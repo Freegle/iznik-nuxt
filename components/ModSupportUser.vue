@@ -158,7 +158,6 @@
       <h3 class="mt-2">
         Memberships
       </h3>
-      <!--      TODO MT POSTLAUNCH Show if banned-->
       <div v-if="memberships && memberships.length">
         <div v-for="membership in memberships" :key="'membership-' + membership.id">
           <ModSupportMembership :membership="membership" :userid="user.id" />
@@ -170,6 +169,11 @@
       <p v-else>
         No memberships.
       </p>
+      <div v-if="user.bans">
+        <div v-for="ban in user.bans" :key="'ban-' + ban.date" class="text-danger">
+          Banned on {{ ban.group }} by {{ ban.byemail }} {{ ban.date | timeago }}
+        </div>
+      </div>
       <h3 class="mt-2">
         Other Known Emails
       </h3>
