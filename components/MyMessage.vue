@@ -115,7 +115,11 @@
                 <div v-else class="ml-1 text-info">
                   <div v-for="p in promisedTo" :key="'promised-' + p.id">
                     <div class="d-flex flex-wrap">
-                      <div>
+                      <div v-if="p.id === myid">
+                        <!--                        This can happen with TN.  It means it's promised, but we don't know who to.-->
+                        <v-icon name="handshake" class="fa-fw mt-1" />&nbsp;Promised</strong>
+                      </div>
+                      <div v-else>
                         <v-icon name="handshake" class="fa-fw mt-1" />&nbsp;Promised to <strong>{{ p.name }}</strong>
                       </div>
                       <div v-if="p.trystdate" class="d-flex">
