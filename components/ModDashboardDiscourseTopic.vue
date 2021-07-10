@@ -44,7 +44,11 @@ export default {
       )
     },
     snippet() {
-      let ret = this.topic.raw.replace('\n', ' ').replace(/!\[image.*?\)/g, '')
+      let ret = this.topic.raw
+        .replace('\n', ' ')
+        .replace(/!\[image.*?\]/g, '')
+        .replace(/\[quote.*?\]/g, '"')
+        .replace(/\[\/quote\]/g, '"')
       const p = ret.indexOf('>')
 
       if (p !== -1) {
