@@ -20,7 +20,7 @@
                 </div>
               </b-card-body>
             </b-card>
-            <ChatListEntry v-for="chat in visibleChats" :id="chat.id" :key="'chat-' + chat.id" :class="{ active: chat && parseInt(selectedChatId) === parseInt(chat.id) }" />
+            <ChatListEntry v-for="chat in visibleChats" :id="chat.id" :key="'chat-' + chat.id" :class="{ chat: true, active: chat && parseInt(selectedChatId) === parseInt(chat.id) }" />
             <p v-if="!visibleChats || !visibleChats.length" class="ml-2">
               <span v-if="searching" class="pulsate">
                 Searching...
@@ -123,6 +123,10 @@ export default {
 }
 
 .active {
+  background-color: $color-gray-4 !important;
+}
+
+.chat:hover {
   background-color: $color-gray--lighter;
 }
 
