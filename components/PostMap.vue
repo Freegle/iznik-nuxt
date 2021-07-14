@@ -110,10 +110,10 @@ import cloneDeep from 'lodash.clonedeep'
 import Vue from 'vue'
 import map from '@/mixins/map.js'
 import waitForRef from '@/mixins/waitForRef'
+import { GestureHandling } from 'leaflet-gesture-handling'
 import GroupMarker from './GroupMarker'
 import BrowseHomeIcon from './BrowseHomeIcon'
 const ClusterMarker = () => import('./ClusterMarker')
-import { GestureHandling } from "leaflet-gesture-handling"
 
 let L = null
 
@@ -122,7 +122,7 @@ if (process.browser) {
   require('leaflet-control-geocoder')
   require('leaflet-control-geocoder/dist/Control.Geocoder.css')
   require('leaflet-gesture-handling/dist/leaflet-gesture-handling.css')
-  L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling)
+  L.Map.addInitHook('addHandler', 'gestureHandling', GestureHandling)
 }
 
 export default {
