@@ -23,7 +23,7 @@
         </div>
       </div>
     </template>
-    <b-dropdown-item class="text-right" link-class="notification-list__item">
+    <b-dropdown-item v-if="notifications.length" class="text-right" link-class="notification-list__item">
       <b-btn variant="secondary" size="sm" @click="markAllRead">
         Mark all read
       </b-btn>
@@ -170,6 +170,7 @@ export default {
 
 ::v-deep .notification-list__dropdown-menu {
   height: 500px;
+  width: 300px;
   overflow-y: auto;
 
   // The offset property of the b-dropdown doesn't function when contained
