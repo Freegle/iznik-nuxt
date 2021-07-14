@@ -6,7 +6,7 @@
   >
     <template slot="modal-header">
       <div class="w-100 coverphoto">
-        <profile-header :id="id" class="flex-grow-1 px-3 py-2" />
+        <profile-header :id="id" class="flex-grow-1 px-3 py-2" @chatpopup="showModal = false" />
       </div>
     </template>
     <template slot="default">

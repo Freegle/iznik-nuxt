@@ -63,7 +63,9 @@ export default {
       return ret
     },
     select(auth) {
-      this.$router.push('/stats/authority/' + auth.id)
+      if (auth) {
+        this.$router.push('/stats/authority/' + auth.id)
+      }
     }
   },
   head() {

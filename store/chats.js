@@ -173,7 +173,7 @@ export const actions = {
   async openChatToUser({ dispatch, commit, rootGetters }, params) {
     const modtools = rootGetters['misc/get']('modtools')
 
-    // We migth have a type override.  Otherwise open a user chat on FD and mod chat on MT.
+    // We might have a type override.  Otherwise open a user chat on FD and mod chat on MT.
     const id = await dispatch('openChat', {
       chattype: params.chattype
         ? params.chattype
@@ -188,14 +188,28 @@ export const actions = {
   },
 
   async openChat({ dispatch, commit }, params) {
-    const { id } = await this.$api.chat.openChat(params, function(data) {
-      if (data && data.ret === 4) {
-        // Don't log errors for banned users.
-        return false
+    let id = null
+
+    try {
+      const rsp = await this.$api.chat.openChat(params, function(data) {
+        if (data && data.ret === 4) {
+          // Don't log errors for banned users.
+          return false
+        } else {
+          return true
+        }
+      })
+
+      id = rsp.id
+    } catch (e) {
+      if (e.response && e.response.ret && e.response.ret === 4) {
+        // Just pretend nothing happened.  This is better than showing the user an error, which will make them
+        // try to find ways around the ban.
+        console.log('Swallow exception')
       } else {
-        return true
+        throw e
       }
-    })
+    }
 
     if (id) {
       await dispatch('fetch', { id })
@@ -240,7 +254,7 @@ export const actions = {
   async markSeen({ commit, getters, dispatch }, params) {
     const chat = getters.get(params.id)
 
-    if (chat.unseen > 0) {
+    if (chat && chat.unseen > 0) {
       await this.$api.chat.markSeen(chat.id, chat.lastmsg)
       await dispatch('fetch', {
         id: params.id

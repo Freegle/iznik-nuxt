@@ -79,7 +79,7 @@ export default {
     filteredChats() {
       let chats = this.sortedChats
 
-      if (chats && this.search) {
+      if (chats && this.search && this.searching) {
         // We apply the search on names in here so that we can respond on the client rapidly while the background server
         // search is more thorough.
         const l = this.search.toLowerCase()
@@ -139,6 +139,9 @@ export default {
       if (!newVal) {
         // Force a refresh to remove any old chats.
         this.listChats()
+      } else {
+        // Force a server search to pick up old chats or more subtle matches.
+        this.searchMore()
       }
     }
   },
@@ -180,14 +183,19 @@ export default {
             : ['User2User', 'User2Mod']
         })
 
+        this.showChats = 0
+
         while (this.searchlast) {
           // We have another search queued.
           const val2 = this.searchlast
+          this.searching = this.searchlast
           this.searchlast = null
           await this.$store.dispatch('chats/listChats', {
             search: val2,
             summary: true
           })
+
+          this.showChats = 0
         }
 
         this.searching = null

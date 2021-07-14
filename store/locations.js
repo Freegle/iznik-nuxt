@@ -8,7 +8,9 @@ export const mutations = {
   set(state, list) {
     if (list) {
       for (const item of list) {
-        Vue.set(state.list, item.id, item)
+        if (item && item.id) {
+          Vue.set(state.list, item.id, item)
+        }
       }
     }
   },

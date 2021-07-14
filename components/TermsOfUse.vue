@@ -16,9 +16,8 @@
         </nuxt-link>
       </li>
       <li>
-        Freegle communities may have additional rules.  If you have questions, find your community from the <nuxt-link to="/explore">
-          Explore
-        </nuxt-link> page and use the <em>Contact</em> button.
+        Freegle communities may have additional rules.  If you have questions, scroll down and use the
+        <em>Contact community volunteers</em> button.
       </li>
       <li>
         Please <nuxt-link to="/disclaimer">

@@ -246,7 +246,6 @@ export default {
 
         const trimmed = this.body.replace(/\s/g, '').toLowerCase()
         for (const keyword in checks) {
-          console.log('Check', trimmed, keyword, trimmed.indexOf(keyword))
           if (trimmed.indexOf(keyword) !== -1) {
             ret = checks[keyword]
           }
@@ -425,9 +424,13 @@ export default {
           this.keywordList.forEach(keyword => {
             let recentmsg = ''
             let count = 0
+
             if (history.length) {
               history.forEach(msg => {
-                if (msg.type === keyword && msg.daysago < self.recentDays) {
+                const postdate = this.$dayjs(msg.postdate)
+                const daysago = this.$dayjs().diff(postdate, 'day')
+
+                if (msg.type === keyword && daysago < self.recentDays) {
                   recentmsg +=
                     this.$dayjs(msg.postdate).format('lll') +
                     ' - ' +

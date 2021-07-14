@@ -123,7 +123,8 @@
                 <p>
                   <strong>Freegle is free to use, but not free to run.</strong>  We provide a free service, and keep costs
                   <em>phenomenally</em> low thanks to our
-                  large number of committed volunteers - <strong>our annual budget averages just £40,000 each year</strong>.
+                  large number of committed volunteers - <strong>our annual budget averages around £80,000 each year</strong>
+                  for the whole of the UK.
                   You can see our accounts <a target="_blank" href="https://freegle.in/Accounts" rel="noopener noreferrer">here</a>.
                 </p>
                 <p>
@@ -143,7 +144,10 @@
                   Regular monthly donations are especially helpful.
                 </p>
                 <p>
-                  We also have ads on the site and in emails.  It doesn't raise as much as you'd think, but it helps
+                  We also have ads on the site and in emails, including to
+                  <!-- eslint-disable-next-line -->
+                  <ExternalLink href="https://www.lovejunk.com/">LoveJunk</ExternalLink>,
+                  the Waste Removal & Junk Reuse Market.  It doesn't raise as much as you'd think, but it helps
                   keep us running.
                 </p>
               </b-card-text>
@@ -216,10 +220,12 @@
 
 <script>
 import buildHead from '@/mixins/buildHead.js'
+import ExternalLink from '@/components/ExternalLink'
 import ProfileImage from '~/components/ProfileImage'
 
 export default {
   components: {
+    ExternalLink,
     ProfileImage
   },
   mixins: [buildHead],

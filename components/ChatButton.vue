@@ -97,6 +97,7 @@ export default {
             id: chatid
           })
           console.log('Popped up')
+          this.$emit('chatpopup')
         } else {
           this.$router.push(
             (modtools ? '/modtools/chats/' : '/chats/') + chatid
@@ -127,6 +128,7 @@ export default {
             await this.$store.dispatch('popupchats/popup', {
               id: chatid
             })
+            this.$emit('chatpopup')
           } else if (route) {
             this.$router.push(
               (modtools ? '/modtools/chats/' : '/chats/') + chatid

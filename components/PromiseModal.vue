@@ -16,7 +16,7 @@
       <div class="d-flex justify-content-between flex-wrap">
         <div>
           <label for="who">To:</label>
-          <b-select id="who" v-model="selectedUser" :options="userOptions" class="mb-2 font-weight-bold" />
+          <b-select id="who" v-model="currentlySelected" :options="userOptions" class="mb-2 font-weight-bold" />
         </div>
         <div>
           <label for="date">
@@ -138,7 +138,8 @@ export default {
       date: null,
       time: null,
       formattedDate: null,
-      showOddTime: false
+      showOddTime: false,
+      currentlySelected: null
     }
   },
   computed: {
@@ -152,6 +153,7 @@ export default {
     },
     buttonDisabled() {
       return (
+        this.currentlySelected <= 0 ||
         !this.messages ||
         this.messages.length === 0 ||
         !this.message ||
@@ -197,7 +199,7 @@ export default {
           options.push({
             value: 0,
             text: '-- Please choose a user --',
-            selected: this.selectedUser === 0
+            selected: this.currentlySelected === 0
           })
         }
 
@@ -213,8 +215,8 @@ export default {
       return options
     },
     tryst() {
-      return this.selectedUser
-        ? this.$store.getters['tryst/getByUser'](this.selectedUser)
+      return this.currentlySelected
+        ? this.$store.getters['tryst/getByUser'](this.currentlySelected)
         : null
     }
   },
@@ -258,41 +260,48 @@ export default {
   },
   methods: {
     async promise() {
-      await this.$store.dispatch('messages/promise', {
-        id: this.message,
-        userid: this.selectedUser
-      })
+      if (this.currentlySelected > 0) {
+        await this.$store.dispatch('messages/promise', {
+          id: this.message,
+          userid: this.currentlySelected
+        })
 
-      const arrangedfor =
-        this.time && this.date
-          ? this.$dayjs(this.date + ' ' + this.time).toISOString()
-          : null
+        const arrangedfor =
+          this.time && this.date
+            ? this.$dayjs(this.date + ' ' + this.time).toISOString()
+            : null
 
-      if (arrangedfor) {
-        if (!this.tryst) {
-          // No arrangement yet.
-          await this.$store.dispatch('tryst/add', {
-            user1: this.myid,
-            user2: this.selectedUser,
-            arrangedfor: arrangedfor
-          })
-        } else {
-          // Update
-          await this.$store.dispatch('tryst/edit', {
-            id: this.tryst.id,
-            arrangedfor: arrangedfor
-          })
+        if (arrangedfor) {
+          if (!this.tryst) {
+            // No arrangement yet.
+            await this.$store.dispatch('tryst/add', {
+              user1: this.myid,
+              user2: this.currentlySelected,
+              arrangedfor: arrangedfor
+            })
+          } else {
+            // Update
+            await this.$store.dispatch('tryst/edit', {
+              id: this.tryst.id,
+              arrangedfor: arrangedfor
+            })
+          }
+
+          // Fetch the trysts again, to make sure we show messages correctly on the chat.
+          this.$store.dispatch('tryst/fetch')
         }
 
-        // Fetch the trysts again, to make sure we show messages correctly on the chat.
-        this.$store.dispatch('tryst/fetch')
+        this.hide()
       }
-
-      this.hide()
     },
     async show(date) {
       this.showModal = true
       this.message = this.selectedMessage
+      this.currentlySelected = this.currentlySelected
+
+      if (this.users && this.users.length === 1) {
+        this.currentlySelected = this.users[0].id
+      }
 
       // Fetch any existing trysts.
       await this.$store.dispatch('tryst/fetch')

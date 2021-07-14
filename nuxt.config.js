@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Sentry from '@nuxtjs/sentry'
+import { Dedupe as DedupeIntegration } from "@sentry/integrations"
 import sitemap from './utils/sitemap.js'
 
 const FACEBOOK_APPID = '134980666550322'
@@ -210,7 +211,6 @@ const config = {
     { src: '~/plugins/visibility.js', ssr: false },
     { src: '~/plugins/error-toasts.js', ssr: false },
     { src: '~/plugins/vuex-persistedstate', ssr: false },
-    { src: '~/plugins/vue2-google-maps.js', ssr: false },
     { src: '~/plugins/vue-awesome.js', ssr: false },
     { src: '~/plugins/vue-read-more', ssr: false },
     { src: '~/plugins/vue-social-sharing', ssr: false },
@@ -222,7 +222,7 @@ const config = {
     { src: '~/plugins/app-yahoo.js', mode: 'client' },
     { src: '~/plugins/app-apple.js', mode: 'client' },
     { src: '@/plugins/vue-fabric-wrapper', ssr: false },
-    { src: '@/plugins/vue2-leaflet', ssr: false }
+    { src: '~/plugins/vue2-leaflet', ssr: false }
   ],
 
   // Can't use redirect as this doesn't work with nuxt generate, so redirects are done as rewrites in nginx config.
@@ -499,14 +499,16 @@ const config = {
 
   sentry: {
     dsn: SENTRY_DSN,
+    integrations: [new DedupeIntegration()],
     publishRelease: false,
     ignoreErrors: [
       // Triggered by Microsoft crawler, see https://forum.sentry.io/t/unhandledrejection-non-error-promise-rejection-captured-with-value/14062/17
       'Non-Error exception captured',
-      'Non-Error promise rejection captured'
+      'Non-Error promise rejection captured',
+      'can\'t redefine non-configurable property "userAgent"'
     ],
     config: {
-      beforeSemnd(event, hint) {
+      beforeSend(event, hint) {
         function isSafariExtension(event, hint) {
           if (
             !hint ||
@@ -671,7 +673,6 @@ const config = {
       /^\/story/,
       /^\/stories\/fornewsletter/,
       /^\/message/,
-      /^\/booktastic/,
       /^\/chitchat/,
 
       // Excluded for now as slow.

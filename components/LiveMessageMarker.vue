@@ -1,10 +1,11 @@
 <template>
   <l-marker
     v-if="message.group.lat || message.group.lng"
-    :key="'messagemarker-' + message.id + '-' + size"
+    :key="'messagemarker-' + message.id"
     :lat-lng="[message.group.lat, message.group.lng]"
     :title="message.group.namedisplay"
     :icon="icon"
+    :z-index-offset="zIndex"
     @click="openIt(message.message.id)"
   />
 </template>
@@ -31,11 +32,16 @@ export default {
       })
       re = re.$mount().$el
 
+      console.log('Message', this.message)
       return new L.DivIcon({
         html: re.outerHTML,
         iconAnchor: [150, 150],
         className: 'clear'
       })
+    },
+    zIndex() {
+      // Most recent on top.
+      return new Date(this.message.message.arrival).getTime()
     }
   },
   methods: {

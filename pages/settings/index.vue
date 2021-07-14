@@ -374,7 +374,7 @@
                 <p>We can send SMS alerts to your phone when you have a new message on Freegle or a handover soon.</p>
                 <SettingsPhone />
                 <div v-if="me.phone">
-                  <NoticeMessage v-if="me.phonelastsent && (!me.phonelastclicked || me.phonelastclicked < me.phonelastsent)" variant="danger" class="mb-2">
+                  <NoticeMessage v-if="me.phonelastsent && (!me.phonelastclicked || me.phonelastclicked < me.phonelastsent)" variant="warning" class="mb-2">
                     <p>
                       We've stopped sending you SMS alerts, because you don't seem to be clicking on them.  We do this
                       to save Freegle money.

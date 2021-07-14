@@ -9,6 +9,8 @@ export const state = () => ({
   unreadCount: 0
 })
 
+let notificationTimer = null
+
 function compareNotificationIDs(x, y) {
   return x.id === y.id
 }
@@ -127,26 +129,30 @@ export const actions = {
 
   // Make sure that the notifications are kept up to date
   async updateNotifications({ dispatch, rootGetters }, params) {
-    const me = rootGetters['auth/user']
+    if (!notificationTimer) {
+      notificationTimer = true
+      const me = rootGetters['auth/user']
 
-    if (me && me.id) {
-      const currentCount = rootGetters['notifications/getUnreadCount']
-      const notifications = rootGetters['notifications/getCurrentList']
-      await dispatch('updateUnreadNotificationCount')
-      const newCount = rootGetters['notifications/getUnreadCount']
+      if (me && me.id) {
+        const currentCount = rootGetters['notifications/getUnreadCount']
+        const notifications = rootGetters['notifications/getCurrentList']
+        await dispatch('updateUnreadNotificationCount')
+        const newCount = rootGetters['notifications/getUnreadCount']
 
-      if (newCount !== currentCount || !notifications.length) {
-        // Changed or don't know it yet.  Get the list so that it will display zippily when they click.
-        await dispatch('clear')
-        await dispatch('fetchNextListChunk')
+        if (newCount !== currentCount || !notifications.length) {
+          // Changed or don't know it yet.  Get the list so that it will display zippily when they click.
+          await dispatch('clear')
+          await dispatch('fetchNextListChunk')
+        }
       }
-    }
 
-    // Continuously check for updated notifications. Would be nice if this was event driven instead but requires server work.
-    // No need to clear the timeout
-    setTimeout(() => {
-      dispatch('updateNotifications')
-    }, 30000)
+      // Continuously check for updated notifications. Would be nice if this was event driven instead but requires server work.
+      // No need to clear the timeout
+      setTimeout(() => {
+        notificationTimer = false
+        dispatch('updateNotifications')
+      }, 30000)
+    }
   },
 
   clear({ commit }) {

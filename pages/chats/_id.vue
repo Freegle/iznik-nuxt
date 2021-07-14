@@ -9,31 +9,32 @@
           <Visible :at="selectedChatId ? ['md', 'lg', 'xl'] : ['xs', 'sm', 'md', 'lg', 'xl']">
             <b-card class="p-0">
               <b-card-body class="p-0">
-                <div class="d-flex justify-content-between">
-                  <form role="search">
+                <div class="d-flex justify-content-between flex-wrap">
+                  <form role="search" class="mb-1 mr-1">
                     <label for="search-bar" class="sr-only">Search chats</label>
                     <b-form-input id="search-bar" v-model="search" placeholder="Search chats" class="flex-shrink-1" />
                   </form>
-                  <b-btn class="float-right" variant="primary" @click="markAllRead">
+                  <b-btn variant="primary" class="mb-1" @click="markAllRead">
                     <v-icon name="check" /> Mark all read
                   </b-btn>
                 </div>
               </b-card-body>
             </b-card>
-            <ChatListEntry v-for="chat in visibleChats" :id="chat.id" :key="'chat-' + chat.id" :class="{ active: chat && parseInt(selectedChatId) === parseInt(chat.id) }" />
+            <ChatListEntry v-for="chat in visibleChats" :id="chat.id" :key="'chat-' + chat.id" :class="{ chat: true, active: chat && parseInt(selectedChatId) === parseInt(chat.id) }" />
             <p v-if="!visibleChats || !visibleChats.length" class="ml-2">
-              No chats to show.
+              <span v-if="searching" class="pulsate">
+                Searching...
+              </span>
+              <span v-else>
+                No chats to show.
+              </span>
             </p>
             <infinite-loading :identifier="bump" force-use-infinite-wrapper="#chatlist" :distance="distance" @infinite="loadMore">
               <span slot="no-results" />
               <span slot="no-more" />
             </infinite-loading>
             <div class="d-flex justify-content-around">
-              <b-btn v-if="search && complete" variant="secondary" class="mt-2" @click="searchMore">
-                <v-icon v-if="searching" name="sync" class="text-success fa-spin" />
-                <v-icon v-else name="search" /> Search old chats
-              </b-btn>
-              <b-btn v-else-if="mightBeOldChats && complete && !showingOlder" variant="link" size="sm" @click="fetchOlder">
+              <b-btn v-if="!search && mightBeOldChats && complete && !showingOlder" variant="link" size="sm" @click="fetchOlder">
                 Show older chats
               </b-btn>
             </div>
@@ -122,6 +123,10 @@ export default {
 }
 
 .active {
+  background-color: $color-gray-4 !important;
+}
+
+.chat:hover {
   background-color: $color-gray--lighter;
 }
 
