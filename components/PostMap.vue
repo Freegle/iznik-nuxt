@@ -114,7 +114,6 @@ import { GestureHandling } from 'leaflet-gesture-handling'
 import GroupMarker from './GroupMarker'
 import BrowseHomeIcon from './BrowseHomeIcon'
 const ClusterMarker = () => import('./ClusterMarker')
-import { GestureHandling } from "leaflet-gesture-handling"
 
 let L = null
 

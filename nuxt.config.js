@@ -8,7 +8,7 @@ const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
 const MOBILE_VERSION = '2.0.79'
-const MODTOOLS_VERSION = '0.3.53'
+const MODTOOLS_VERSION = '0.3.54'
 
 require('dotenv').config()
 
@@ -221,7 +221,6 @@ const config = {
     { src: '~/plugins/app-google.js', mode: 'client' },
     { src: '~/plugins/app-yahoo.js', mode: 'client' },
     { src: '~/plugins/app-apple.js', mode: 'client' },
-    { src: '@/plugins/vue-fabric-wrapper', ssr: false },
     { src: '~/plugins/vue2-leaflet', ssr: false }
   ],
 
