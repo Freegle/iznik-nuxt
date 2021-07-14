@@ -113,6 +113,7 @@ import waitForRef from '@/mixins/waitForRef'
 import GroupMarker from './GroupMarker'
 import BrowseHomeIcon from './BrowseHomeIcon'
 const ClusterMarker = () => import('./ClusterMarker')
+import { GestureHandling } from "leaflet-gesture-handling"
 
 let L = null
 
@@ -120,6 +121,8 @@ if (process.browser) {
   L = require('leaflet')
   require('leaflet-control-geocoder')
   require('leaflet-control-geocoder/dist/Control.Geocoder.css')
+  require('leaflet-gesture-handling/dist/leaflet-gesture-handling.css')
+  L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling)
 }
 
 export default {
@@ -218,7 +221,8 @@ export default {
         dragging: !this.locked && !L.Browser.mobile,
         touchZoom: !this.locked,
         scrollWheelZoom: false,
-        bounceAtZoomLimits: true
+        bounceAtZoomLimits: true,
+        gestureHandling: true
       }
     },
     mapHidden() {
