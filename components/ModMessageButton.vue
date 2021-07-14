@@ -9,7 +9,7 @@
         class="mb-1"
         :disabled="disabled"
         :handler="click"
-        :confirm="message.heldby"
+        :confirm="confirmButton"
       />
       <v-icon v-if="autosend" name="chevron-circle-right" title="Autosend - configured to send immediately without edit" class="autosend" />
     </div>
@@ -93,6 +93,11 @@ export default {
       required: false,
       default: false
     },
+    spam: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     approveedits: {
       type: Boolean,
       required: false,
@@ -134,6 +139,10 @@ export default {
       }
 
       return null
+    },
+    confirmButton() {
+      // We confirm any actions on held messages, except where we have a separate confirm.
+      return this.message.heldby && !this.spam && !this.delete
     }
   },
   methods: {
@@ -150,6 +159,12 @@ export default {
       } else if (this.release) {
         // Standard release button - no modal.
         await this.releaseIt()
+      } else if (this.spam) {
+        // Standard spam button.
+        this.showSpamModal = true
+        this.waitForRef('spamConfirm', () => {
+          this.$refs.spamConfirm.show()
+        })
       } else if (this.approveedits) {
         await this.approveEdits()
       } else if (this.revertedits) {
