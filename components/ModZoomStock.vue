@@ -36,11 +36,16 @@ export default {
     },
     today() {
       const d = this.$dayjs()
-      return d.day() === DAY_OF_WEEK && d.hour() < HOUR_OF_DAY
+      return (
+        this.$store.getters['misc/time'] &&
+        d.day() === DAY_OF_WEEK &&
+        d.hour() < HOUR_OF_DAY
+      )
     },
     now() {
       const d = this.$dayjs()
       return (
+        this.$store.getters['misc/time'] &&
         d.day() === DAY_OF_WEEK &&
         d.hour() === HOUR_OF_DAY &&
         d.minute() >= MINUTE_START &&
