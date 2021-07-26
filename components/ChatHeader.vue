@@ -53,7 +53,7 @@
       <Ratings :id="otheruserid" :key="'otheruser-' + otheruserid" class="pl-1 mt-1" size="sm" />
       <Supporter v-if="otheruser.supporter" class="ml-2 align-self-center" />
     </div>
-    <div class="thebutton mr-1 mt-1">
+    <div v-if="unseen" class="thebutton mr-1 mt-1">
       <b-btn variant="primary" size="sm" @click="markRead">
         Mark read
       </b-btn>
