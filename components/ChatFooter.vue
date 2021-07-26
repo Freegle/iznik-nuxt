@@ -218,7 +218,7 @@
             Photo
           </div>
         </div>
-        <b-btn variant="secondary" @click="send">
+        <b-btn variant="primary" @click="send">
           Send
           <v-icon v-if="sending" name="sync" class="fa-spin" title="Sending..." />
           <v-icon v-else name="angle-double-right" title="Send" />
