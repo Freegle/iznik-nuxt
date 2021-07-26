@@ -162,7 +162,7 @@
           </div>
         </div>
         <div
-          v-if="chat && chat.chattype === 'User2User' && otheruser"
+          v-if="chat && chat.chattype === 'User2User' && otheruser && !simple"
           v-b-tooltip.hover.top
           title="Send your address"
           disabled
@@ -194,14 +194,14 @@
             Central
           </div>
         </div>
-        <div v-if="chat && chat.chattype === 'User2User' && otheruser && !tooSoonToNudge" v-b-tooltip.hover.top title="Waiting for a reply?  Nudge this freegler." class="mr-2" @click="nudge">
+        <div v-if="chat && chat.chattype === 'User2User' && otheruser && !tooSoonToNudge && !simple" v-b-tooltip.hover.top title="Waiting for a reply?  Nudge this freegler." class="mr-2" @click="nudge">
           <v-icon scale="2" name="bell" class="fa-mob" />
           <div class="mobtext text--smallest">
             Nudge
           </div>
         </div>
         <div
-          v-if="chat && chat.chattype === 'User2User' && otheruser && tooSoonToNudge"
+          v-if="chat && chat.chattype === 'User2User' && otheruser && tooSoonToNudge && !simple"
           v-b-tooltip.hover.top
           title="It's too soon to nudge."
           class="mr-2"
