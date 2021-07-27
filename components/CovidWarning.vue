@@ -2,7 +2,7 @@
   <div>
     <client-only>
       <p class="text-danger">
-        The website will be offline for some of the morning of Thursday 26th July for a database upgrade.
+        The website will be offline for some of the morning of Thursday 29th July for a database upgrade.
         We'd ask you to cross your fingers, except that makes it hard to type.
       </p>
       <NoticeMessage v-if="show" variant="danger">
