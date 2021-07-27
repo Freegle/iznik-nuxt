@@ -66,26 +66,26 @@
               <p v-if="trystdate" class="small text-info">
                 Handover arranged for <strong>{{ trystdate }}</strong>
               </p>
-              <div class="d-flex mt-1 mb-1 flex-wrap justify-content-between">
+              <div class="d-flex mt-1 flex-wrap justify-content-between">
                 <template v-if="tryst">
-                  <AddToCalendar :ics="tryst.ics" class="mr-2" />
-                  <b-btn v-if="refmsg.promisecount && !hasOutcome" variant="secondary" class="mr-2" @click="changeTime">
+                  <AddToCalendar :ics="tryst.ics" class="mr-2 mb-1" />
+                  <b-btn v-if="refmsg.promisecount && refmsg.availablenow" variant="secondary" class="mr-2 mb-1" @click="changeTime">
                     <v-icon name="pen" />
                     Change time
                   </b-btn>
                   <PromiseModal ref="promise" :messages="[ refmsg ]" :selected-message="refmsg.id" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
                 </template>
-                <template v-else-if="refmsg.promisecount && !hasOutcome">
-                  <b-btn variant="secondary" class="mr-2" @click="changeTime">
+                <template v-else-if="refmsg.promisecount && refmsg.availablenow">
+                  <b-btn variant="secondary" class="mr-2 mb-1" @click="changeTime">
                     <v-icon name="pen" />
                     Set time
                   </b-btn>
                   <PromiseModal ref="promise" :messages="[ refmsg ]" :selected-message="refmsg.id" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
                 </template>
-                <b-btn v-if="refmsg.promisecount && !hasOutcome" variant="warning" class="align-middle mr-2" @click="unpromise">
+                <b-btn v-if="refmsg.promisecount && refmsg.availablenow" variant="warning" class="align-middle mr-2 mb-1" @click="unpromise">
                   Unpromise
                 </b-btn>
-                <b-btn variant="primary" class="mr-1" @click="outcome('Taken')">
+                <b-btn v-if="refmsg.availablenow" variant="primary" class="mr-1 mb-1" @click="outcome('Taken')">
                   Mark as TAKEN
                 </b-btn>
               </div>
@@ -98,6 +98,9 @@
                   <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
                 </span>
               </div>
+              <p v-if="!refmsg.availablenow" class="text-muted">
+                This has now been taken.
+              </p>
             </b-card-text>
           </b-card>
         </div>
@@ -129,9 +132,6 @@ export default {
   extends: ChatBase,
   mixins: [waitForRef],
   computed: {
-    hasOutcome() {
-      return this.refmsg && this.refmsg.outcomes && this.refmsg.outcomes.length
-    },
     tryst() {
       return this.otheruser
         ? this.$store.getters['tryst/getByUser'](this.otheruser.id)
