@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { APIError } from '@/api/BaseAPI'
+import { APIError, MaintenanceError } from '@/api/BaseAPI'
 
 const TOAST_EMAIL = 'support@ilovefreegle.org'
 const TOAST_TITLE = 'Sorry, something went wrong'
@@ -12,7 +12,15 @@ const TOAST_MESSAGE = `
 export default () => {
   const originalErrorHandler = Vue.config.errorHandler
   Vue.config.errorHandler = (err, vm, info, ...rest) => {
-    if (err instanceof APIError && vm && vm.$bvToast) {
+    if (err instanceof MaintenanceError) {
+      // This is thrown in response to API return codes from the server.  Go to the maintenance page.
+      console.log('Caught maintenance error', vm.$route.path, vm.$router)
+      if (vm.$route.path !== '/maintenance') {
+        vm.$router.push('/maintenance')
+      } else {
+        return false
+      }
+    } else if (err instanceof APIError && vm && vm.$bvToast) {
       const { request, response } = err
       try {
         // We have seen Sentry issues which look as though our console.error log here is itself causing an exception,

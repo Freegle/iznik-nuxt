@@ -520,11 +520,15 @@ module.exports = {
 
         // Sentry logs unhelpful exceptions - see https://github.com/getsentry/sentry-javascript/issues/2210.
         if (hint) {
-          console.log('Original exception was', hint.originalException)
+          console.log('Original exception was', hint.originalException, typeof  hint.originalException)
 
           if (!hint.originalException) {
             // There's basically no info to report, so there's nothing we can do.  Suppress it.
             console.log('No info - suppress exception')
+            return null
+            // eslint-disable-next-line
+          } else if (hint.originalException.toString().match(/Down for maintenance/)) {
+            console.log("Maintenance - suppress exception", this)
             return null
             // eslint-disable-next-line
           } else if (hint.originalException.toString().match(/Object Not Found Matching Id/)) {
