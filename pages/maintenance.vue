@@ -16,7 +16,7 @@
         P.S. We know this is a bit of a pain, and we try really hard to avoid taking the whole site down where we can.
         Very occasionally we need to do it.  If you want to
         <!-- eslint-disable-next-line -->
-        <ExternalLink href="https://freegle.in/paypal1510">donate a quid</ExternalLink>,
+        <ExternalLink href="https://www.paypal.com/gb/fundraiser/charity/55681">donate a quid</ExternalLink>,
         that'll help it happen less often.
       </p>
     </div>
