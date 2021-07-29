@@ -5,7 +5,7 @@
         <b-card class="p-0">
           <b-card-body class="p-0">
             <div class="d-flex justify-content-between flex-wrap">
-              <b-form-input v-model="search" placeholder="Search chats (e.g. 'Joe' or 'mods')" class="flex-shrink-1" :disabled="searching !== null" />
+              <b-form-input v-model="search" placeholder="Search chats (e.g. 'Joe' or 'mods')" class="flex-shrink-1" />
               <b-btn class="mt-1" variant="white" @click="markAllRead">
                 <v-icon name="check" /> Mark all read
               </b-btn>
@@ -14,7 +14,12 @@
         </b-card>
         <ChatListEntry v-for="chat in visibleChats" :id="chat.id" :key="'chat-' + chat.id" :class="{ active: chat && selectedChatId === parseInt(chat.id) }" />
         <p v-if="!visibleChats || !visibleChats.length" class="ml-2">
-          No chats to show.
+          <span v-if="searching" class="pulsate">
+            Searching...
+          </span>
+          <span v-else>
+            No chats to show.
+          </span>
         </p>
         <infinite-loading :identifier="bump" force-use-infinite-wrapper="#chatlist" :distance="distance" @infinite="loadMore">
           <span slot="no-results" />
