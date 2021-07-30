@@ -6,7 +6,7 @@
           <b-col cols="6" md="2">
             <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ admin.id }}
           </b-col>
-          <b-col cols="6" md="3">
+          <b-col cols="6" md="3" class="small">
             Created {{ admin.created | timeago }}
             <span v-if="!admin.pending">
               <span v-if="admin.complete">
@@ -18,16 +18,7 @@
             </span>
           </b-col>
           <b-col cols="12" md="4">
-            <span v-if="admin.parentid">
-              Suggested ADMIN
-            </span>
-            <span v-else-if="admin.createdby">
-              Created by
-              {{ admin.createdby.displayname }}
-              <span class="text-muted small">
-                <v-icon name="hashtag" class="text-muted" scale="0.75" /> {{ admin.createdby.id }}
-              </span>
-            </span>
+            {{ admin.subject }}
           </b-col>
           <b-col cols="12" md="3">
             <span class="d-block float-right">
@@ -66,6 +57,18 @@
             If this isn't suitable for your group, then click <em>Delete</em>.
           </p>
         </NoticeMessage>
+        <p class="text-muted">
+          <span v-if="admin.parentid">
+            Suggested ADMIN
+          </span>
+          <span v-else-if="admin.createdby">
+            Created by
+            {{ admin.createdby.displayname }}
+            <span class="text-muted small">
+              <v-icon name="hashtag" class="text-muted" scale="0.75" /> {{ admin.createdby.id }}
+            </span>
+          </span>
+        </p>
         <b-form-group
           label="Subject of ADMIN:"
           label-for="subject"

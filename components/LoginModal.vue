@@ -465,6 +465,7 @@ export default {
         }
       } else if (this.email && this.password) {
         // Login
+        console.log('Sign in')
         this.$store
           .dispatch('auth/login', {
             email: this.email,
@@ -472,21 +473,27 @@ export default {
           })
           .then(() => {
             // We are now logged in. Prompt the browser to remember the credentials.
+            console.log('Signed in')
             if (window.PasswordCredential) {
-              try {
-                const c = new window.PasswordCredential(e.target)
-                navigator.credentials
-                  .store(c)
-                  .then(function() {
-                    self.pleaseShowModal = false
-                  })
-                  .catch(err => {
-                    console.error('Failed to save credentials', err)
-                  })
-              } catch (e) {
-                self.pleaseShowModal = false
-              }
+              console.log('Try save', e)
+              // try {
+              //   const c = new window.PasswordCredential(e.target)
+              //   console.log('Got creds')
+              //   navigator.credentials
+              //     .store(c)
+              //     .then(function() {
+              //       console.log('Stored')
+              //       self.pleaseShowModal = false
+              //     })
+              //     .catch(err => {
+              //       console.error('Failed to save credentials', err)
+              //     })
+              // } catch (e) {
+              //   console.log('Failed to save', e)
+              //   self.pleaseShowModal = false
+              // }
             } else {
+              console.log('No credentials')
               self.pleaseShowModal = false
             }
           })

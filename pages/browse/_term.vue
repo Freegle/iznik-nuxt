@@ -9,7 +9,7 @@
           <SidebarLeft v-if="showRest" :show-community-events="true" :show-bot-left="true" />
         </Visible>
       </b-col>
-      <b-col cols="12" xl="6" class="p-0">
+      <b-col cols="12" lg="6" class="p-0">
         <client-only>
           <MicroVolunteering />
         </client-only>

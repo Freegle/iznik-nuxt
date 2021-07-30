@@ -13,7 +13,7 @@
         <!-- eslint-disable-next-line-->
         <span class="pl-0 mb-0 chatname truncate d-flex justify-content-between">{{ chat.name }} <Supporter v-if="supporter" class="mr-3 mt-1 small" /></span>
         <!-- eslint-disable-next-line-->
-        <div class="small text-muted">{{ chat.lastdate | timeago }}</div>
+        <div class="small text-muted" :title="dateFormatted">{{ chat.lastdate | timeago }}</div>
         <div>
           <b-badge v-if="chat.replyexpected" variant="danger">
             RSVP - please reply
@@ -50,13 +50,19 @@ export default {
     chat() {
       return this.$store.getters['chats/get'](this.id)
     },
+    dateFormatted() {
+      if (this.chat) {
+        return this.$dayjs(this.chat.lastdate).format('Do MMMM, YYYY HH:mm:ss')
+      }
+
+      return null
+    },
     esnippet() {
       if (this.chat.snippet === 'null') {
         return '...'
       }
 
       let ret = twem.twem(this.$twemoji, this.chat.snippet)
-
       // The way the snippet is constructed might lead to backslashes if we have an emoji.
       ret = ret.replace(/\\*$/, '') + '...'
       return ret

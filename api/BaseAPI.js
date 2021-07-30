@@ -13,6 +13,13 @@ export class APIError extends Error {
   }
 }
 
+export class MaintenanceError extends Error {
+  constructor({ request, response }, message) {
+    super(message)
+    Object.assign(this, { request, response })
+  }
+}
+
 export class LoginError extends Error {
   constructor(ret, status) {
     super(status)
@@ -136,51 +143,57 @@ export default class BaseAPI {
       const retstr = data && data.ret ? data.ret : 'Unknown'
       const statusstr = data && data.status ? data.status : 'Unknown'
 
-      // Whether or not we log this error to Sentry depends.  Most errors are worth logging, because they're unexpected.
-      // But some API calls are expected to fail, and throw an exception which is then handled in the code.  We don't
-      // want to log those, otherwise we will spend time investigating them in Sentry.  So we have a parameter which
-      // indicates whether we want to log this to Sentry - which can be a boolean or a function for more complex
-      // decisions.
-      const log = typeof logError === 'function' ? logError(data) : logError
-      console.log('Log it?', log)
+      if (retstr === 111) {
+        // Down for maintenance
+        console.log('Down for maintenance')
+        throw new MaintenanceError(data.ret, data.status)
+      } else {
+        // Whether or not we log this error to Sentry depends.  Most errors are worth logging, because they're unexpected.
+        // But some API calls are expected to fail, and throw an exception which is then handled in the code.  We don't
+        // want to log those, otherwise we will spend time investigating them in Sentry.  So we have a parameter which
+        // indicates whether we want to log this to Sentry - which can be a boolean or a function for more complex
+        // decisions.
+        const log = typeof logError === 'function' ? logError(data) : logError
+        console.log('Log it?', log)
 
-      if (log) {
-        Sentry.captureException(
-          'API request failed ' +
-            path +
-            ' returned HTTP ' +
-            status +
-            ' ret ' +
-            retstr +
-            ' status ' +
-            statusstr
+        if (log) {
+          Sentry.captureException(
+            'API request failed ' +
+              path +
+              ' returned HTTP ' +
+              status +
+              ' ret ' +
+              retstr +
+              ' status ' +
+              statusstr
+          )
+        }
+
+        const message = [
+          'API Error',
+          method,
+          path,
+          '->',
+          `ret: ${retstr} status: ${statusstr}`
+        ].join(' ')
+
+        throw new APIError(
+          {
+            request: {
+              path,
+              method,
+              headers: config.headers,
+              params: config.params,
+              data: config.data
+            },
+            response: {
+              status,
+              data
+            }
+          },
+          message
         )
       }
-
-      const message = [
-        'API Error',
-        method,
-        path,
-        '->',
-        `ret: ${retstr} status: ${statusstr}`
-      ].join(' ')
-
-      throw new APIError(
-        {
-          request: {
-            path,
-            method,
-            headers: config.headers,
-            params: config.params,
-            data: config.data
-          },
-          response: {
-            status,
-            data
-          }
-        },
-        message
-      )
     }
 
     return data

@@ -33,7 +33,7 @@
             expand
           />
         </div>
-        <div v-else-if="message && message.outcomes && message.outcomes.length > 0">
+        <div v-else-if="message && (message.outcomes && message.outcomes.length > 0 || message.deleted || message.groups && message.groups.length && message.groups[0].collection === 'Rejected')">
           <h1>{{ message.subject }}</h1>
           <NoticeMessage variant="info">
             <p>Sorry, that message is no longer available.  Why not look for something else?</p>
