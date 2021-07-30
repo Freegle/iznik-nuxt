@@ -10,12 +10,14 @@
       <template slot="default">
         <div v-if="variant === 'video'">
           <p class="font-weight-bold">
-            We've made little video to explain why we ask for donations.  This one is from Derek in Fife, with a
-            special guest.
+            <!--            We've made little video to explain why we ask for donations.  This one is from Derek in Fife, with a-->
+            <!--            special guest.-->
+            We've made little video to explain why we ask for donations.  It's
+            just this guy Edward in his living room, because we don't waste your money on fancy PR agencies.
           </p>
           <div class="embed-responsive embed-responsive-16by9">
-            <!--            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/TByrRQdLVD8" allowfullscreen />-->
-            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/ZUIKkKkKVkQ" allowfullscreen />
+            <!--            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/ZUIKkKkKVkQ" allowfullscreen />-->
+            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/TByrRQdLVD8" allowfullscreen />
           </div>
           <client-only>
             <p class="font-weight-bold text-center mt-4">
