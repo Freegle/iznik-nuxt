@@ -10,6 +10,7 @@
       <notice-message class="mb-3">
         This lets them know you're planning to give it to them, and helps you keep track.
         You can change your mind later if it doesn't work out, using the  <em>Unpromise</em> button.
+        {{ minDate }} to {{ maxDate }}
       </notice-message>
       <p>You're promising:</p>
       <b-select v-model="message" :options="messageOptions" class="mb-2 font-weight-bold" />
@@ -53,6 +54,25 @@
                     <v-icon name="calendar-alt" />
                     Choose a day
                   </div>
+                </template>
+                <template slot="nav-prev-year">
+                  &nbsp;
+                </template>
+                <template slot="nav-next-year">
+                  &nbsp;
+                </template>
+                <template slot="nav-this-month">
+                  &nbsp;
+                </template>
+                <template slot="nav-prev-month">
+                  <b-btn variant="btn-secondary">
+                    <v-icon name="arrow-circle-left" />&nbsp;Last month
+                  </b-btn>
+                </template>
+                <template slot="nav-next-month">
+                  <b-btn variant="btn-secondary">
+                    Next month&nbsp;<v-icon name="arrow-circle-right" />
+                  </b-btn>
                 </template>
               </b-form-datepicker>
             </b-input-group-append>
@@ -340,9 +360,5 @@ export default {
 <style scoped>
 label {
   font-weight: bold;
-}
-
-/deep/ .b-calendar-nav {
-  display: none !important;
 }
 </style>
