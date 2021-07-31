@@ -432,23 +432,27 @@ export default {
             // We are now logged in. Prompt the browser to remember the credentials.
             console.log('Signed in')
             if (window.PasswordCredential) {
-              console.log('Try save', e)
-              // try {
-              //   const c = new window.PasswordCredential(e.target)
-              //   console.log('Got creds')
-              //   navigator.credentials
-              //     .store(c)
-              //     .then(function() {
-              //       console.log('Stored')
-              //       self.pleaseShowModal = false
-              //     })
-              //     .catch(err => {
-              //       console.error('Failed to save credentials', err)
-              //     })
-              // } catch (e) {
-              //   console.log('Failed to save', e)
-              //   self.pleaseShowModal = false
-              // }
+              console.log('Try save')
+              try {
+                // We used to pass in the DOM element, but in Chrome 92 that causes a crash.
+                const c = new window.PasswordCredential({
+                  id: this.email,
+                  password: this.password
+                })
+                console.log('Got creds')
+                navigator.credentials
+                  .store(c)
+                  .then(function() {
+                    console.log('Stored')
+                    self.pleaseShowModal = false
+                  })
+                  .catch(err => {
+                    console.error('Failed to save credentials', err)
+                  })
+              } catch (e) {
+                console.log('Failed to save', e)
+                self.pleaseShowModal = false
+              }
             } else {
               console.log('No credentials')
               self.pleaseShowModal = false
