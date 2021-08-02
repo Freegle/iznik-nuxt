@@ -322,14 +322,14 @@
               :groupid="groupid"
               name="settings.reposts.offer"
               label="OFFER repost time"
-              description="Controls when the member can manually repost, and when auto-repost kicks in."
+              description="Controls when the member can manually repost, and when auto-repost kicks in.  0 = always show manual Repost button."
               class="mr-2"
             />
             <ModGroupSetting
               :groupid="groupid"
               name="settings.reposts.wanted"
               label="WANTED repost time"
-              description="Controls when the member can manually repost, and when auto-repost kicks in."
+              description="Controls when the member can manually repost, and when auto-repost kicks in.  0 = always show manual Repost button."
               class="mr-2"
             />
           </b-card-body>
