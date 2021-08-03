@@ -4,7 +4,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@4.1.0
-  android: circleci/android@0.2.3
+  android: circleci/android@1.0.3
 
 ################
 workflows:
