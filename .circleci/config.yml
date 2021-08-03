@@ -275,9 +275,9 @@ jobs:
         ln -s ../project/dist www;
         cordova plugin list;
         cordova platform rm android;
-        cordova platform add android@10.0.1;
-        cordova plugin add https://github.com/havesource/cordova-plugin-push
+        cordova platform add android@10.0.1
       "
+      #  cordova plugin add https://github.com/havesource/cordova-plugin-push
       # cordova plugin add @havesource/cordova-plugin-push
       #cordova plugin rm havesource-cordova-plugin-push;
       #cordova plugin rm @havesource/cordova-plugin-push;

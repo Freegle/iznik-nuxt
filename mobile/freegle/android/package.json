@@ -27,7 +27,7 @@
     "phonegap-plugin-multidex": "^1.0.0"
   },
   "devDependencies": {
-    "@havesource/cordova-plugin-push": "1.0.0",
+    "@havesource/cordova-plugin-push": "git+https://github.com/havesource/cordova-plugin-push.git",
     "cordova-android": "^10.0.1",
     "cordova-plugin-androidx-adapter": "1.1.3",
     "cordova-plugin-whitelist": "1.3.5",
@@ -74,7 +74,7 @@
       },
       "cordova-plugin-androidx-adapter": {},
       "cordova-plugin-whitelist": {},
-      "havesource-cordova-plugin-push": {
+      "@havesource/cordova-plugin-push": {
         "ANDROID_SUPPORT_V13_VERSION": "28.0.0",
         "FCM_VERSION": "18.+"
       }
