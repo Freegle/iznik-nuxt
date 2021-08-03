@@ -184,7 +184,7 @@ jobs:
     #executor: node/default
     executor:
       name: android/android
-      sdk-version: '28'
+      sdk-version: '30'
     docker:
 ###      - image: circleci/android:api-28
       - image: circleci/android:api-24-alpha # brings in suitably old openjdk
@@ -274,7 +274,9 @@ jobs:
         cp ../project/mobile/freegle/alert.mp3 alert.mp3;
         ln -s ../project/dist www;
         cordova platform rm android;
-        cordova platform add android@10.0.1
+        cordova plugin rm @havesource/cordova-plugin-push;
+        cordova platform add android@10.0.1;
+        cordova plugin add @havesource/cordova-plugin-push
       "
 
       - run: echo $ANDROID_HOME
