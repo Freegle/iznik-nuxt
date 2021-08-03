@@ -274,10 +274,12 @@ jobs:
         cp ../project/mobile/freegle/alert.mp3 alert.mp3;
         ln -s ../project/dist www;
         cordova platform rm android;
-        cordova plugin rm @havesource/cordova-plugin-push;
+        cordova plugin list;
+        cordova plugin rm havesource-cordova-plugin-push;
         cordova platform add android@10.0.1;
         cordova plugin add @havesource/cordova-plugin-push
       "
+      #cordova plugin rm @havesource/cordova-plugin-push;
 
       - run: echo $ANDROID_HOME
       - run: echo $JAVA_HOME
