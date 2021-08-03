@@ -52,12 +52,6 @@ jobs:
 
       ################
       - run:
-          name: == Get @havesource/cordova-plugin-push
-          command: echo "Get @havesource/cordova-plugin-push"
-      - run: cd ..;git clone https://github.com/havesource/cordova-plugin-push.git
-
-      ################
-      - run:
           name: == Decrypt secrets and set up signing
           command: echo "Decrypt secrets"
       - run: openssl version; tar --version; java -version
@@ -225,6 +219,12 @@ jobs:
           name: == Get ionic-plugin-deeplinks
           command: echo "Get ionic-plugin-deeplinks"
       - run: cd ..;git clone https://github.com/Freegle/ionic-plugin-deeplinks.git
+
+################
+      - run:
+          name: == Get @havesource/cordova-plugin-push
+          command: echo "Get @havesource/cordova-plugin-push"
+      - run: cd ..;git clone https://github.com/havesource/cordova-plugin-push.git
 
 ################
       - run:
