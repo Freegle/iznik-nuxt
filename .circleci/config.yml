@@ -307,7 +307,7 @@ jobs:
 
       # Build release build
       - run: cd ../iznik-nuxt-app; cordova build --release -- --keystore="../project/mobile/secrets/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
-      - run: cd ../iznik-nuxt-app; cp platforms/android/app/build/outputs/apk/release/app-release.apk ../project/releases/Freegle-android-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').apk
+      - run: cd ../iznik-nuxt-app; cp platforms/android/app/build/outputs/apk/release/app-release.aab ../project/releases/Freegle-android-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').aab
 
       - run: ls -l releases
 
