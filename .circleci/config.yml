@@ -206,7 +206,6 @@ jobs:
           command: echo "Install"
       - checkout
       - android/accept-licenses
-      - run: $ANDROID_HOME/tools/android list target
       #- node/install:
       #    lts: true
       #    #install-npm: false
