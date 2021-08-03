@@ -183,13 +183,15 @@ jobs:
   build-and-publish-android:  
     #executor: node/default
     executor:
-      name: android/android
-      sdk-version: '30'
-    docker:
+      #name: android/android
+      name: android/android-machine
+      resource-class: large
+      #sdk-version: '30'
+    #docker:
+    #  - image: cimg/android:30-0 # https://circleci.com/developer/images/image/cimg/openjdk
 ###      - image: circleci/android:api-28
-      - image: circleci/android:api-24-alpha # brings in suitably old openjdk
+#      - image: circleci/android:api-24-alpha # brings in suitably old openjdk
 ##      - image: circleci/jdk8:0.1.1
-#https://circleci.com/developer/images/image/cimg/openjdk
     environment:
       # JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
       # ANDROID_HOME: /usr/local/android-sdk-linux
