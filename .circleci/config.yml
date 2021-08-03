@@ -293,11 +293,11 @@ jobs:
 
       #- run: $ANDROID_HOME/tools/android list target
 
-      - run: $ANDROID_HOME/tools/bin/sdkmanager --list
+      #- run: $ANDROID_HOME/tools/bin/sdkmanager --list
 
-      - run: $ANDROID_HOME/tools/bin/sdkmanager --list | grep "build-tools"
+      #- run: $ANDROID_HOME/tools/bin/sdkmanager --list | grep "build-tools"
 
-      - run: $ANDROID_HOME/tools/bin/sdkmanager --list | sed -e '/Available Packages/q'
+      #- run: $ANDROID_HOME/tools/bin/sdkmanager --list | sed -e '/Available Packages/q'
 
       - run: echo $ANDROID_HOME
       - run: echo $JAVA_HOME
