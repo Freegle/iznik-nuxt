@@ -189,6 +189,7 @@ jobs:
 ###      - image: circleci/android:api-28
       - image: circleci/android:api-24-alpha # brings in suitably old openjdk
 ##      - image: circleci/jdk8:0.1.1
+#https://circleci.com/developer/images/image/cimg/openjdk
     environment:
       # JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
       # ANDROID_HOME: /usr/local/android-sdk-linux
@@ -287,6 +288,14 @@ jobs:
       # cordova plugin add @havesource/cordova-plugin-push
       #cordova plugin rm havesource-cordova-plugin-push;
       #cordova plugin rm @havesource/cordova-plugin-push;
+
+      - run: $ANDROID_HOME/tools/android list target
+
+      - run: $ANDROID_HOME/tools/bin/sdkmanager --list
+
+      - run: $ANDROID_HOME/tools/bin/sdkmanager --list | grep "build-tools"
+
+      - run: $ANDROID_HOME/tools/bin/sdkmanager --list | sed -e '/Available Packages/q'
 
       - run: echo $ANDROID_HOME
       - run: echo $JAVA_HOME
