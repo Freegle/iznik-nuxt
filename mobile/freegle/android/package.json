@@ -23,20 +23,18 @@
     "cordova-plugin-splashscreen": "^5.0.3",
     "cordova-plugin-x-socialsharing": "5.6.3",
     "cordova-plugin-zoom-control-2": "^0.4.2",
-    "cordova-support-google-services": "^1.3.2",
     "es6-promise-plugin": "^4.2.2",
     "phonegap-plugin-multidex": "^1.0.0"
   },
   "devDependencies": {
     "@havesource/cordova-plugin-push": "1.0.0",
-    "cordova-android": "8.1.0",
-    "cordova-plugin-whitelist": "^1.3.4",
-    "ionic-plugin-deeplinks": "file:../ionic-plugin-deeplinks",
-    "phonegap-plugin-push": "2.3.0"
+    "cordova-android": "^10.0.1",
+    "cordova-plugin-androidx-adapter": "1.1.3",
+    "cordova-plugin-whitelist": "1.3.5",
+    "ionic-plugin-deeplinks": "file:../ionic-plugin-deeplinks"
   },
   "cordova": {
     "plugins": {
-      "cordova-plugin-whitelist": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-device": {},
       "cordova-plugin-network-information": {},
@@ -56,10 +54,6 @@
       "cordova-plugin-geolocation": {
         "GPS_REQUIRED": "false"
       },
-      "phonegap-plugin-push": {
-        "ANDROID_SUPPORT_V13_VERSION": "27.+",
-        "FCM_VERSION": "17.0.+"
-      },
       "ionic-plugin-deeplinks": {
         "URL_SCHEME": "freegle",
         "DEEPLINK_SCHEME": "https",
@@ -77,6 +71,12 @@
         "DEEPLINK_4_HOST": " ",
         "DEEPLINK_5_SCHEME": " ",
         "DEEPLINK_5_HOST": " "
+      },
+      "cordova-plugin-androidx-adapter": {},
+      "cordova-plugin-whitelist": {},
+      "havesource-cordova-plugin-push": {
+        "ANDROID_SUPPORT_V13_VERSION": "28.0.0",
+        "FCM_VERSION": "18.+"
       }
     },
     "platforms": [
