@@ -185,7 +185,7 @@ jobs:
     executor:
       #name: android/android
       name: android/android-machine
-      resource-class: large
+      #resource-class: large
       #sdk-version: '30'
     #docker:
     #  - image: cimg/android:30-0 # https://circleci.com/developer/images/image/cimg/openjdk
@@ -313,6 +313,9 @@ jobs:
 
       # Publish to Google Play beta track
       # https://haseebmajid.dev/blog/auto-publish-react-native-to-android-store-with-gitlab-ci
+      - run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
+      - run: cd ../iznik-nuxt-app; sed -i "/mavenCentral/amaven { url 'https://plugins.gradle.org/m2/' }" platforms/android/repositories.gradle
+      - run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
       - run: cd ../iznik-nuxt-app; cat platforms/android/build.gradle
       - run: cd ../iznik-nuxt-app; sed -i "/classpath/aclasspath 'com.github.triplet.gradle:play-publisher:2.4.1'" platforms/android/build.gradle
       - run: cd ../iznik-nuxt-app; cat platforms/android/build.gradle
