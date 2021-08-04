@@ -7,7 +7,7 @@
       As far as we're concerned, it's simple:
     </p>
     <ol class="">
-      <li>Use Freegle to pass on unwanted items direct to others.  No swaps, just simple gifts.</li>
+      <li>Use Freegle to pass on unwanted items direct to others.  No sales, no swaps, just simple gifts.</li>
       <li>Everything must be free and legal.</li>
       <li>Be nice to other freeglers, and they'll be nice to you.</li>
       <li>
