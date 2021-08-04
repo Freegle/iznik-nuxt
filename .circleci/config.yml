@@ -317,7 +317,7 @@ jobs:
       - run: cd ../iznik-nuxt-app; sed -i "/mavenCentral/amaven { url 'https://plugins.gradle.org/m2/' }" platforms/android/repositories.gradle
       - run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
       - run: cd ../iznik-nuxt-app; cat platforms/android/build.gradle
-      - run: cd ../iznik-nuxt-app; sed -i "/classpath/aclasspath 'com.github.triplet.gradle:play-publisher:2.4.1'" platforms/android/build.gradle
+      - run: cd ../iznik-nuxt-app; sed -i "/classpath/aclasspath 'com.github.triplet.gradle:play-publisher:3.6.0'" platforms/android/build.gradle
       - run: cd ../iznik-nuxt-app; cat platforms/android/build.gradle
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/build-extras.gradle platforms/android/app
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/secrets/api-freegle-google-play-deployment.json platforms/android/app
@@ -353,7 +353,7 @@ jobs:
 
       # Build release build
       - run: cd ../iznik-nuxt-mt; cordova build --release -- --keystore="../project/mobile/secrets/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
-      - run: cd ../iznik-nuxt-mt; cp platforms/android/app/build/outputs/bundle/release/app-release.aab ../project/releases/ModTools-android-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').apk
+      - run: cd ../iznik-nuxt-mt; cp platforms/android/app/build/outputs/bundle/release/app-release.aab ../project/releases/ModTools-android-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').aab
 
       - run: ls -l releases
 
