@@ -6,3 +6,6 @@ android {
       serviceAccountCredentials = file('api-freegle-google-play-deployment.json')
     }
 }
+dependencies {
+  classpath "com.github.triplet.gradle:play-publisher:2.8.1"
+}
