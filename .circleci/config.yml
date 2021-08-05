@@ -333,7 +333,7 @@ jobs:
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/build-extras.gradle platforms/android/app
       - run: cd ../iznik-nuxt-app; cat platforms/android/app/build-extras.gradle
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/secrets/api-freegle-google-play-deployment.json platforms/android/app
-      - run: cd ../iznik-nuxt-app/platforms/android; gradle publishBundle || true # Ignore errors ie if versionCode already submitted
+      - run: cd ../iznik-nuxt-app/platforms/android; gradle publishBundle --debug || true # Ignore errors ie if versionCode already submitted
 
 ################
 # MODTOOLS APP

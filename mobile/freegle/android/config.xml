@@ -21,7 +21,7 @@
       <preference name="android-targetSdkVersion" value="30" />
       <preference name="AndroidLaunchMode" value="singleTask" />
       <preference name="GradlePluginGoogleServicesEnabled" value="true" />
-      <preference name="GradlePluginGoogleServicesVersion" value="4.3.8" />
+      <preference name="GradlePluginGoogleServicesVersion" value="4.3.5" />
     </platform>
     <splash density="ldpi" height="426" orientation="portrait" platform="android" src="package-assets/FreegleSplash_320x426.png" width="320" />
     <splash density="mdpi" height="470" orientation="portrait" platform="android" src="package-assets/FreegleSplash_320x470.png" width="320" />
