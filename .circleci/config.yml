@@ -318,9 +318,9 @@ jobs:
       # https://plugins.gradle.org/plugin/com.github.triplet.play Version 3 doesn't seem to work
       # https://github.com/Triple-T/gradle-play-publisher
       # https://plugins.gradle.org/m2/com/github/triplet/gradle/play-publisher/2.8.1/
-      - run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
-      - run: cd ../iznik-nuxt-app; sed -i "/mavenCentral/amaven { url 'https://plugins.gradle.org/m2/' }" platforms/android/repositories.gradle
-      - run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
+      #- run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
+      #- run: cd ../iznik-nuxt-app; sed -i "/mavenCentral/amaven { url 'https://plugins.gradle.org/m2/' }" platforms/android/repositories.gradle
+      #- run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
       - run: cd ../iznik-nuxt-app; cat platforms/android/app/repositories.gradle
       - run: cd ../iznik-nuxt-app; sed -i "/mavenCentral/amaven { url 'https://plugins.gradle.org/m2/' }" platforms/android/app/repositories.gradle
       - run: cd ../iznik-nuxt-app; cat platforms/android/app/repositories.gradle
@@ -333,7 +333,7 @@ jobs:
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/build-extras.gradle platforms/android/app
       - run: cd ../iznik-nuxt-app; cat platforms/android/app/build-extras.gradle
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/secrets/api-freegle-google-play-deployment.json platforms/android/app
-      - run: cd ../iznik-nuxt-app/platforms/android; gradle publishBundle --debug || true # Ignore errors ie if versionCode already submitted
+      - run: cd ../iznik-nuxt-app/platforms/android; gradle publishBundle --info || true # Ignore errors ie if versionCode already submitted
 
 ################
 # MODTOOLS APP
@@ -379,7 +379,7 @@ jobs:
       - run: cd ../iznik-nuxt-app; cat platforms/android/build.gradle
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/build-extras.gradle platforms/android/app
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/secrets/api-freegle-google-play-deployment.json platforms/android/app
-      - run: cd ../iznik-nuxt-app/platforms/android; gradle publishReleaseApk || true # Ignore errors ie if versionCode already submitted
+      - run: cd ../iznik-nuxt-app/platforms/android; gradle publishBundle || true # Ignore errors ie if versionCode already submitted
 
 ################
 # UPLOAD TO GITHUB AS NEW TAGGED RELEASE
