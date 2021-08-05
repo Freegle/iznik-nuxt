@@ -3,7 +3,10 @@ apply plugin: 'com.github.triplet.play'
 android {
     compileSdkVersion 30
     play {
-      track = 'beta' //'alpha','beta' or 'production'
-      serviceAccountCredentials = file('api-freegle-google-play-deployment.json')
+      #track = 'beta' //'alpha','beta' or 'production'
+      track.set("beta")
+      #serviceAccountCredentials = file('api-freegle-google-play-deployment.json')
+      serviceAccountCredentials.set(file('api-freegle-google-play-deployment.json'))
+      defaultToAppBundles.set(true)
     }
 }
