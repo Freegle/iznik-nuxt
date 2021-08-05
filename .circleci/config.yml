@@ -250,8 +250,8 @@ jobs:
       #- run: sudo echo "export GRADLE_HOME=/opt/gradle/gradle-5.4.1" >> $BASH_ENV
       #- run: sudo echo "export PATH=$GRADLE_HOME/bin:$PATH" >> $BASH_ENV
       - run: gradle -v
-      - run: gradle wrapper --gradle-version=7.1.1 --distribution-type=bin
-      - run: gradle -v
+      #- run: gradle wrapper --gradle-version=7.1.1 --distribution-type=bin
+      #- run: gradle -v
       
 ################
       - run:
@@ -366,7 +366,7 @@ jobs:
       - run: cd ../iznik-nuxt-app; sed -i "/mavenCentral/amaven { url 'https://plugins.gradle.org/m2/' }" platforms/android/repositories.gradle
       - run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
       - run: cd ../iznik-nuxt-app; cat platforms/android/build.gradle
-      - run: cd ../iznik-nuxt-app; sed -i "/classpath/aclasspath 'com.github.triplet.gradle:play-publisher:2.4.1'" platforms/android/build.gradle
+      - run: cd ../iznik-nuxt-app; sed -i "/classpath/aclasspath 'com.github.triplet.gradle:play-publisher:2.8.1'" platforms/android/build.gradle
       - run: cd ../iznik-nuxt-app; cat platforms/android/build.gradle
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/build-extras.gradle platforms/android/app
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/secrets/api-freegle-google-play-deployment.json platforms/android/app
