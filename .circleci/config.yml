@@ -250,7 +250,7 @@ jobs:
       #- run: sudo echo "export GRADLE_HOME=/opt/gradle/gradle-5.4.1" >> $BASH_ENV
       #- run: sudo echo "export PATH=$GRADLE_HOME/bin:$PATH" >> $BASH_ENV
       - run: gradle -v
-      - run: gradlew wrapper --gradle-version=7.1.1 --distribution-type=bin
+      - run: gradle wrapper --gradle-version=7.1.1 --distribution-type=bin
       - run: gradle -v
       
 ################
