@@ -184,14 +184,8 @@ jobs:
     #executor: node/default
     executor:
       #name: android/android
-      name: android/android-machine # https://circleci.com/docs/2.0/android-machine-image/ 5/8/21:  android 23-30, gradle 6.8.3
+      name: android/android-machine # https://circleci.com/docs/2.0/android-machine-image/ 5/8/21:  android 23-30, gradle 6.8.3 npm 7.6.1 node v14.16.0
       resource-class: medium
-      #sdk-version: '30'
-    #docker:
-    #  - image: cimg/android:30-0 # https://circleci.com/developer/images/image/cimg/openjdk
-###      - image: circleci/android:api-28
-#      - image: circleci/android:api-24-alpha # brings in suitably old openjdk
-##      - image: circleci/jdk8:0.1.1
     environment:
       # JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
       # ANDROID_HOME: /usr/local/android-sdk-linux
@@ -206,28 +200,18 @@ jobs:
           command: echo "Install"
       - checkout
       - android/accept-licenses
-      #- node/install:
-      #    lts: true
-      #    #install-npm: false
-      #    #node-version: "14.15.4"
-      #    npm-version: "6.14.11"
-      - run: npm -v; node -v # OK: 7.5.2 v14.15.4  # 6.14.11 v14.15.4 # Seems OK: 7.10.0 14.16.1
+      - run: npm -v; node -v # OK: 7.5.2 v14.15.4  # 6.14.11 v14.15.4 # Seems OK: 7.10.0 14.16.1 # npm 7.6.1 node v14.16.0
 
       - run: npm install
-      - run: npm install -g cordova rimraf # @9.0.0
+      - run: npm install -g cordova rimraf # @10.0.0
       - run: cordova -v
 
 ################
+      # Need to run our fixed fork of ionic-plugin-deeplinks
       - run:
           name: == Get ionic-plugin-deeplinks
           command: echo "Get ionic-plugin-deeplinks"
       - run: cd ..;git clone https://github.com/Freegle/ionic-plugin-deeplinks.git
-
-################
-      - run:
-          name: == Get @havesource/cordova-plugin-push
-          command: echo "Get @havesource/cordova-plugin-push"
-      - run: cd ..;git clone https://github.com/havesource/cordova-plugin-push.git
 
 ################
       - run:
@@ -240,18 +224,7 @@ jobs:
       - run: cd mobile; tar -xvf circleci-secrets.tar --no-same-owner; ls -l secrets
 
 ################
-      #- run:
-      #    name: == Install gradle
-      #    command: echo "Install gradle"
-      #- run: sudo apt-get install unzip
-      #- run: wget -O ~/gradle-5.4.1-bin.zip https://services.gradle.org/distributions/gradle-5.4.1-bin.zip
-      #- run: sudo mkdir /opt/gradle
-      #- run: sudo unzip -d /opt/gradle ~/gradle-5.4.1-bin.zip
-      #- run: sudo echo "export GRADLE_HOME=/opt/gradle/gradle-5.4.1" >> $BASH_ENV
-      #- run: sudo echo "export PATH=$GRADLE_HOME/bin:$PATH" >> $BASH_ENV
-      - run: gradle -v
-      #- run: gradle wrapper --gradle-version=7.1.1 --distribution-type=bin
-      #- run: gradle -v
+      - run: gradle -v # 6.8.3
       
 ################
       - run:
@@ -287,19 +260,6 @@ jobs:
         cordova platform rm android;
         cordova platform add android@10.0.1
       "
-      #  set ssh_strict_host_key_checking: true;
-      #  cordova plugin add https://github.com/havesource/cordova-plugin-push
-      # cordova plugin add @havesource/cordova-plugin-push
-      #cordova plugin rm havesource-cordova-plugin-push;
-      #cordova plugin rm @havesource/cordova-plugin-push;
-
-      #- run: $ANDROID_HOME/tools/android list target
-
-      #- run: $ANDROID_HOME/tools/bin/sdkmanager --list
-
-      #- run: $ANDROID_HOME/tools/bin/sdkmanager --list | grep "build-tools"
-
-      #- run: $ANDROID_HOME/tools/bin/sdkmanager --list | sed -e '/Available Packages/q'
 
       - run: echo $ANDROID_HOME
       - run: echo $JAVA_HOME
@@ -308,22 +268,30 @@ jobs:
       - run: cd ../iznik-nuxt-app; cp platforms/android/app/build/outputs/apk/debug/app-debug.apk ../project/releases/Freegle-android-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').apk
 
       # Build release build
-      - run: cd ../iznik-nuxt-app; cordova build --release -- --keystore="../project/mobile/secrets/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
-      - run: cd ../iznik-nuxt-app; cp platforms/android/app/build/outputs/bundle/release/app-release.aab ../project/releases/Freegle-android-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').aab
+      - run: cd ../iznik-nuxt-app; cordova build --release -- --packageType apk --keystore="../project/mobile/secrets/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
+      - run: cd ../iznik-nuxt-app; cp platforms/android/app/build/outputs/apk/release/app-release.apk ../project/releases/Freegle-android-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').apk
+      #- run: cd ../iznik-nuxt-app; cp platforms/android/app/build/outputs/bundle/release/app-release.aab ../project/releases/Freegle-android-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').aab
 
       - run: ls -l releases
 
-      # Publish to Google Play beta track
+      # Publish to Google Play beta track. NOT WORKING since upgrade to cordova-android 10.0.1 and new circleci build environment
       # https://haseebmajid.dev/blog/auto-publish-react-native-to-android-store-with-gitlab-ci
       # https://plugins.gradle.org/plugin/com.github.triplet.play Version 3 doesn't seem to work
       # https://github.com/Triple-T/gradle-play-publisher
       # https://plugins.gradle.org/m2/com/github/triplet/gradle/play-publisher/2.8.1/
-      #- run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
-      #- run: cd ../iznik-nuxt-app; sed -i "/mavenCentral/amaven { url 'https://plugins.gradle.org/m2/' }" platforms/android/repositories.gradle
-      #- run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
-      - run: cd ../iznik-nuxt-app; cat platforms/android/app/repositories.gradle
-      - run: cd ../iznik-nuxt-app; sed -i "/mavenCentral/amaven { url 'https://plugins.gradle.org/m2/' }" platforms/android/app/repositories.gradle
-      - run: cd ../iznik-nuxt-app; cat platforms/android/app/repositories.gradle
+      # gradle-play-publisher 3.6.0 needs Gradle 7.x
+      #                       3.5.0              4.2.x
+      #                       3.0-3.4            4.1.x
+      #                       2.8.0              6.5
+      #                       ...
+      #                       2.0.0-rc1          older version used
+
+      - run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
+      - run: cd ../iznik-nuxt-app; sed -i "/mavenCentral/amaven { url 'https://plugins.gradle.org/m2/' }" platforms/android/repositories.gradle
+      - run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
+      #- run: cd ../iznik-nuxt-app; cat platforms/android/app/repositories.gradle
+      #- run: cd ../iznik-nuxt-app; sed -i "/mavenCentral/amaven { url 'https://plugins.gradle.org/m2/' }" platforms/android/app/repositories.gradle
+      #- run: cd ../iznik-nuxt-app; cat platforms/android/app/repositories.gradle
       - run: cd ../iznik-nuxt-app; cat platforms/android/app/build.gradle
       - run: cd ../iznik-nuxt-app; sed -i "/AGP_VERSION/aclasspath 'com.github.triplet.gradle:play-publisher:2.8.1'" platforms/android/app/build.gradle
       - run: cd ../iznik-nuxt-app; cat platforms/android/app/build.gradle
@@ -333,7 +301,8 @@ jobs:
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/build-extras.gradle platforms/android/app
       - run: cd ../iznik-nuxt-app; cat platforms/android/app/build-extras.gradle
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/secrets/api-freegle-google-play-deployment.json platforms/android/app
-      - run: cd ../iznik-nuxt-app/platforms/android; gradle publishBundle --info || true # Ignore errors ie if versionCode already submitted
+      - run: cd ../iznik-nuxt-app/platforms/android; gradle publishReleaseApk --info || true # Ignore errors ie if versionCode already submitted
+      #- run: cd ../iznik-nuxt-app/platforms/android; gradle publishBundle --info || true # Ignore errors ie if versionCode already submitted
 
 ################
 # MODTOOLS APP
@@ -364,12 +333,13 @@ jobs:
       - run: cd ../iznik-nuxt-mt; cp platforms/android/app/build/outputs/apk/debug/app-debug.apk ../project/releases/ModTools-android-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').apk
 
       # Build release build
-      - run: cd ../iznik-nuxt-mt; cordova build --release -- --keystore="../project/mobile/secrets/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
-      - run: cd ../iznik-nuxt-mt; cp platforms/android/app/build/outputs/bundle/release/app-release.aab ../project/releases/ModTools-android-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').aab
+      - run: cd ../iznik-nuxt-mt; cordova build --release -- --packageType apk --keystore="../project/mobile/secrets/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
+      - run: cd ../iznik-nuxt-mt; cp platforms/android/app/build/outputs/apk/release/app-release.apk ../project/releases/ModTools-android-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').apk
+      #- run: cd ../iznik-nuxt-mt; cp platforms/android/app/build/outputs/bundle/release/app-release.aab ../project/releases/ModTools-android-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').aab
 
       - run: ls -l releases
 
-      # Publish to Google Play beta track
+      # Publish to Google Play beta track. NOT WORKING since upgrade to cordova-android 10.0.1 and new circleci build environment
       # https://haseebmajid.dev/blog/auto-publish-react-native-to-android-store-with-gitlab-ci
       - run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
       - run: cd ../iznik-nuxt-app; sed -i "/mavenCentral/amaven { url 'https://plugins.gradle.org/m2/' }" platforms/android/repositories.gradle
@@ -379,7 +349,7 @@ jobs:
       - run: cd ../iznik-nuxt-app; cat platforms/android/build.gradle
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/build-extras.gradle platforms/android/app
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/secrets/api-freegle-google-play-deployment.json platforms/android/app
-      - run: cd ../iznik-nuxt-app/platforms/android; gradle publishBundle || true # Ignore errors ie if versionCode already submitted
+      - run: cd ../iznik-nuxt-app/platforms/android; gradle publishReleaseApk || true # Ignore errors ie if versionCode already submitted
 
 ################
 # UPLOAD TO GITHUB AS NEW TAGGED RELEASE
