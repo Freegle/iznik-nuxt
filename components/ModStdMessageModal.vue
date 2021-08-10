@@ -227,6 +227,8 @@ export default {
 
       if (this.body) {
         const checks = {
+          group: 'We tend to refer to communities rather than groups now.',
+          groups: 'We tend to refer to communities rather than groups now.',
           yahoo:
             'Yahoo Groups is no longer supported, so any mention of it is probably out of date.',
           republisher:
