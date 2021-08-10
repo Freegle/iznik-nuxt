@@ -26,11 +26,7 @@
           </notice-message>
           <notice-message v-if="!spammer && (replytime || milesaway)" class="clickme d-flex flex-wrap justify-content-between" variant="info" @click.native="showInfo">
             <span v-if="milesaway">
-              <!--            COVID lockdown 2-->
               <v-icon name="map-marker-alt" class="fa-fw" />&nbsp;About <strong>{{ milesaway | pluralize('mile', { includeNumber: true }) }} away</strong>.
-              <span v-if="milesaway > 10">
-                Remember: please keep it local, and respect any COVID-19 restrictions in your area.
-              </span>
             </span>
             <span v-if="replytime">
               <v-icon name="info-circle" class="fa-fw" />&nbsp;Typically replies in <strong>{{ replytime }}</strong>.

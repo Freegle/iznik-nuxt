@@ -1,7 +1,7 @@
 <template>
   <b-row class="m-0">
     <b-col cols="12" lg="6" offset-lg="3" class="p-0">
-      <CovidWarning />
+      <GlobalWarning />
       <client-only>
         <WizardProgress :active-stage="2" class="d-none d-md-flex" />
       </client-only>
@@ -26,7 +26,6 @@
             </transition>
           </b-col>
         </b-row>
-        <CovidClosed v-if="closed" class="mt-2" />
         <div v-else-if="postcodeValid && noGroups">
           <NoticeMessage variant="info">
             We're really sorry, but there are no communities near there.  If you'd like to start one, please
@@ -88,8 +87,7 @@ import buildHead from '@/mixins/buildHead.js'
 import compose from '@/mixins/compose.js'
 import ExternalLink from '@/components/ExternalLink'
 import NoticeMessage from '../../components/NoticeMessage'
-import CovidClosed from '../../components/CovidClosed'
-import CovidWarning from '~/components/CovidWarning'
+import GlobalWarning from '~/components/GlobalWarning'
 import Postcode from '~/components/Postcode'
 
 const ComposeGroup = () => import('~/components/ComposeGroup')
@@ -99,8 +97,7 @@ export default {
   options: () => {},
   components: {
     ExternalLink,
-    CovidWarning,
-    CovidClosed,
+    GlobalWarning,
     NoticeMessage,
     Postcode,
     ComposeGroup,

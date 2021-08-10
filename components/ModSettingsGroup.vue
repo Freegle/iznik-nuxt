@@ -209,15 +209,6 @@
             </p>
             <ModGroupSetting
               :groupid="groupid"
-              name="settings.closed"
-              label="Closed for COVID-19"
-              description="See https://wiki.ilovefreegle.org/Closed_Groups for information about what this means."
-              type="toggle"
-              toggle-checked="Closed"
-              toggle-unchecked="Open"
-            />
-            <ModGroupSetting
-              :groupid="groupid"
               name="settings.communityevents"
               label="Community Events"
               description="Whether members can post local community events."

@@ -3,7 +3,6 @@
     <client-only>
       <ScrollToTop />
       <ModCakeModal />
-      <PreCovidModeration />
       <NoticeMessage variant="info" class="mb-2 d-block d-md-none">
         <ModZoomStock />
       </NoticeMessage>
@@ -42,14 +41,12 @@ import NoticeMessage from '../../../../components/NoticeMessage'
 import GroupSelect from '../../../../components/GroupSelect'
 import ModMessage from '../../../../components/ModMessage'
 import ModCakeModal from '~/components/ModCakeModal'
-import PreCovidModeration from '~/components/PreCovidModeration'
 import ScrollToTop from '~/components/ScrollToTop'
 
 export default {
   components: {
     ModZoomStock,
     ScrollToTop,
-    PreCovidModeration,
     ModCakeModal,
     ModMessage,
     GroupSelect,

@@ -1,7 +1,6 @@
 <template>
   <div>
-    <CovidClosed v-if="message.closed" />
-    <div v-else-if="!fromme" class="grey p-2">
+    <div v-if="!fromme" class="grey p-2">
       <EmailValidator
         v-if="!me"
         ref="email"
@@ -124,7 +123,6 @@
 import replyToPost from '@/mixins/replyToPost'
 import MessageStillAvailable from '@/components/MessageStillAvailable'
 import SettingsPhone from '@/components/SettingsPhone'
-import CovidClosed from '@/components/CovidClosed'
 import Postcode from '@/components/Postcode'
 import EmailValidator from '@/components/EmailValidator'
 import NoticeMessage from '@/components/NoticeMessage'
@@ -138,7 +136,6 @@ export default {
     ChatButton,
     MessageStillAvailable,
     SettingsPhone,
-    CovidClosed,
     Postcode,
     EmailValidator,
     NoticeMessage,

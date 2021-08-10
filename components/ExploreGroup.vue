@@ -1,7 +1,6 @@
 <template>
   <div>
     <groupHeader v-if="group" :id="group.id" :key="'group-' + (group ? group.id : null)" :group="group" :show-join="true" />
-    <CovidClosed v-if="closed" />
     <div v-else>
       <b-card variant="default">
         <b-card-body class="p-0 mb-2">
@@ -52,13 +51,11 @@
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
 import NoticeMessage from './NoticeMessage'
-import CovidClosed from './CovidClosed'
 const groupHeader = () => import('~/components/GroupHeader.vue')
 const Message = () => import('~/components/Message.vue')
 
 export default {
   components: {
-    CovidClosed,
     NoticeMessage,
     InfiniteLoading,
     groupHeader,

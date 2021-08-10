@@ -14,7 +14,7 @@
           <MicroVolunteering />
         </client-only>
         <div v-if="showRest">
-          <CovidWarning />
+          <GlobalWarning />
           <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
           <div class="bg-white d-block d-xl-none">
             <div class="d-flex justify-content-between flex-wrap">
@@ -57,7 +57,7 @@ import map from '@/mixins/map.js'
 import Visible from '../../components/Visible'
 import AdaptiveMap from '~/components/AdaptiveMap'
 
-const CovidWarning = () => import('~/components/CovidWarning')
+const GlobalWarning = () => import('~/components/GlobalWarning')
 const SidebarLeft = () => import('~/components/SidebarLeft')
 const SidebarRight = () => import('~/components/SidebarRight')
 const ExpectedRepliesWarning = () =>
@@ -77,7 +77,7 @@ export default {
     Visible,
     MicroVolunteering,
     AdaptiveMap,
-    CovidWarning,
+    GlobalWarning,
     SidebarLeft,
     SidebarRight,
     ExpectedRepliesWarning

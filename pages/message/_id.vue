@@ -53,7 +53,7 @@
           </b-row>
         </div>
         <div v-else>
-          <CovidWarning />
+          <GlobalWarning />
           <Message
             v-if="message"
             ref="message"
@@ -73,7 +73,7 @@
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import NoticeMessage from '../../components/NoticeMessage'
-import CovidWarning from '../../components/CovidWarning'
+import GlobalWarning from '../../components/GlobalWarning'
 import MyMessage from '../../components/MyMessage'
 import twem from '~/assets/js/twem'
 
@@ -84,7 +84,7 @@ export default {
   components: {
     MicroVolunteering,
     MyMessage,
-    CovidWarning,
+    GlobalWarning,
     NoticeMessage,
     Message
   },
