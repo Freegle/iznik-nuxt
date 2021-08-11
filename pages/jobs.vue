@@ -18,9 +18,9 @@
               Some may ask you to sign up - sorry about that, it's not under our control.
             </p>
           </NoticeMessage>
-          <div class="d-flex mb-2">
-            <PlaceAutocomplete class="w-100 w-md-50 pr-md-2" labeltext="Where are you looking?  Use a postcode or town name." @selected="search($event)" />
-            <div class="mt-md-2 w-100 w-md-50 pl-md-2">
+          <div class="d-flex mb-2 flex-wrap justify-content-between">
+            <PlaceAutocomplete class="mt-2" labeltext="Where are you looking?  Use a postcode or town name." @selected="search($event)" />
+            <div class="mt-2 d-flex flex-column justify-content-end">
               <b-form-select v-model="category" :options="categories" size="lg" class="mt-md-4" />
             </div>
           </div>
