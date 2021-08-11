@@ -18,7 +18,7 @@
             <postcode class="justify-content-center" :value="initialPostcode" @selected="postcodeSelect" @cleared="postcodeClear" />
           </b-col>
         </b-row>
-        <b-row v-if="postcodeValid && !closed">
+        <b-row v-if="!closed && postcodeValid">
           <b-col class="text-center">
             <transition name="fade">
               <nuxt-link to="/find/whoami">
@@ -27,7 +27,7 @@
             </transition>
           </b-col>
         </b-row>
-        <div v-else-if="postcodeValid && noGroups">
+        <div v-if="postcodeValid && noGroups">
           <NoticeMessage variant="info">
             We're really sorry, but there are no communities near there.  If you'd like to start one, please
             <ExternalLink href="mailto:newgroups@ilovefreegle.org">
