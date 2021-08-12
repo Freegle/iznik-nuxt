@@ -30,9 +30,9 @@
       <span class="pl-2 mr-1 clickme d-none d-sm-inline-block" title="Popup chat window" @click="popup">
         <v-icon name="window-restore" />
       </span>
-      <b-dropdown v-if="mod && chat.chattype === 'User2Mod'" size="sm" variant="transparent" right>
+      <b-dropdown v-if="chat.chattype === 'User2Mod'" size="sm" variant="transparent" right>
         <template slot="button-content" />
-        <b-dropdown-item v-if="otheruser" @click="showhide">
+        <b-dropdown-item @click="showhide">
           Hide this chat
         </b-dropdown-item>
       </b-dropdown>
@@ -59,7 +59,7 @@
       </b-btn>
     </div>
     <ChatBlockModal v-if="chat && chat.chattype === 'User2User' && otheruser" :id="id" ref="chatblock" :user="otheruser" @confirm="block" />
-    <ChatHideModal v-if="chat && otheruser && ((chat.chattype === 'User2User') || (chat.chattype === 'User2Mod' && mod))" :id="id" ref="chathide" :user="otheruser" @confirm="hide" />
+    <ChatHideModal v-if="chat && ((otheruser && chat.chattype === 'User2User') || chat.chattype === 'User2Mod')" :id="id" ref="chathide" :user="otheruser" @confirm="hide" />
     <ChatReportModal
       v-if="otheruser && chat && chat.chattype === 'User2User'"
       :id="'report-' + id"
