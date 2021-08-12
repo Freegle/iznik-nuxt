@@ -147,7 +147,9 @@ export default {
         mylng = me.lng
 
         const groups = this.$store.getters['auth/groups']
+        console.log('Groups', groups)
         groups.forEach(g => {
+          console.log('Polygog', g.polygon)
           if (g.polygon) {
             try {
               const wkt = new Wkt.Wkt()
@@ -159,6 +161,7 @@ export default {
                 geoJSON
               )
 
+              console.log('Inside', inside, mylat, mylng, g.bbox)
               if (inside.length && g.bbox) {
                 swlat = (g.bbox.swlat + g.bbox.nelat) / 2
                 swlng = g.bbox.swlng
@@ -174,6 +177,8 @@ export default {
 
       let bounds = null
 
+      console.log('me', me, swlat, swlng, nelat, nelng)
+
       if (
         swlat !== null &&
         swlng !== null &&
@@ -181,7 +186,7 @@ export default {
         nelng !== null
       ) {
         bounds = [[swlat, swlng], [nelat, nelng]]
-      } else if (me && me.settings && me.settings.mylocation) {
+      } else if (me && mylat !== null && mylng !== null) {
         // We're not a member of any groups, but at least we know where we are.  Centre there, and then let
         // the map zoom to somewhere sensible.
         bounds = [[mylat - 0.01, mylng - 0.01], [mylat + 0.01, mylng + 0.01]]
