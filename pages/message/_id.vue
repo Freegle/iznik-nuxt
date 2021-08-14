@@ -122,7 +122,7 @@ export default {
 
         return {
           message: message,
-          error: message === null
+          error: !message || !message.id
         }
       } catch (e) {
         return {
