@@ -28,24 +28,24 @@
           </b-row>
         </b-card-body>
       </b-card>
-
-      <div v-for="message in filteredMessages" :key="'message-' + message.id" class="p-0">
-        <Message :id="message.id" record-view />
-      </div>
-
-      <client-only>
-        <NoticeMessage v-if="!busy && !filteredMessages.length" variant="info" class="mt-2">
-          There are no messages on this group yet.
-        </NoticeMessage>
-        <infinite-loading :distance="distance" @infinite="loadMoreMessages">
-          <span slot="no-results" />
-          <span slot="no-more" />
-          <span slot="spinner">
-            <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-          </span>
-        </infinite-loading>
-      </client-only>
     </div>
+
+    <div v-for="message in filteredMessages" :key="'message-' + message.id" class="p-0">
+      <Message :id="message.id" record-view />
+    </div>
+
+    <client-only>
+      <NoticeMessage v-if="!busy && !filteredMessages.length" variant="info" class="mt-2">
+        There are no messages on this group yet.
+      </NoticeMessage>
+      <infinite-loading :distance="distance" @infinite="loadMoreMessages">
+        <span slot="no-results" />
+        <span slot="no-more" />
+        <span slot="spinner">
+          <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+        </span>
+      </infinite-loading>
+    </client-only>
   </div>
 </template>
 <script>
