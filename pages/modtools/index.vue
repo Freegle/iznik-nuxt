@@ -9,7 +9,14 @@
       <!-- eslint-disable-next-line -->
       Need temporary help moderating?  Mail <ExternalLink href="mailto:mentors@ilovefreegle.org">mentors@ilovefreegle.org</ExternalLink>.
     </p>
-    <ModDashboardDiscourseTopics :groupid="groupid" :group-name="groupName" :start="start" :end="end" class="mb-2" />
+    <ModDashboardDiscourseTopics
+      v-if="start"
+      :groupid="groupid"
+      :group-name="groupName"
+      :start="start"
+      :end="end"
+      class="mb-2"
+    />
     <ModMissingFacebook />
     <ModMissingTwitter class="mt-1" />
     <ModMissingProfile class="mt-1" />
