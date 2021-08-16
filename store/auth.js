@@ -229,7 +229,7 @@ export const actions = {
     const res = await this.$api.session.login(params)
     const { ret, status, user, persistent } = res
 
-    if (ret === 0) {
+    if (ret === 0 && user) {
       // Successful login.
       //
       // Login no longer required (if it was)
