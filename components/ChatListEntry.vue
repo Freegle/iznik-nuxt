@@ -1,13 +1,16 @@
 <template>
-  <div v-if="chat" class="clickme noselect" @click="click">
+  <div v-if="chat" class="clickme noselect mb-1 mt-1" @click="click">
     <div class="ml-1 mr-1 d-flex justify-content-start w-100">
-      <div>
-        <ProfileImage v-if="chat.icon" :image="chat.icon" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="md" />
-        <div v-if="chat.unseen" class="ml-2">
-          <b-badge variant="danger">
-            {{ chat.unseen }}
-          </b-badge>
-        </div>
+      <div class="d-flex flex-column justify-content-around">
+        <ProfileImage
+          v-if="chat.icon"
+          :image="chat.icon"
+          class="mr-1 inline"
+          is-thumbnail
+          size="lg"
+          border
+          :badge="chat.unseen ? chat.unseen : null"
+        />
       </div>
       <div class="w-100">
         <!-- eslint-disable-next-line-->

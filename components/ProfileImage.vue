@@ -18,7 +18,10 @@
       :src="validImage"
       @error="brokenProfileImage"
     />
-    <v-icon v-if="isModerator" name="leaf" class="ProfileImage__moderator mb-0" :class="'ProfileImage__moderator--' + size" />
+    <v-icon v-if="isModerator" name="leaf" :class="'ProfileImage__moderator ProfileImage__moderator--' + size" />
+    <b-badge v-if="badge !== null" variant="danger" :class="'ProfileImage__moderator ProfileImage__moderator--' + size">
+      {{ badge }}
+    </b-badge>
   </span>
 </template>
 
@@ -60,6 +63,11 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    badge: {
+      type: Number,
+      required: false,
+      default: null
     }
   },
   computed: {
@@ -156,16 +164,18 @@ export default {
 .ProfileImage__container {
   position: relative;
   padding-right: 5px;
-  padding-bottom: 3px;
 }
 
 .ProfileImage__moderator {
   position: absolute;
   bottom: 0;
   right: 0;
-  background-color: $color-white;
   border-radius: 50%;
-  color: $colour-success;
+
+  :not(.badge) {
+    background-color: $color-white;
+    color: $colour-success;
+  }
 }
 
 .ProfileImage__moderator--sm {
@@ -229,6 +239,7 @@ export default {
 }
 
 .ourBorder {
-  border: 2px solid $colour-success-fg;
+  border: 2px solid $color-gray--dark;
+  background-color: $color-gray--dark;
 }
 </style>
