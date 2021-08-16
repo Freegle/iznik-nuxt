@@ -1,6 +1,6 @@
 <template>
   <b-row>
-    <b-col cols="12" lg="6" offset-lg="3">
+    <b-col cols="12" lg="6" offset-lg="3" class="bg-white">
       <div class="text-center">
         <h1>Freegle</h1>
         <h2>Don't throw it away, give it away!</h2>
@@ -25,7 +25,7 @@
           </a>
         </div>
         <p class="mt-2">
-          The app is only available in the UK app stores. We support Android 5/iOS 10 or later.
+          The app is only available in the UK app stores. We support Android 5.1/iOS 12 or later.
         </p>
         <p>
           <!-- eslint-disable-next-line -->
