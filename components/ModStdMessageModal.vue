@@ -246,7 +246,12 @@ export default {
             "It's better to use https:// links rather than http:// links."
         }
 
-        const trimmed = this.body.replace(/\s/g, '').toLowerCase()
+        // Remove groups.ilovefreegle.org, which is the volunteers address.
+        const trimmed = this.body
+          .replace(/\s/g, '')
+          .replace(/groups.ilovefreegle.org/g, '')
+          .toLowerCase()
+
         for (const keyword in checks) {
           if (trimmed.indexOf(keyword) !== -1) {
             ret = checks[keyword]
