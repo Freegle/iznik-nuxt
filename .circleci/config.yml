@@ -284,7 +284,7 @@ jobs:
       #                       3.0-3.4            4.1.x
       #                       2.8.0              6.5
       #                       ...
-      #                       2.0.0-rc1          older version used
+      # previous build:       2.0.0-rc1          used 5.4.1
 
       - run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
       - run: cd ../iznik-nuxt-app; sed -i "/mavenCentral/amaven { url 'https://plugins.gradle.org/m2/' }" platforms/android/repositories.gradle
