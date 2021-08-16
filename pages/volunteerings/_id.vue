@@ -4,7 +4,7 @@
       <b-col cols="12" lg="6" class="p-0" offset-lg="3">
         <div>
           <h1>Volunteer Opportunities</h1>
-          <CovidWarning />
+          <GlobalWarning />
           <p>Are you a charity or good cause that needs volunteers? Ask our lovely community of freeglers to help.</p>
           <div class="d-flex justify-content-between mb-3">
             <groupSelect v-if="me" v-model="groupid" class="pr-2" all />
@@ -44,7 +44,7 @@ import InfiniteLoading from 'vue-infinite-loading'
 import loginOptional from '@/mixins/loginOptional.js'
 import createGroupRoute from '@/mixins/createGroupRoute'
 import buildHead from '@/mixins/buildHead.js'
-import CovidWarning from '../../components/CovidWarning'
+import GlobalWarning from '../../components/GlobalWarning'
 const GroupSelect = () => import('~/components/GroupSelect')
 const VolunteerOpportunity = () =>
   import('~/components/VolunteerOpportunity.vue')
@@ -54,7 +54,7 @@ const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
-    CovidWarning,
+    GlobalWarning,
     InfiniteLoading,
     GroupSelect,
     VolunteerOpportunity,

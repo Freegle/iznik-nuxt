@@ -2,7 +2,7 @@
   <b-modal
     id="blockmodal"
     v-model="showModal"
-    :title="'Hide chat with ' + user.displayname"
+    :title="title"
     no-stacking
   >
     <template slot="default">
@@ -36,6 +36,15 @@ export default {
     user: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    title() {
+      if (this.user) {
+        return 'Hide chat with ' + this.user.displayname
+      } else {
+        return 'Hide chat'
+      }
     }
   },
   methods: {

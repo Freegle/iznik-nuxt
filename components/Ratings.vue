@@ -8,9 +8,12 @@
         <b-btn
           v-b-tooltip.hover.top
           :size="size"
-          :variant="user.info.ratings.Mine === 'Up' ? 'info' : (user.info.ratings.Up > 0 ? 'primary' : 'white')"
+          :variant="user.info.ratings.Up > 0 ? 'primary' : 'white'"
           :title="uptitle"
           :disabled="((disabled || user.id === myid) ? 'true' : undefined)"
+          :class="{
+            mine: user.info.ratings.Mine === 'Up'
+          }"
           @click="up"
         >
           <v-icon name="thumbs-up" />&nbsp;{{ user.info.ratings.Up }}
@@ -18,9 +21,12 @@
         <b-btn
           v-b-tooltip.hover.top
           :size="size"
-          :variant="user.info.ratings.Mine === 'Down' ? 'info' : (user.info.ratings.Down > 0 ? 'warning' : 'white')"
+          :variant="user.info.ratings.Down > 0 ? 'warning' : 'white'"
           :title="downtitle"
           :disabled="(disabled || user.id === myid) ? 'true' : undefined"
+          :class="{
+            mine: user.info.ratings.Mine === 'Down'
+          }"
           @click="down"
         >
           <v-icon name="thumbs-down" />&nbsp;{{ user.info.ratings.Down }}
@@ -167,3 +173,21 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+.btn {
+  margin: 1px;
+
+  &.mine,
+  &:hover {
+    margin: 0px;
+    border: 2px solid $color-black;
+    box-shadow: 0px 0px 4px 1px $color-gray--dark;
+  }
+}
+
+.btn-white:hover {
+  background-color: white;
+  color: black;
+}
+</style>

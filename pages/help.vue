@@ -32,20 +32,6 @@
               </p>
               <p>Click on a question to expand the answer.</p>
 
-              <Question id="COVID-19">
-                <template slot="title">
-                  <strong>COVID-19</strong>
-                </template>
-                <template slot="content">
-                  <p>
-                    The Government has
-                    advised local authorities that Household Waste Recycling Centres (HWRCs) can be open, but says
-                    you should consider using on-line reuse platforms such as ours first.  You can read their advice
-                    <!-- eslint-disable-next-line -->
-                    <ExternalLink href="https://www.gov.uk/government/publications/coronavirus-covid-19-advice-to-local-authorities-on-prioritising-waste-collections/managing-household-waste-and-recycling-centres-hwrcs-in-england-during-the-coronavirus-covid-19-pandemic">here</ExternalLink>.
-                  </p>
-                </template>
-              </Question>
               <Question id="rules">
                 <template slot="title">
                   <strong>What are your rules?</strong>

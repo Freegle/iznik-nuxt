@@ -11,7 +11,14 @@
       ModTools app version: {{ modtoolsVersion }}.
     </p>
     <AppUpdateAvailable />
-    <ModDashboardDiscourseTopics :groupid="groupid" :group-name="groupName" :start="start" :end="end" class="mb-2" />
+    <ModDashboardDiscourseTopics
+      v-if="start"
+      :groupid="groupid"
+      :group-name="groupName"
+      :start="start"
+      :end="end"
+      class="mb-2"
+    />
     <ModMissingFacebook />
     <ModMissingTwitter class="mt-1" />
     <ModMissingProfile class="mt-1" />

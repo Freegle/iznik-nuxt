@@ -161,7 +161,7 @@
             Over time, Freegle membership across the county has steadily grown, as the graph below, showing statistics
             from a two-year period Jan '19 to Dec '20 demonstrates. Tonnage of materials reused has also increased
             significantly over this time with a clear resurgence of reuse activity after May 2020 when Freegle
-            groups were unable to operate for a short time due to the Covid pandemic.
+            communities were unable to operate for a short time due to the Covid pandemic.
           </p>
 
           <ImageWithCaption src="/councils/casestudies/essex5.png" text="Graphs showing Freegle membership and tonnage reuse over two-year period, Jan 2019 - Dec 2020" />

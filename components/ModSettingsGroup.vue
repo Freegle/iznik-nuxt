@@ -209,15 +209,6 @@
             </p>
             <ModGroupSetting
               :groupid="groupid"
-              name="settings.closed"
-              label="Closed for COVID-19"
-              description="See https://wiki.ilovefreegle.org/Closed_Groups for information about what this means."
-              type="toggle"
-              toggle-checked="Closed"
-              toggle-unchecked="Open"
-            />
-            <ModGroupSetting
-              :groupid="groupid"
               name="settings.communityevents"
               label="Community Events"
               description="Whether members can post local community events."
@@ -322,14 +313,14 @@
               :groupid="groupid"
               name="settings.reposts.offer"
               label="OFFER repost time"
-              description="Controls when the member can manually repost, and when auto-repost kicks in."
+              description="Controls when the member can manually repost, and when auto-repost kicks in.  0 = always show manual Repost button."
               class="mr-2"
             />
             <ModGroupSetting
               :groupid="groupid"
               name="settings.reposts.wanted"
               label="WANTED repost time"
-              description="Controls when the member can manually repost, and when auto-repost kicks in."
+              description="Controls when the member can manually repost, and when auto-repost kicks in.  0 = always show manual Repost button."
               class="mr-2"
             />
           </b-card-body>

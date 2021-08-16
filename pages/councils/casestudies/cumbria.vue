@@ -98,7 +98,7 @@
           <h2>Benefits & Success</h2>
 
           <p>
-            The partnership has been fruitful in many ways not least by supporting the community during the current
+            The partnership has been fruitful in many ways not least by supporting the community during the
             Covid pandemic.
           </p>
 

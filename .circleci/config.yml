@@ -274,7 +274,7 @@ jobs:
 
       - run: ls -l releases
 
-      # Publish to Google Play beta track. NOT WORKING since upgrade to cordova-android 10.0.1 and new circleci build environment
+      # Publish to Google Play beta track. NOT WORKING since upgrade to cordova-android 10.x and new circleci build environment
       # https://haseebmajid.dev/blog/auto-publish-react-native-to-android-store-with-gitlab-ci
       # https://plugins.gradle.org/plugin/com.github.triplet.play Version 3 doesn't seem to work
       # https://github.com/Triple-T/gradle-play-publisher
@@ -339,7 +339,7 @@ jobs:
 
       - run: ls -l releases
 
-      # Publish to Google Play beta track. NOT WORKING since upgrade to cordova-android 10.0.1 and new circleci build environment
+      # Publish to Google Play beta track. NOT WORKING since upgrade to cordova-android 10.x and new circleci build environment
       # https://haseebmajid.dev/blog/auto-publish-react-native-to-android-store-with-gitlab-ci
       - run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
       - run: cd ../iznik-nuxt-app; sed -i "/mavenCentral/amaven { url 'https://plugins.gradle.org/m2/' }" platforms/android/repositories.gradle

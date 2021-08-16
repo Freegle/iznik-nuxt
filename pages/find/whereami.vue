@@ -2,7 +2,7 @@
   <b-row class="m-0">
     <b-col cols="0" md="3" />
     <b-col cols="12" lg="6" class="p-0">
-      <CovidWarning />
+      <GlobalWarning />
       <client-only>
         <WizardProgress :active-stage="2" class="d-none d-md-flex" />
       </client-only>
@@ -18,7 +18,7 @@
             <postcode class="justify-content-center" :value="initialPostcode" @selected="postcodeSelect" @cleared="postcodeClear" />
           </b-col>
         </b-row>
-        <b-row v-if="postcodeValid && !closed">
+        <b-row v-if="!closed && postcodeValid">
           <b-col class="text-center">
             <transition name="fade">
               <nuxt-link to="/find/whoami">
@@ -27,7 +27,7 @@
             </transition>
           </b-col>
         </b-row>
-        <div v-else-if="postcodeValid && noGroups">
+        <div v-if="postcodeValid && noGroups">
           <NoticeMessage variant="info">
             We're really sorry, but there are no communities near there.  If you'd like to start one, please
             <ExternalLink href="mailto:newgroups@ilovefreegle.org">
@@ -50,7 +50,6 @@
             Click on the name above to choose a different community.
           </b-col>
         </b-row>
-        <CovidClosed v-if="closed" class="mt-2" />
         <div class="mt-1 d-block d-md-none">
           <b-btn
             variant="primary"
@@ -86,8 +85,7 @@ import compose from '@/mixins/compose.js'
 import WizardProgress from '@/components/WizardProgress'
 import ExternalLink from '@/components/ExternalLink'
 import NoticeMessage from '../../components/NoticeMessage'
-import CovidClosed from '../../components/CovidClosed'
-import CovidWarning from '~/components/CovidWarning'
+import GlobalWarning from '~/components/GlobalWarning'
 import Postcode from '~/components/Postcode'
 const ComposeGroup = () => import('~/components/ComposeGroup')
 
@@ -95,8 +93,7 @@ export default {
   components: {
     ExternalLink,
     WizardProgress,
-    CovidWarning,
-    CovidClosed,
+    GlobalWarning,
     NoticeMessage,
     Postcode,
     ComposeGroup

@@ -324,9 +324,20 @@ export default {
   },
   methods: {
     showInfo() {
-      this.waitForRef('profile', () => {
-        this.$refs.profile.show()
-      })
+      const modtools = this.$store.getters['misc/get']('modtools')
+
+      if (modtools && this.mod && this.chat.group) {
+        this.$router.push(
+          '/modtools/members/approved/search/' +
+            this.chat.group.id +
+            '/' +
+            this.otheruserid
+        )
+      } else {
+        this.waitForRef('profile', () => {
+          this.$refs.profile.show()
+        })
+      }
     },
     scrollToBottom(force) {
       if (!this.scrolledToBottom || force) {

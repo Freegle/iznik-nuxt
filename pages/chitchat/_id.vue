@@ -7,8 +7,8 @@
         </Visible>
       </b-col>
       <b-col cols="12" lg="6" class="newsfeedHolder p-0">
-        <CovidWarning />
         <AppUpdateAvailable />
+        <GlobalWarning />
         <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
         <b-card v-if="!id" body-class="p-2 p-md-4">
           <b-card-text>
@@ -107,8 +107,8 @@ import Vue from 'vue'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead'
 import NoticeMessage from '../../components/NoticeMessage'
-import CovidWarning from '../../components/CovidWarning'
 import AppUpdateAvailable from '~/components/AppUpdateAvailable.vue'
+import GlobalWarning from '../../components/GlobalWarning'
 import Visible from '../../components/Visible'
 import twem from '~/assets/js/twem'
 import NewsThread from '~/components/NewsThread.vue'
@@ -125,8 +125,8 @@ const ExpectedRepliesWarning = () =>
 export default {
   components: {
     Visible,
-    CovidWarning,
     AppUpdateAvailable,
+    GlobalWarning,
     ExpectedRepliesWarning,
     NoticeMessage,
     InfiniteLoading,

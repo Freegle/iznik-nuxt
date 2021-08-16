@@ -8,7 +8,7 @@
       />
     </div>
     <div>
-      <div v-if="showNotices && (badratings || expectedreply || otheruser && otheruser.hasReneged || !spammer && replytime || spammer && spammer.collection !== 'Whitelisted' || mod && chat && chat.chattype === 'User2Mod' && otheruser)" class="d-flex">
+      <div v-if="showNotices && noticesToShow" class="d-flex">
         <div class="flex-grow-1">
           <notice-message v-if="badratings" variant="warning" class="clickme" @click.native="showInfo">
             <p>
@@ -23,19 +23,6 @@
           </notice-message>
           <notice-message v-else-if="otheruser && otheruser.hasReneged" variant="warning" class="clickme" @click.native="showInfo">
             <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
-          </notice-message>
-          <notice-message v-if="!spammer && (replytime || milesaway)" class="clickme d-flex flex-wrap justify-content-between" variant="info" @click.native="showInfo">
-            <span v-if="milesaway">
-              <!--            COVID lockdown 2-->
-              <v-icon name="map-marker-alt" class="fa-fw" />&nbsp;About <strong>{{ milesaway | pluralize('mile', { includeNumber: true }) }} away</strong>.
-              <span v-if="milesaway > 10">
-                Remember: please keep it local, and respect any COVID-19 restrictions in your area.
-              </span>
-            </span>
-            <span v-if="replytime">
-              <v-icon name="info-circle" class="fa-fw" />&nbsp;Typically replies in <strong>{{ replytime }}</strong>.
-            </span>
-            Click for more info.
           </notice-message>
           <notice-message v-if="spammer && spammer.collection !== 'Whitelisted'" variant="danger">
             This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
@@ -113,9 +100,6 @@
           <b-btn v-if="!simple" v-b-tooltip.hover.top variant="secondary" title="Send your address" @click="addressBook">
             <v-icon name="address-book" class="fa-fw" />&nbsp;Address
           </b-btn>
-          <b-btn v-b-tooltip.hover.top variant="secondary" title="Info about this freegler" @click="showInfo">
-            <v-icon name="info-circle" class="fa-fw" />&nbsp;Info
-          </b-btn>
           <b-btn v-if="!simple && !tooSoonToNudge" v-b-tooltip.hover.top variant="secondary" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
             <v-icon name="bell" class="fa-fw" />&nbsp;Nudge
           </b-btn>
@@ -134,9 +118,6 @@
           </div>
         </span>
         <span v-if="chat && chat.chattype === 'User2Mod'">
-          <b-btn v-if="otheruser" v-b-tooltip.hover.top variant="secondary" title="Info about this freegler" @click="showInfo">
-            <v-icon name="info-circle" />&nbsp;Info
-          </b-btn>
           <b-btn v-if="mod" variant="secondary" @click="spamReport">
             <v-icon name="ban" /> Spammer
           </b-btn>
@@ -172,12 +153,6 @@
           <v-icon scale="2" name="address-book" class="fa-mob" />
           <div class="mobtext text--smallest">
             Address
-          </div>
-        </div>
-        <div v-if="otheruser" v-b-tooltip.hover.top title="Info about this freegler" class="mr-2" @click="showInfo">
-          <v-icon scale="2" name="info-circle" class="fa-mob" />
-          <div class="mobtext text--smallest">
-            Info
           </div>
         </div>
         <div v-if="chat && chat.chattype === 'User2Mod' && mod" v-b-tooltip.hover.top title="Report as spammer" class="mr-2" @click="spamReport">
@@ -274,7 +249,23 @@ export default {
     ChatRSVPModal,
     MicroVolunteering
   },
-  mixins: [waitForRef, chat, chatCollate]
+  mixins: [waitForRef, chat, chatCollate],
+  computed: {
+    noticesToShow() {
+      const modtools = this.$store.getters['misc/get']('modtools')
+
+      return (
+        this.badratings ||
+        this.expectedreply ||
+        (this.otheruser && this.otheruser.hasReneged) ||
+        (this.spammer && this.spammer.collection !== 'Whitelisted') ||
+        (modtools &&
+          this.otheruser &&
+          this.otheruser.comments &&
+          this.otheruser.comments.length)
+      )
+    }
+  }
 }
 </script>
 

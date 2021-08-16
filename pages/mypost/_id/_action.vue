@@ -6,7 +6,7 @@
           <b-img-lazy src="~/static/loader.gif" alt="Loading" />
         </div>
         <div v-if="message">
-          <CovidWarning />
+          <GlobalWarning />
           <MyMessage
             v-if="message.fromuser && me && message.fromuser.id === me.id"
             :key="bump"
@@ -45,7 +45,7 @@
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
-import CovidWarning from '../../../components/CovidWarning'
+import GlobalWarning from '../../../components/GlobalWarning'
 import NoticeMessage from '../../../components/NoticeMessage'
 const MyMessage = () => import('~/components/MyMessage.vue')
 const DonationAskModal = () => import('~/components/DonationAskModal')
@@ -54,7 +54,7 @@ export default {
   components: {
     NoticeMessage,
     MyMessage,
-    CovidWarning,
+    GlobalWarning,
     DonationAskModal
   },
   mixins: [loginRequired, buildHead],
