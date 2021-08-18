@@ -194,7 +194,10 @@ export default {
         }
 
         for (const message of this.messages) {
-          if (!message.outcomes || message.outcomes.length === 0) {
+          if (
+            message.type === 'Offer' &&
+            (!message.outcomes || message.outcomes.length === 0)
+          ) {
             options.push({
               value: message.id,
               text: message.subject
@@ -326,7 +329,8 @@ export default {
       // Fetch any existing trysts.
       await this.$store.dispatch('tryst/fetch')
 
-      if (date) {
+      // We can get called with a pointer event.
+      if (date && typeof date.format === 'function') {
         // Explicit date -set it (overriding any in the tryst).
         this.$nextTick(() => {
           this.date = date.format('YYYY-MM-DD')
