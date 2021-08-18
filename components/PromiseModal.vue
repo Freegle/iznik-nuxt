@@ -320,9 +320,12 @@ export default {
     async show(date) {
       this.showModal = true
       this.message = this.selectedMessage
-      this.currentlySelected = this.currentlySelected
 
-      if (this.users && this.users.length === 1) {
+      this.currentlySelected = null
+
+      if (this.selectedUser) {
+        this.currentlySelected = this.selectedUser
+      } else if (this.users && this.users.length === 1) {
         this.currentlySelected = this.users[0].id
       }
 

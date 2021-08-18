@@ -27,7 +27,9 @@ export default {
     }
   },
   methods: {
-    async download() {
+    async download(e) {
+      e.preventDefault()
+      e.stopPropagation()
       const blob = new Blob([this.ics], { type: 'text/calendar;charset=utf-8' })
       await saveAs(blob, 'freegle-handover.ics')
     }
