@@ -227,8 +227,6 @@ export default {
 
       if (this.body) {
         const checks = {
-          group: 'We tend to refer to communities rather than groups now.',
-          groups: 'We tend to refer to communities rather than groups now.',
           yahoo:
             'Yahoo Groups is no longer supported, so any mention of it is probably out of date.',
           republisher:
@@ -247,10 +245,7 @@ export default {
         }
 
         // Remove groups.ilovefreegle.org, which is the volunteers address.
-        const trimmed = this.body
-          .replace(/\s/g, '')
-          .replace(/groups.ilovefreegle.org/g, '')
-          .toLowerCase()
+        const trimmed = this.body.replace(/\s/g, '').toLowerCase()
 
         for (const keyword in checks) {
           if (trimmed.indexOf(keyword) !== -1) {
