@@ -10,7 +10,6 @@
       <notice-message class="mb-3">
         This lets them know you're planning to give it to them, and helps you keep track.
         You can change your mind later if it doesn't work out, using the  <em>Unpromise</em> button.
-        {{ minDate }} to {{ maxDate }}
       </notice-message>
       <p>You're promising:</p>
       <b-select v-model="message" :options="messageOptions" class="mb-2 font-weight-bold" />
