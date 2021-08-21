@@ -1,19 +1,23 @@
 <template>
   <div>
     <div v-if="chat && otheruser && otheruser.info" class="outer">
-      <div class="d-flex justify-content-between pl-1 pt-1 pb-1">
+      <div class="nameinfo pt-1 pb-1 pl-1">
         <div class="d-flex flex-column align-content-start" @click="showInfo">
           <div class="font-weight-bold black">
             {{ chat.name }}
           </div>
-          <div class="userinfo small">
-            <div v-if="otheruser.info.lastaccess">
-              Last seen <strong :title="otheruser.info.lastaccess | datetimeshort">{{ otheruser.info.lastaccess | timeago }}</strong>.
+          <div class="userinfo small flex flex-wrap mr-2">
+            <div v-if="otheruser.info.lastaccess" class="d-inline d-md-block">
+              <span class="d-none d-md-inline">Last seen</span>
+              <span class="d-inline d-md-none">Seen</span>
+              <strong :title="otheruser.info.lastaccess | datetimeshort">{{ otheruser.info.lastaccess | timeago }}</strong>.
             </div>
-            <div v-if="replytime">
-              Typically replies in <strong>{{ replytime }}</strong>.
+            <div v-if="replytime" class="d-inline d-md-block">
+              <span class="d-none d-md-inline">Typically replies in</span>
+              <span class="d-inline d-md-none">Replies in</span>
+              <strong>{{ replytime }}</strong>.
             </div>
-            <div v-if="milesaway">
+            <div v-if="milesaway" class="d-inline d-md-block">
               About <strong>{{ milesaway | pluralize('mile', { includeNumber: true }) }} away</strong>.
             </div>
           </div>
@@ -21,7 +25,7 @@
         <div class="d-flex flex-column align-content-between pr-1">
           <template>
             <Ratings :id="otheruserid" :key="'otheruser-' + otheruserid" class="mt-1 d-flex justify-content-end" size="sm" />
-            <Supporter v-if="otheruser.supporter" class="ml-2 align-self-center" />
+            <Supporter v-if="otheruser.supporter" class="align-self-end" />
           </template>
         </div>
       </div>
@@ -139,6 +143,11 @@ export default {
 .outer {
   background-color: $color-blue--x-light;
   border: 1px solid $color-gray--light;
+}
+
+.nameinfo {
+  display: grid;
+  grid-template-columns: 1fr 121px;
 }
 
 .hidelink a {
