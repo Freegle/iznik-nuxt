@@ -68,6 +68,13 @@
               <ModLogUser :user="log.user" />
             </span>
           </span>
+          <span v-else-if="log.subtype === 'Repost'">
+            Manual repost of  <ModLogMessage :log="log" />
+            <span v-if="log.user">
+              by
+              <ModLogUser :user="log.user" />
+            </span>
+          </span>
           <span v-else-if="log.subtype === 'Approved'">
             Approved message
             <ModLogMessage :log="log" />
