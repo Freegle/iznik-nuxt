@@ -29,12 +29,22 @@
               <span class="nav-item__text">&nbsp;Ask</span>
             </b-nav-item>
             <b-nav-item id="menu-option-myposts" class="text-center small p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
-              <v-icon name="home" scale="2" /><br>
-              <span class="nav-item__text">My Posts</span>
+              <div class="position-relative">
+                <v-icon name="home" scale="2" /><br>
+                <b-badge v-if="openPostCount" variant="info" class="mypostsbadge" :title="openPostCount | pluralize('open post', { includeNumber: true })">
+                  {{ openPostCount }}
+                </b-badge>
+                <span class="nav-item__text">My Posts</span>
+              </div>
             </b-nav-item>
             <b-nav-item v-if="!simple" id="menu-option-chitchat" class="text-center small p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
-              <v-icon name="coffee" scale="2" /><br>
-              <span class="nav-item__text">ChitChat</span>
+              <div class="position-relative">
+                <v-icon name="coffee" scale="2" /><br>
+                <b-badge v-if="newsCount" variant="info" class="newsbadge" :title="newsCount | pluralize('unread ChitChat post', { includeNumber: true })">
+                  {{ newsCount }}
+                </b-badge>
+                <span class="nav-item__text">ChitChat</span>
+              </div>
             </b-nav-item>
             <b-nav-item v-if="!simple" id="menu-option-communityevents" class="text-center small p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
               <v-icon name="calendar-alt" scale="2" /><br>
@@ -140,12 +150,22 @@
             <span class="nav-item__text">Ask</span>
           </b-nav-item>
           <b-nav-item class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
-            <v-icon name="home" scale="2" /><br>
-            <span class="nav-item__text">My Posts</span>
+            <div class="position-relative">
+              <v-icon name="home" scale="2" /><br>
+              <b-badge v-if="openPostCount" variant="info" class="mypostsbadge2" :title="openPostCount | pluralize('open post', { includeNumber: true })">
+                {{ openPostCount }}
+              </b-badge>
+              <span class="nav-item__text">My Posts</span>
+            </div>
           </b-nav-item>
           <b-nav-item v-if="!simple" class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
-            <v-icon name="coffee" scale="2" /><br>
-            <span class="nav-item__text">ChitChat</span>
+            <div class="position-relative">
+              <v-icon name="coffee" scale="2" /><br>
+              <b-badge v-if="newsCount" variant="info" class="newsbadge2" :title="newsCount | pluralize('unread ChitChat post', { includeNumber: true })">
+                {{ newsCount }}
+              </b-badge>
+              <span class="nav-item__text">ChitChat</span>
+            </div>
           </b-nav-item>
           <b-nav-item v-if="!simple" class="text-center p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
             <v-icon name="calendar-alt" scale="2" /><br>
@@ -219,6 +239,12 @@ export default {
         this.$route.path !== '/myposts' &&
         this.$route.path !== '/'
       )
+    },
+    newsCount() {
+      return this.$store.getters['newsfeed/count']
+    },
+    openPostCount() {
+      return this.me ? this.me.openposts : 0
     }
   },
   watch: {
@@ -258,6 +284,8 @@ export default {
         }
       }
     }, 5000)
+
+    this.getCounts()
   },
   methods: {
     requestLogin() {
@@ -296,6 +324,15 @@ export default {
       } catch (e) {
         this.$router.push('/')
       }
+    },
+    async getCounts() {
+      await this.$store.dispatch('newsfeed/count')
+      await this.$store.dispatch('auth/fetchUser', {
+        components: ['openposts'],
+        force: true
+      })
+
+      setTimeout(this.getCounts, 60000)
     }
   }
 }
@@ -441,5 +478,33 @@ svg.fa-icon {
   background-color: $color-white;
   border-color: $color-green--dark;
   color: $color-black;
+}
+
+.newsbadge {
+  position: absolute;
+  top: 2px;
+  left: 25px;
+  font-size: 11px;
+}
+
+.newsbadge2 {
+  position: absolute;
+  top: 2px;
+  right: 20px;
+  font-size: 11px;
+}
+
+.mypostsbadge {
+  position: absolute;
+  top: 2px;
+  right: 3px;
+  font-size: 11px;
+}
+
+.mypostsbadge2 {
+  position: absolute;
+  top: 2px;
+  right: 17px;
+  font-size: 11px;
 }
 </style>
