@@ -135,9 +135,11 @@ export default {
           email = user.email
         }
 
+        console.log('Get compose email', email)
         return email
       },
       set(newValue) {
+        console.log('Set compose email', newValue)
         this.$store.dispatch('compose/setEmail', newValue)
       }
     },
@@ -177,6 +179,12 @@ export default {
 
     // We also want to prune any old messages from our store.
     this.$store.dispatch('compose/prune')
+
+    // Set the compose email from any logged in email.  If we don't do this it doesn't make it into the compose
+    // store and we might submit a post without an email and fail.
+    if (this.email) {
+      this.email = this.email
+    }
   },
   methods: {
     deleteItem() {

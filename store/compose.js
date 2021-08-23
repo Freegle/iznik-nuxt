@@ -412,6 +412,7 @@ export const actions = {
         console.log(
           'Submit message',
           id,
+          state.email,
           message,
           state.attachments[message.id]
         )
