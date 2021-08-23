@@ -32,12 +32,15 @@ export const mutations = {
         state.user = {}
       }
 
+      console.log('Set user', state, user, components)
       if (components) {
         // Just merge in what we fetched; leave other things there.  Otherwise we lose info for some pages.
+        console.log('Merge components')
         for (const component of components) {
           Vue.set(state.user, component, user[component])
         }
       } else {
+        console.log('Merge everything')
         // Merge everything, because that's what we fetched.  We need to merge because there are some codepaths
         // where we get called without components being set which would otherwise result in lost data.  That may be
         // a bug in the client, which we could probably fix.  Because we merge we have a tendency to preserve
@@ -383,7 +386,7 @@ export const actions = {
         if (groups && groups.length) {
           me.groups = groups
           commit('setGroups', groups)
-        } else if (params.components.indexOf('groups')) {
+        } else if (params.components.indexOf('groups') !== -1) {
           // We asked for groups but got none, so we're not a member of any.
           commit('setGroups', [])
         }
