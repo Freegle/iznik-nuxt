@@ -497,7 +497,7 @@ svg.fa-icon {
 .mypostsbadge {
   position: absolute;
   top: 2px;
-  right: 3px;
+  right: 4px;
   font-size: 11px;
 }
 
