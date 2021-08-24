@@ -1,154 +1,75 @@
 <template>
-  <div>
-    <b-row class="pb-1">
-      <b-col>
-        <div v-if="chatmessage.userid != myid" class="media">
-          <b-card border-variant="success">
-            <b-card-title>
-              <nuxt-link :to="(!messageIsFromCurrentUser ? '/mypost/' : '/message/') + refmsg.id">
-                <b-img
-                  v-if="refmsg && refmsg.attachments && refmsg.attachments.length > 0"
-                  class="float-right"
-                  rounded
-                  thumbnail
-                  generator-unable-to-provide-required-alt=""
-                  lazy
-                  :src="refmsg.attachments[0].paththumb"
-                  width="70px"
-                  @error="brokenImage"
-                />
-              </nuxt-link>
-              <div v-if="otheruser">
-                <ProfileImage :image="otheruser.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
-                <span class="small black"><strong>{{ otheruser.displayname }}</strong> has
-                  <span v-if="refmsg && refmsg.type === 'Offer'">asked</span>
-                  <span v-else>replied</span>
-                  about:
-                </span>
+  <div class="chatMessageWrapper pb-1" :class="{ myChatMessage : messageIsFromCurrentUser }">
+    <div class="chatMessage forcebreak chatMessage__owner">
+      <div v-if="chatmessage.userid != myid">
+        <ChatMessageSummary v-if="refmsg" :message="refmsg" class="mt-1 mb-2" />
+        <div>
+          <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap font-weight-bold">{{ emessage }}</span>
+          <span v-else class="preline forcebreak">{{ emessage }}</span>
+          <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
+        </div>
+        <div v-if="!modtools && refmsg && refmsg.type === 'Offer' && (!refmsg.outcomes || !refmsg.outcomes.length)">
+          <hr class="mb-0">
+          <div class="d-flex justify-content-between flex-wrap mb-2">
+            <div v-if="!refmsg.promisecount" class="mr-2 border-light border-right flex-grow-1 text-center">
+              <div class="text-center small text-muted mb-2">
+                Still available?
               </div>
-              <nuxt-link :to="(!messageIsFromCurrentUser ? '/mypost/' : '/message/') + refmsg.id">
-                <h4 class="mt-1">
-                  {{ refmsg.subject }}
-                  <b-badge v-if="refmsg.availableinitially > 1" variant="info">
-                    {{ refmsg.availablenow }} left
-                  </b-badge>
-                </h4>
-              </nuxt-link>
-            </b-card-title>
-            <b-card-text>
-              <notice-message v-if="refmsg.outcomes && refmsg.outcomes.length" class="mb-3">
-                <v-icon name="info-circle" />
-                <span v-if="refmsg.type === 'Offer'">
-                  This is no longer available.
-                </span>
-                <span v-else>
-                  They are no longer looking for this.
-                </span>
-              </notice-message>
-              <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
-                <span>
-                  <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap font-weight-bold">{{ emessage }}</span>
-                  <span v-else class="preline forcebreak">{{ emessage }}</span>
-                  <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
-                </span>
-              </div>
-            </b-card-text>
-            <div v-if="!modtools && refmsg && refmsg.type === 'Offer' && (!refmsg.outcomes || !refmsg.outcomes.length)">
-              <hr>
-              <div class="d-flex justify-content-between flex-wrap">
-                <div v-if="!refmsg.promisecount" class="mr-2 border-light border-right flex-grow-1 text-center">
-                  <div class="text-center small text-muted mb-1">
-                    Still available?
-                  </div>
-                  <b-btn variant="primary" size="sm" @click="promise">
-                    <v-icon name="handshake" /> Promise
-                  </b-btn>
-                </div>
-                <div class="flex-grow-1">
-                  <div class="text-center small text-muted mb-1">
-                    No longer available?
-                  </div>
-                  <div class="d-flex justify-content-between">
-                    <b-btn variant="secondary" size="sm" class="mr-1" @click="outcome('Taken')">
-                      Mark as TAKEN
-                    </b-btn>
-                    <b-btn variant="secondary" size="sm" @click="outcome('Withdrawn')">
-                      Withdraw
-                    </b-btn>
-                  </div>
-                </div>
-              </div>
-              <OutcomeModal ref="outcomeModal" :message="refmsg" />
-              <PromiseModal ref="promise" :messages="[ refmsg ]" :selected-message="refmsg.id" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
+              <b-btn variant="primary" size="sm" @click="promise">
+                <v-icon name="handshake" /> Promise
+              </b-btn>
             </div>
-          </b-card>
-        </div>
-        <div v-else class="media float-right">
-          <b-card border-variant="success">
-            <b-card-title>
-              <b-img
-                v-if="refmsg && refmsg.attachments && refmsg.attachments.length > 0"
-                class="float-right"
-                rounded
-                thumbnail
-                generator-unable-to-provide-required-alt=""
-                lazy
-                :src="refmsg.attachments[0].paththumb"
-                width="70px"
-                @error="brokenImage"
-              />
-              <ProfileImage :image="me.profile.turl" class="mr-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
-              <span class="small black">You
-                <span v-if="refmsg.type === 'Offer'">asked about:</span>
-                <span v-else>replied to:</span>
-              </span>
-              <a :href="'/message/' + refmsg.id">
-                <h4 class="mt-1">
-                  {{ refmsg.subject }}
-                </h4>
-              </a>
-            </b-card-title>
-            <b-card-text>
-              <notice-message v-if="refmsg.outcomes && refmsg.outcomes.length" class="mb-3">
-                <v-icon name="info-circle" />
-                <span v-if="refmsg.type === 'Offer'">
-                  This is no longer available.
-                </span>
-                <span v-else>
-                  They are no longer looking for this.
-                </span>
-              </notice-message>
-              <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
-                <span v-if="!highlightEmails">
-                  <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap font-weight-bold">{{ emessage }}</span>
-                  <span v-else class="preline forcebreak">{{ emessage }}</span>
-                  <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
-                </span>
-                <span v-else>
-                  <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="font-weight-bold">
-                    <Highlighter
-                      :text-to-highlight="emessage"
-                      :search-words="[regexEmail]"
-                      highlight-class-name="highlight"
-                      class="prewrap"
-                    />
-                  </span>
-                  <span v-else>
-                    <Highlighter
-                      :text-to-highlight="emessage"
-                      :search-words="[regexEmail]"
-                      highlight-class-name="highlight"
-                      class="preline forcebreak"
-                    />
-                  </span>
-                  <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
-                </span>
+            <div class="flex-grow-1">
+              <div class="text-center small text-muted mb-2">
+                No longer available?
               </div>
-            </b-card-text>
-          </b-card>
+              <div class="d-flex justify-content-between ml-2 mr-2">
+                <b-btn variant="secondary" size="sm" class="mr-1" @click="outcome('Taken')">
+                  Mark as TAKEN
+                </b-btn>
+                <b-btn variant="secondary" size="sm" @click="outcome('Withdrawn')">
+                  Withdraw
+                </b-btn>
+              </div>
+            </div>
+          </div>
+          <OutcomeModal ref="outcomeModal" :message="refmsg" />
+          <PromiseModal ref="promise" :messages="[ refmsg ]" :selected-message="refmsg.id" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
         </div>
-      </b-col>
-    </b-row>
+      </div>
+      <div v-else>
+        <ChatMessageSummary v-if="refmsg" :message="refmsg" class="mt-1 mb-2" />
+        <div>
+          <span v-if="!highlightEmails">
+            <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap font-weight-bold">{{ emessage }}</span>
+            <span v-else class="preline forcebreak">{{ emessage }}</span>
+            <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
+          </span>
+          <span v-else>
+            <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="font-weight-bold">
+              <Highlighter
+                :text-to-highlight="emessage"
+                :search-words="[regexEmail]"
+                highlight-class-name="highlight"
+                class="prewrap"
+              />
+            </span>
+            <span v-else>
+              <Highlighter
+                :text-to-highlight="emessage"
+                :search-words="[regexEmail]"
+                highlight-class-name="highlight"
+                class="preline forcebreak"
+              />
+            </span>
+            <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="chatMessageProfilePic">
+      <ProfileImage :image="chatMessageProfileImage" class="ml-1 mb-1 mt-1 inline" is-thumbnail size="sm" />
+    </div>
   </div>
 </template>
 
@@ -156,16 +77,16 @@
 import waitForRef from '@/mixins/waitForRef'
 import ChatBase from '~/components/ChatBase'
 import ProfileImage from '~/components/ProfileImage'
-const NoticeMessage = () => import('~/components/NoticeMessage')
 const OutcomeModal = () => import('~/components/OutcomeModal')
 const PromiseModal = () => import('~/components/PromiseModal')
+const ChatMessageSummary = () => import('~/components/ChatMessageSummary')
 
 export default {
   components: {
-    NoticeMessage,
     ProfileImage,
     OutcomeModal,
-    PromiseModal
+    PromiseModal,
+    ChatMessageSummary
   },
   extends: ChatBase,
   mixins: [waitForRef],

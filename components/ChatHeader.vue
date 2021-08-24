@@ -53,10 +53,10 @@
           </div>
           <div v-if="chat.chattype === 'User2User' || chat.chattype === 'User2Mod'" class="mr-2">
             <b-btn variant="secondary" class="d-none d-md-block" @click="showhide">
-              Hide for now
+              Hide chat
             </b-btn>
             <b-btn variant="link" size="sm" class="d-block d-md-none" @click="showhide">
-              Hide for now
+              Hide chat
             </b-btn>
           </div>
         </div>
@@ -143,6 +143,7 @@ export default {
 .outer {
   background-color: $color-blue--x-light;
   border: 1px solid $color-gray--light;
+  box-shadow: 0px 4px 2px -2px $color-black-opacity-60 !important;
 }
 
 .nameinfo {
