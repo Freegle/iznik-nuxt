@@ -9,7 +9,7 @@
                 Find User
               </h2>
             </template>
-            <ModSupportFindUser />
+            <ModSupportFindUser :id="id" />
           </b-tab>
           <b-tab>
             <template v-slot:title>
@@ -93,12 +93,20 @@ export default {
     NoticeMessage,
     ModMessage
   },
-  layout: 'modtools',
   mixins: [loginRequired],
+  layout: 'modtools',
+  data() {
+    return {
+      id: null
+    }
+  },
   computed: {
     messages() {
       return this.$store.getters['messages/getAll']
     }
+  },
+  created() {
+    this.id = this.$route.params.id
   }
 }
 </script>
