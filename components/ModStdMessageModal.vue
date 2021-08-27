@@ -245,7 +245,10 @@ export default {
         }
 
         // Remove groups.ilovefreegle.org, which is the volunteers address.
-        const trimmed = this.body.replace(/\s/g, '').toLowerCase()
+        let trimmed = this.body.replace(/\s/g, '').toLowerCase()
+
+        // Remove any Yahoo email addresses, which would trigger a false match.
+        trimmed = trimmed.replace('@yahoo', '')
 
         for (const keyword in checks) {
           if (trimmed.indexOf(keyword) !== -1) {
