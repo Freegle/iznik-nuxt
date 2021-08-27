@@ -117,19 +117,6 @@
             </b-card-text>
           </b-card>
         </b-col>
-        <b-col cols="12" lg="6">
-          <b-card class="mt-2 mb-2" no-body variant="success">
-            <b-card-header>
-              Virgin Money Giving
-            </b-card-header>
-            <b-card-text class="p-2">
-              <p>Or you can donate using Virgin:</p>
-              <a target="_blank" rel="noopener" href="http://uk.virginmoneygiving.com/charity-web/charity/finalCharityHomepage.action?charityId=1005493">
-                <img alt="Virgin Money Giving" src="/vmg.png">
-              </a>
-            </b-card-text>
-          </b-card>
-        </b-col>
       </b-row>
     </b-col>
   </b-row>
