@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div v-if="chat && otheruser && otheruser.info" class="outer">
+    <div v-if="chat && otheruser && otheruser.info" class="outer position-relative">
       <div class="nameinfo pt-1 pb-1 pl-1">
-        <div class="d-flex flex-column align-content-start" @click="showInfo">
+        <div class="d-flex flex-column align-content-around justify-content-center" @click="showInfo">
           <div class="font-weight-bold black">
             {{ chat.name }}
           </div>
-          <div class="userinfo small flex flex-wrap mr-2">
+          <div v-if="!collapsed" class="userinfo small flex flex-wrap mr-2">
             <div v-if="otheruser.info.lastaccess" class="d-inline d-md-block">
               <span class="d-none d-md-inline">Last seen</span>
               <span class="d-inline d-md-none">Seen</span>
@@ -35,7 +35,7 @@
           {{ unseen }}
         </b-badge>
       </b-btn>
-      <div class="d-flex flex-wrap justify-content-between p-1 mt-1 actions">
+      <div v-if="!collapsed" class="d-flex flex-wrap justify-content-between p-1 mt-1 actions">
         <div class="d-flex">
           <b-btn v-if="unseen" variant="white" class="d-none d-md-block mr-2" @click="markRead">
             Mark read
@@ -60,6 +60,9 @@
             </b-btn>
           </div>
         </div>
+        <div v-if="!collapsed" class="d-flex flex-column justify-content-around clickme" @click="collapsed = true">
+          <v-icon name="chevron-circle-up" scale="2" class="text-faded" title="Collapse this section" />
+        </div>
         <div class="d-flex">
           <div v-if="chat.chattype === 'User2User' && otheruser" class="mr-2">
             <b-btn variant="secondary" class="d-none d-md-block" @click="showblock">
@@ -78,6 +81,9 @@
             </b-btn>
           </div>
         </div>
+      </div>
+      <div v-if="collapsed" class="d-flex justify-content-around clickme collapsedbutton w-100" @click="collapsed = false">
+        <v-icon name="chevron-down" scale="2" class="text-faded" title="Expand this section" />
       </div>
       <ChatBlockModal v-if="chat.chattype === 'User2User'" :id="id" ref="chatblock" :user="otheruser" @confirm="block" />
       <ChatHideModal v-if="chat.chattype === 'User2User' || chat.chattype === 'User2Mod'" :id="id" ref="chathide" :user="otheruser" @confirm="hide" />
@@ -119,6 +125,19 @@ export default {
     ChatReportModal
   },
   mixins: [waitForRef, chat],
+  computed: {
+    collapsed: {
+      get() {
+        return this.$store.getters['misc/get']('chatinfoheader')
+      },
+      set(newVal) {
+        this.$store.dispatch('misc/set', {
+          key: 'chatinfoheader',
+          value: newVal
+        })
+      }
+    }
+  },
   methods: {
     popup() {
       this.$store.dispatch('popupchats/popup', { id: this.chat.id })
@@ -190,5 +209,10 @@ pre {
 
 .actions {
   border-top: 1px solid $color-gray--light;
+}
+
+.collapsedbutton {
+  top: 8px;
+  position: absolute;
 }
 </style>
