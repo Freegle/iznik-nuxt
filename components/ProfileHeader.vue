@@ -24,7 +24,7 @@
         </div>
         <div class="d-flex flex-row flex-lg-column align-items-baseline">
           <ChatButton
-            v-if="myid && id !== myid"
+            v-if="!modtools && myid && id !== myid"
             :userid="id"
             size="sm"
             title="Message"
