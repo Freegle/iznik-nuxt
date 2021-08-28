@@ -38,7 +38,7 @@
           </NoticeMessage>
         </div>
         <ModComments :user="member" :expand-comments="expandComments" />
-        <ModSpammer v-if="member.spammer" :user="member" />
+        <ModSpammer v-if="member.spammer" :user="member" :sameip="sameip" />
         <NoticeMessage v-if="member.suspectreason" variant="danger" class="mb-2">
           This freegler is flagged: {{ member.suspectreason }}
         </NoticeMessage>
@@ -251,6 +251,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    sameip: {
+      type: Array,
+      required: false,
+      default: null
     }
   },
   data: function() {

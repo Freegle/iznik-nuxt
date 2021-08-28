@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-input-group>
-      <b-input v-model="term" placeholder="Email address/name" @keyup.native.enter="search" />
+      <b-input v-model="term" placeholder="Email/name/id" @keyup.native.enter="search" />
       <b-input-group-append>
         <SpinButton
           variant="primary"

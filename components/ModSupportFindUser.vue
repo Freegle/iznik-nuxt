@@ -41,6 +41,13 @@ export default {
     ModSupportUser,
     InfiniteLoading
   },
+  props: {
+    id: {
+      type: Number,
+      required: false,
+      default: null
+    }
+  },
   data: function() {
     return {
       searching: false,
@@ -63,6 +70,11 @@ export default {
   mounted() {
     // Clear the user cache to make sure we don't display any results before we've searched.
     this.$store.dispatch('user/clear')
+
+    if (this.id) {
+      this.searchuser = this.id
+      this.usersearch()
+    }
   },
   methods: {
     async usersearch() {

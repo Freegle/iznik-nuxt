@@ -3,7 +3,7 @@
     <b-row class="pb-1">
       <b-col>
         <div v-if="chatmessage.userid != myid" class="media">
-          <b-card border-variant="success">
+          <b-card border-variant="success" class="ml-2">
             <b-card-title>
               <nuxt-link :to="(messageIsFromCurrentUser ? '/myposts' : '/message/') + refmsg.id">
                 <b-img

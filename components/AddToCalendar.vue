@@ -27,7 +27,9 @@ export default {
     }
   },
   methods: {
-    async download() {
+    async download(e) {
+      e.preventDefault()
+      e.stopPropagation()
       if (process.env.IS_APP) {
         if (window.plugins.calendar) {
           // https://github.com/EddyVerbruggen/Calendar-PhoneGap-Plugin
@@ -69,8 +71,6 @@ export default {
         }
         return
       }
-      const blob = new Blob([this.ics], { type: 'text/calendar;charset=utf-8' })
-      await saveAs(blob, 'freegle-handover.ics')
     }
   }
 }

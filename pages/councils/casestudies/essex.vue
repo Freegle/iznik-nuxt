@@ -112,7 +112,7 @@
 
           <p>
             <span class="quote">
-              The local groups with their band of volunteers are completely self sufficient so we don't need to get
+              The local communities with their band of volunteers are completely self sufficient so we don't need to get
               involved with any of the day to day activity
             </span> said Cathryn.
             <span class="quote">
@@ -126,7 +126,7 @@
           </p>
           <p>
             <span class="quote">
-              Support from local authorities is crucial for Freegle. Our local groups are community driven and
+              Support from local authorities is crucial for Freegle. Our local communities are
               largely self-sustaining but with a small input of funding centrally, an incredible amount can be
               achieved. As a charity, Freegle is free to use but not free to run and we rely on donations to
               keep the platform operating. Local authorities have the ability to spread the reuse message far and wide

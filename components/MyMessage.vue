@@ -113,28 +113,7 @@
                   <v-icon name="handshake" class="fa-fw" /> Promised
                 </b-badge>
                 <div v-else class="ml-1 text-info">
-                  <div v-for="p in promisedTo" :key="'promised-' + p.id">
-                    <div class="d-flex flex-wrap">
-                      <div v-if="p.id === myid">
-                        <!--                        This can happen with TN.  It means it's promised, but we don't know who to.-->
-                        <v-icon name="handshake" class="fa-fw mt-1" />&nbsp;Promised</strong>
-                      </div>
-                      <div v-else>
-                        <v-icon name="handshake" class="fa-fw mt-1" />&nbsp;Promised to <strong>{{ p.name }}</strong>
-                      </div>
-                      <div v-if="p.trystdate" class="d-flex">
-                        , handover arranged for<strong>&nbsp;{{ p.trystdate }}</strong>
-                      </div>
-                    </div>
-                    <div v-if="p.tryst" class="d-flex flex-wrap small">
-                      <AddToCalendar :ics="p.tryst.ics" variant="link" />
-                      <b-btn variant="link" @click="changeTime">
-                        <v-icon name="pen" />
-                        Change time
-                      </b-btn>
-                      <PromiseModal ref="promiseModalChange" :messages="[ message ]" :selected-message="message.id" :users="replyusers" :selected-user="getPromisee(p.tryst)" />
-                    </div>
-                  </div>
+                  <MyMessagePromisedTo v-for="p in promisedTo" :key="'promised-' + p.id" :promise="p" :message="message" :replyusers="replyusers" />
                 </div>
               </div>
               <div v-if="unseen > 0" class="mr-2">
@@ -250,8 +229,8 @@
 <script>
 import waitForRef from '@/mixins/waitForRef'
 import MessagePhotosModal from '@/components/MessagePhotosModal'
+import MyMessagePromisedTo from '@/components/MyMessagePromisedTo'
 import OutcomeModal from './OutcomeModal'
-import AddToCalendar from '~/components/AddToCalendar'
 import PromiseModal from '~/components/PromiseModal'
 const MyMessageReply = () => import('./MyMessageReply.vue')
 const ShareModal = () => import('./ShareModal')
@@ -270,9 +249,9 @@ export default {
     ResizeText
   },
   components: {
+    MyMessagePromisedTo,
     MessagePhotosModal,
     PromiseModal,
-    AddToCalendar,
     OutcomeModal,
     ShareModal,
     MyMessageReply,
@@ -682,22 +661,6 @@ export default {
         this.message.id +
         '?signature=' +
         message.lovejunkhash
-    },
-    changeTime() {
-      this.$refs.promiseModalChange.show()
-    },
-    getPromisee(tryst) {
-      let ret = null
-
-      if (tryst) {
-        if (tryst.user1 === this.myid) {
-          ret = tryst.user2
-        } else {
-          ret = tryst.user1
-        }
-      }
-
-      return ret
     }
   }
 }

@@ -3,12 +3,13 @@
     <client-only>
       <ScrollToTop />
       <ModHelpComments />
+      <GroupSelect v-model="groupid" modonly all />
       <ModCommentUser v-for="comment in visibleComments" :key="'commentlist-' + comment.id" :comment="comment" class="p-0 mt-2" />
       <NoticeMessage v-if="!comments.length && !busy" class="mt-2">
         There are no comments to show at the moment.
       </NoticeMessage>
 
-      <infinite-loading force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
+      <infinite-loading :key="bump" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
         <span slot="no-results" />
         <span slot="no-more" />
         <span slot="spinner">
@@ -21,10 +22,11 @@
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
 import loginRequired from '@/mixins/loginRequired'
-import ScrollToTop from '../../../../components/ScrollToTop'
-import ModHelpComments from '../../../../components/ModHelpComments'
-import ModCommentUser from '../../../../components/ModCommentUser'
+import ScrollToTop from '~/components/ScrollToTop'
+import ModHelpComments from '~/components/ModHelpComments'
+import ModCommentUser from '~/components/ModCommentUser'
 import NoticeMessage from '~/components/NoticeMessage'
+import GroupSelect from '~/components/GroupSelect'
 
 export default {
   components: {
@@ -32,7 +34,8 @@ export default {
     ModHelpComments,
     ScrollToTop,
     NoticeMessage,
-    InfiniteLoading
+    InfiniteLoading,
+    GroupSelect
   },
   layout: 'modtools',
   mixins: [loginRequired],
@@ -43,15 +46,27 @@ export default {
       limit: 2,
       show: 0,
       busy: false,
-      complete: false
+      complete: false,
+      groupid: null,
+      bump: 1
     }
   },
   computed: {
+    filteredComments() {
+      return this.comments.filter(
+        c => this.groupid === null || this.groupid === c.groupid
+      )
+    },
     visibleComments() {
-      return this.comments.slice(0, this.show)
+      return this.filteredComments.slice(0, this.show)
     },
     comments() {
       return this.$store.getters['comments/sortedList']
+    }
+  },
+  watch: {
+    groupid() {
+      this.bump++
     }
   },
   mounted() {
@@ -71,7 +86,8 @@ export default {
 
         try {
           await this.$store.dispatch('comments/fetch', {
-            context: this.context
+            context: this.context,
+            groupid: this.groupid
           })
 
           this.context = this.$store.getters['comments/getContext']

@@ -201,3 +201,72 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+/deep/ .card {
+  border-radius: 10px;
+}
+
+/deep/ .chatMessage {
+  border: 1px solid $color-gray--light;
+  border-radius: 10px;
+  padding: 2px 4px 2px 4px;
+  word-wrap: break-word;
+  line-height: 1.75;
+
+  @include media-breakpoint-up(md) {
+    padding: 4px 8px 4px 8px;
+  }
+}
+
+/deep/ .chatMessage__owner {
+  background-color: $color-white;
+  order: 2;
+}
+
+/deep/ .myChatMessage {
+  .chatMessage__owner {
+    background-color: $color-green--light;
+    order: 0;
+  }
+
+  .chatMessage {
+    margin-left: auto;
+  }
+
+  .chatMessageProfilePic {
+    left: 0;
+  }
+}
+
+/deep/ .chatMessageProfilePic {
+  min-width: 25px;
+  position: relative;
+  top: 3px;
+  left: 3px;
+  margin-right: 5px;
+
+  @include media-breakpoint-up(md) {
+    min-width: 35px;
+  }
+}
+
+/deep/ .chatMessageWrapper {
+  display: flex;
+  padding-right: 10px;
+
+  &.myChatMessage {
+    padding-left: 10px;
+    padding-right: 0;
+  }
+}
+
+/deep/ .highlight {
+  color: $color-orange--dark !important;
+  background-color: initial;
+}
+</style>

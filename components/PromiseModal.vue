@@ -10,7 +10,6 @@
       <notice-message class="mb-3">
         This lets them know you're planning to give it to them, and helps you keep track.
         You can change your mind later if it doesn't work out, using the  <em>Unpromise</em> button.
-        {{ minDate }} to {{ maxDate }}
       </notice-message>
       <p>You're promising:</p>
       <b-select v-model="message" :options="messageOptions" class="mb-2 font-weight-bold" />
@@ -194,7 +193,10 @@ export default {
         }
 
         for (const message of this.messages) {
-          if (!message.outcomes || message.outcomes.length === 0) {
+          if (
+            message.type === 'Offer' &&
+            (!message.outcomes || message.outcomes.length === 0)
+          ) {
             options.push({
               value: message.id,
               text: message.subject
@@ -317,16 +319,20 @@ export default {
     async show(date) {
       this.showModal = true
       this.message = this.selectedMessage
-      this.currentlySelected = this.currentlySelected
 
-      if (this.users && this.users.length === 1) {
+      this.currentlySelected = null
+
+      if (this.selectedUser) {
+        this.currentlySelected = this.selectedUser
+      } else if (this.users && this.users.length === 1) {
         this.currentlySelected = this.users[0].id
       }
 
       // Fetch any existing trysts.
       await this.$store.dispatch('tryst/fetch')
 
-      if (date) {
+      // We can get called with a pointer event.
+      if (date && typeof date.format === 'function') {
         // Explicit date -set it (overriding any in the tryst).
         this.$nextTick(() => {
           this.date = date.format('YYYY-MM-DD')

@@ -9,9 +9,6 @@
         :email.sync="email"
         :valid.sync="emailValid"
       />
-      <NoticeMessage v-if="message.milesaway > 10" variant="warning" class="mb-2">
-        Remember: lockdown is easing but please stay local.
-      </NoticeMessage>
       <MessageStillAvailable v-if="stillAvailable" class="mb-1 mt-1" />
       <b-form-group
         class="flex-grow-1"

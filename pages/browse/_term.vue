@@ -151,9 +151,7 @@ export default {
         mylng = me.lng
 
         const groups = this.$store.getters['auth/groups']
-        console.log('Groups', groups)
         groups.forEach(g => {
-          console.log('Polygog', g.polygon)
           if (g.polygon) {
             try {
               const wkt = new Wkt.Wkt()
@@ -165,7 +163,6 @@ export default {
                 geoJSON
               )
 
-              console.log('Inside', inside, mylat, mylng, g.bbox)
               if (inside.length && g.bbox) {
                 swlat = (g.bbox.swlat + g.bbox.nelat) / 2
                 swlng = g.bbox.swlng
@@ -180,8 +177,6 @@ export default {
       }
 
       let bounds = null
-
-      console.log('me', me, swlat, swlng, nelat, nelng)
 
       if (
         swlat !== null &&

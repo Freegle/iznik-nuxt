@@ -3,23 +3,20 @@
     <template v-if="message.successful">
       <MessageFreegled :id="id" />
     </template>
-    <div
-      :class="{
-        messagecard: true,
-        freegled : message.successful,
-        offer: message.type === 'Offer',
-        wanted: message.type === 'Wanted',
-        clickme: !message.successful,
-        promisedfade: message.promised && replyable
-      }"
-      @click="expand"
-    >
-      <MessageItemLocation :id="id" :matchedon="message.matchedon" class="mb-1 header-title" :type="message.type" :expanded="false" />
+    <div :class="classes" @click="expand">
+      <MessageItemLocation
+        :id="id"
+        :matchedon="message.matchedon"
+        class="mb-1 header-title"
+        :type="message.type"
+        :expanded="false"
+        :message-override="messageOverride"
+      />
       <MessageHistory :message="message" class="mb-1 header-history" :display-message-link="sm()" />
       <client-only>
         <MessageDescription :id="id" :matchedon="message.matchedon" class="mb-1 header-description" />
       </client-only>
-      <div v-if="!message.successful" class="header-expand mt-2 mt-sm-0">
+      <div v-if="!message.successful && replyable" class="header-expand mt-2 mt-sm-0">
         <b-button variant="primary" class="mt-2" @click="expand">
           {{ expandButtonText }} <v-icon name="angle-double-right" />
         </b-button>
@@ -77,6 +74,16 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    messageOverride: {
+      type: Object,
+      required: false,
+      default: null
+    },
+    bgClass: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data: function() {
@@ -84,7 +91,25 @@ export default {
   },
   computed: {
     message() {
-      return this.$store.getters['messages/get'](this.id)
+      return this.messageOverride
+        ? this.messageOverride
+        : this.$store.getters['messages/get'](this.id)
+    },
+    classes() {
+      const ret = {
+        messagecard: true,
+        freegled: this.message.successful,
+        offer: this.message.type === 'Offer',
+        wanted: this.message.type === 'Wanted',
+        clickme: !this.message.successful,
+        promisedfade: this.message.promised && this.replyable
+      }
+
+      if (this.bgClass) {
+        ret[this.bgClass] = true
+      }
+
+      return ret
     }
   },
   methods: {

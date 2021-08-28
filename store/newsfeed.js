@@ -6,7 +6,8 @@ export const state = () => ({
   newsfeed: [],
   users: {},
   context: {},
-  area: 'nearby'
+  area: 'nearby',
+  count: 0
 })
 
 export const mutations = {
@@ -92,6 +93,10 @@ export const mutations = {
   clearFeed(state) {
     state.newsfeed = []
     state.context = {}
+  },
+
+  setCount(state, count) {
+    state.count = count
   }
 }
 
@@ -188,6 +193,10 @@ export const getters = {
 
   area: state => {
     return state.area
+  },
+
+  count: state => {
+    return state.count
   }
 }
 
@@ -196,7 +205,7 @@ export const actions = {
     commit('clearFeed')
   },
 
-  async fetchFeed({ commit, state }, params) {
+  async fetchFeed({ dispatch, commit, state }, params) {
     params = params || {
       context: {}
     }
@@ -237,6 +246,23 @@ export const actions = {
     if (!params || !params.noContext) {
       commit('setContext', { ctx: context })
     }
+
+    // Update the max seen
+    let max = null
+
+    const items =
+      typeof data.newsfeed === 'object'
+        ? Object.values(data.newsfeed)
+        : data.newsfeed
+
+    for (const item of items) {
+      max = Math.max(max, item.id)
+    }
+
+    if (max) {
+      await this.$api.news.seen(max)
+      dispatch('count')
+    }
   },
 
   async fetch({ commit }, params) {
@@ -275,6 +301,7 @@ export const actions = {
         commit('mergeUsers', { users })
       }
     }
+
     return newsfeed
   },
 
@@ -306,6 +333,11 @@ export const actions = {
     await dispatch('fetch', { id: threadhead })
   },
 
+  async count({ commit, dispatch }, params) {
+    const count = await this.$api.news.count()
+    commit('setCount', count)
+  },
+
   async delete({ commit, dispatch }, { id, threadhead }) {
     await this.$api.news.del(id)
     if (id !== threadhead) {
@@ -330,5 +362,9 @@ export const actions = {
 
   async unhide({ commit, dispatch }, { id }) {
     await this.$api.news.unhide(id)
+  },
+
+  async seen({ commit, dispatch }, { id }) {
+    await this.$api.news.seen(id)
   }
 }

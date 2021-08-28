@@ -452,7 +452,7 @@
               <!-- eslint-disable-next-line -->
               Our national mailbox volunteers at <ExternalLink href="mailto:info@ilovefreegle.org">info@ilovefreegle.org</ExternalLink>. They
               deal with more general questions about Freegle which aren't specific to one community, or if you have issues you can't resolve
-              with your local team.   Please be aware that we have very limited powers.  Local groups are autonomous, but we can help
+              with your local team.   Please be aware that we have very limited powers.  Local communities are autonomous, but we can help
               negotiate, explain and make suggestions where appropriate.
             </li>
             <li>

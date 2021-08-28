@@ -120,7 +120,7 @@ export default {
   methods: {
     async next() {
       this.emailBelongsToSomeoneElse = false
-      console.log('Check email')
+      console.log('Check email', this.email)
 
       if (this.emailIsntOurs) {
         // Need to check if it's ok to use.

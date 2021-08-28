@@ -205,6 +205,11 @@ export default {
           comment: this.comments
         })
 
+        this.$store.dispatch('auth/fetchUser', {
+          components: ['openposts'],
+          force: true
+        })
+
         this.hide()
       } else {
         // We are recording some partial results for the post.

@@ -43,7 +43,17 @@ export default class NewsAPI extends BaseAPI {
     await this.$post('/newsfeed', { id, action: 'Unhide' })
   }
 
+  async seen(id) {
+    await this.$post('/newsfeed', { id, action: 'Seen' })
+  }
+
   del(id) {
     return this.$del('/newsfeed', { id })
+  }
+
+  async count(id, type) {
+    const ret = await this.$get('/newsfeed', { count: true })
+
+    return ret.ret === 0 ? ret.unseencount : 0
   }
 }

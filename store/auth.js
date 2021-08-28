@@ -405,7 +405,7 @@ export const actions = {
         if (groups && groups.length) {
           me.groups = groups
           commit('setGroups', groups)
-        } else if (params.components.indexOf('groups')) {
+        } else if (params.components.indexOf('groups') !== -1) {
           // We asked for groups but got none, so we're not a member of any.
           commit('setGroups', [])
         }

@@ -31,6 +31,7 @@
               :max-zoom="maxZoom"
               :options="mapOptions"
               @ready="ready"
+              @update:bounds="idle"
               @zoomend="idle"
               @moveend="idle"
             >
@@ -211,7 +212,8 @@ export default {
       zoom: 5,
       lockModal: false,
       unlockModal: false,
-      destroyed: false
+      destroyed: false,
+      mapIdle: 0
     }
   },
   computed: {
@@ -269,7 +271,8 @@ export default {
       return this.$store.getters['group/list']
     },
     groupsInBounds() {
-      const groups = this.allGroups
+      // Reference map idle so that we recalc.
+      const groups = this.mapIdle ? this.allGroups : []
       const bounds = this.mapObject ? this.mapObject.getBounds() : null
       const ret = []
 
@@ -456,6 +459,8 @@ export default {
       })
     },
     idle() {
+      this.mapIdle++
+
       if (this.mapObject) {
         // We need to update the parent about our zoom level and whether we are showing the posts or groups.
         this.zoom = this.mapObject.getZoom()

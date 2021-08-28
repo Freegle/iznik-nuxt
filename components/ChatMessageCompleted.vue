@@ -3,7 +3,7 @@
     <b-row class="pb-1">
       <b-col>
         <div v-if="chatmessage.userid != myid" class="media">
-          <b-card border-variant="info">
+          <b-card border-variant="info" class="ml-2">
             <b-card-title>
               <b-img
                 v-if="refmsg && refmsg.attachments && refmsg.attachments.length > 0"
