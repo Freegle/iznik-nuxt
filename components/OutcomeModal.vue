@@ -53,7 +53,7 @@
             <p class="mt-2">
               How do you feel about freegling just now?
             </p>
-            <b-button-group>
+            <b-button-group class="d-none d-md-block">
               <b-button :pressed="happiness === 'Happy'" :variant="happiness === 'Happy' ? 'info': 'primary'" size="lg" class="shadow-none" @click="happiness = 'Happy'">
                 <v-icon name="smile" scale="2" /> Happy
               </b-button>
@@ -61,6 +61,17 @@
                 <v-icon name="meh" scale="2" color="grey" /> Fine
               </b-button>
               <b-button :pressed="happiness === 'Unhappy'" :variant="happiness === 'Unhappy' ? 'info' : 'danger'" size="lg" class="shadow-none" @click="happiness = 'Unhappy'">
+                <v-icon name="frown" scale="2" /> Sad
+              </b-button>
+            </b-button-group>
+            <b-button-group class="d-block d-md-none">
+              <b-button :pressed="happiness === 'Happy'" :variant="happiness === 'Happy' ? 'info': 'primary'" size="md" class="shadow-none" @click="happiness = 'Happy'">
+                <v-icon name="smile" scale="2" /> Happy
+              </b-button>
+              <b-button :pressed="happiness === 'Fine'" :variant="happiness === 'Fine' ? 'info' : 'white'" size="md" class="shadow-none" @click="happiness = 'Fine'">
+                <v-icon name="meh" scale="2" color="grey" /> Fine
+              </b-button>
+              <b-button :pressed="happiness === 'Unhappy'" :variant="happiness === 'Unhappy' ? 'info' : 'danger'" size="md" class="shadow-none" @click="happiness = 'Unhappy'">
                 <v-icon name="frown" scale="2" /> Sad
               </b-button>
             </b-button-group>
