@@ -213,8 +213,9 @@ async function submitDraft(id, email, commit) {
   console.log('Submit draft', id, email)
   const ret = await this.$api.message.joinAndPost(id, email, data => {
     // ret = 8 is posting prohibited, which is due to mod choice not a server error.
+    // ret = 9 is banned, ditto.
     console.log('Post failed', data, data.ret, data.ret !== 8)
-    return data.ret !== 8
+    return data.ret !== 8 && data.ret !== 9
   })
   console.log('Returned', ret)
   commit('incProgress')
