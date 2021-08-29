@@ -6,10 +6,11 @@
         <v-icon name="handshake" class="fa-fw mt-1" />&nbsp;Promised
       </div>
       <div v-else>
-        <v-icon name="handshake" class="fa-fw mt-1" />&nbsp;Promised to <strong>{{ promise.name }}</strong>
+        <!-- eslint-disable-next-line-->
+        <v-icon name="handshake" class="fa-fw mt-1" />&nbsp;Promised to <strong>{{ promise.name }}</strong><span v-if="promise.trystdate">,</span>
       </div>
       <div v-if="promise.trystdate" class="d-flex">
-        , handover arranged for<strong>&nbsp;{{ promise.trystdate }}</strong>
+        handover <span class="d-none d-md-inline">arranged for</span><strong>&nbsp;{{ promise.trystdate }}</strong>
       </div>
     </div>
     <div v-if="promise.tryst" class="d-flex flex-wrap small">

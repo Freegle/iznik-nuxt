@@ -58,7 +58,7 @@
             :v-b-toggle="'mypost-' + message.id"
             block
             variant="white"
-            class="text-left text-truncate noborder hover"
+            class="text-left text-truncate noborder hover p-1 p-md-2"
             @click="toggle"
           >
             <div class="d-flex justify-content-between">
@@ -122,36 +122,37 @@
                 </b-badge>
               </div>
             </div>
-            <div class="d-flex justify-content-start flex-wrap mt-1">
+            <hr class="">
+            <div class="d-flex justify-content-between flex-wrap mt-1">
               <b-btn v-if="rejected && message.location && message.item" variant="warning" class="mr-2 mb-1" @click="repost">
-                <v-icon name="pen" /> Edit and Resend
+                <v-icon class="d-none d-sm-inline" name="pen" /> Edit and Resend
               </b-btn>
               <b-btn v-if="rejected && !withdrawn" variant="secondary" class="mr-2 mb-1" @click="outcome('Withdrawn')">
-                <v-icon name="trash-alt" /> Withdraw
+                <v-icon class="d-none d-sm-inline" name="trash-alt" /> Withdraw
               </b-btn>
               <b-btn v-if="!rejected && message.type === 'Offer' && !taken" variant="primary" class="mr-2 mb-1" @click="outcome('Taken')">
-                <v-icon name="check" /> Mark as TAKEN
+                <v-icon class="d-none d-sm-inline" name="check" /> Mark as TAKEN
               </b-btn>
               <b-btn v-if="!rejected && message.type === 'Wanted' && !received" variant="primary" class="mr-2 mb-1" @click="outcome('Received')">
-                <v-icon name="check" /> Mark as RECEIVED
+                <v-icon class="d-none d-sm-inline" name="check" /> Mark as RECEIVED
               </b-btn>
               <b-btn v-if="!rejected && message.canedit && message.location && message.item" variant="secondary" class="mr-2 mb-1" @click="edit">
-                <v-icon name="pen" /> Edit
+                <v-icon class="d-none d-sm-inline" name="pen" /> Edit
               </b-btn>
               <b-btn v-if="!rejected && !taken && !received && !withdrawn" variant="secondary" class="mr-2 mb-1" @click="outcome('Withdrawn')">
-                <v-icon name="trash-alt" /> Withdraw
+                <v-icon class="d-none d-sm-inline" name="trash-alt" /> Withdraw
               </b-btn>
               <b-btn v-if="!rejected && message.canrepost && message.location && message.item" variant="secondary" class="mr-2 mb-1" @click="repost">
-                <v-icon name="sync" /> Repost
+                <v-icon class="d-none d-sm-inline" name="sync" /> Repost
               </b-btn>
               <b-btn v-else-if="!rejected && !taken && !received && message.canrepostat && message.location && message.item" variant="secondary" disabled class="mr-2 mb-1" title="You will be able to repost this soon">
-                <v-icon name="sync" /> Repost <span class="small">{{ message.canrepostat | timeago }}</span>
+                <v-icon class="d-none d-sm-inline" name="sync" /> Repost <span class="small">{{ message.canrepostat | timeago }}</span>
               </b-btn>
               <b-btn v-if="!rejected && !simple" variant="secondary" title="Share" class="mr-2 mb-1" @click="share">
-                <v-icon name="share-alt" /> Share
+                <v-icon class="d-none d-sm-inline" name="share-alt" /> Share
               </b-btn>
               <b-btn v-if="message.lovejunkhash && message.type === 'Offer' && !rejected && !taken && !received && !withdrawn" variant="secondary" class="mr-2 mb-1" @click="lovejunk">
-                <v-icon name="truck" /> Paid removal
+                <v-icon class="d-none d-sm-inline" name="truck" /> Paid removal
               </b-btn>
             </div>
           </b-button>
