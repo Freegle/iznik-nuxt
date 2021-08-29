@@ -122,7 +122,6 @@ import MessageStillAvailable from '@/components/MessageStillAvailable'
 import SettingsPhone from '@/components/SettingsPhone'
 import Postcode from '@/components/Postcode'
 import EmailValidator from '@/components/EmailValidator'
-import NoticeMessage from '@/components/NoticeMessage'
 import NewUserInfo from '@/components/NewUserInfo'
 import ChatButton from '@/components/ChatButton'
 
@@ -135,7 +134,6 @@ export default {
     SettingsPhone,
     Postcode,
     EmailValidator,
-    NoticeMessage,
     NewFreegler,
     NewUserInfo
   },
