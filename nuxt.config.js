@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Sentry from '@nuxtjs/sentry'
-import { Dedupe as DedupeIntegration } from "@sentry/integrations"
+import { Dedupe as DedupeIntegration } from '@sentry/integrations'
 import sitemap from './utils/sitemap.js'
 
 const FACEBOOK_APPID = '134980666550322'
@@ -520,7 +520,11 @@ module.exports = {
 
         // Sentry logs unhelpful exceptions - see https://github.com/getsentry/sentry-javascript/issues/2210.
         if (hint) {
-          console.log('Original exception was', hint.originalException, typeof  hint.originalException)
+          console.log(
+            'Original exception was',
+            hint.originalException,
+            typeof hint.originalException
+          )
 
           if (!hint.originalException) {
             // There's basically no info to report, so there's nothing we can do.  Suppress it.
@@ -528,7 +532,7 @@ module.exports = {
             return null
             // eslint-disable-next-line
           } else if (hint.originalException.toString().match(/Down for maintenance/)) {
-            console.log("Maintenance - suppress exception", this)
+            console.log('Maintenance - suppress exception', this)
             return null
             // eslint-disable-next-line
           } else if (hint.originalException.toString().match(/Object Not Found Matching Id/)) {
@@ -564,6 +568,10 @@ module.exports = {
                   // This exception happens a lot, and the best guess I can find is that it is a bugged browser
                   // extension.
                   console.log('Suppress userAgent')
+                  return null
+                } else if (hint.originalException.message.match(/cancelled/)) {
+                  // This probably happens due to the user changing their mind and navigating away immediately.
+                  console.log('Suppress cancelled')
                   return null
                 }
               }
