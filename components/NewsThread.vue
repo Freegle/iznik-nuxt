@@ -56,6 +56,7 @@
       </b-card-body>
       <div slot="footer">
         <NewsReplies
+          :id="id"
           :threadhead="newsfeed"
           :users="users"
           :scroll-to="scrollTo"
