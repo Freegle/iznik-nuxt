@@ -136,6 +136,14 @@ export default {
           value: newVal
         })
       }
+    },
+    loaded() {
+      return this.chat && this.otheruser && this.otheruser.info
+    }
+  },
+  watch: {
+    loaded() {
+      this.$emit('update:loaded', true)
     }
   },
   methods: {
