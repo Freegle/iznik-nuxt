@@ -42,13 +42,18 @@
       </client-only>
       <MessageHistoryExpanded :id="id" :message-override="messageOverride" class="d-block d-md-none mt-2 mt-md-0 " />
       <MessageReplySection
-        v-if="replyable"
+        v-if="replyable && !replied"
         :id="id"
         :message-override="messageOverride"
         class="mt-3"
         @close="$emit('close')"
-        @sent="$emit('close')"
+        @sent="sent"
       />
+      <b-alert v-if="replied" variant="info" show class="mt-2" fade>
+        We've sent your message.  You'll get replies in the <nuxt-link to="/chats">
+          Chats
+        </nuxt-link> section on here, and by email.
+      </b-alert>
     </div>
   </div>
 </template>
@@ -119,6 +124,11 @@ export default {
       default: true
     }
   },
+  data: function() {
+    return {
+      replied: false
+    }
+  },
   computed: {
     message() {
       return (
@@ -174,6 +184,12 @@ export default {
       }
 
       return ret
+    }
+  },
+  methods: {
+    sent() {
+      this.$emit('close')
+      this.replied = true
     }
   }
 }

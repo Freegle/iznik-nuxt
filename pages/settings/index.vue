@@ -361,11 +361,15 @@
                   <v-icon name="lock" /> Other freeglers won't see this.
                 </p>
                 <p class="text-muted">
-                  Messages from other freeglers will appear in the <em>Chat</em> section.  We can also notify you
+                  Messages from other freeglers will appear in the <nuxt-link to="/chats">
+                    Chats
+                  </nuxt-link> section.  We can also notify you
                   in other ways.
                 </p>
                 <notice-message variant="warning">
-                  Email doesn't always get through, so check your spam folders, and check <em><nuxt-link to="/chats">Chats</nuxt-link></em> on here occasionally.
+                  Email doesn't always get through, so check your spam folders, and check <nuxt-link to="/chats">
+                    Chats
+                  </nuxt-link> on here occasionally.
                 </notice-message>
                 <hr>
                 <h3 class="header--size5 header5__color">
