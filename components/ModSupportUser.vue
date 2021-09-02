@@ -82,6 +82,23 @@
         <span v-else-if="user.trustlevel === 'Declined'"><strong>Declined</strong> - said they don't want to do this</span>
         <span v-else-if="user.trustlevel === 'Disabled'"><strong>Disabled</strong> - prevented by a mod</span>
       </p>
+      <div v-if="user.giftaid">
+        <h3 class="mt-2">
+          Gift Aid
+        </h3>
+        <p>
+          Gift Aid consent given on {{ user.giftaid.timestamp | dateonly }} for
+          <span v-if="user.giftaid.period === 'Since'">
+            donations since this date.
+          </span>
+          <span v-if="user.giftaid.period === 'This'">
+            this donation only.
+          </span>
+          <span v-if="user.giftaid.period === 'Future'">
+            this and future donations.
+          </span>
+        </p>
+      </div>
       <h3 class="mt-2">
         Location
       </h3>
