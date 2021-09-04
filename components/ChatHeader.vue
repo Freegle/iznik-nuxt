@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="chat" class="outer position-relative">
+    <div v-if="chat && (chat.chattype !== 'User2User' || otheruser && otheruser.info)" class="outer position-relative">
       <div class="nameinfo pt-1 pb-1 pl-1">
         <div class="d-flex flex-column align-content-around justify-content-center" @click="showInfo">
           <div class="font-weight-bold black">
@@ -85,17 +85,19 @@
       <div v-if="collapsed" class="d-flex justify-content-around clickme collapsedbutton w-100" @click="collapsed = false">
         <v-icon name="chevron-down" scale="2" class="text-faded" title="Expand this section" />
       </div>
-      <ChatBlockModal v-if="chat.chattype === 'User2User'" :id="id" ref="chatblock" :user="otheruser" @confirm="block" />
+      <div v-if="otheruser && otheruser.info">
+        <ChatBlockModal v-if="chat.chattype === 'User2User'" :id="id" ref="chatblock" :user="otheruser" @confirm="block" />
+        <ChatReportModal
+          v-if="chat.chattype === 'User2User'"
+          :id="'report-' + id"
+          ref="chatreport"
+          :user="otheruser"
+          :chatid="chat.id"
+          @confirm="hide"
+        />
+        <ProfileModal :id="otheruser.id" ref="profile" />
+      </div>
       <ChatHideModal v-if="chat.chattype === 'User2User' || chat.chattype === 'User2Mod'" :id="id" ref="chathide" :user="otheruser" @confirm="hide" />
-      <ChatReportModal
-        v-if="chat.chattype === 'User2User'"
-        :id="'report-' + id"
-        ref="chatreport"
-        :user="otheruser"
-        :chatid="chat.id"
-        @confirm="hide"
-      />
-      <ProfileModal v-if="otheruser && otheruser.info" :id="otheruser.id" ref="profile" />
     </div>
     <div v-else class="w-100">
       <div class="col text-center">
