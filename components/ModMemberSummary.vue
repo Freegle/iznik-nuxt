@@ -17,7 +17,7 @@
         </div>
         {{ userinfo.repliesoffer }}
       </b-badge>
-      <b-badge v-if="userinfo" :variant="userinfo.replies > 0 ? 'success' : 'light'" title="Recent replies to WANTEDs" class="clickme d-inline-flex">
+      <b-badge v-if="userinfo" :variant="userinfo.replieswanted > 0 ? 'success' : 'light'" title="Recent replies to WANTEDs" class="clickme d-inline-flex">
         <div class="d-flex mr-1">
           <v-icon name="search" class="fa-fw" />
           <v-icon name="reply" class="fa-fw" />
