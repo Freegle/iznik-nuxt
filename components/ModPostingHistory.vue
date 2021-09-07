@@ -9,8 +9,11 @@
     <b-badge :variant="user.modmails > 0 ? 'danger' : 'light'" class="clickme" title="ModMails" @click="showModmails">
       <v-icon name="exclamation-triangle" class="fa-fw" /> {{ user.modmails }}
     </b-badge>
-    <b-badge v-if="userinfo" :variant="userinfo.replies > 0 ? 'success' : 'light'" title="Recent replies to posts">
-      <v-icon name="reply" class="fa-fw" /> {{ userinfo.replies }}
+    <b-badge v-if="userinfo" :variant="userinfo.replies > 0 ? 'success' : 'light'" title="Recent replies to OFFERs">
+      <v-icon name="reply" class="fa-fw" /> {{ userinfo.repliesoffer }}
+    </b-badge>
+    <b-badge v-if="userinfo" :variant="userinfo.replies > 0 ? 'success' : 'light'" title="Recent replies to WANTEDs">
+      <v-icon name="reply" class="fa-fw" /> {{ userinfo.replieswanted }}
     </b-badge>
     <b-badge v-if="userinfo" :variant="userinfo.expectedreplies > 0 ? 'danger' : 'light'" title="Recent outstanding replies requested">
       <v-icon name="clock" class="fa-fw" /> {{ userinfo.expectedreplies || 0 }}
