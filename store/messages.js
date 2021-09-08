@@ -20,19 +20,21 @@ export const state = () => ({
 
 export const mutations = {
   add(state, item) {
-    if (state.index[parseInt(item.id)]) {
-      // Overwrite any existing entry.
-      const existing = state.list.findIndex(obj => {
-        return parseInt(obj.id) === parseInt(item.id)
-      })
+    if (item) {
+      if (state.index[parseInt(item.id)]) {
+        // Overwrite any existing entry.
+        const existing = state.list.findIndex(obj => {
+          return parseInt(obj.id) === parseInt(item.id)
+        })
 
-      Vue.set(state.list, existing, item)
-    } else {
-      // We know it doesn't exist - just add to the list.
-      state.list.push(item)
+        Vue.set(state.list, existing, item)
+      } else {
+        // We know it doesn't exist - just add to the list.
+        state.list.push(item)
+      }
+
+      Vue.set(state.index, parseInt(item.id), item)
     }
-
-    Vue.set(state.index, parseInt(item.id), item)
   },
   addAll(state, items) {
     if (items) {
