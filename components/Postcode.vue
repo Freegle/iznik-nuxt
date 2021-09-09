@@ -193,12 +193,14 @@ export default {
       const names = []
       const ret = []
 
-      for (let i = 0; i < results.locations.length && names.length < 5; i++) {
-        const loc = results.locations[i]
+      if (results && results.locations) {
+        for (let i = 0; i < results.locations.length && names.length < 5; i++) {
+          const loc = results.locations[i]
 
-        if (names.indexOf(loc.name) === -1) {
-          names.push(loc.name)
-          ret.push(loc)
+          if (names.indexOf(loc.name) === -1) {
+            names.push(loc.name)
+            ret.push(loc)
+          }
         }
       }
 
