@@ -14,15 +14,17 @@ export const state = () => ({
 
 export const mutations = {
   add(state, item) {
-    // Overwrite any existing entry.
-    const existing = state.list.findIndex(obj => {
-      return parseInt(obj.id) === parseInt(item.id)
-    })
+    if (item) {
+      // Overwrite any existing entry.
+      const existing = state.list.findIndex(obj => {
+        return parseInt(obj.id) === parseInt(item.id)
+      })
 
-    if (existing !== -1) {
-      Vue.set(state.list, existing, item)
-    } else {
-      state.list.push(item)
+      if (existing !== -1) {
+        Vue.set(state.list, existing, item)
+      } else {
+        state.list.push(item)
+      }
     }
   },
   updateComments(state, item) {

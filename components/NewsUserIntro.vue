@@ -38,6 +38,7 @@
 
 <script>
 // Use import rather than async otherwise we have trouble with refs.
+import waitForRef from '../mixins/waitForRef'
 import ProfileModal from '~/components/ProfileModal'
 import NewsUserInfo from '~/components/NewsUserInfo'
 import ProfileImage from '~/components/ProfileImage'
@@ -48,6 +49,7 @@ export default {
     ProfileModal,
     ProfileImage
   },
+  mixins: [waitForRef],
   props: {
     userid: {
       type: Number,
@@ -82,7 +84,7 @@ export default {
       // We use v-if so that the profile modal is not inserted into the DOM until we have clicked, which saves the
       // fetch of the user info.
       this.infoclick = true
-      this.$nextTick(() => {
+      this.waitForRef('profilemodal', () => {
         this.$refs.profilemodal.show()
       })
     }

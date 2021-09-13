@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Sentry from '@nuxtjs/sentry'
-import { Dedupe as DedupeIntegration } from "@sentry/integrations"
+import { Dedupe as DedupeIntegration } from '@sentry/integrations'
 import sitemap from './utils/sitemap.js'
 
 const FACEBOOK_APPID = '134980666550322'
@@ -534,7 +534,11 @@ const config = {
 
         // Sentry logs unhelpful exceptions - see https://github.com/getsentry/sentry-javascript/issues/2210.
         if (hint) {
-          console.log('Original exception was', hint.originalException, typeof  hint.originalException)
+          console.log(
+            'Original exception was',
+            hint.originalException,
+            typeof hint.originalException
+          )
 
           if (!hint.originalException) {
             // There's basically no info to report, so there's nothing we can do.  Suppress it.
@@ -542,7 +546,7 @@ const config = {
             return null
             // eslint-disable-next-line
           } else if (hint.originalException.toString().match(/Down for maintenance/)) {
-            console.log("Maintenance - suppress exception", this)
+            console.log('Maintenance - suppress exception', this)
             return null
             // eslint-disable-next-line
           } else if (hint.originalException.toString().match(/Object Not Found Matching Id/)) {
@@ -560,26 +564,47 @@ const config = {
             if (hint.originalException.message) {
               console.log('Message', hint.originalException.message)
 
-              if (hint.originalException.message) {
-                if (
-                  hint.originalException.message.match(/_leaflet_pos/) ||
-                  hint.originalException.message.match(/getPosition/)
-                ) {
-                  // This exception can happen when a map is still in motion (e.g. zooming) and you navigate away from
-                  // the page.  So far as I can tell, this is not properly fixed by either leaflet or vue2-leaflet, but
-                  // causes no real problems, just Sentry clutter.  So suppress it here.
-                  console.log('Suppress leaflet exception')
-                  return null
-                } else if (
-                  hint.originalException.message.match(
-                    /can't redefine non-configurable property "userAgent"/
-                  )
-                ) {
-                  // This exception happens a lot, and the best guess I can find is that it is a bugged browser
-                  // extension.
-                  console.log('Suppress userAgent')
-                  return null
-                }
+              if (
+                hint.originalException.message.match(/_leaflet_pos/) ||
+                hint.originalException.message.match(/getPosition/)
+              ) {
+                // This exception can happen when a map is still in motion (e.g. zooming) and you navigate away from
+                // the page.  So far as I can tell, this is not properly fixed by either leaflet or vue2-leaflet, but
+                // causes no real problems, just Sentry clutter.  So suppress it here.
+                console.log('Suppress leaflet exception')
+                return null
+              } else if (
+                hint.originalException.message.match(
+                  /can't redefine non-configurable property "userAgent"/
+                )
+              ) {
+                // This exception happens a lot, and the best guess I can find is that it is a bugged browser
+                // extension.
+                console.log('Suppress userAgent')
+                return null
+              } else if (hint.originalException.message.match(/cancelled/)) {
+                // This probably happens due to the user changing their mind and navigating away immediately.
+                console.log('Suppress cancelled')
+                return null
+              }
+            }
+          } else if (
+            hint.originalException.name &&
+            hint.originalException.name === 'ReferenceError'
+          ) {
+            console.log('ReferenceError')
+            if (hint.originalException.message) {
+              console.log('Message', hint.originalException.message)
+
+              if (
+                hint.originalException.message.match(
+                  /Can't find variable: fieldset/
+                )
+              ) {
+                // This happens because of an old bug which is now fixed:
+                // https://codereview.chromium.org/2343013005
+                console.log('Old Chrome fieldset bug')
+                return null
               }
             }
           }

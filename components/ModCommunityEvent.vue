@@ -18,6 +18,9 @@
         </b-row>
       </b-card-header>
       <b-card-body>
+        <NoticeMessage v-if="event.groups[0].ourPostingStatus === 'PROHIBITED'" variant="danger" class="mb-2">
+          This member is set not to be able to post OFFERs/WANTEDs.
+        </NoticeMessage>
         <CommunityEvent :item="event" :summary="false" />
       </b-card-body>
       <b-card-footer>
@@ -44,12 +47,18 @@
 </template>
 <script>
 import waitForRef from '@/mixins/waitForRef'
+import NoticeMessage from '@/components/NoticeMessage'
 import CommunityEvent from './CommunityEvent'
 import ChatButton from './ChatButton'
 import CommunityEventModal from './CommunityEventModal'
 
 export default {
-  components: { CommunityEventModal, ChatButton, CommunityEvent },
+  components: {
+    CommunityEventModal,
+    ChatButton,
+    CommunityEvent,
+    NoticeMessage
+  },
   mixins: [waitForRef],
   props: {
     event: {

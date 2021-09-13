@@ -92,6 +92,9 @@
             the relevant section of your website.  The London Borough of Richmond Council does an excellent job of reminding residents they can save
             money by using Freegle instead of paying for a bulky waste collection - see <a href="https://www.richmond.gov.uk/book_a_bulky_item_collection" target="_blank" rel="noopener noreferrer">here</a>.
           </p>
+          <b-btn variant="primary" size="lg" class="mb-3" @click="showScript">
+            Click here for an example phone script
+          </b-btn>
           <p>
             If you are a county council, you can work with your districts and boroughs to ensure that a consistent
             message about bulky waste is promoted throughout the whole county from websites to dealing directly
@@ -175,25 +178,24 @@
           </p>
           <p>
             Use Freegle for:
-
-            <ul>
-              <li>
-                Pre and post-Christmas decluttering
-              </li>
-              <li>
-                Christmas trees – giving away unwanted ones or getting a new one
-              </li>
-              <li>
-                Decorations
-              </li>
-              <li>
-                Toys and other presents (you’ll be amazed what people are giving away)
-              </li>
-              <li>
-                An extra seat for the dining room table!
-              </li>
-            </ul>
           </p>
+          <ul>
+            <li>
+              Pre and post-Christmas decluttering
+            </li>
+            <li>
+              Christmas trees – giving away unwanted ones or getting a new one
+            </li>
+            <li>
+              Decorations
+            </li>
+            <li>
+              Toys and other presents (you’ll be amazed what people are giving away)
+            </li>
+            <li>
+              An extra seat for the dining room table!
+            </li>
+          </ul>
           <p>
             And after the event…
             <ul>
@@ -236,6 +238,45 @@
     <b-col>
       <CouncilsContent />
     </b-col>
+    <b-modal
+      id="scriptblockmodal"
+      v-model="showModal"
+      title="Example Phone Script"
+      no-stacking
+      size="lg"
+    >
+      <template slot="default">
+        <p>
+          Do you have a table, sofa, chair or other bulky item that you no longer need? Don't throw it away, give it away!
+          Someone else living locally might be able to give it a new home.
+        </p>
+        <p>
+          Did you know that more than half of the largest items, such as furniture, taken to our Household Waste
+          Recycling Centres for disposal could actually be reused?
+        </p>
+        <p>
+          We are asking our residents to 'choose to reuse' where possible. Reuse is good for the environment, saves
+          money and resources and can really help people out.
+        </p>
+        <p>
+          One easy-to-use option is Freegle. Freegle is the UK's biggest and friendliest, online reuse network.
+          Anyone can join their local Freegle community online or via the Freegle app. It’s free to join, free to use,
+          and everything on it is free. You don't even have to leave the house. Why not give it a go? Go to
+          <ExternalLink href="https://www.ilovefreegle.org">
+            www.ilovefreegle.org
+          </ExternalLink>
+          to find your local Freegle community.
+        </p>
+        <p>
+          For more information on reuse in (insert area) please visit our website (insert web address/page details).
+        </p>
+      </template>
+      <template slot="modal-footer" slot-scope="{ ok, cancel }">
+        <b-button variant="white" @click="cancel">
+          Close
+        </b-button>
+      </template>
+    </b-modal>
   </b-row>
 </template>
 <script>
@@ -252,6 +293,16 @@ export default {
       'Councils - Making Freegle work best for your council',
       'How your council can get the most out of Freegle.'
     )
+  },
+  data: function() {
+    return {
+      showModal: false
+    }
+  },
+  methods: {
+    showScript() {
+      this.showModal = true
+    }
   }
 }
 </script>

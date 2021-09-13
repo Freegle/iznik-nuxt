@@ -10,8 +10,19 @@
       <b-badge :variant="(member.modmails && member.modmails) > 0 ? 'danger' : 'light'" title="Recent ModMails" class="clickme" @click="showModmails">
         <v-icon name="exclamation-triangle" class="fa-fw" /> {{ (member.modmails ? member.modmails : 0) | pluralize([ 'Modmail', 'Modmails' ], { includeNumber: true }) }}
       </b-badge>
-      <b-badge v-if="userinfo" :variant="userinfo.replies > 0 ? 'success' : 'light'" title="Recent replies to posts" class="clickme">
-        <v-icon name="reply" class="fa-fw" /> {{ userinfo.replies | pluralize([ 'reply', 'replies' ], { includeNumber: true }) }}
+      <b-badge v-if="userinfo" :variant="userinfo.repliesoffer > 0 ? 'success' : 'light'" title="Recent replies to OFFERs" class="clickme d-inline-flex">
+        <div class="d-flex mr-1">
+          <v-icon name="gift" class="fa-fw" />
+          <v-icon name="reply" class="fa-fw" />
+        </div>
+        {{ userinfo.repliesoffer }}
+      </b-badge>
+      <b-badge v-if="userinfo" :variant="userinfo.replieswanted > 0 ? 'success' : 'light'" title="Recent replies to WANTEDs" class="clickme d-inline-flex">
+        <div class="d-flex mr-1">
+          <v-icon name="search" class="fa-fw" />
+          <v-icon name="reply" class="fa-fw" />
+        </div>
+        {{ userinfo.replieswanted }}
       </b-badge>
       <b-badge v-if="userinfo" :variant="userinfo.expectedreplies > 0 ? 'danger' : 'light'" title="Recent outstanding replies requested" class="clickme">
         <v-icon name="clock" class="fa-fw" /> {{ (userinfo.expectedreplies || 0) | pluralize('RSVP', { includeNumber: true }) }}

@@ -12,12 +12,15 @@
 </template>
 <script>
 import twem from 'assets/js/twem'
-import lineClamp from 'vue-line-clamp'
 import Vue from 'vue'
 
-Vue.use(lineClamp, {
-  textOverflow: 'ellipsis'
-})
+if (process.client) {
+  const lineClamp = require('vue-line-clamp')
+
+  Vue.use(lineClamp, {
+    textOverflow: 'ellipsis'
+  })
+}
 
 const Highlighter = () => import('vue-highlight-words')
 

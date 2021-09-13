@@ -81,6 +81,7 @@
       </b-col>
     </b-row>
     <NewsReplies
+      :id="id"
       :threadhead="threadhead"
       :users="users"
       :scroll-to="scrollTo"
@@ -254,6 +255,10 @@ export default {
   },
   mixins: [waitForRef],
   props: {
+    id: {
+      type: Number,
+      required: true
+    },
     threadhead: {
       type: Object,
       required: true

@@ -49,13 +49,18 @@
               </h4>
             </b-card-title>
             <b-card-text>
-              <v-icon name="info-circle" />
-              <span v-if="refmsg.type === 'Offer'">
-                We've let them know this is no longer available.
-              </span>
-              <span v-else>
-                This has now been received.
-              </span>
+              <div>
+                <v-icon name="info-circle" />
+                <span v-if="refmsg.type === 'Offer'">
+                  We've let them know this is no longer available.
+                </span>
+                <span v-else>
+                  This has now been received.
+                </span>
+              </div>
+              <div class="text-muted small">
+                This is an automated message.
+              </div>
             </b-card-text>
           </b-card>
         </div>

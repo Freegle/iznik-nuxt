@@ -18,6 +18,9 @@
         </div>
       </b-card-header>
       <b-card-body>
+        <NoticeMessage v-if="banned" variant="danger" class="mb-2">
+          This freegler is banned from this group.
+        </NoticeMessage>
         <div v-if="member.heldby">
           <NoticeMessage variant="warning" class="mb-2">
             <p v-if="me.id === member.heldby.id">
@@ -265,7 +268,8 @@ export default {
       showEmails: false,
       type: null,
       allmemberships: false,
-      showLogsModal: false
+      showLogsModal: false,
+      banned: false
     }
   },
   computed: {
@@ -352,6 +356,10 @@ export default {
     }
   },
   mounted() {
+    if (this.member.banned) {
+      this.banned = true
+    }
+
     if (!this.user) {
       // Fetch with info so that we can display more.
       this.$store.dispatch('user/fetch', {

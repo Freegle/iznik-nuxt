@@ -89,6 +89,8 @@ export default {
         .replace(/\\n/g, '\n')
         .replace(/<br>/g, '\n')
         .trim()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
     }
   },
   methods: {

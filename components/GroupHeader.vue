@@ -2,7 +2,16 @@
   <b-card bg-light>
     <div class="group mb-3">
       <div class="group__image">
-        <b-img-lazy rounded thumbnail alt="Community profile picture" :src="group.profile ? group.profile : '/icon.png'" class="js-pageimage" />
+        <b-img-lazy
+          rounded
+          thumbnail
+          alt="Community profile picture"
+          :src="group.profile ? group.profile : '/icon.png'"
+          class="js-pageimage"
+          blank-width="200"
+          blank-height="200"
+          blank-color="white"
+        />
       </div>
       <div class="group__title">
         <b-card-title>

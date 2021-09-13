@@ -1,5 +1,5 @@
 <template>
-  <div :id="'msg-' + id" class="position-relative ml-2 mr-2 ml-sm-0 mr-sm-0">
+  <div :id="'msg-' + id" class="position-relative">
     <template v-if="message.successful">
       <MessageFreegled :id="id" />
     </template>
@@ -102,7 +102,9 @@ export default {
         offer: this.message.type === 'Offer',
         wanted: this.message.type === 'Wanted',
         clickme: !this.message.successful,
-        promisedfade: this.message.promised && this.replyable
+        promisedfade: this.message.promised && this.replyable,
+        'p-2': true,
+        'p-sm-3': true
       }
 
       if (this.bgClass) {

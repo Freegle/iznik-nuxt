@@ -20,6 +20,9 @@
         </b-row>
       </b-card-header>
       <b-card-body>
+        <NoticeMessage v-if="volunteering.groups[0].ourPostingStatus === 'PROHIBITED'" variant="danger" class="mb-2">
+          This member is set not to be able to post OFFERs/WANTEDs.
+        </NoticeMessage>
         <VolunteerOpportunity :item="volunteering" :summary="false" />
       </b-card-body>
       <b-card-footer>
@@ -47,12 +50,18 @@
 </template>
 <script>
 import waitForRef from '@/mixins/waitForRef'
+import NoticeMessage from '@/components/NoticeMessage'
 import VolunteerOpportunity from './VolunteerOpportunity'
 import ChatButton from './ChatButton'
 import VolunteerOpportunityModal from './VolunteerOpportunityModal'
 
 export default {
-  components: { VolunteerOpportunityModal, ChatButton, VolunteerOpportunity },
+  components: {
+    NoticeMessage,
+    VolunteerOpportunityModal,
+    ChatButton,
+    VolunteerOpportunity
+  },
   mixins: [waitForRef],
   props: {
     volunteering: {

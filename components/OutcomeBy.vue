@@ -27,7 +27,12 @@
         <span v-else>Other people</span>
       </span>
       <div class="ratings">
-        <Ratings v-if="user.userid > 0" :id="user.userid" size="lg" class="ml-1" />
+        <div class="d-none d-md-block ml-1">
+          <Ratings v-if="user.userid > 0" :id="user.userid" size="lg" />
+        </div>
+        <div class="d-block d-md-none ml-1">
+          <Ratings v-if="user.userid > 0" :id="user.userid" size="md" />
+        </div>
       </div>
       <div :class="'ml-1 took ' + (availableinitially <= 1 ? 'd-none' : '')">
         <NumberIncrementDecrement
@@ -40,14 +45,26 @@
         />
       </div>
     </div>
-    <b-select
-      v-if="moreUsersToSelect && showSelect"
-      v-model="selectUser"
-      :options="userOptions"
-      size="lg"
-      :class="'font-weight-bold ' + (selectedUsers.length === 0 ? 'text-danger' : '')"
-      @change="selected"
-    />
+    <div class="d-none d-md-flex justify-content-around">
+      <b-select
+        v-if="moreUsersToSelect && showSelect"
+        v-model="selectUser"
+        :options="userOptions(false)"
+        size="lg"
+        :class="'font-weight-bold ' + (selectedUsers.length === 0 ? 'text-danger' : '')"
+        @change="selected"
+      />
+    </div>
+    <div class="d-flex d-md-none justify-content-around">
+      <b-select
+        v-if="moreUsersToSelect && showSelect"
+        v-model="selectUser"
+        :options="userOptions(true)"
+        size="lg"
+        :class="'font-weight-bold ' + (selectedUsers.length === 0 ? 'text-danger' : '')"
+        @change="selected"
+      />
+    </div>
   </div>
 </template>
 <script>
@@ -125,36 +142,6 @@ export default {
         u => !this.selectedUsers.find(u2 => u2.userid === u.userid)
       )
     },
-    userOptions() {
-      const options = []
-
-      options.push({
-        value: -1,
-        html:
-          this.selectedUsers.length >= 1
-            ? '<em>-- Add someone --</em>'
-            : "<em>-- Please choose (this isn't public) --</em>"
-      })
-
-      for (const user of this.availableUsers) {
-        options.push({
-          value: user.userid,
-          text: user.displayname
-        })
-      }
-
-      if (!this.selectedUsers.find(u => u.userid === null)) {
-        options.push({
-          value: 0,
-          html:
-            this.availableinitially === 1
-              ? '<em>Someone else</em>'
-              : '<em>Other people</em>'
-        })
-      }
-
-      return options
-    },
     moreUsersToSelect() {
       // We show the choose if there are some left and we have not got all users plus someone else.
       return (
@@ -216,6 +203,41 @@ export default {
       }
 
       this.selectUser = -1
+    },
+    userOptions(small) {
+      const options = []
+
+      options.push({
+        value: -1,
+        html:
+          this.selectedUsers.length >= 1
+            ? '<em>-- Add someone --</em>'
+            : this.userOptionsChoose(small)
+      })
+
+      for (const user of this.availableUsers) {
+        options.push({
+          value: user.userid,
+          text: user.displayname
+        })
+      }
+
+      if (!this.selectedUsers.find(u => u.userid === null)) {
+        options.push({
+          value: 0,
+          html:
+            this.availableinitially === 1
+              ? '<em>Someone else</em>'
+              : '<em>Other people</em>'
+        })
+      }
+
+      return options
+    },
+    userOptionsChoose(small) {
+      return small
+        ? '<em>-- Please choose --</em>'
+        : "<em>-- Please choose (this isn't public) --</em>"
     }
   }
 }

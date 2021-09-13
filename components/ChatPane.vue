@@ -16,7 +16,7 @@
     <div v-else-if="me">
       <client-only>
         <div class="chatHolder">
-          <ChatHeader v-bind="$props" class="chatTitle" />
+          <ChatHeader v-bind="$props" class="chatTitle" :loaded.sync="headerLoaded" />
           <div v-if="chat" ref="chatContent" class="chatContent" infinite-wrapper>
             <infinite-loading
               v-if="otheruser || chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'"
@@ -45,7 +45,7 @@
                 :chatusers="chatusers"
               />
             </div>
-            <div v-if="chatBusy" class="text-center">
+            <div v-if="chatBusy && headerLoaded" class="text-center">
               <b-img class="float-right" src="~static/loader.gif" />
             </div>
           </div>
@@ -79,6 +79,11 @@ export default {
     ChatMessage
   },
   mixins: [chatCollate, waitForRef, chat],
+  data: function() {
+    return {
+      headerLoaded: false
+    }
+  },
   watch: {
     me(newVal, oldVal) {
       if (!oldVal && newVal) {
