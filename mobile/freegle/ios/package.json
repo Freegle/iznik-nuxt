@@ -29,7 +29,7 @@
     "cordova-ios": "^6.2.0",
     "cordova-plugin-inappbrowser": "^5.0.0",
     "cordova-plugin-whitelist": "^1.3.4",
-    "ionic-plugin-deeplinks": "file:../ionic-plugin-deeplinks"
+    "ionic-plugin-deeplinks": "1.0.24"
   },
   "cordova": {
     "plugins": {
