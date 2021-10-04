@@ -2,11 +2,11 @@
   <div class="font-weight-bold">
     <div v-if="today" class="pulsate d-flex">
       <!-- eslint-disable-next-line-->
-      <ExternalLink href="https://zoom.us/j/97817491680?pwd=VVh2eW1LL2JhbnB5MllQbHoyRUJ6UT09" class="text-white">ZoomStock Thursdays - join other volunteers for a natter.  Click here at 2pm.</ExternalLink>
+      <ExternalLink href="https://us02web.zoom.us/j/81013447754?pwd=cVYzeEl5dWx0MEd0TTdOWE9Yd0Z4QT09" class="text-white">ZoomStock Thursdays - join other volunteers for a natter.  Click here at 2pm.</ExternalLink>
     </div>
     <div v-else-if="now" class="pulsate d-flex">
       <!-- eslint-disable-next-line-->
-      <ExternalLink href="https://zoom.us/j/97817491680?pwd=VVh2eW1LL2JhbnB5MllQbHoyRUJ6UT09" class="text-white">ZoomStock happening now! Join other volunteers for a natter - click here.</ExternalLink>
+      <ExternalLink href="https://us02web.zoom.us/j/81013447754?pwd=cVYzeEl5dWx0MEd0TTdOWE9Yd0Z4QT09" class="text-white">ZoomStock happening now! Join other volunteers for a natter - click here.</ExternalLink>
     </div>
     <div v-else class="d-flex">
       ZoomStock Thursdays @ 2pm, next {{ fromNow | timeago }}. Join other volunteers for a natter.  Link will be here.
