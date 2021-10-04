@@ -14,7 +14,6 @@
           <l-map
             ref="map"
             :zoom="14"
-            :center="center"
             :style="'width: ' + mapWidth + '; height: ' + mapWidth + 'px'"
             @update:bounds="boundsChanged"
             @ready="ready"
@@ -98,9 +97,10 @@ export default {
     ready() {
       this.waitForRef('map', () => {
         const self = this
-        this.mapObject = this.$refs.map.mapObject
 
         if (process.client) {
+          this.$refs.map.setCenter(this.center)
+
           L.Control.geocoder({
             placeholder: 'Search for a place...',
             defaultMarkGeocode: false,
@@ -123,17 +123,20 @@ export default {
             collapsed: false
           })
             .on('markgeocode', function(e) {
+              console.log('Mark geo')
               if (e && e.geocode && e.geocode.bbox) {
+                console.log('Geocoded', e.geocode.bbox)
                 // Empty out the query box so that the dropdown closes.
                 this.setQuery('')
 
                 self.$nextTick(() => {
                   // Move the map to the location we've found.
-                  self.mapObject.flyToBounds(e.geocode.bbox)
+                  console.log('Move')
+                  self.$refs.map.mapObject.flyToBounds(e.geocode.bbox)
                 })
               }
             })
-            .addTo(this.mapObject)
+            .addTo(this.$refs.map.mapObject)
         }
       })
     }
