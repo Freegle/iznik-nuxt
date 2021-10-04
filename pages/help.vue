@@ -139,9 +139,8 @@
                 </template>
                 <template slot="content">
                   <p>
-                    If you'd like to leave Freegle, then go <nuxt-link to="/unsubscribe">
-                      here
-                    </nuxt-link>.
+                    <!-- eslint-disable-next-line -->
+                    If you'd like to leave Freegle, then go <nuxt-link to="/unsubscribe">here</nuxt-link>.
                   </p>
                 </template>
               </Question>
