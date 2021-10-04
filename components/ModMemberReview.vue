@@ -9,6 +9,7 @@
         <div>
           <ProfileImage :image="member.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
           {{ member.displayname }}
+          <Supporter v-if="member.supporter" class="d-inline" />
         </div>
         <div v-if="member.joined">
           <v-icon name="calendar-alt" /> {{ member.joined | datetimeshort }}
@@ -159,6 +160,8 @@ import ModMemberLogins from './ModMemberLogins'
 import ModMemberButton from './ModMemberButton'
 import ModSpammerReport from './ModSpammerReport'
 import SpinButton from './SpinButton'
+import Supporter from '~/components/Supporter'
+
 const ExternalLink = () => import('~/components/ExternalLink')
 
 const MEMBERSHIPS_SHOW = 3
@@ -179,7 +182,8 @@ export default {
     ModPostingHistoryModal,
     ProfileImage,
     NoticeMessage,
-    ExternalLink
+    ExternalLink,
+    Supporter
   },
   mixins: [waitForRef],
   props: {
