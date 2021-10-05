@@ -78,7 +78,7 @@
           </div>
           <div class="text-center">
             <p class="mt-2">
-              You can add comments:
+              It went well/badly because:
             </p>
             <b-textarea v-model="comments" rows="2" max-rows="6" />
             <div class="float-right text-muted mt-2">

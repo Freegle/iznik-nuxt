@@ -192,7 +192,10 @@ export default {
           this.searchlast = null
           await this.$store.dispatch('chats/listChats', {
             search: val2,
-            summary: true
+            summary: true,
+            chattypes: modtools
+              ? ['User2Mod', 'Mod2Mod']
+              : ['User2User', 'User2Mod']
           })
 
           this.showChats = 0

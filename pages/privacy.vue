@@ -114,6 +114,15 @@
         <!-- eslint-disable-next-line -->
         <ExternalLink href="https://www.inspectlet.com/optout">here</ExternalLink>.
       </p>
+      <h2>Deleting your data</h2>
+      <p>
+        If you want to leave Freegle, please go
+        <!-- eslint-disable-next-line -->
+        <nuxt-link to="/unsubscribe">here</nuxt-link>.
+      </p>
+      <p>
+        Once you leave, this will delete all your personal data.
+      </p>
       <h2>Got questions?</h2>
       <p>
         Privacy is a complicated and important area, which we take seriously.  If you have questions or concerns,
@@ -126,6 +135,9 @@
         Here are the changes to this page.
       </p>
       <ul class>
+        <li>
+          04/10/2021: Added section on data deletion as per Facebook request.
+        </li>
         <li>
           05/02/2021: Updated to remove PixFuture.
         </li>
