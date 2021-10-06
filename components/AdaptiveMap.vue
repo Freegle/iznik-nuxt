@@ -419,7 +419,7 @@ export default {
         // - Possibly a group id
         // - Don't show deleted posts.  Remember the map may lag a bit as it's only updated on cron, so we
         //   may be returned some.
-        // - Do show completed posts - makes us look good.
+        // - Do show completed posts - makes us look good.  But not too many.
         //
         // Filter out dups by subject (for crossposting).
         //
@@ -444,8 +444,25 @@ export default {
                 // Pass whether the message has been freegled, which is returned in the summary call.
                 message.successful = !!m.successful
 
-                dups[key] = message.groups[0].groupid
-                ret.push(message)
+                let addIt = true
+
+                if (message.successful) {
+                  const lastfour = ret.slice(-4)
+                  let gotSuccessful = false
+
+                  lastfour.forEach(m => {
+                    gotSuccessful |= m.successful
+                  })
+
+                  if (gotSuccessful) {
+                    addIt = false
+                  }
+                }
+
+                if (addIt) {
+                  dups[key] = message.groups[0].groupid
+                  ret.push(message)
+                }
               }
             }
           }
