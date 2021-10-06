@@ -96,7 +96,14 @@
         <b-button variant="white" @click="cancel">
           Cancel
         </b-button>
-        <SpinButton variant="primary" :disabled="submitDisabled" name="save" :label="buttonLabel" :handler="submit" />
+        <SpinButton
+          variant="primary"
+          :disabled="submitDisabled"
+          name="save"
+          :label="buttonLabel"
+          :handler="submit"
+          :title="submitDisabled ? 'Please choose from the dropdown.' : '' "
+        />
       </template>
     </b-modal>
   </div>
