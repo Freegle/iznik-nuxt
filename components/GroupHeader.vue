@@ -2,15 +2,13 @@
   <b-card bg-light>
     <div class="group mb-3">
       <div class="group__image">
-        <b-img-lazy
+        <b-img
           rounded
           thumbnail
           alt="Community profile picture"
           :src="group.profile ? group.profile : '/icon.png'"
-          class="js-pageimage"
-          blank-width="200"
-          blank-height="200"
-          blank-color="white"
+          width="100"
+          height="100"
         />
       </div>
       <div class="group__title">
@@ -226,18 +224,26 @@ export default {
 
   @include media-breakpoint-up(sm) {
     grid-row: 1 / 4;
+    width: unset !important;
+    height: unset !important;
   }
 
   @include media-breakpoint-up(md) {
     grid-row: 1 / 3;
+    width: unset !important;
+    height: unset !important;
   }
 
   @include media-breakpoint-up(lg) {
     grid-row: 1 / 2;
+    width: unset !important;
+    height: unset !important;
   }
 
   @include media-breakpoint-up(xl) {
     grid-row: 1 / 3;
+    width: unset !important;
+    height: unset !important;
   }
 }
 
