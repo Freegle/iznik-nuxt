@@ -447,15 +447,19 @@ export default {
                 let addIt = true
 
                 if (message.successful) {
-                  const lastfour = ret.slice(-4)
-                  let gotSuccessful = false
-
-                  lastfour.forEach(m => {
-                    gotSuccessful |= m.successful
-                  })
-
-                  if (gotSuccessful) {
+                  if (message.daysago > 7) {
                     addIt = false
+                  } else {
+                    const lastfour = ret.slice(-4)
+                    let gotSuccessful = false
+
+                    lastfour.forEach(m => {
+                      gotSuccessful |= m.successful
+                    })
+
+                    if (gotSuccessful) {
+                      addIt = false
+                    }
                   }
                 }
 
