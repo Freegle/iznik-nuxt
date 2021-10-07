@@ -93,17 +93,23 @@
         </div>
       </template>
       <template slot="modal-footer">
-        <b-button variant="white" @click="cancel">
-          Cancel
-        </b-button>
-        <SpinButton
-          variant="primary"
-          :disabled="submitDisabled"
-          name="save"
-          :label="buttonLabel"
-          :handler="submit"
-          :title="submitDisabled ? 'Please choose from the dropdown.' : '' "
-        />
+        <div>
+          <b-alert v-if="showChoosePrompt" show variant="warning">
+            Please choose who took this from the dropdown above.
+          </b-alert>
+          <div class="d-flex flex-wrap justify-content-end">
+            <b-button variant="white" @click="cancel">
+              Cancel
+            </b-button>
+            <SpinButton
+              variant="primary"
+              name="save"
+              :label="buttonLabel"
+              :handler="submit"
+              class="ml-2"
+            />
+          </div>
+        </div>
       </template>
     </b-modal>
   </div>
@@ -134,7 +140,8 @@ export default {
       happiness: null,
       comments: null,
       tookUsers: [],
-      selectedUser: null
+      selectedUser: null,
+      showChoosePrompt: false
     }
   },
   computed: {
@@ -191,48 +198,53 @@ export default {
   methods: {
     async submit() {
       let complete = false
+      this.showChoosePrompt = false
 
-      if (this.type === 'Withdrawn' || this.type === 'Received') {
-        complete = true
+      if (this.submitDisabled) {
+        this.showChoosePrompt = true
       } else {
-        complete = this.left === 0
+        if (this.type === 'Withdrawn' || this.type === 'Received') {
+          complete = true
+        } else {
+          complete = this.left === 0
 
-        for (const u of this.tookUsers) {
-          if (u.count > 0) {
-            await this.$store.dispatch('messages/addBy', {
-              id: this.message.id,
-              userid: u.userid > 0 ? u.userid : null,
-              count: u.count
-            })
-          } else {
-            await this.$store.dispatch('messages/removeBy', {
-              id: this.message.id,
-              userid: u.userid > 0 ? u.userid : null
-            })
+          for (const u of this.tookUsers) {
+            if (u.count > 0) {
+              await this.$store.dispatch('messages/addBy', {
+                id: this.message.id,
+                userid: u.userid > 0 ? u.userid : null,
+                count: u.count
+              })
+            } else {
+              await this.$store.dispatch('messages/removeBy', {
+                id: this.message.id,
+                userid: u.userid > 0 ? u.userid : null
+              })
+            }
           }
         }
-      }
 
-      if (complete) {
-        // The post is being taken/received.
-        await this.$store.dispatch('messages/update', {
-          action: 'Outcome',
-          id: this.message.id,
-          outcome: this.type,
-          happiness: this.happiness,
-          comment: this.comments
-        })
+        if (complete) {
+          // The post is being taken/received.
+          await this.$store.dispatch('messages/update', {
+            action: 'Outcome',
+            id: this.message.id,
+            outcome: this.type,
+            happiness: this.happiness,
+            comment: this.comments
+          })
 
-        this.$store.dispatch('auth/fetchUser', {
-          components: ['openposts'],
-          force: true
-        })
+          this.$store.dispatch('auth/fetchUser', {
+            components: ['openposts'],
+            force: true
+          })
 
-        this.hide()
-      } else {
-        // We are recording some partial results for the post.
-        // Don't call hide as that will trigger donation ask.
-        this.showModal = false
+          this.hide()
+        } else {
+          // We are recording some partial results for the post.
+          // Don't call hide as that will trigger donation ask.
+          this.showModal = false
+        }
       }
     },
 
