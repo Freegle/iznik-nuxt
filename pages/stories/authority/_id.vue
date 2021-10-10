@@ -5,7 +5,7 @@
         <div class="bg-white p-4">
           <h1>Stories from Freeglers<span v-if="authorityname"> on {{ authorityname }}</span></h1>
           <p>
-            We love to hear why people Freegle - it keeps our volunteers volunteering, and it helps show new freeglers what it's all about.
+            We love to hear why you freegle and what your experiences have been - and it helps show new freeglers what it's all about.
           </p>
           <p>
             So please tell us your story!
