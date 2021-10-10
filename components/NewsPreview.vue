@@ -22,11 +22,6 @@
             <read-more :text="preview.description" :max-chars="200" class="nopara" />
           </p>
         </div>
-        <div class="footer">
-          <span class="small text-muted text-center">
-            This is an automatic preview of {{ preview.url }}.  Click at your own risk.
-          </span>
-        </div>
       </div>
     </b-card-body>
   </b-card>

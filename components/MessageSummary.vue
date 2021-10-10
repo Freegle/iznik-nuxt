@@ -18,7 +18,7 @@
       </client-only>
       <div v-if="!message.successful && replyable" class="header-expand mt-2 mt-sm-0">
         <b-button variant="primary" class="mt-2" @click="expand">
-          {{ expandButtonText }} <v-icon name="angle-double-right" />
+          {{ expandButtonText }}
         </b-button>
       </div>
       <div

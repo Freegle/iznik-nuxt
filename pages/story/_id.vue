@@ -12,7 +12,7 @@
       <b-col cols="12" md="6" class="p-0">
         <div class="bg-white p-4">
           <p>
-            We love to hear why people Freegle - it keeps our volunteers volunteering, and it helps show new freeglers what it's all about.
+            We love to hear why you freegle and what your experiences have been - and it helps show new freeglers what it's all about.
           </p>
           <p>
             So please tell us your story!

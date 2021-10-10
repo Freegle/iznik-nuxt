@@ -383,8 +383,9 @@ export default {
             )
 
             if (
-              currentContext !== 'null' &&
-              newContext.localeCompare(currentContext)
+              newContext === 'null' ||
+              (currentContext !== 'null' &&
+                !newContext.localeCompare(currentContext))
             ) {
               this.complete = true
               $state.complete()
