@@ -1,9 +1,18 @@
 <template>
   <!-- eslint-disable-next-line -->
-  <a :href="href" target="_blank" rel="noopener noreferrer" @click="openInBrowser"><slot /></a>
+  <span>
+    <a :href="href" target="_blank" rel="noopener noreferrer" @click="openInBrowser"><slot /></a>
+    <v-icon v-if="enableCopy()" name="copy" scale="0.75" title="Copy email" @click="copyEmail" />
+    <span v-if="copied">Copied</span>
+  </span>
 </template>
 <script>
 export default {
+  data: function () {
+    return {
+      copied: false
+    }
+  },
   props: {
     href: {
       type: String,
@@ -11,6 +20,14 @@ export default {
     }
   },
   methods: {
+    enableCopy() {
+      return process.env.IS_MTAPP && (this.href.substr(0,7)==='mailto:')
+    },
+    copyEmail() {
+      cordova.plugins.clipboard.copy(this.href.substr(7))
+      this.copied = true
+      setTimeout(() => { this.copied = false }, 2000)
+    },
     openInBrowser(event) {
       console.log('openInBrowser')
       if (process.env.IS_APP) {
