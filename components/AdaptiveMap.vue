@@ -177,6 +177,7 @@ import Vue from 'vue'
 import VueObserveVisibility from 'vue-observe-visibility'
 import InfiniteLoading from 'vue-infinite-loading'
 import map from '@/mixins/map.js'
+import allSettled from 'promise.allsettled'
 import { MAX_MAP_ZOOM } from '../utils/constants'
 import JoinWithConfirm from '~/components/JoinWithConfirm'
 const AdaptiveMapGroup = () => import('./AdaptiveMapGroup')
@@ -185,13 +186,12 @@ const GroupSelect = () => import('./GroupSelect')
 const NoticeMessage = () => import('./NoticeMessage')
 const Message = () => import('~/components/Message.vue')
 const PostMap = () => import('~/components/PostMap')
-const allSettled = require('promise.allsettled')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const JobsTopBar = () => import('~/components/JobsTopBar')
 
 let L = null
 
-if (process.browser) {
+if (process.client) {
   Vue.use(VueObserveVisibility)
   L = require('leaflet')
 }

@@ -79,7 +79,7 @@ import NoticeboardCheck from './NoticeboardCheck'
 
 let L = null
 
-if (process.browser) {
+if (process.client) {
   L = require('leaflet')
 }
 

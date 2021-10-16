@@ -83,7 +83,7 @@ export default {
     }
   },
   async mounted() {
-    if (process.browser) {
+    if (process.client) {
       // Ensure we can still load the page if we get an API error.
       try {
         const type = await this.$store.$api.bandit.choose({

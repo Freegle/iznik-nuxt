@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Sentry from '@nuxtjs/sentry'
 import { Dedupe as DedupeIntegration } from '@sentry/integrations'
+import dotenv from 'dotenv'
+import { defineNuxtConfig } from '@nuxt/bridge'
 import sitemap from './utils/sitemap.js'
 
 const FACEBOOK_APPID = '134980666550322'
@@ -8,7 +10,7 @@ const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
 
-require('dotenv').config()
+dotenv.config()
 
 // We have two constants for the API location.  Why?
 // - IZNIK_API is the actual location of the server hosting the API.  It's not used directly by the code.
@@ -49,7 +51,7 @@ const DISABLE_ESLINT_AUTOFIX =
   process.env.DISABLE_ESLINT_AUTOFIX !== 'false'
 const ESLINT_AUTOFIX = !DISABLE_ESLINT_AUTOFIX
 
-module.exports = {
+export default defineNuxtConfig({
   target: 'static',
 
   /*
@@ -249,7 +251,6 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     'nuxt-dayjs-module',
-    '@nuxtjs/redirect-module',
     [
       '@nuxtjs/component-cache',
       {
@@ -394,17 +395,18 @@ module.exports = {
       }
 
       // Run ESLint on save
-      if (ctx.isDev && ctx.isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/,
-          options: {
-            fix: ESLINT_AUTOFIX
-          }
-        })
-      }
+      // TODO NUXT3 Doesn't work.
+      // if (ctx.isDev && ctx.isClient) {
+      //   config.module.rules.push({
+      //     enforce: 'pre',
+      //     test: /\.(js|vue)$/,
+      //     loader: 'eslint-loader',
+      //     exclude: /(node_modules)/,
+      //     options: {
+      //       fix: ESLINT_AUTOFIX
+      //     }
+      //   })
+      // }
 
       config.resolve.alias['color-vars'] = 'assets/css/_color-vars.scss'
 
@@ -451,31 +453,31 @@ module.exports = {
       }
     },
 
-    babel: {
-      presets({ isServer }) {
-        const targets = isServer
-          ? { node: '10' }
-          : {
-              browsers: [
-                '> 1%',
-                'last 2 versions',
-                'ie >= 8',
-                'safari > 9',
-                'ios_saf > 9'
-              ]
-            }
-        return [
-          [
-            require.resolve('@nuxt/babel-preset-app'),
-            {
-              targets,
-              corejs: 3
-              // debug: process.env.NODE_ENV === 'production'
-            }
-          ]
-        ]
-      }
-    },
+    // TODO NUXT3 Babel presets don't work - what's the replacement?
+    // babel: {
+    //   presets({ isServer }) {
+    //     const targets = isServer
+    //       ? { node: '10' }
+    //       : {
+    //           browsers: [
+    //             '> 1%',
+    //             'last 2 versions',
+    //             'ie >= 8',
+    //             'safari > 9',
+    //             'ios_saf > 9'
+    //           ]
+    //         }
+    //     return [
+    //       [
+    //         '@nuxt/babel-preset-app',
+    //         {
+    //           targets,
+    //           corejs: 3
+    //         }
+    //       ]
+    //     ]
+    //   }
+    // },
 
     loaders: {
       less: { javascriptEnabled: true }
@@ -702,4 +704,4 @@ module.exports = {
       description: "Don't throw it away, give it away!"
     }
   }
-}
+})

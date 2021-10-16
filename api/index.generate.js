@@ -13,9 +13,9 @@
  *     api/index.d.ts
  */
 
-const { readdirSync, writeFileSync } = require('fs')
-const { basename, join } = require('path')
-const prettier = require('prettier')
+import { readdirSync, writeFileSync } from 'fs'
+import { basename, join } from 'path'
+import prettier from 'prettier'
 const prettierConfig = prettier.resolveConfig.sync(
   prettier.resolveConfigFile.sync()
 )

@@ -164,7 +164,7 @@ export default {
   },
   async mounted() {
     if (this.id) {
-      if (process.browser && (!this.message || !this.message.fromuser)) {
+      if (process.client && (!this.message || !this.message.fromuser)) {
         // We are on the client and loading a page which we have rendered on the server rather than navigated to on the
         // client side.  We will therefore have rendered it logged out.  Refetch the message so that we get more info,
         // which we may do when logged in.

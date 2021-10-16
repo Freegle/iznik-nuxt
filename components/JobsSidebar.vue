@@ -71,7 +71,7 @@ export default {
       return this.$store.getters['jobs/blocked']
     },
     visibleJobs() {
-      if (process.browser) {
+      if (process.client) {
         // We have an infinite scroll - return as many as we're currently showing.
         //
         // Don't prioritise otherwise this makes them jump around when scrolling down.

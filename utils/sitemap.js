@@ -1,5 +1,5 @@
 // Build up our sitemap, including dynamic routes.
-const axios = require('axios')
+import axios from 'axios'
 
 export default {
   includeRoutes: async function() {

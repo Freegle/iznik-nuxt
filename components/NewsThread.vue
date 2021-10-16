@@ -196,7 +196,7 @@ import ProfileImage from '~/components/ProfileImage'
 
 const ConfirmModal = () => import('~/components/ConfirmModal.vue')
 
-const AtTa = process.browser
+const AtTa = process.client
   ? require('vue-at/dist/vue-at-textarea')
   : undefined
 

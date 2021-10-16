@@ -118,7 +118,7 @@ const ClusterMarker = () => import('./ClusterMarker')
 
 let L = null
 
-if (process.browser) {
+if (process.client) {
   L = require('leaflet')
   require('leaflet-control-geocoder')
   require('leaflet-control-geocoder/dist/Control.Geocoder.css')
@@ -237,7 +237,7 @@ export default {
 
       let height = 0
 
-      if (process.browser) {
+      if (process.client) {
         height = window.innerHeight / this.heightFraction - 70
         height = height < 200 ? 200 : height
       }
@@ -276,7 +276,7 @@ export default {
       const bounds = this.mapObject ? this.mapObject.getBounds() : null
       const ret = []
 
-      if (!process.browser && bounds) {
+      if (!process.client && bounds) {
         // SSR - return all for SEO.
         for (const ix in groups) {
           const group = groups[ix]

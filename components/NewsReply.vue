@@ -233,7 +233,7 @@ const ProfileModal = () => import('~/components/ProfileModal')
 const ConfirmModal = () => import('~/components/ConfirmModal.vue')
 const NewsReplies = () => import('~/components/NewsReplies.vue')
 
-const AtTa = process.browser
+const AtTa = process.client
   ? require('vue-at/dist/vue-at-textarea')
   : undefined
 

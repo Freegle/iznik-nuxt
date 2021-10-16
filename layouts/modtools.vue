@@ -161,7 +161,7 @@ export default {
     }
   },
   mounted() {
-    if (process.browser) {
+    if (process.client) {
       // Add class for screen background.
       document.body.classList.add('modtools')
 

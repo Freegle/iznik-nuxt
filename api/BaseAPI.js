@@ -1,10 +1,7 @@
-let Sentry
+import * as SentryBrowser from '@sentry/browser'
+import * as SentryNode from '@sentry/node'
 
-if (process.client) {
-  Sentry = require('@sentry/browser')
-} else {
-  Sentry = require('@sentry/node')
-}
+const Sentry = process.client ? SentryBrowser : SentryNode
 
 export class APIError extends Error {
   constructor({ request, response }, message) {

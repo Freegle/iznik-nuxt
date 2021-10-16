@@ -1,6 +1,6 @@
 export default {
   mounted() {
-    if (process.browser) {
+    if (process.client) {
       if (this.$route.hash) {
         setTimeout(() => {
           const el = document.getElementById(this.$route.hash.substring(1))

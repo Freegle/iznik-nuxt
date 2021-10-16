@@ -20,7 +20,7 @@ import HomeIcon from './HomeIcon'
 
 let L = null
 
-if (process.browser) {
+if (process.client) {
   L = require('leaflet')
   require('wicket/wicket-leaflet')
 }

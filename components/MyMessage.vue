@@ -241,7 +241,7 @@ const LoveJunkModal = () => import('~/components/LoveJunkModal')
 
 let ResizeText = null
 
-if (process.browser) {
+if (process.client) {
   ResizeText = require('vue-resize-text')
 }
 

@@ -67,7 +67,7 @@ const MicroVolunteering = () => import('~/components/MicroVolunteering.vue')
 let Wkt = null
 let L = null
 
-if (process.browser) {
+if (process.client) {
   Wkt = require('wicket')
   L = require('leaflet')
 }

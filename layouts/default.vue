@@ -69,7 +69,7 @@ export default {
     }
   },
   async mounted() {
-    if (process.browser) {
+    if (process.client) {
       // Add class for screen background.
       document.body.classList.add('fd')
 
@@ -140,7 +140,7 @@ export default {
       console.log('Failed to set context', e)
     }
 
-    if (process.browser) {
+    if (process.client) {
       if (this.replyToSend) {
         // We have loaded the site with a reply that needs sending.  This happens if we force login in a way that
         // causes us to navigate away and back again.  Fetch the relevant message.

@@ -1,6 +1,7 @@
 /docker-compose.override.yaml
 /docker-compose.override.yml
 /.nuxt
+/.output
 /dist
 /node_modules/
 /debug.log

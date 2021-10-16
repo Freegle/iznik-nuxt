@@ -13,7 +13,7 @@ import LMovingMarker from 'vue2-leaflet-movingmarker'
 
 let L = null
 
-if (process.browser) {
+if (process.client) {
   L = require('leaflet')
 }
 
