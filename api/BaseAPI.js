@@ -1,7 +1,5 @@
-import * as SentryBrowser from '@sentry/browser'
-import * as SentryNode from '@sentry/node'
-
-const Sentry = process.client ? SentryBrowser : SentryNode
+// TODO NUXT3 Sentry doesn't work.
+// import * as Sentry from '@sentry/browser'
 
 export class APIError extends Error {
   constructor({ request, response }, message) {
@@ -135,16 +133,17 @@ export default class BaseAPI {
         console.log('Log it?', log)
 
         if (log) {
-          Sentry.captureException(
-            'API request failed ' +
-              path +
-              ' returned HTTP ' +
-              status +
-              ' ret ' +
-              retstr +
-              ' status ' +
-              statusstr
-          )
+          // TODO NUXT3 Sentry doesn't work.
+          // Sentry.captureException(
+          //   'API request failed ' +
+          //     path +
+          //     ' returned HTTP ' +
+          //     status +
+          //     ' ret ' +
+          //     retstr +
+          //     ' status ' +
+          //     statusstr
+          // )
         }
 
         const message = [

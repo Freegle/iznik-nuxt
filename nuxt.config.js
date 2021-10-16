@@ -1,5 +1,6 @@
 import Vue from 'vue'
-import Sentry from '@nuxtjs/sentry'
+// TODO NUXT3 Sentry doesn't work.
+// import Sentry from '@nuxtjs/sentry'
 import { Dedupe as DedupeIntegration } from '@sentry/integrations'
 import dotenv from 'dotenv'
 import { defineNuxtConfig } from '@nuxt/bridge'
