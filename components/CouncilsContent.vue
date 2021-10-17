@@ -190,6 +190,11 @@
           </a>
         </li>
         <li>
+          <a href="/councils/socialmedia#blackfriday">
+            Black Friday
+          </a>
+        </li>
+        <li>
           <a href="/councils/socialmedia#moving">
             Moving house
           </a>
