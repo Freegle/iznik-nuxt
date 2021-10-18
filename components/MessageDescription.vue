@@ -1,5 +1,5 @@
 <template>
-  <div v-if="textbody && textbody !== 'null'" v-line-clamp="2" class="textbody">
+  <div v-if="textbody && textbody !== 'null'" :v-line-clamp="clamp" class="textbody">
     <Highlighter
       v-if="me && matchedon"
       :search-words="[matchedon.word]"
@@ -38,6 +38,13 @@ export default {
     }
   },
   computed: {
+    clamp() {
+      if (this.me) {
+        return 2
+      } else {
+        return 10
+      }
+    },
     message() {
       return this.$store.getters['messages/get'](this.id)
     },
