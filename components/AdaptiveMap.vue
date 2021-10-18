@@ -447,7 +447,9 @@ export default {
                 let addIt = true
 
                 if (message.successful) {
-                  if (message.daysago > 7) {
+                  if (this.myid === message.fromuser) {
+                    addIt = true
+                  } else if (message.daysago > 7) {
                     addIt = false
                   } else {
                     const lastfour = ret.slice(-4)
