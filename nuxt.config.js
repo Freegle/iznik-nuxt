@@ -641,7 +641,7 @@ module.exports = {
     USER_SITE: USER_SITE,
     IMAGE_SITE: IMAGE_SITE,
     SENTRY_DSN: SENTRY_DSN,
-    BUILD_DATE: new Date().toLocaleString()
+    BUILD_DATE: new Date().toISOString()
   },
 
   vue: {
