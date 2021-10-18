@@ -1,7 +1,7 @@
 <template>
   <div v-if="textbody && textbody !== 'null'" v-line-clamp="2" class="textbody">
     <Highlighter
-      v-if="matchedon"
+      v-if="me && matchedon"
       :search-words="[matchedon.word]"
       :text-to-highlight="textbody"
       highlight-class-name="highlight"

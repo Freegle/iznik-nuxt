@@ -40,8 +40,7 @@
         <div class="button__items">
           <b-button v-if="!amAMember" class="mb-1 ml-1" variant="primary" @click="join">
             <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
-            <v-icon v-else name="plus" />&nbsp;
-            Join
+            Join this community
           </b-button>
           <b-button v-else-if="amAMember === 'Member'" class="mb-1 ml-1" variant="white" @click="leave">
             <v-icon v-if="joiningOrLeaving" name="sync" class="fa-spin" />
@@ -64,7 +63,7 @@
       </h2>
       <ExternalLink v-if="!me" :href="'mailto:' + modsemail">
         <span class="btn btn-white mb-3">
-          <v-icon name="question-circle" />&nbsp;Contact&nbsp;volunteers
+          Contact&nbsp;volunteers
         </span>
         <div v-if="group.showmods && group.showmods.length" class="d-flex flex-wrap justify-content-start">
           <GroupShowMod v-for="mod in group.showmods" :key="'showmod-' + mod.id" :modtoshow="mod" class="ml-1" />
