@@ -36,7 +36,7 @@
             to let us know.
           </p>
         </NoticeMessage>
-        <div v-if="type === 'Taken'" class="text-center">
+        <div v-if="type === 'Taken'">
           <OutcomeBy
             :availableinitially="typeof message.availableinitially === 'number' ? message.availableinitially : 1"
             :type="type"
@@ -45,14 +45,12 @@
             :taken-by="takenBy"
             @tookUsers="tookUsers = $event"
           />
-          <hr>
         </div>
         <div v-if="showCompletion">
-          <hr>
-          <div class="text-center">
-            <p class="mt-2">
+          <div>
+            <label class="mt-3 strong">
               How do you feel about freegling just now?
-            </p>
+            </label>
             <b-button-group class="d-none d-md-block">
               <b-button :pressed="happiness === 'Happy'" :variant="happiness === 'Happy' ? 'info': 'primary'" size="lg" class="shadow-none" @click="happiness = 'Happy'">
                 <v-icon name="smile" scale="2" /> Happy
@@ -76,12 +74,12 @@
               </b-button>
             </b-button-group>
           </div>
-          <div class="text-center">
-            <p class="mt-2">
+          <div>
+            <label class="mt-4 strong">
               It went well/badly because:
-            </p>
-            <b-textarea v-model="comments" rows="2" max-rows="6" />
-            <div class="float-right text-muted mt-2">
+            </label>
+            <b-textarea v-model="comments" rows="3" max-rows="6" class="border-primary" />
+            <div class="text-muted small mt-2">
               <span v-if="happiness === null || happiness === 'Happy' || happiness === 'Fine'">
                 <v-icon name="globe-europe" /> Your comments may be public
               </span>
@@ -98,7 +96,7 @@
             Please choose who took this from the dropdown above.
           </b-alert>
           <div class="d-flex flex-wrap justify-content-end">
-            <b-button variant="white" @click="cancel">
+            <b-button variant="secondary" @click="cancel">
               Cancel
             </b-button>
             <SpinButton
@@ -248,27 +246,9 @@ export default {
       }
     },
 
-    setComments() {
-      switch (this.type) {
-        case 'Taken':
-          this.comments = 'Thanks, this has now been taken.'
-          break
-        case 'Received':
-          this.comments = 'Thanks, this has now been received.'
-          break
-        case 'Withdrawn':
-          this.comments =
-            this.message.type === 'Offer'
-              ? 'Sorry, this is no longer available.'
-              : "Thanks, I'm no longer looking for this."
-          break
-      }
-    },
-
     show(type) {
       this.showModal = true
       this.type = type
-      this.setComments()
     },
 
     hide() {

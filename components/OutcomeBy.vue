@@ -9,10 +9,9 @@
       </p>
     </div>
     <div v-else>
-      <p>
-        Please tell us who took this.
-        We'll let anyone else who replied know, and it helps identify reliable freeglers.
-      </p>
+      <label class="strong">
+        Please tell us who took this item:
+      </label>
     </div>
     <div
       v-for="user in selectedUsers"
@@ -45,7 +44,7 @@
         />
       </div>
     </div>
-    <div class="d-none d-md-flex justify-content-around">
+    <div class="d-none d-md-block">
       <b-select
         v-if="moreUsersToSelect && showSelect"
         v-model="selectUser"
@@ -55,7 +54,7 @@
         @change="selected"
       />
     </div>
-    <div class="d-flex d-md-none justify-content-around">
+    <div class="d-block d-md-none">
       <b-select
         v-if="moreUsersToSelect && showSelect"
         v-model="selectUser"
@@ -65,6 +64,9 @@
         @change="selected"
       />
     </div>
+    <p class="mt-1 text-muted small">
+      We'll let anyone else who replied know, and it helps us identify reliable freeglers.
+    </p>
   </div>
 </template>
 <script>
