@@ -103,7 +103,7 @@
               :label="buttonLabel"
               :handler="submit"
               class="ml-2"
-              :disabled="message.type === 'Offer' && !tookUsers.length"
+              :disabled="type === 'Taken' && !tookUsers.length"
             />
           </div>
         </div>
