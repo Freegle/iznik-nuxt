@@ -28,9 +28,6 @@
         <notice-message v-if="user.info.expectedreply" variant="warning">
           <v-icon name="exclamation-triangle" />&nbsp;{{ user.info.expectedreply | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} still waiting for them to reply on here.
         </notice-message>
-        <notice-message v-else-if="user.hasReneged" variant="warning">
-          <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
-        </notice-message>
         <template v-slot:header>
           <v-icon name="info-circle" /> About this freegler
         </template>
