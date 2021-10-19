@@ -31,12 +31,17 @@
           <h3>
             Millions of families in the UK are living in Furniture Poverty.
           </h3>
-          <p>
-            Claire Donovan, Head of Policy, Research & Campaigns at End Furniture Poverty explains:-
-          </p>
-          <p>
-            <span class="quote">Millions of families are living in Furniture Poverty across the UK, unable to afford to buy or replace essential furniture items, items which local authorities are collecting through bulky household waste contracts and then, in many cases, disposing of. If local authorities take good quality, preloved furniture items out of the waste stream, they can be used to help families in a time of need, and potentially ease pressures on other frontline services.</span>
-          </p>
+          <div class="d-flex">
+            <b-img width="200" src="/councils/bulkywaste_wardrobe.jpg" class="img-thumbnail img-fluid mr-4 mb-2 mt-2" />
+            <div>
+              <p>
+                Claire Donovan, Head of Policy, Research & Campaigns at End Furniture Poverty explains:-
+              </p>
+              <p>
+                <span class="quote">Millions of families are living in Furniture Poverty across the UK, unable to afford to buy or replace essential furniture items, items which local authorities are collecting through bulky household waste contracts and then, in many cases, disposing of. If local authorities take good quality, preloved furniture items out of the waste stream, they can be used to help families in a time of need, and potentially ease pressures on other frontline services.</span>
+              </p>
+            </div>
+          </div>
           <h3>
             From reusable to unusable.
           </h3>
@@ -45,11 +50,15 @@
           </p>
           <p>
             In short, it’s a quick and easy option and residents are often unaware of the alternatives.<a href="#foot1"><sup>[1]</sup></a> Research by WRAP has shown that people do not actively seek information about reuse, and rely instead on what they already know or have done in the past.
-            </a>
           </p>
-          <p>
-            For residents who choose to take their bulky items to the HWRC, disposal is straightforward, quick and often free-of-charge. For those who utilise a bulky waste collection service, there’s the additional convenience of not having to move or transport the item. The cost is affordable and in some cases, free-of-charge. In both scenarios, bulky items quickly go from being reusable to unusable.
-          </p>
+          <div class="d-flex">
+            <b-img width="200" src="/councils/bulkywaste_queue.jpg" class="img-thumbnail img-fluid mr-4 mb-2 mt-2" />
+            <div>
+              <p>
+                For residents who choose to take their bulky items to the HWRC, disposal is straightforward, quick and often free-of-charge. For those who utilise a bulky waste collection service, there’s the additional convenience of not having to move or transport the item. The cost is affordable and in some cases, free-of-charge. In both scenarios, bulky items quickly go from being reusable to unusable.
+              </p>
+            </div>
+          </div>
           <h3>
             ChooseToReuse - A simple act with far reaching benefits.
           </h3>
@@ -70,24 +79,24 @@
           <p>
             WRAP’s
             <!-- eslint-disable-next-line -->
-            <ExternalLink href="https://wrap.org.uk/resources/guide/re-use/partnerships-re-use">PAKTS</ExternalLink>
+          <ExternalLink href="https://wrap.org.uk/resources/guide/re-use/partnerships-re-use">PAKTS</ExternalLink>
             (Partnerships are Key To Success) initiative encourages local authorities to work with existing organisations, including charities, to encourage reuse. A suite of resources are available including how-to guides and case studies, all highlighting the importance of reuse and partnership working.
           </p>
           <p>
             There are a number of tried and tested ways in which councils can collaborate with external organisations on reuse.
             Examples include the introduction of charity-led reuse shops at HWRCs (for example in
             <!-- eslint-disable-next-line -->
-            <ExternalLink href="https://wrap.org.uk/resources/case-study/bulky-waste/buckinghamshire-case-study">Buckinghamshire</ExternalLink>)
+          <ExternalLink href="https://wrap.org.uk/resources/case-study/bulky-waste/buckinghamshire-case-study">Buckinghamshire</ExternalLink>)
             and employing charities or social enterprise to run the bulky waste collection service (for example
             <!-- eslint-disable-next-line -->
-            <ExternalLink href="https://liverpool.gov.uk/bins-and-recycling/bulky-item-collection/">Bulky Bob’s for Liverpool City Council</ExternalLink>).
+          <ExternalLink href="https://liverpool.gov.uk/bins-and-recycling/bulky-item-collection/">Bulky Bob’s for Liverpool City Council</ExternalLink>).
             Clearly these initiatives are fantastic, best practice examples with hugely positive impacts on local communities, but this kind of
             partnership has rarely been achieved to date. The time, resources and infrastructure required is significant and for many councils this cannot happen overnight.
           </p>
           <p>
             For local authorities, we are able to provide a range of tools, resources and reuse data, specific to your area. Find out more about how
             <!-- eslint-disable-next-line -->
-            <nuxt-link to="/councils/why">Freegle works with councils</nuxt-link>.
+          <nuxt-link to="/councils/why">Freegle works with councils</nuxt-link>.
           </p>
           <p>
             <span class="quote">We urge all local authorities to look at their bulky waste stream, start working with furniture reuse charities and organisations like Freegle, and help to End Furniture Poverty.</span>
@@ -112,7 +121,7 @@
           <p>
             A mutually beneficial partnership which facilitates more reuse in any community is a win-win situation. Freegle has formed partnerships with a growing number of local authorities - for some of which case studies are available -
             <!-- eslint-disable-next-line -->
-            <nuxt-link to="/councils/casestudies/cumbria">Cumbria County Council</nuxt-link> and <nuxt-link to="/councils/casestudies/essex">Essex County Council</nuxt-link>.
+          <nuxt-link to="/councils/casestudies/cumbria">Cumbria County Council</nuxt-link> and <nuxt-link to="/councils/casestudies/essex">Essex County Council</nuxt-link>.
           </p>
           <p id="foot1">
             [1] A Survey in 2018 by NLWA that looked at what people do with their broken or damaged furniture, found that for 23 per cent of respondents, disposal was ‘the easiest thing to do’, another 23 per cent said ‘they weren’t sure how to dispose of these items’, whilst 20 per cent said ‘it was cheaper and easier to replace items rather than repair them’.
@@ -120,7 +129,7 @@
           <p id="foot2">
             [2] WRAP study:
             <!-- eslint-disable-next-line -->
-            <ExternalLink href="https://preprod.wrap.org.uk/sites/default/files/2020-09/WRAP-Domestic%20Furniture%20chapter_final_1.pdf">Benefits of Reuse Case Study: Domestic Furniture</ExternalLink>
+          <ExternalLink href="https://preprod.wrap.org.uk/sites/default/files/2020-09/WRAP-Domestic%20Furniture%20chapter_final_1.pdf">Benefits of Reuse Case Study: Domestic Furniture</ExternalLink>
             highlights the beneficial impacts which result from the reuse of domestic furniture - which makes up 42% of the U.K.’s bulky waste.
             The study found that providing 1 tonne of sofas for direct reuse can result in a net GHG saving of 1.45 tonnes CO2-eq. This is approximately 55kg CO2-eq per sofa.
           </p>
@@ -135,53 +144,58 @@
           <h3>
             Are you ready to make room for reuse? Here are 6 quick ways to make a difference today:-
           </h3>
-          <ol>
-            <li>
-              Add a link to Freegle on your website’s waste pages.
-              <!-- eslint-disable-next-line -->
-              <nuxt-link to="/councils/workbest#makingvisible">Make Freegle visible</nuxt-link>.
-            </li>
-            <li>
-              Use a pre-recorded ‘hold time’ message in your call centre to let residents know about the alternative options for reuse. We have an
-              <!-- eslint-disable-next-line -->
-              <nuxt-link to="/councils/workbest#bulkywaste">example telephone script</nuxt-link>
-              you could base this on. You could also consider adding options for reuse to your outgoing auto response emails and to the script used by call centre staff.
-            </li>
-            <li>
-              Follow us on
-              <!-- eslint-disable-next-line -->
-              <ExternalLink href="https://www.facebook.com/Freegle">Facebook</ExternalLink> and <ExternalLink href="https://twitter.com/thisisfreegle">Twitter</ExternalLink>.
-              Share our reuse ideas and inspire your own community.
-            </li>
-            <li>
-              Sign up for
-              <!-- eslint-disable-next-line -->
-              <ExternalLink href="https://us20.campaign-archive.com/home/?u=dd0a44d9aa3f6ba0e4d439318&id=8edc47538e">Freegle Bites</ExternalLink>,
-              our e-newsletter for councils, which is packed with reuse news and ways to get involved.
-            </li>
-            <li>
-              Find your
-              <!-- eslint-disable-next-line -->
-              <ExternalLink href="https://www.ilovefreegle.org/explore">local Freegle communities</ExternalLink>
-              using our search and link to them from your website.
-            </li>
-            <li>
-              Find out how many tonnes of waste (& associated GHG savings) your local Freegle communities have
-              successfully diverted away from the waste stream and into reuse during the last year using our
-              <!-- eslint-disable-next-line -->
-              <nuxt-link to="/stats/authorities">live stats tool</nuxt-link>.
-              And celebrate this!
-            </li>
-          </ol>
+          <div>
+            <b-img width="300" src="/councils/bulkywaste_callcentre.png" class="img-thumbnail img-fluid ml-4 mb-2 mt-2 float-right" />
+            <div>
+              <ol>
+                <li>
+                  Add a link to Freegle on your website’s waste pages.
+                  <!-- eslint-disable-next-line -->
+                  <nuxt-link to="/councils/workbest#makingvisible">Make Freegle visible</nuxt-link>.
+                </li>
+                <li>
+                  Use a pre-recorded ‘hold time’ message in your call centre to let residents know about the alternative options for reuse. We have an
+                  <!-- eslint-disable-next-line -->
+                  <nuxt-link to="/councils/workbest#bulkywaste">example telephone script</nuxt-link>
+                  you could base this on. You could also consider adding options for reuse to your outgoing auto response emails and to the script used by call centre staff.
+                </li>
+                <li>
+                  Follow us on
+                  <!-- eslint-disable-next-line -->
+                  <ExternalLink href="https://www.facebook.com/Freegle">Facebook</ExternalLink> and <ExternalLink href="https://twitter.com/thisisfreegle">Twitter</ExternalLink>.
+                  Share our reuse ideas and inspire your own community.
+                </li>
+                <li>
+                  Sign up for
+                  <!-- eslint-disable-next-line -->
+                  <ExternalLink href="https://us20.campaign-archive.com/home/?u=dd0a44d9aa3f6ba0e4d439318&id=8edc47538e">Freegle Bites</ExternalLink>,
+                  our e-newsletter for councils, which is packed with reuse news and ways to get involved.
+                </li>
+                <li>
+                  Find your
+                  <!-- eslint-disable-next-line -->
+                  <ExternalLink href="https://www.ilovefreegle.org/explore">local Freegle communities</ExternalLink>
+                  using our search and link to them from your website.
+                </li>
+                <li>
+                  Find out how many tonnes of waste (& associated GHG savings) your local Freegle communities have
+                  successfully diverted away from the waste stream and into reuse during the last year using our
+                  <!-- eslint-disable-next-line -->
+                  <nuxt-link to="/stats/authorities">live stats tool</nuxt-link>.
+                  And celebrate this!
+                </li>
+              </ol>
+            </div>
+          </div>
           <p>
             Freegle is here, ready to help any council who wants to improve on reuse. We can provide support, advice, meaningful data and much more besides.
             Contact us to find out more at
             <!-- eslint-disable-next-line -->
-            <ExternalLink href="mailto:councils@ilovefreegle.org">councils@ilovefreegle.org</ExternalLink>.
+          <ExternalLink href="mailto:councils@ilovefreegle.org">councils@ilovefreegle.org</ExternalLink>.
           </p>
           <p>
             <!-- eslint-disable-next-line -->
-            <nuxt-link to="/councils">Access our Communications Toolkit for Councils</nuxt-link>
+          <nuxt-link to="/councils">Access our Communications Toolkit for Councils</nuxt-link>
           </p>
           <h3>
             Further information
