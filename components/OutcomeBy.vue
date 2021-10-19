@@ -9,7 +9,7 @@
       </p>
     </div>
     <div v-else>
-      <label class="strong">
+      <label :class="'strong ' + (chooseError ? 'text-danger' : '')">
         Please tell us who took this item:
       </label>
     </div>
@@ -50,7 +50,7 @@
         v-model="selectUser"
         :options="userOptions(false)"
         size="lg"
-        :class="'font-weight-bold ' + (selectedUsers.length === 0 ? 'text-danger' : '')"
+        :class="'font-weight-bold ' + (chooseError ? 'text-danger' : '')"
         @change="selected"
       />
     </div>
@@ -60,7 +60,7 @@
         v-model="selectUser"
         :options="userOptions(true)"
         size="lg"
-        :class="'font-weight-bold ' + (selectedUsers.length === 0 ? 'text-danger' : '')"
+        :class="'font-weight-bold ' + (chooseError ? 'text-danger' : '')"
         @change="selected"
       />
     </div>
@@ -96,6 +96,11 @@ export default {
       type: Object,
       required: false,
       default: null
+    },
+    chooseError: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {

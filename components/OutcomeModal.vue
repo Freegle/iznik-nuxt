@@ -43,6 +43,7 @@
             :msgid="message.id"
             :left="left"
             :taken-by="takenBy"
+            :choose-error="chooseError"
             @tookUsers="tookUsers = $event"
           />
         </div>
@@ -92,9 +93,6 @@
       </template>
       <template slot="modal-footer">
         <div>
-          <b-alert v-if="showChoosePrompt" show variant="warning">
-            Please choose who took this from the dropdown above.
-          </b-alert>
           <div class="d-flex flex-wrap justify-content-end">
             <b-button variant="secondary" @click="cancel">
               Cancel
@@ -105,6 +103,7 @@
               :label="buttonLabel"
               :handler="submit"
               class="ml-2"
+              :disabled="message.type === 'Offer' && !tookUsers.length"
             />
           </div>
         </div>
@@ -139,7 +138,7 @@ export default {
       comments: null,
       tookUsers: [],
       selectedUser: null,
-      showChoosePrompt: false
+      chooseError: false
     }
   },
   computed: {
@@ -196,10 +195,10 @@ export default {
   methods: {
     async submit() {
       let complete = false
-      this.showChoosePrompt = false
+      this.chooseError = false
 
       if (this.submitDisabled) {
-        this.showChoosePrompt = true
+        this.chooseError = true
       } else {
         if (this.type === 'Withdrawn' || this.type === 'Received') {
           complete = true
