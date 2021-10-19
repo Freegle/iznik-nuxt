@@ -203,7 +203,7 @@ export default {
     position: relative;
 
     grid-column: 1 / 2;
-    grid-row: 3 / 5;
+    grid-row: 3 / 4;
 
     @include media-breakpoint-up(sm) {
       grid-column: 1 / 2;
