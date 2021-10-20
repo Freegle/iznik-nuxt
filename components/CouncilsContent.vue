@@ -24,6 +24,11 @@
           Case study - Essex
         </nuxt-link>
       </li>
+      <li>
+        <nuxt-link to="/councils/bulkywaste">
+          Freegle Focus - Bulky Waste
+        </nuxt-link>
+      </li>
     </ul>
 
     <p>
