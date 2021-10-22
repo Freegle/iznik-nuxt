@@ -60,8 +60,10 @@ export default {
 
         if (aexpected !== bexpected) {
           ret = bexpected - aexpected
-        } else if (bunseen !== aunseen) {
-          ret = bunseen - aunseen
+        } else if (aunseen && !bunseen) {
+          ret = -1
+        } else if (bunseen && !aunseen) {
+          ret = 1
         } else if (a.lastdate && !b.lastdate) {
           ret = -1
         } else if (b.lastdate && !a.lastdate) {
