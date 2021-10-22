@@ -13,9 +13,7 @@
         :message-override="messageOverride"
       />
       <MessageHistory :message="message" class="mb-1 header-history" :display-message-link="sm()" />
-      <client-only>
-        <MessageDescription :id="id" :matchedon="message.matchedon" class="mb-1 header-description" />
-      </client-only>
+      <MessageDescription :id="id" :matchedon="message.matchedon" class="mb-1 header-description" />
       <div v-if="!message.successful && replyable" class="header-expand mt-2 mt-sm-0">
         <b-button variant="primary" class="mt-2" @click="expand">
           {{ expandButtonText }}
@@ -205,7 +203,7 @@ export default {
     position: relative;
 
     grid-column: 1 / 2;
-    grid-row: 3 / 5;
+    grid-row: 3 / 4;
 
     @include media-breakpoint-up(sm) {
       grid-column: 1 / 2;

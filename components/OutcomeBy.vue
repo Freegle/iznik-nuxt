@@ -9,10 +9,9 @@
       </p>
     </div>
     <div v-else>
-      <p>
-        Please tell us who took this.
-        We'll let anyone else who replied know, and it helps identify reliable freeglers.
-      </p>
+      <label :class="'strong ' + (chooseError ? 'text-danger' : '')">
+        Please tell us who took this item:
+      </label>
     </div>
     <div
       v-for="user in selectedUsers"
@@ -45,26 +44,29 @@
         />
       </div>
     </div>
-    <div class="d-none d-md-flex justify-content-around">
+    <div class="d-none d-md-block">
       <b-select
         v-if="moreUsersToSelect && showSelect"
         v-model="selectUser"
         :options="userOptions(false)"
         size="lg"
-        :class="'font-weight-bold ' + (selectedUsers.length === 0 ? 'text-danger' : '')"
+        :class="'font-weight-bold ' + (chooseError ? 'text-danger' : '')"
         @change="selected"
       />
     </div>
-    <div class="d-flex d-md-none justify-content-around">
+    <div class="d-block d-md-none">
       <b-select
         v-if="moreUsersToSelect && showSelect"
         v-model="selectUser"
         :options="userOptions(true)"
         size="lg"
-        :class="'font-weight-bold ' + (selectedUsers.length === 0 ? 'text-danger' : '')"
+        :class="'font-weight-bold ' + (chooseError ? 'text-danger' : '')"
         @change="selected"
       />
     </div>
+    <p class="mt-1 text-muted small">
+      We'll let anyone else who replied know, and it helps us identify reliable freeglers.
+    </p>
   </div>
 </template>
 <script>
@@ -94,6 +96,11 @@ export default {
       type: Object,
       required: false,
       default: null
+    },
+    chooseError: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {

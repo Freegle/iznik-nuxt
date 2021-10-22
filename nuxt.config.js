@@ -79,6 +79,10 @@ export default defineNuxtConfig({
       { hid: 'author', name: 'author', content: 'Freegle' },
       { name: 'supported-color-schemes', content: 'light' },
       { name: 'color-scheme', content: 'light' },
+      {
+        name: 'facebook-domain-verification',
+        content: 'zld0jt8mvf06rt1c3fnxvls3zntxj6'
+      },
       { hid: 'og:type', property: 'og:type', content: 'website' },
       {
         hid: 'description',
@@ -644,7 +648,7 @@ export default defineNuxtConfig({
     USER_SITE: USER_SITE,
     IMAGE_SITE: IMAGE_SITE,
     SENTRY_DSN: SENTRY_DSN,
-    BUILD_DATE: new Date().toLocaleString()
+    BUILD_DATE: new Date().toISOString()
   },
 
   vue: {
