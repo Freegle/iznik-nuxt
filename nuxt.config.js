@@ -1,7 +1,7 @@
 import Vue from 'vue'
 // TODO NUXT3 Sentry doesn't work.
 // import Sentry from '@nuxtjs/sentry'
-import { Dedupe as DedupeIntegration } from '@sentry/integrations'
+// import { Dedupe as DedupeIntegration } from '@sentry/integrations'
 import dotenv from 'dotenv'
 import { defineNuxtConfig } from '@nuxt/bridge'
 import sitemap from './utils/sitemap.js'
@@ -250,7 +250,8 @@ export default defineNuxtConfig({
   modules: [
     'nuxt-polyfill',
     '@nuxtjs/sitemap',
-    '@nuxtjs/sentry',
+    // TODO NUXT Sentry doesn't work.
+    // '@nuxtjs/sentry',
     'bootstrap-vue/nuxt',
     'nuxt-rfg-icon',
     '@nuxtjs/axios',
@@ -491,7 +492,8 @@ export default defineNuxtConfig({
 
   sentry: {
     dsn: SENTRY_DSN,
-    integrations: [new DedupeIntegration()],
+    // TODO NUXT
+    // integrations: [new DedupeIntegration()],
     publishRelease: false,
     ignoreErrors: [
       // Triggered by Microsoft crawler, see https://forum.sentry.io/t/unhandledrejection-non-error-promise-rejection-captured-with-value/14062/17
@@ -620,13 +622,14 @@ export default defineNuxtConfig({
           return integration.name !== 'Breadcrumbs'
         })
         .push(
-          new Sentry.Integrations.InboundFilters({
-            // Some errors seem benign, and so we ignore them on the client side rather than clutter our sentry logs.
-            ignoreErrors: [
-              'ResizeObserver loop limit exceeded', // Unclear where this happens.
-              'Navigation cancelled from ' // This can happen if someone clicks twice in quick succession
-            ]
-          })
+          // TODO NUXT
+          // new Sentry.Integrations.InboundFilters({
+          //   // Some errors seem benign, and so we ignore them on the client side rather than clutter our sentry logs.
+          //   ignoreErrors: [
+          //     'ResizeObserver loop limit exceeded', // Unclear where this happens.
+          //     'Navigation cancelled from ' // This can happen if someone clicks twice in quick succession
+          //   ]
+          // })
         )
 
       return ours
