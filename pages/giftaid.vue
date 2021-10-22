@@ -8,76 +8,95 @@
           Your kind donation will go even further if we can claim Gift Aid on it.  Please fill out this form
           if you are able.
         </p>
-        <b-form-group
-          id="fullnamelabel"
-          label="Your full (real) name"
-          label-for="fullname"
-          label-class="label"
-        >
-          <div v-if="me && me.displayname && !fullname && me.displayname.indexOf(' ') !== -1">
-            <b-btn variant="secondary" class="mb-2" @click="fullname = me.displayname">
-              Click here to use <strong>{{ me.displayname }}</strong>
-            </b-btn>
-          </div>
-          <p>
-            Or type here:
-          </p>
-          <b-form-input
-            id="fullname"
-            v-model="fullname"
-            name="fullname"
-            autocomplete="given-name"
-            placeholder="Your full name"
-            :class="{ 'border-warning': nameInvalid, 'mb-3': true }"
+        <client-only>
+          <label class="strong">
+            I'd like Freegle to claim Gift Aid:
+          </label>
+          <br>
+          <OurToggle
+            v-model="giftAidAllowed"
+            :height="34"
+            :width="150"
+            :font-size="14"
+            :sync="true"
+            :labels="{checked: 'Yes', unchecked: 'No'}"
+            color="#61AE24"
+            @change="changeGiftAidToggle"
           />
-        </b-form-group>
-        <b-form-group
-          id="homeaddresslabel"
-          label="Your home address"
-          label-for="homeaddress"
-          label-class="label"
-        >
-          <div v-for="address in addresses" :key="'address-' + address.id">
-            <div v-if="!homeaddress">
-              <b-btn variant="secondary" class="mb-2" @click="homeaddress = address.multiline">
-                Click here to use <span class="font-weight-bold">{{ address.singleline }}</span>
+          <br>
+        </client-only>
+        <div v-if="giftAidAllowed">
+          <b-form-group
+            id="fullnamelabel"
+            label="Your full (real) name"
+            label-for="fullname"
+            label-class="label"
+          >
+            <div v-if="me && me.displayname && !fullname && me.displayname.indexOf(' ') !== -1">
+              <b-btn variant="secondary" class="mb-2" @click="fullname = me.displayname">
+                Click here to use <strong>{{ me.displayname }}</strong>
               </b-btn>
             </div>
-          </div>
-          <p>
-            Or type here.  <strong>Please include a postcode.</strong>
-          </p>
-          <b-textarea
-            id="homeaddress"
-            v-model="homeaddress"
-            rows="4"
-            name="homeaddress"
-            placeholder="Your home address"
-            :class="{ 'border-warning': addressInvalid, 'mb-3': true }"
-          />
-        </b-form-group>
-        <b-form-group
-          id="periodlabel"
-          label="This declaration covers"
-          label-for="period"
-          label-class="label"
-        >
-          <b-form-radio v-model="period" name="period" value="Since">
-            All donations in the last five years
-          </b-form-radio>
-          <b-form-radio v-model="period" name="period" value="This">
-            Just this donation
-          </b-form-radio>
-          <b-form-radio v-model="period" name="period" value="Future">
-            This and all future donations
-          </b-form-radio>
-        </b-form-group>
-        <NoticeMessage class="info">
-          By submitting this declaration I confirm that I am a UK taxpayer and understand that if I pay less Income
-          Tax and/or Capital Gains Tax in the current tax year than the amount of Gift Aid claimed on all my donations
-          it is my responsibility to pay any
-          difference.
-        </NoticeMessage>
+            <p>
+              Or type here:
+            </p>
+            <b-form-input
+              id="fullname"
+              v-model="fullname"
+              name="fullname"
+              autocomplete="given-name"
+              placeholder="Your full name"
+              :class="{ 'border-warning': nameInvalid, 'mb-3': true }"
+            />
+          </b-form-group>
+          <b-form-group
+            id="homeaddresslabel"
+            label="Your home address"
+            label-for="homeaddress"
+            label-class="label"
+          >
+            <div v-for="address in addresses" :key="'address-' + address.id">
+              <div v-if="!homeaddress">
+                <b-btn variant="secondary" class="mb-2" @click="homeaddress = address.multiline">
+                  Click here to use <span class="font-weight-bold">{{ address.singleline }}</span>
+                </b-btn>
+              </div>
+            </div>
+            <p>
+              Or type here.  <strong>Please include a postcode.</strong>
+            </p>
+            <b-textarea
+              id="homeaddress"
+              v-model="homeaddress"
+              rows="4"
+              name="homeaddress"
+              placeholder="Your home address"
+              :class="{ 'border-warning': addressInvalid, 'mb-3': true }"
+            />
+          </b-form-group>
+          <b-form-group
+            id="periodlabel"
+            label="This declaration covers"
+            label-for="period"
+            label-class="label"
+          >
+            <b-form-radio v-model="period" name="period" value="Since">
+              All donations in the last five years
+            </b-form-radio>
+            <b-form-radio v-model="period" name="period" value="This">
+              Just this donation
+            </b-form-radio>
+            <b-form-radio v-model="period" name="period" value="Future">
+              This and all future donations
+            </b-form-radio>
+          </b-form-group>
+          <NoticeMessage class="info">
+            By submitting this declaration I confirm that I am a UK taxpayer and understand that if I pay less Income
+            Tax and/or Capital Gains Tax in the current tax year than the amount of Gift Aid claimed on all my donations
+            it is my responsibility to pay any
+            difference.
+          </NoticeMessage>
+        </div>
         <SpinButton
           name="save"
           size="lg"
@@ -123,8 +142,14 @@ import waitForRef from '@/mixins/waitForRef'
 import SpinButton from '../components/SpinButton'
 import NoticeMessage from '../components/NoticeMessage'
 
+let OurToggle = null
+
+if (process.client) {
+  OurToggle = () => import('~/components/OurToggle')
+}
+
 export default {
-  components: { SpinButton, NoticeMessage },
+  components: { SpinButton, NoticeMessage, OurToggle },
   mixins: [loginRequired, buildHead, waitForRef],
   data() {
     return {
@@ -132,7 +157,8 @@ export default {
       fullname: null,
       homeaddress: null,
       addresses: [],
-      saved: false
+      saved: false,
+      giftAidAllowed: true
     }
   },
   computed: {
@@ -159,6 +185,10 @@ export default {
         this.period = giftaid.period
         this.fullname = giftaid.fullname
         this.homeaddress = giftaid.homeaddress
+
+        if (this.period === 'Declined') {
+          this.giftAidAllowed = false
+        }
       }
     },
     async save() {
@@ -175,6 +205,13 @@ export default {
       this.period = 'Since'
       this.fullname = null
       this.homeaddress = null
+    },
+    changeGiftAidToggle(val) {
+      if (val.value) {
+        this.period = 'Since'
+      } else {
+        this.period = 'Declined'
+      }
     }
   },
   head() {
