@@ -25,13 +25,16 @@
           <h3>
             More than half of all bulky waste items sent for disposal <em>could be reused</em>.
           </h3>
-          <p>
-            The same research estimated that 32% of bulky items (across all items) taken to an HWRC were reusable in their current condition but this figure increased to 51% reusable if including items that required a slight repair (but were otherwise in good condition).
-          </p>
+          <div class="d-inline-flex">
+            <p>
+              The same research estimated that 32% of bulky items (across all items) taken to an HWRC were reusable in their current condition but this figure increased to 51% reusable if including items that required a slight repair (but were otherwise in good condition).
+            </p>
+            <b-img width="200" src="/councils/bulkywaste_kitchen.jpg" class="img-thumbnail img-fluid float-right ml-4 mb-2 mt-2" />
+          </div>
           <h3>
             Millions of families in the UK are living in Furniture Poverty.
           </h3>
-          <div class="d-flex">
+          <div class="d-inline-flex">
             <b-img width="200" src="/councils/bulkywaste_wardrobe.jpg" class="img-thumbnail img-fluid mr-4 mb-2 mt-2" />
             <div>
               <p>
@@ -51,13 +54,11 @@
           <p>
             In short, it’s a quick and easy option and residents are often unaware of the alternatives.<a href="#foot1"><sup>[1]</sup></a> Research by WRAP has shown that people do not actively seek information about reuse, and rely instead on what they already know or have done in the past.
           </p>
-          <div class="d-flex">
+          <div class="d-inline-flex">
             <b-img width="200" src="/councils/bulkywaste_queue.jpg" class="img-thumbnail img-fluid mr-4 mb-2 mt-2" />
-            <div>
-              <p>
-                For residents who choose to take their bulky items to the HWRC, disposal is straightforward, quick and often free-of-charge. For those who utilise a bulky waste collection service, there’s the additional convenience of not having to move or transport the item. The cost is affordable and in some cases, free-of-charge. In both scenarios, bulky items quickly go from being reusable to unusable.
-              </p>
-            </div>
+            <p>
+              For residents who choose to take their bulky items to the HWRC, disposal is straightforward, quick and often free-of-charge. For those who utilise a bulky waste collection service, there’s the additional convenience of not having to move or transport the item. The cost is affordable and in some cases, free-of-charge. In both scenarios, bulky items quickly go from being reusable to unusable.
+            </p>
           </div>
           <h3>
             ChooseToReuse - A simple act with far reaching benefits.
@@ -145,7 +146,9 @@
             Are you ready to make room for reuse? Here are 6 quick ways to make a difference today:-
           </h3>
           <div>
-            <b-img width="300" src="/councils/bulkywaste_callcentre.png" class="img-thumbnail img-fluid ml-4 mb-2 mt-2 float-right" />
+            <div>
+              <b-img width="300" src="/councils/bulkywaste_callcentre.png" class="img-thumbnail img-fluid ml-4 mb-2 mt-2 float-right" />
+            </div>
             <div>
               <ol>
                 <li>
