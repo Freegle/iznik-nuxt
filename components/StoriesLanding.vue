@@ -9,7 +9,7 @@
         </h5>
         <read-more v-if="story.story" :text="story.story" :max-chars="80" class="nopara" />
         <span class="text-muted small">
-          {{ story.date | timeago }} on {{ story.groupname }}
+          {{ timeago(story.date) }} on {{ story.groupname }}
         </span>
       </div>
       <b-row>

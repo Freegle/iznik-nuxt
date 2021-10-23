@@ -22,7 +22,7 @@
           <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ user.id }}
         </b-col>
         <b-col cols="7" sm="2" class="order-5 text-right">
-          {{ user.lastaccess | timeago }}
+          {{ timeago(user.lastaccess) }}
         </b-col>
       </b-row>
     </b-card-header>
@@ -87,7 +87,7 @@
           Gift Aid
         </h3>
         <p>
-          Gift Aid consent given on {{ user.giftaid.timestamp | dateonly }} for
+          Gift Aid consent given on {{ dateonly(user.giftaid.timestamp) }} for
           <span v-if="user.giftaid.period === 'Since'">
             donations since this date.
           </span>
@@ -167,7 +167,7 @@
         Notifications
       </h3>
       <div v-if="user.lastpush">
-        Last push notification: {{ user.lastpush | timeago }}
+        Last push notification: {{ timeago(user.lastpush) }}
       </div>
       <div v-else>
         No push notifications sent.
@@ -188,7 +188,7 @@
       </p>
       <div v-if="user.bans">
         <div v-for="ban in user.bans" :key="'ban-' + ban.date" class="text-danger">
-          Banned on {{ ban.group }} by {{ ban.byemail }} {{ ban.date | timeago }}
+          Banned on {{ ban.group }} by {{ ban.byemail }} {{ timeago(ban.date) }}
         </div>
       </div>
       <h3 class="mt-2">
@@ -198,7 +198,7 @@
         <div v-for="otheremail in otherEmails" :key="'otheremail-' + otheremail.id">
           {{ otheremail.email }}
           <span class="text-muted" :title="otheremail.toLocaleString()">
-            added {{ otheremail.added | timeago }}
+            added {{ timeago(otheremail.added) }}
           </span>
         </div>
       </div>
@@ -213,7 +213,7 @@
         <div v-for="applied in user.applied" :key="'applied-' + id + '-' + applied.added">
           {{ applied.nameshort }}
           <span class="text-muted" :title="applied.added.toLocaleString()">
-            {{ applied.added | timeago }}
+            {{ timeago(applied.added) }}
           </span>
         </div>
       </div>
@@ -227,7 +227,7 @@
         <div v-for="membershiphistory in membershipHistoriesShown" :key="'membershiphistory-' + membershiphistory.timestamp">
           {{ membershiphistory.group.nameshort }}
           <span class="text-muted" :title="membershiphistory.timestamp.toLocaleString()">
-            {{ membershiphistory.timestamp | timeago }}
+            {{ timeago(membershiphistory.timestamp) }}
           </span>
         </div>
         <b-btn v-if="!showAllMembershipHistories && membershipHistoriesUnshown" variant="white" class="mt-1" @click="showAllMembershipHistories = true">
@@ -251,7 +251,7 @@
           }"
         >
           <b-col cols="4" md="2" class="order-1 p-1 small">
-            {{ message.arrival | datetimeshort }}
+            {{ datetimeshort(message.arrival) }}
           </b-col>
           <b-col cols="4" md="2" class="order-3 order-md-2 p-1 small">
             <ExternalLink :href="'https://www.ilovefreegle.org/message/' + message.id">
@@ -281,8 +281,8 @@
       </h3>
       <div v-if="emailHistoriesShown.length">
         <b-row v-for="email in emailHistoriesShown" :key="'emailhistory-' + email.id" class="pl-3">
-          <b-col cols="6" md="3" class="p-1 order-1" :title="email.timestamp | datetime">
-            {{ email.timestamp | timeago }}
+          <b-col cols="6" md="3" class="p-1 order-1" datetime(:title="email.timestamp)">
+            {{ timeago(email.timestamp) }}
           </b-col>
           <b-col cols="12" md="6" class="p-1 order-3 order-md-2">
             {{ email.subject }}

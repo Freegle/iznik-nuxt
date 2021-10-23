@@ -7,10 +7,10 @@
             <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ admin.id }}
           </b-col>
           <b-col cols="6" md="3" class="small">
-            Created {{ admin.created | timeago }}
+            Created {{ timeago(admin.created) }}
             <span v-if="!admin.pending">
               <span v-if="admin.complete">
-                Sent {{ admin.complete | timeago }}
+                Sent {{ timeago(admin.complete) }}
               </span>
               <span v-else>
                 Queued for send
@@ -37,7 +37,7 @@
           </span>.
           Please check before releasing it.
           <span class="text-muted small">
-            {{ admin.heldat | timeago }}
+            {{ timeago(admin.heldat) }}
           </span>
         </NoticeMessage>
         <NoticeMessage v-if="admin.parentid && !admin.complete" variant="info" class="mb-2">

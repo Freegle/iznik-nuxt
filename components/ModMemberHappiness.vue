@@ -13,7 +13,7 @@
             </span>
           </b-col>
           <b-col cols="4">
-            {{ member.timestamp | timeago }}
+            {{ timeago(member.timestamp) }}
             <span v-if="member.reviewed">
               reviewed
             </span>

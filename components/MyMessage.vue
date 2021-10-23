@@ -78,7 +78,7 @@
                   </span>
                 </h3>
                 <div v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="small text-muted text-wrap">
-                  {{ group.arrival | timeago }} on {{ group.namedisplay }} <nuxt-link :to="'/message/' + message.id">
+                  {{ timeago(group.arrival) }} on {{ group.namedisplay }} <nuxt-link :to="'/message/' + message.id">
                     <span class="text-muted small">#{{ message.id }}</span>
                   </nuxt-link>
                 </div>
@@ -146,7 +146,7 @@
                 <v-icon class="d-none d-sm-inline" name="sync" /> Repost
               </b-btn>
               <b-btn v-else-if="!rejected && !taken && !received && message.canrepostat && message.location && message.item" variant="secondary" disabled class="mr-2 mb-1" title="You will be able to repost this soon">
-                <v-icon class="d-none d-sm-inline" name="sync" /> Repost <span class="small">{{ message.canrepostat | timeago }}</span>
+                <v-icon class="d-none d-sm-inline" name="sync" /> Repost <span class="small">{{ timeago(message.canrepostat) }}</span>
               </b-btn>
               <b-btn v-if="!rejected && !simple" variant="secondary" title="Share" class="mr-2 mb-1" @click="share">
                 <v-icon class="d-none d-sm-inline" name="share-alt" /> Share
@@ -207,7 +207,7 @@
                   </tbody>
                 </table>
                 <p v-else class="text-muted">
-                  No replies yet. <span v-if="!taken && !received && message.canrepostat">Will auto-repost {{ message.canrepostat | timeago }}.</span>
+                  No replies yet. <span v-if="!taken && !received && message.canrepostat">Will auto-repost {{ timeago(message.canrepostat) }}.</span>
                 </p>
               </b-card-text>
             </b-card-body>

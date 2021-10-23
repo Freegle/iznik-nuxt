@@ -6,7 +6,7 @@
           Share to community Facebook pages
         </div>
         <div class="small text-muted">
-          {{ item.date | timeago }}
+          {{ timeago(item.date) }}
         </div>
       </div>
     </b-card-header>

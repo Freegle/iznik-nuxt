@@ -9,8 +9,10 @@
         </b-card-header>
         <b-card-text class="pl-2 pr-2">
           <a id="general" class="anchor" />
-          <h3>General</h3>
-          <h4>Facebook</h4>
+          <h2>General</h2>
+          <h3 class="header--size5">
+            Facebook
+          </h3>
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/Its_not_waste_until_you_waste_it_FB.jpg">
@@ -35,7 +37,9 @@
                 <b-img fluid thumbnail src="/councils/socialmedia/We reuse. You can too!_FB_tools.png" alt="Publicity image" /></a>
             </div>
           </div>
-          <h4>Twitter</h4>
+          <h3 class="header--size5">
+            Twitter
+          </h3>
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/FREEGLE_TWITTER_GREEN_FOOD.png">
@@ -48,8 +52,10 @@
             <div class="col-sm-4" />
           </div>
           <a id="decluttering" class="anchor" />
-          <h3>Decluttering</h3>
-          <h4>Twitter</h4>
+          <h2>Decluttering</h2>
+          <h3 class="header--size5">
+            Twitter
+          </h3>
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/Declutter_twitter_ChooseToReuse.png">
@@ -61,9 +67,55 @@
             </div>
             <div class="col-sm-4" />
           </div>
+          <a id="blackfriday" class="anchor" />
+          <h2>Black Friday</h2>
+          <h3 class="header--size5">
+            Facebook
+          </h3>
+          <div class="row">
+            <div class="col-sm-4">
+              <a target="_blank" href="/councils/socialmedia/Freegle Black Friday Facebook.png">
+                <b-img fluid thumbnail src="/councils/socialmedia/Freegle Black Friday Facebook.png" alt="Publicity image" /></a>
+            </div>
+            <div class="col-sm-4">
+              <a target="_blank" href="/councils/socialmedia/Freegle Black Friday Facebook - Cymraeg.png">
+                <b-img fluid thumbnail src="/councils/socialmedia/Freegle Black Friday Facebook - Cymraeg.png" alt="Publicity image" /></a>
+            </div>
+            <div class="col-sm-4" />
+          </div>
+          <h3 class="header--size5">
+            Instagram
+          </h3>
+          <div class="row">
+            <div class="col-sm-4">
+              <a target="_blank" href="/councils/socialmedia/Freegle Black Friday Instagram.png">
+                <b-img fluid thumbnail src="/councils/socialmedia/Freegle Black Friday Instagram.png" alt="Publicity image" /></a>
+            </div>
+            <div class="col-sm-4">
+              <a target="_blank" href="/councils/socialmedia/Freegle Black Friday Instagram - Cymraeg.png">
+                <b-img fluid thumbnail src="/councils/socialmedia/Freegle Black Friday Instagram - Cymraeg.png" alt="Publicity image" /></a>
+            </div>
+            <div class="col-sm-4" />
+          </div>
+          <h3 class="header--size5">
+            Twitter
+          </h3>
+          <div class="row">
+            <div class="col-sm-4">
+              <a target="_blank" href="/councils/socialmedia/Freegle Black Friday Twitter.png">
+                <b-img fluid thumbnail src="/councils/socialmedia/Freegle Black Friday Twitter.png" alt="Publicity image" /></a>
+            </div>
+            <div class="col-sm-4">
+              <a target="_blank" href="/councils/socialmedia/Freegle Black Friday Twitter - Cymraeg.png">
+                <b-img fluid thumbnail src="/councils/socialmedia/Freegle Black Friday Twitter - Cymraeg.png" alt="Publicity image" /></a>
+            </div>
+            <div class="col-sm-4" />
+          </div>
           <a id="moving" class="anchor" />
-          <h3>Moving house</h3>
-          <h4>Facebook</h4>
+          <h2>Moving house</h2>
+          <h3 class="header--size5">
+            Facebook
+          </h3>
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/Moving_stuff_FB.png">
@@ -74,8 +126,10 @@
             <div class="col-sm-4" />
           </div>
           <a id="regifting" class="anchor" />
-          <h3>Regifting</h3>
-          <h4>Facebook</h4>
+          <h2>Regifting</h2>
+          <h3 class="header--size5">
+            Facebook
+          </h3>
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/regift_FB.png">
@@ -86,8 +140,10 @@
             <div class="col-sm-4" />
           </div>
           <a id="flytipping" class="anchor" />
-          <h3>Fly-tipping</h3>
-          <h4>Twitter</h4>
+          <h2>Fly-tipping</h2>
+          <h3 class="header--size5">
+            Twitter
+          </h3>
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/flytipping_chair-clothes_twitter.png">
@@ -140,8 +196,10 @@
             </div>
           </div>
           <a id="christmas" class="anchor" />
-          <h3>Christmas</h3>
-          <h4>Facebook</h4>
+          <h2>Christmas</h2>
+          <h3 class="header--size5">
+            Facebook
+          </h3>
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/freegle_christmas_advent_tree_SM_post.png">
@@ -155,7 +213,9 @@
             </div>
             <div class="col-sm-4" />
           </div>
-          <h4>Twitter</h4>
+          <h3 class="header--size5">
+            Twitter
+          </h3>
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/regift_twitter.png">
@@ -173,8 +233,10 @@
               </a>
             </div>
           </div>
-          <h3>Valentine's Day</h3>
-          <h4>Facebook</h4>
+          <h2>Valentine's Day</h2>
+          <h3 class="header--size5">
+            Facebook
+          </h3>
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/FB_avatar_valentines.png">
@@ -193,7 +255,9 @@
             </div>
             <div class="col-sm-4" />
           </div>
-          <h4>Twitter</h4>
+          <h3 class="header--size5">
+            Twitter
+          </h3>
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/Valentine_Freegle_online_dating_twitter.png">
@@ -211,7 +275,9 @@
               </a>
             </div>
           </div>
-          <h4>Instagram</h4>
+          <h3 class="header--size5">
+            Instagram
+          </h3>
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/Valentine_Freegle_online_dating_IG.png">
@@ -219,7 +285,9 @@
               </a>
             </div>
           </div>
-          <h4>General</h4>
+          <h3 class="header--size5">
+            General
+          </h3>
           <div class="row">
             <div class="col-sm-4">
               <a target="_blank" href="/councils/socialmedia/valentinefreegle2.jpg">

@@ -12,6 +12,10 @@
           There are no logs to show.
         </NoticeMessage>
         <div v-else>
+          <p class="text-muted">
+            Some old logs are removed to save space: login/logout after 1 year, bounces over 90 days, logs about deleted messages,
+            deleted users.
+          </p>
           <ModLog v-for="log in logs" :key="'log-' + log.id" :log="log" />
         </div>
         <infinite-loading :key="'infinite-' + userid" @infinite="fetchChunk">

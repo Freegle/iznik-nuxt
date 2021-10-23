@@ -11,7 +11,7 @@
         </h4>
         <div>
           <div class="text-muted">
-            <span class="glyphicon glyphicon-heart" /> Freegler since {{ user.added | dateonly }}.
+            <span class="glyphicon glyphicon-heart" /> Freegler since {{ dateonly(user.added) }}.
           </div>
           <span v-if="user.settings.showmod" class="text-muted">
             <v-icon name="leaf" /> Freegle Volunteer

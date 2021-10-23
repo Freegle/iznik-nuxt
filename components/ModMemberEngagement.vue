@@ -1,7 +1,7 @@
 <template>
   <div v-if="member">
     <div v-if="member.lastaccess" :class="'mb-1 ' + (inactive ? 'text-danger': '')">
-      Last active: {{ member.lastaccess | timeago }}
+      Last active: {{ timeago(member.lastaccess) }}
       <span v-if="inactive">
         - won't send mails
       </span>

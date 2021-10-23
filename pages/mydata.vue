@@ -104,7 +104,7 @@
                   When you joined the site:
                 </div>
                 <div class="col-sm-6">
-                  {{ status.data.When_you_joined_the_site | dateonly }}
+                  {{ dateonly(status.data.When_you_joined_the_site) }}
                 </div>
               </div>
               <div class="row">
@@ -112,7 +112,7 @@
                   When you last accessed the site:
                 </div>
                 <div class="col-sm-6">
-                  {{ status.data.When_you_last_accessed_the_site | dateonly }}
+                  {{ dateonly(status.data.When_you_last_accessed_the_site) }}
                 </div>
               </div>
               <h2>Your settings</h2>
@@ -173,7 +173,7 @@
               <div v-for="login in status.data.logins" :key="login.id">
                 <b-row>
                   <b-col cols="4">
-                    {{ login.added | dateonly }}
+                    {{ dateonly(login.added) }}
                   </b-col>
                   <b-col cols="4">
                     <span v-if="login.type === 'Native'">Email / password</span>
@@ -183,7 +183,7 @@
                     </span>
                   </b-col>
                   <b-col cols="4">
-                    Last used {{ login.lastaccess | dateonly }}
+                    Last used {{ dateonly(login.lastaccess) }}
                   </b-col>
                 </b-row>
               </div>
@@ -203,11 +203,11 @@
                     {{ email.email }}
                   </b-col>
                   <b-col cols="3">
-                    added {{ email.added | dateonly }}
+                    added {{ dateonly(email.added) }}
                   </b-col>
                   <b-col cols="3">
                     <span v-if="email.validated">
-                      validated {{ email.validated | dateonly }}
+                      validated {{ dateonly(email.validated) }}
                     </span>
                     <span v-else>
                       not validated
@@ -353,7 +353,7 @@
                       {{ s.item.namedisplay }}
                     </b-col>
                     <b-col>
-                      joined {{ s.item.added | dateonly }}
+                      joined {{ dateonly(s.item.added) }}
                     </b-col>
                   </b-row>
                 </template>
@@ -364,7 +364,7 @@
                 <template v-slot:item="s">
                   <b-row>
                     <b-col>
-                      {{ s.item.date | dateonly }}
+                      {{ dateonly(s.item.date) }}
                     </b-col>
                     <b-col>
                       Searched for <em>{{ s.item.term }}</em>
@@ -389,7 +389,7 @@
               <br>
               <ShowMore :items="status.data.invitations">
                 <template v-slot:item="s" keyfield="date">
-                  You invited <em>{{ s.item.email }}</em> on {{ s.item.date | dateonly }}
+                  You invited <em>{{ s.item.email }}</em> on {{ dateonly(s.item.date) }}
                 </template>
               </ShowMore>
               <h2>Posts</h2>
@@ -418,7 +418,7 @@
                 <template v-slot:item="s">
                   <b-row>
                     <b-col cols="3">
-                      {{ s.item.timestamp | dateonly }}
+                      {{ dateonly(s.item.timestamp) }}
                     </b-col>
                     <!-- eslint-disable-next-line -->
                     <b-col cols="6 prewrap">{{ s.item.message }}</b-col>
@@ -436,7 +436,7 @@
                 <template v-slot:item="s">
                   <b-row>
                     <b-col cols="3">
-                      {{ s.item.timestamp | dateonly }}
+                      {{ dateonly(s.item.timestamp) }}
                     </b-col>
                     <b-col cols="3">
                       <b-btn variant="link" :to="'/chitchat/' + s.item.id">
@@ -452,7 +452,7 @@
                 <template v-slot:item="s">
                   <b-row>
                     <b-col cols="3">
-                      {{ s.item.timestamp | dateonly }}
+                      {{ dateonly(s.item.timestamp) }}
                     </b-col>
                     <b-col cols="3">
                       <b-btn variant="link" :to="'/chitchat/' + s.item.newsfeedid">
@@ -485,7 +485,7 @@
                 <template v-slot:item="s">
                   <b-row>
                     <b-col cols="3">
-                      {{ s.item.timestamp | dateonly }}
+                      {{ dateonly(s.item.timestamp) }}
                     </b-col>
                     <!-- eslint-disable-next-line -->
                     <b-col cols="9" class="prewrap">{{ s.item.text }}</b-col>
@@ -498,7 +498,7 @@
                 <template v-slot:item="s">
                   <b-row>
                     <b-col cols="3">
-                      {{ s.item.timestamp | dateonly }}
+                      {{ dateonly(s.item.timestamp) }}
                     </b-col>
                     <b-col cols="6">
                       {{ s.item.title }}
@@ -517,7 +517,7 @@
                 <template v-slot:item="s">
                   <b-row>
                     <b-col cols="3">
-                      {{ s.item.timestamp | dateonly }}
+                      {{ dateonly(s.item.timestamp) }}
                     </b-col>
                     <b-col cols="6">
                       {{ s.item.title }}
@@ -537,7 +537,7 @@
                   <template v-slot:item="s">
                     <b-row>
                       <b-col cols="3">
-                        {{ s.item.responded | dateonly }}
+                        {{ dateonly(s.item.responded) }}
                       </b-col>
                       <b-col cols="6">
                         {{ s.item.subject }}
@@ -567,7 +567,7 @@
                       {{ s.item.PayerDisplayName }}
                     </b-col>
                     <b-col cols="2">
-                      {{ s.item.timestamp | dateonly }}
+                      {{ dateonly(s.item.timestamp) }}
                     </b-col>
                     <b-col cols="2">
                       &pound;{{ s.item.GrossAmount }}
@@ -582,7 +582,7 @@
                   <template v-slot:item="s">
                     <b-row>
                       <b-col cols="4">
-                        {{ s.item.date | dateonly }}
+                        {{ dateonly(s.item.date) }}
                       </b-col>
                       <b-col cols="4">
                         {{ s.item.group }}
@@ -601,7 +601,7 @@
                   <template v-slot:item="s">
                     <b-row>
                       <b-col cols="3">
-                        {{ s.item.added | dateonly }}
+                        {{ dateonly(s.item.added) }}
                       </b-col>
                       <b-col cols="4">
                         {{ s.item.collection }} {{ s.item.email }}
@@ -621,7 +621,7 @@
                   <template v-slot:item="s">
                     <b-row>
                       <b-col cols="6">
-                        {{ s.item.date | dateonly }}
+                        {{ dateonly(s.item.date) }}
                       </b-col>
                       <b-col cols="6">
                         {{ s.item.domain }}
@@ -637,7 +637,7 @@
                   <template v-slot:item="s">
                     <b-row>
                       <b-col cols="4">
-                        {{ s.item.date | dateonly }}
+                        {{ dateonly(s.item.date) }}
                       </b-col>
                       <b-col cols="4">
                         {{ s.item.group }}
@@ -656,7 +656,7 @@
                   <template v-slot:item="s">
                     <b-row>
                       <b-col cols="3">
-                        {{ s.item.date | dateonly }}
+                        {{ dateonly(s.item.date) }}
                       </b-col>
                       <b-col cols="3">
                         #{{ s.item.userid }} {{ s.item.email }}
@@ -684,7 +684,7 @@
                 <template v-slot:item="s">
                   <b-row>
                     <b-col cols="6">
-                      {{ s.item.date | dateonly }}
+                      {{ dateonly(s.item.date) }}
                     </b-col>
                     <b-col cols="6">
                       <span v-if="s.item.url">
@@ -703,7 +703,7 @@
                 <template v-slot:item="s">
                   <b-row>
                     <b-col cols="4">
-                      {{ s.item.timestamp | datetime }}
+                      {{ datetime(s.item.timestamp) }}
                     </b-col>
                     <b-col cols="2">
                       {{ s.item.type }}
@@ -734,13 +734,13 @@
                 <template v-slot:item="s">
                   <b-row>
                     <b-col cols="4">
-                      {{ s.item.requested | datetime }}
+                      {{ datetime(s.item.requested) }}
                     </b-col>
                     <b-col cols="4">
-                      {{ s.item.started | datetime }}
+                      {{ datetime(s.item.started) }}
                     </b-col>
                     <b-col cols="4">
-                      {{ s.item.completed | datetime }}
+                      {{ datetime(s.item.completed) }}
                     </b-col>
                   </b-row>
                 </template>

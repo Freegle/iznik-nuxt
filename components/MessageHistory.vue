@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="group in message.groups" :key="'message-' + message.id + '-' + group.id" class="text--small">
-      <span class="time" :title="group.arrival">{{ group.arrival | timeago }} on</span> <nuxt-link :to="'/explore/' + exploreLink(group)">
+      <span class="time" :title="group.arrival">{{ arrival(group.arrival) }} on</span> <nuxt-link :to="'/explore/' + exploreLink(group)">
         {{ group.namedisplay }}
       </nuxt-link>
       <client-only>
@@ -24,7 +24,7 @@
     </div>
     <div v-if="modinfo && message.groups && message.groups.length && message.groups[0].arrival !== message.date" class="small">
       <span v-if="!today">
-        First posted {{ message.date | datetime }}
+        First posted {{ datetime(message.date) }}
       </span>
     </div>
   </div>
@@ -85,6 +85,15 @@ export default {
         return thegroup.nameshort
       } else {
         return group.groupid
+      }
+    },
+    arrival(time) {
+      // If we're logged out, just show the time.  This avoids screen flicker where we show an older date from a
+      // version of a page which we've rendered earlier and then update on the client.
+      if (this.me) {
+        return this.$dayjs(time).fromNow()
+      } else {
+        return this.$dayjs(time).format('Do MMMM, YYYY HH:mm')
       }
     }
   }

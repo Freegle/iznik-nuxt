@@ -24,6 +24,11 @@
           Case study - Essex
         </nuxt-link>
       </li>
+      <li>
+        <nuxt-link to="/councils/bulkywaste">
+          Freegle Focus - Bulky Waste
+        </nuxt-link>
+      </li>
     </ul>
 
     <p>
@@ -178,39 +183,44 @@
       <nuxt-link class="font-weight-bold" to="/councils/socialmedia">
         Social media
       </nuxt-link>
-      <ul>
-        <li>
-          <a href="/councils/socialmedia#general">
-            General
-          </a>
-        </li>
-        <li>
-          <a href="/councils/socialmedia#decluttering">
-            Decluttering
-          </a>
-        </li>
-        <li>
-          <a href="/councils/socialmedia#moving">
-            Moving house
-          </a>
-        </li>
-        <li>
-          <a href="/councils/socialmedia#regifting">
-            Regifting
-          </a>
-        </li>
-        <li>
-          <a href="/councils/socialmedia#flytipping">
-            Fly-tipping
-          </a>
-        </li>
-        <li>
-          <a href="/councils/socialmedia#christmas">
-            Christmas
-          </a>
-        </li>
-      </ul>
     </p>
+    <ul>
+      <li>
+        <a href="/councils/socialmedia#general">
+          General
+        </a>
+      </li>
+      <li>
+        <a href="/councils/socialmedia#decluttering">
+          Decluttering
+        </a>
+      </li>
+      <li>
+        <a href="/councils/socialmedia#blackfriday">
+          Black Friday
+        </a>
+      </li>
+      <li>
+        <a href="/councils/socialmedia#moving">
+          Moving house
+        </a>
+      </li>
+      <li>
+        <a href="/councils/socialmedia#regifting">
+          Regifting
+        </a>
+      </li>
+      <li>
+        <a href="/councils/socialmedia#flytipping">
+          Fly-tipping
+        </a>
+      </li>
+      <li>
+        <a href="/councils/socialmedia#christmas">
+          Christmas
+        </a>
+      </li>
+    </ul>
     <p>
       <nuxt-link class="font-weight-bold" to="/councils/pressrelease">
         Template press release

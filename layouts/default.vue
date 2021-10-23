@@ -69,6 +69,12 @@ export default {
     }
     return head
   },
+  watch: {
+    $route(newVal) {
+      // Automatic route tracking doesn't seem to be working.
+      this.$ga.page(newVal.fullPath)
+    }
+  },
   async mounted() {
     if (process.browser) {
       // Add class for screen background.

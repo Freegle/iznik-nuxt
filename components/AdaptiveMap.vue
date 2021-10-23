@@ -447,7 +447,11 @@ export default {
                 let addIt = true
 
                 if (message.successful) {
-                  if (message.daysago > 7) {
+                  if (this.myid === message.fromuser) {
+                    // Always show your own messages.  We have at least one freegler for whom this is emotionally
+                    // important.
+                    addIt = true
+                  } else if (message.daysago > 7) {
                     addIt = false
                   } else {
                     const lastfour = ret.slice(-4)

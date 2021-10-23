@@ -11,7 +11,7 @@
             </span>
           </span>
           <span>
-            member of <strong>{{ story.groupname }}</strong>, posted {{ story.date | timeago }}
+            member of <strong>{{ story.groupname }}</strong>, posted {{ timeago(story.date) }}
           </span>
           <span>
             <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ story.id }}

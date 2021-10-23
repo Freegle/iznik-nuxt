@@ -9,7 +9,7 @@
             <ExternalLink :href="'mailto:' + email + '?subject=A question about your Gift Aid declaration'"><v-icon name="envelope" />&nbsp;{{ email }}</ExternalLink>
           </div>
           <span class="small text-muted">
-            {{ giftaid.timestamp | timeago }}
+            {{ timeago(giftaid.timestamp) }}
             <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ giftaid.userid }}
           </span>
         </div>

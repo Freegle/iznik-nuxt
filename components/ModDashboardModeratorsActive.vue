@@ -26,7 +26,7 @@
                 {{ user.displayname }}
               </b-col>
               <b-col cols="2">
-                {{ user.lastactive | timeago }}
+                {{ timeago(user.lastactive) }}
               </b-col>
             </b-row>
             <b-btn v-if="ModeratorsActive.length > 10 && !ModeratorsExpanded" variant="link" @click="ModeratorsExpanded = true">

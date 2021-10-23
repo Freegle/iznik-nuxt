@@ -101,6 +101,7 @@ export default {
           { id: 'settings', title: 'Settings' },
           { id: 'postingstatus', title: 'Posting Status' },
           { id: 'bouncing', title: 'Bouncing' },
+          { id: 'trustlevel', title: 'MicroVolunteering' },
           { id: 'comments', title: 'Comments' }
         ]
       })
@@ -161,6 +162,7 @@ export default {
           settings: JSON.stringify(member.settings, null, 0),
           postingstatus: member.ourpostingstatus,
           bouncing: member.bouncing,
+          trustlevel: member.trustlevel,
           comments: comments.join('; ')
         })
       })

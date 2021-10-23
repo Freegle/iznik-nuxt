@@ -2,7 +2,7 @@
   <div>
     <b-row>
       <b-col cols="5" lg="2" class="small">
-        {{ log.timestamp | datetimeshort }}
+        {{ datetimeshort(log.timestamp) }}
       </b-col>
       <b-col cols="7" lg="4" class="forcebreak">
         <ModLogUser v-if="log.user && log.byuser && log.byuser.id !== log.user.id" :user="log.byuser" />

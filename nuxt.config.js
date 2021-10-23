@@ -7,8 +7,8 @@ const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
-const MOBILE_VERSION = '2.0.85'
-const MODTOOLS_VERSION = '0.3.59'
+const MOBILE_VERSION = '2.0.86'
+const MODTOOLS_VERSION = '0.3.60'
 
 require('dotenv').config()
 
@@ -85,6 +85,10 @@ const config = {
       { hid: 'author', name: 'author', content: 'Freegle' },
       { name: 'supported-color-schemes', content: 'light' },
       { name: 'color-scheme', content: 'light' },
+      {
+        name: 'facebook-domain-verification',
+        content: 'zld0jt8mvf06rt1c3fnxvls3zntxj6'
+      },
       { hid: 'og:type', property: 'og:type', content: 'website' },
       {
         hid: 'description',
@@ -179,9 +183,6 @@ const config = {
   plugins: [
     '~/plugins/polyfills',
 
-    // Our template formatting utils.
-    '~/plugins/filters',
-
     // Our directives
     '~/plugins/directives',
 
@@ -190,6 +191,7 @@ const config = {
 
     // Global mixins.
     { src: '~/mixins/global.js' },
+    { src: '~/mixins/filters.js' },
     { src: '~/mixins/me.js' },
 
     // Our parameters serialize differently from axios defaults
@@ -655,7 +657,7 @@ const config = {
     USER_SITE: USER_SITE,
     IMAGE_SITE: IMAGE_SITE,
     SENTRY_DSN: SENTRY_DSN,
-    BUILD_DATE: new Date().toLocaleString('en-US')
+    BUILD_DATE: new Date().toISOString()
   },
 
   vue: {

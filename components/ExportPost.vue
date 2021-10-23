@@ -5,7 +5,7 @@
         #{{ post.id }}
       </b-col>
       <b-col cols="2">
-        {{ post.arrival | dateonly }}
+        {{ dateonly(post.arrival) }}
       </b-col>
       <b-col cols="2">
         <span v-if="post.groups && post.groups[0]">

@@ -19,6 +19,11 @@
           Cancel handover arranged for <strong>{{ trystdate }}</strong>
         </b-form-checkbox>
       </div>
+      <hr>
+      <p>
+        Please also give this freegler a thumbs up or down, depending on the experience you had with them.
+      </p>
+      <Ratings :id="selectedUser" class="mt-2" size="lg" />
     </template>
     <template slot="modal-footer" slot-scope="{ ok, cancel }">
       <b-button variant="white" @click="cancel">
@@ -33,11 +38,14 @@
 
 <script>
 import modal from '@/mixins/modal'
+import Ratings from '~/components/Ratings'
+
 const NoticeMessage = () => import('~/components/NoticeMessage')
 
 export default {
   components: {
-    NoticeMessage
+    NoticeMessage,
+    Ratings
   },
   mixins: [modal],
   props: {

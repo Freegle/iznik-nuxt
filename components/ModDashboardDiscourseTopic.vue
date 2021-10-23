@@ -12,7 +12,7 @@
           <strong>{{ topic.name }}</strong>&nbsp;
           <div class="text-muted small d-flex flex-column justify-content-center">
             &nbsp;posted
-            {{ topic.updated_at | timeago }}
+            {{ timeago(topic.updated_at) }}
             on&nbsp;
           </div>
           <ExternalLink :href="link">

@@ -25,7 +25,7 @@
           </li>
         </ul>
         <div class="notification-meta">
-          <abbr class="small">{{ notification.timestamp|timeago }}</abbr>
+          <abbr class="small">{{ timeago(notification.timestamp) }}</abbr>
         </div>
       </div>
     </div>

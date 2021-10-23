@@ -9,7 +9,7 @@
       <ExternalLink href="https://us02web.zoom.us/j/81013447754?pwd=cVYzeEl5dWx0MEd0TTdOWE9Yd0Z4QT09" class="text-white">ZoomStock happening now! Join other volunteers for a natter - click here.</ExternalLink>
     </div>
     <div v-else class="d-flex">
-      ZoomStock Thursdays @ 2pm, next {{ fromNow | timeago }}. Join other volunteers for a natter.  Link will be here.
+      ZoomStock Thursdays @ 2pm, next {{ timeago(fromNow) }}. Join other volunteers for a natter.  Link will be here.
     </div>
   </div>
 </template>

@@ -22,7 +22,7 @@
     </b-col>
     <b-col cols="4" md="2" class="order-3 order-md-5">
       <span v-if="volunteer.lastmoderated">
-        {{ volunteer.lastmoderated | timeago }}
+        {{ timeago(volunteer.lastmoderated) }}
       </span>
     </b-col>
   </b-row>

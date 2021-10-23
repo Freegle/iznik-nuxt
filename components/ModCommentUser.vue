@@ -10,7 +10,7 @@
         {{ comment.user.displayname }}
       </div>
       <div v-if="comment.user.lastaccess">
-        <v-icon name="calendar-alt" /> Active {{ comment.user.lastaccess | datetimeshort }}
+        <v-icon name="calendar-alt" /> Active {{ datetimeshort(comment.user.lastaccess) }}
       </div>
       <div>
         <v-icon name="hashtag" />{{ comment.user.id }}

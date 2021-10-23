@@ -104,7 +104,7 @@
         </div>
       </div>
       <br>
-      Affiliation last confirmed: {{ group.affiliationconfirmed | dateonly }} by
+      Affiliation last confirmed: {{ dateonly(group.affiliationconfirmed) }} by
       <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ group.affiliationconfirmedby }}
       <br>
       <h4 class="mt-2">

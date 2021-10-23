@@ -626,7 +626,7 @@
               <v-icon name="check" class="text-success" /> Linked to
               <a :href="'https://twitter.com/' + group.twitter.name">@{{ group.twitter.name }}</a>
               <span class="text-muted small">
-                {{ group.twitter.authdate | dateshort }}
+                {{ dateshort(group.twitter.authdate) }}
               </span>
             </div>
             <ExternalLink class="btn btn-white mt-2" :href="'https://modtools.org/twitter/twitter_request.php?groupid=' + group.id">
@@ -717,7 +717,7 @@
               toggle-unchecked="Local volunteers"
             />
             <p v-if="group.affiliationconfirmed">
-              Affiliation last confirmed {{ group.affiliationconfirmed | dateshort }}
+              Affiliation last confirmed {{ dateshort(group.affiliationconfirmed) }}
               <span class="text-muted">
                 by <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ group.affiliationconfirmedby }}
               </span>

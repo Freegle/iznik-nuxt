@@ -86,7 +86,23 @@
             Talking to residents about bulky waste
           </h3>
           <p>
-            Some councils that we work ensure that when taking calls about bulky waste, residents are reminded that it
+            Research has shown that around one third of bulky waste items which get
+            taken to HWRCs for disposal are in good condition and could easily be reused. With minor repairs this figure
+            jumps up to over a half of items being reusable. Encouraging residents to consider the reuse options is key
+            for local authorities who are committed to reducing the volume of good condition, bulky items which enter
+            the disposal stream. The benefits of doing so are far reaching.
+          </p>
+          <p>
+            Read our Freegle Focus report:
+            <nuxt-link to="/councils/bulkywaste">
+              Bulky Waste - making room for reuse
+            </nuxt-link>
+            to find out more about this big issue. You will also find some quick and easy steps you can take which
+            could help to improve the way your
+            authority deals with bulky waste.
+          </p>
+          <p>
+            Some councils that we work with ensure that when taking calls about bulky waste, residents are reminded that it
             may be cheaper and easier for them to try giving away the item using Freegle, other reuse organisations or
             charities.  Providing a 'script' for staff to use is a simple way to do this, but you can also add it to
             the relevant section of your website.  The London Borough of Richmond Council does an excellent job of reminding residents they can save

@@ -92,7 +92,7 @@
               <NoticeMessage v-if="message.outcomes && message.outcomes.length" class="mb-1">
                 {{ message.outcomes[0].outcome.toUpperCase() }}
                 at
-                {{ message.outcomes[0].timestamp | datetimeshort }}
+                {{ datetimeshort(message.outcomes[0].timestamp) }}
               </NoticeMessage>
               <div v-if="message.heldby">
                 <NoticeMessage variant="warning" class="mb-2">

@@ -21,9 +21,6 @@
           <notice-message v-else-if="expectedreply" variant="warning" class="clickme" @click.native="showInfo">
             <v-icon name="exclamation-triangle" />&nbsp;{{ expectedreply | pluralize(['freegler is', 'freeglers are'], { includeNumber: true }) }} still waiting for them to reply on here.
           </notice-message>
-          <notice-message v-else-if="otheruser && otheruser.hasReneged" variant="warning" class="clickme" @click.native="showInfo">
-            <v-icon name="exclamation-triangle" />&nbsp;Things haven't always worked out for this freegler.  That might not be their fault, but please make very clear arrangements.
-          </notice-message>
           <notice-message v-if="spammer && spammer.collection !== 'Whitelisted'" variant="danger">
             This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
             send them any money.  Do not arrange anything by courier.
@@ -257,7 +254,6 @@ export default {
       return (
         this.badratings ||
         this.expectedreply ||
-        (this.otheruser && this.otheruser.hasReneged) ||
         (this.spammer && this.spammer.collection !== 'Whitelisted') ||
         (modtools &&
           this.otheruser &&
