@@ -16,7 +16,7 @@
         <!-- eslint-disable-next-line-->
         <span class="pl-0 mb-0 chatname truncate d-flex justify-content-between">{{ chat.name }} <Supporter v-if="supporter" class="mr-3 mt-1 small" /></span>
         <!-- eslint-disable-next-line-->
-        <div class="small text-muted" :title="dateFormatted">{{ chat.lastdate | timeago }}</div>
+        <div class="small text-muted" :title="dateFormatted">{{ timeago(chat.lastdate) }}</div>
         <div>
           <b-badge v-if="chat.replyexpected" variant="danger">
             RSVP - please reply

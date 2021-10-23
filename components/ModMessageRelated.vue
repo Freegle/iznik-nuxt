@@ -2,7 +2,7 @@
   <div class="text-success small">
     Related to <v-icon name="hashtag" class="text-muted" scale="0.5" />{{ message.id }}
     <em>{{ message.subject }}</em>
-    {{ message.arrival | timeago }}
+    {{ timeago(message.arrival) }}
   </div>
 </template>
 <script>

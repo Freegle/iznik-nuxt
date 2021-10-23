@@ -16,12 +16,12 @@
       <b-card-body>
         <NoticeMessage v-if="message.held" class="mb-2">
           <span v-if="me.id === message.held.id">
-            You held this {{ message.held.timestamp | timeago }}.  Other people will see a warning to check with
+            You held this {{ timeago(message.held.timestamp) }}.  Other people will see a warning to check with
             you before releasing it.
           </span>
           <span v-else>
             Held by <strong><ExternalLink :href="'mailto:' + message.held.email">{{ message.held.name }}</ExternalLink></strong>
-            {{ message.held.timestamp | timeago }}.  Please check with them before releasing it.
+            {{ timeago(message.held.timestamp) }}.  Please check with them before releasing it.
           </span>
         </NoticeMessage>
         <div class="rounded bg-white p-2 font-weight-bold border border-warning mb-2">
@@ -36,7 +36,7 @@
         </div>
         <div class="d-flex justify-content-between flex-wrap">
           <span>
-            {{ message.date | timeago }}
+            {{ timeago(message.date) }}
           </span>
           <span>
             <v-icon name="info-circle" /> {{ message.touser.displayname }} is on {{ message.group.namedisplay }}, which you mod.

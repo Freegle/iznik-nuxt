@@ -15,7 +15,7 @@
           </b-col>
           <b-col cols="6" md="4">
             <div class="pt-1">
-              {{ membership.added | datetimeshort }}
+              {{ datetimeshort(membership.added) }}
             </div>
           </b-col>
           <b-col cols="6" md="4">

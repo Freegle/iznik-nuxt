@@ -20,7 +20,7 @@
             (<ExternalLink :href="'mailto:' + user.spammer.byuser.email">{{ user.spammer.byuser.email }}</ExternalLink>)
           </span>
         </span>
-        #{{ user.spammer.byuserid }} {{ user.spammer.added | timeago }}
+        #{{ user.spammer.byuserid }} {{ timeago(user.spammer.added) }}
       </div>
     </NoticeMessage>
     <notice-message v-if="sameip && sameip.length" variant="warning">

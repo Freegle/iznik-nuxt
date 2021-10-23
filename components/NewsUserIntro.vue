@@ -23,7 +23,7 @@
         </span>
         <br>
         <span class="text-muted small pl-0">
-          {{ newsfeed.added | timeago }}
+          {{ timeago(newsfeed.added) }}
         </span>
         <NewsUserInfo :user="users[userid]" />
       </div>

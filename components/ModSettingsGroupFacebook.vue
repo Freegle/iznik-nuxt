@@ -4,7 +4,7 @@
       <v-icon name="check" class="text-success" /> Linked to
       <a :href="'https://facebook.com/' + facebook.id">{{ facebook.name }}</a>
       <span class="text-muted small">
-        {{ facebook.authdate | dateshort }}
+        {{ dateshort(facebook.authdate) }}
       </span>
     </div>
     <b-btn variant="white" class="mt-1" @click="unlink">

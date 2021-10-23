@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-badge v-for="l in member.logins" :key="'login-' + l.id" variant="info" class="border border-info rounded p-1 mr-1">
-      {{ loginType(l.type) }} login {{ l.lastaccess | timeago }}
+      {{ loginType(l.type) }} login {{ timeago(l.lastaccess) }}
     </b-badge>
   </div>
 </template>

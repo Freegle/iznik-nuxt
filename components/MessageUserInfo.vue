@@ -32,7 +32,7 @@
     </nuxt-link>
     <span v-if="modinfo && membership" class="ml-2 order-1 order-sm-1 small">
       <v-icon name="calendar-alt" />
-      <span :class="joinedAge <= 31 ? 'text-danger' : ''">Joined {{ membership.added | dateshort }}</span>
+      <span :class="joinedAge <= 31 ? 'text-danger' : ''">Joined {{ dateshort(membership.added) }}</span>
     </span>
     <span v-if="modinfo && membership" class="ml-2 text-truncate small email order-3 order-md-1">
       <!-- eslint-disable-next-line -->

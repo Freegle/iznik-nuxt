@@ -11,7 +11,7 @@
           {{ member.displayname }}
         </div>
         <div v-if="member.joined">
-          <v-icon name="calendar-alt" /> {{ member.joined | datetimeshort }}
+          <v-icon name="calendar-alt" /> {{ datetimeshort(member.joined) }}
         </div>
         <div>
           <v-icon name="hashtag" />{{ member.userid }}
@@ -50,7 +50,7 @@
         </NoticeMessage>
         <ModBouncing v-if="member.bouncing" :user="member" />
         <NoticeMessage v-if="member.bandate">
-          Banned <span :title="member.bandate | datetime">{{ member.bandate | timeago }}</span> <span v-if="member.bannedby">by #{{ member.bannedby }}</span> - check logs for info.
+          Banned <span datetime(:title="member.bandate)">{{ timeago(member.bandate) }}</span> <span v-if="member.bannedby">by #{{ member.bannedby }}</span> - check logs for info.
           <b-btn variant="link" size="sm" @click="confirmUnban">
             Unban
           </b-btn>

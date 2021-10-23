@@ -174,9 +174,6 @@ module.exports = {
   plugins: [
     '~/plugins/polyfills',
 
-    // Our template formatting utils.
-    '~/plugins/filters',
-
     // Our directives
     '~/plugins/directives',
 
@@ -185,6 +182,7 @@ module.exports = {
 
     // Global mixins.
     { src: '~/mixins/global.js' },
+    { src: '~/mixins/filters.js' },
     { src: '~/mixins/me.js' },
 
     // Our parameters serialize differently from axios defaults

@@ -12,7 +12,7 @@
           <Supporter v-if="member.supporter" class="d-inline" />
         </div>
         <div v-if="member.joined">
-          <v-icon name="calendar-alt" /> {{ member.joined | datetimeshort }}
+          <v-icon name="calendar-alt" /> {{ datetimeshort(member.joined) }}
         </div>
         <div>
           <v-icon name="hashtag" />{{ member.userid }}
@@ -51,13 +51,13 @@
         </NoticeMessage>
         <ModBouncing v-if="member.bouncing" :user="member" />
         <NoticeMessage v-if="member.bandate">
-          Banned <span :title="member.bandate | datetime">{{ member.bandate | timeago }}</span> <span v-if="member.bannedby">by #{{ member.bannedby }}</span> - check logs for info.
+          Banned <span datetime(:title="member.bandate)">{{ timeago(member.bandate) }}</span> <span v-if="member.bannedby">by #{{ member.bannedby }}</span> - check logs for info.
         </NoticeMessage>
         <div class="d-flex justify-content-between flex-wrap">
           <div>
             <ModMemberSummary :member="member" />
             <div v-if="member.lastaccess" :class="'mb-1 ' + (inactive ? 'text-danger': '')">
-              Last active: {{ member.lastaccess | timeago }}
+              Last active: {{ timeago(member.lastaccess) }}
               <span v-if="inactive">
                 - won't send mails
               </span>
@@ -109,7 +109,7 @@
         </div>
         <div v-for="m in memberof" :key="'membership-' + m.membershipid" class="p-1 mr-1">
           <strong>{{ m.namedisplay.length > 32 ? (m.namedisplay.substring(0, 32) + '...') : m.namedisplay }}</strong>
-          <span :class="'small ' + (daysago(m.added) < 31 ? 'text-danger font-weight-bold' : 'text-muted')">joined {{ m.added | timeago }}</span>
+          <span :class="'small ' + (daysago(m.added) < 31 ? 'text-danger font-weight-bold' : 'text-muted')">joined {{ timeago(m.added) }}</span>
           <span v-if="m.reviewreason" class="text-danger ml-1 mr-1">{{ m.reviewreason }}</span>
           <b-btn v-if="amAModOn(m.id)" :to="'/modtools/members/approved/search/' + m.id + '/' + member.userid" variant="link" class="p-0 border-0 align-top">
             Go to membership

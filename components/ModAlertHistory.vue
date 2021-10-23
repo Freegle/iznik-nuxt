@@ -4,10 +4,10 @@
   <!--  </div>-->
   <b-row>
     <b-col cols="6" lg="2">
-      {{ alert.created | datetimeshort }}
+      {{ datetimeshort(alert.created) }}
     </b-col>
     <b-col cols="6" lg="2">
-      {{ alert.complete | datetimeshort }}
+      {{ datetimeshort(alert.complete) }}
     </b-col>
     <b-col cols="6" lg="2">
       <div v-if="alert.group">

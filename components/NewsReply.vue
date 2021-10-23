@@ -33,7 +33,7 @@
             </div>
             <span v-if="userid && users[userid]" class="text-muted d-flex flex-row flex-wrap align-items-center">
               <span class="text-muted small mr-1">
-                {{ reply.added | timeago }}
+                {{ timeago(reply.added) }}
               </span>
               <NewsUserInfo :user="users[userid]" class="px-1" />
               <b-btn variant="link" size="sm" class="reply__button text-muted" @click="replyReply">

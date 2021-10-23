@@ -10,7 +10,7 @@
             <div v-if="otheruser.info.lastaccess" class="d-inline d-md-block">
               <span class="d-none d-md-inline">Last seen</span>
               <span class="d-inline d-md-none">Seen</span>
-              <strong :title="otheruser.info.lastaccess | datetimeshort">{{ otheruser.info.lastaccess | timeago }}</strong>.
+              <strong datetimeshort(:title="otheruser.info.lastaccess)">{{ timeago(otheruser.info.lastaccess) }}</strong>.
             </div>
             <div v-if="replytime" class="d-inline d-md-block">
               <span class="d-none d-md-inline">Typically replies in</span>

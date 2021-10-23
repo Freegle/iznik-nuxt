@@ -8,10 +8,10 @@
         <v-icon name="tag" /> by {{ savedComment.byuser.displayname }}
       </span>
       <span v-if="savedComment.date !== savedComment.reviewed">
-        Created {{ savedComment.date | timeago }} reviewed {{ savedComment.reviewed | timeago }}
+        Created {{ timeago(savedComment.date) }} reviewed {{ timeago(savedComment.reviewed) }}
       </span>
       <span v-else>
-        {{ savedComment.date | timeago }}
+        {{ timeago(savedComment.date) }}
       </span>
       <span v-if="savedComment.groupid">
         on {{ groupname }}

@@ -13,7 +13,7 @@
         </NoticeMessage>
         <b-row v-for="message in messages" :key="'postinghistory-' + message.id">
           <b-col cols="8" sm="3">
-            <div>{{ message.arrival | datetimeshort }}</div>
+            <div>{{ datetimeshort(message.arrival) }}</div>
           </b-col>
           <b-col cols="4" sm="2">
             <div>

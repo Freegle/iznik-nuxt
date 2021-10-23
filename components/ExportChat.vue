@@ -2,7 +2,7 @@
   <div>
     <b-row>
       <b-col cols="3">
-        {{ chat.date | dateonly }}
+        {{ dateonly(chat.date) }}
       </b-col>
       <b-col cols="4">
         {{ chat.name }}
@@ -17,7 +17,7 @@
       <div v-for="message in chat.messages" :key="message.id">
         <b-row class="bg-white">
           <b-col cols="4">
-            {{ message.date | dateonly }}
+            {{ dateonly(message.date) }}
           </b-col>
           <b-col cols="8" class="prewrap">
             {{ message.message }}

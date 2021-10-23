@@ -4,7 +4,7 @@
       <b-card-body>
         <div class="layout">
           <div class="date small">
-            {{ item.timestamp | datetimeshort }}
+            {{ datetimeshort(item.timestamp) }}
           </div>
           <nuxt-link class="user" :to="'/modtools/members/approved/search/' + item.user.id">
             <v-icon name="hashtag" class="text-muted small" scale="0.75" />{{ item.user.id }} ({{ email }})

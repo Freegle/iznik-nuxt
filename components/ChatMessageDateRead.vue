@@ -2,7 +2,7 @@
   <div>
     <b-row v-if="!chatmessage.sameasnext || last || chatmessage.bymailid || chatmessage.gap" class="text-muted small">
       <b-col v-if="!messageIsFromCurrentUser">
-        <span class="chat__dateread--theirs" :title="chatmessage.date | datetimeshort">
+        <span class="chat__dateread--theirs" datetimeshort(:title="chatmessage.date)">
           {{ timeago }}
           <span v-if="chatmessage.reviewrequired" class="text-danger small">
             Pending review
@@ -44,7 +44,7 @@
           <span v-if="chatmessage.reviewrequired" class="text-danger small">
             Pending review
           </span>
-          <span :title="chatmessage.date | datetimeshort">{{ timeago }}</span>
+          <span datetimeshort(:title="chatmessage.date)">{{ timeago }}</span>
           <span v-if="mod && chatmessage.bymailid" class="btn btn-sm btn-white mb-2 clickme" :title="'Received by email #' + chatmessage.bymailid + ' click to view'" @click="viewOriginal">
             <v-icon name="info-circle" /> View original email
           </span>

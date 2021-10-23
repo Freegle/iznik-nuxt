@@ -46,7 +46,7 @@
               you last sent
             </span>
             <span :title="$dayjs(reply.lastdate).toLocaleString()">
-              {{ reply.lastdate | timeago }}
+              {{ timeago(reply.lastdate) }}
             </span>
           </div>
           <span v-if="unseen > 0" class="bg-white snippet text-primary">

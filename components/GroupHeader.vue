@@ -18,7 +18,7 @@
         </b-card-title>
         <b-card-sub-title>{{ group.tagline }}</b-card-sub-title>
         <div v-if="group.membercount" class="text-muted small">
-          Founded {{ group.founded | dateonly }}. {{ group.membercount.toLocaleString() }} current freeglers.
+          Founded {{ dateonly(group.founded) }}. {{ group.membercount.toLocaleString() }} current freeglers.
         </div>
       </div>
       <div class="group__links text-muted small">
