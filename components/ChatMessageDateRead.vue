@@ -2,8 +2,8 @@
   <div>
     <b-row v-if="!chatmessage.sameasnext || last || chatmessage.bymailid || chatmessage.gap" class="text-muted small">
       <b-col v-if="!messageIsFromCurrentUser">
-        <span class="chat__dateread--theirs" datetimeshort(:title="chatmessage.date)">
-          {{ timeago }}
+        <span class="chat__dateread--theirs" :title="datetimeshort(chatmessage.date)">
+          {{ dateTimeago }}
           <span v-if="chatmessage.reviewrequired" class="text-danger small">
             Pending review
           </span>
@@ -44,7 +44,7 @@
           <span v-if="chatmessage.reviewrequired" class="text-danger small">
             Pending review
           </span>
-          <span datetimeshort(:title="chatmessage.date)">{{ timeago }}</span>
+          <span :title="datetimeshort(chatmessage.date)">{{ timeago }}</span>
           <span v-if="mod && chatmessage.bymailid" class="btn btn-sm btn-white mb-2 clickme" :title="'Received by email #' + chatmessage.bymailid + ' click to view'" @click="viewOriginal">
             <v-icon name="info-circle" /> View original email
           </span>
@@ -79,7 +79,7 @@ export default {
     othermodname() {
       return this.chatMessageUser ? this.chatMessageUser.displayname : null
     },
-    timeago() {
+    dateTimeago() {
       let ret = null
 
       // Make depend on auth/time so that reactivity updates.
