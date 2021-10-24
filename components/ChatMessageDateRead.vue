@@ -44,7 +44,7 @@
           <span v-if="chatmessage.reviewrequired" class="text-danger small">
             Pending review
           </span>
-          <span :title="datetimeshort(chatmessage.date)">{{ timeago }}</span>
+          <span :title="datetimeshort(chatmessage.date)">{{ dateTimeago }}</span>
           <span v-if="mod && chatmessage.bymailid" class="btn btn-sm btn-white mb-2 clickme" :title="'Received by email #' + chatmessage.bymailid + ' click to view'" @click="viewOriginal">
             <v-icon name="info-circle" /> View original email
           </span>
