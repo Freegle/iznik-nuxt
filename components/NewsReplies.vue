@@ -90,6 +90,7 @@ export default {
       if (this.visiblereplies.length) {
         if (
           this.showAllReplies ||
+          this.scrollTo ||
           this.visiblereplies.length <= INITIAL_NUMBER_OF_REPLIES_TO_SHOW
         ) {
           // Return all the replies

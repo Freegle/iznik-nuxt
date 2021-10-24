@@ -51,7 +51,7 @@
         </NoticeMessage>
         <ModBouncing v-if="member.bouncing" :user="member" />
         <NoticeMessage v-if="member.bandate">
-          Banned <span datetime(:title="member.bandate)">{{ timeago(member.bandate) }}</span> <span v-if="member.bannedby">by #{{ member.bannedby }}</span> - check logs for info.
+          Banned <span :title="datetime(member.bandate)">{{ timeago(member.bandate) }}</span> <span v-if="member.bannedby">by #{{ member.bannedby }}</span> - check logs for info.
         </NoticeMessage>
         <div class="d-flex justify-content-between flex-wrap">
           <div>

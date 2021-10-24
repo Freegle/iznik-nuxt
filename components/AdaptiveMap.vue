@@ -451,6 +451,9 @@ export default {
                     // Always show your own messages.  We have at least one freegler for whom this is emotionally
                     // important.
                     addIt = true
+                  } else if (this.selectedType !== 'All') {
+                    // Don't show freegled posts if you're already filtering.
+                    addIt = false
                   } else if (message.daysago > 7) {
                     addIt = false
                   } else {
@@ -558,7 +561,7 @@ export default {
                 [group.lat, group.lng]
               )
 
-              if (group.distance <= 50000) {
+              if (group.distance <= group.nearbygroups * 1609.34) {
                 ret.push(group)
               } else if (group.altlat || group.altlng) {
                 // A few groups have two centres because they are large.
@@ -567,7 +570,7 @@ export default {
                   [group.altlat, group.altlng]
                 )
 
-                if (group.distance <= 50000) {
+                if (group.distance <= group.nearbygroups * 1609.34) {
                   ret.push(group)
                 }
               }
