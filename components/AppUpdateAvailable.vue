@@ -18,7 +18,6 @@ export default {
       return pushstate.applatestversion
     },
     show() {
-  return true
       const requiredVersion = pushstate.apprequiredversion
       console.log('AppUpdateAvailable requiredVersion', requiredVersion)
       if (versionOutOfDate(requiredVersion)) {
