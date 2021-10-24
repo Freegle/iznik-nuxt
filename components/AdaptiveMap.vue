@@ -561,7 +561,7 @@ export default {
                 [group.lat, group.lng]
               )
 
-              if (group.distance <= 50000) {
+              if (group.distance <= group.nearbygroups * 1609.34) {
                 ret.push(group)
               } else if (group.altlat || group.altlng) {
                 // A few groups have two centres because they are large.
@@ -570,7 +570,7 @@ export default {
                   [group.altlat, group.altlng]
                 )
 
-                if (group.distance <= 50000) {
+                if (group.distance <= group.nearbygroups * 1609.34) {
                   ret.push(group)
                 }
               }
