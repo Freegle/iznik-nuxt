@@ -451,6 +451,9 @@ export default {
                     // Always show your own messages.  We have at least one freegler for whom this is emotionally
                     // important.
                     addIt = true
+                  } else if (this.selectedType !== 'All') {
+                    // Don't show freegled posts if you're already filtering.
+                    addIt = false
                   } else if (message.daysago > 7) {
                     addIt = false
                   } else {
