@@ -15,7 +15,7 @@
       </span>
     </div>
     <div class="time">
-      <span v-if="chat.lastdate" datetime(:title="chat.lastdate)">
+      <span v-if="chat.lastdate" :title="datetime(chat.lastdate)">
         {{ timeago(chat.lastdate) }}
       </span>
       <span v-else>
