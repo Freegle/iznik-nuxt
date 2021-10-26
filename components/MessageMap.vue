@@ -76,8 +76,10 @@ export default {
       })
     },
     blurmarker() {
+      const modtools = this.$store.getters['misc/get']('modtools')
+
       return new L.Icon({
-        iconUrl: '/blurmarker.png',
+        iconUrl: modtools ? '/bluering.png' : '/blurmarker.png',
         iconSize: [100, 100]
       })
     }
