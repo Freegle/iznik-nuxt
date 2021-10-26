@@ -36,13 +36,14 @@
             </infinite-loading>
             <div v-if="otheruser || chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'" class="pt-1 mb-1 w-100">
               <ChatMessage
-                v-for="chatmessage in chatmessages"
+                v-for="(chatmessage, index) in chatmessages"
                 :key="'chatmessage-' + chatmessage.id"
                 :chatmessage="chatmessage"
                 :chat="chat"
                 :otheruser="otheruser"
                 :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
                 :chatusers="chatusers"
+                :prevmessage="index > 0 ? chatmessages[index - 1].id : null"
               />
             </div>
             <div v-if="chatBusy && headerLoaded" class="text-center">
