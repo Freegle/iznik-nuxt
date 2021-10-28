@@ -34,7 +34,7 @@
       <div v-observe-visibility="mapVisibilityChanged" />
     </client-only>
     <div v-if="mapready" class="rest">
-      <div v-if="showClosestGroups" class="mb-1 border p-2 bg-white">
+      <div class="mb-1 border p-2 bg-white">
         <h2 class="sr-only">
           Nearby commmunities
         </h2>
@@ -535,13 +535,6 @@ export default {
       // zoomed out)
       return process.server || !this.showRegions
     },
-    showClosestGroups() {
-      // We only want to show the closest groups to join if there aren't too many.  Otherwise they're probably
-      // zoomed way out and would join the wrong ones.
-      return (
-        this.groupids && this.groupids.length < 20 && this.closestGroups.length
-      )
-    },
     closestGroups() {
       const ret = []
 
@@ -561,7 +554,10 @@ export default {
                 [group.lat, group.lng]
               )
 
-              if (group.distance <= group.nearbygroups * 1609.34) {
+              if (
+                !group.showjoin ||
+                group.distance <= group.showjoin * 1609.34
+              ) {
                 ret.push(group)
               } else if (group.altlat || group.altlng) {
                 // A few groups have two centres because they are large.
@@ -570,7 +566,7 @@ export default {
                   [group.altlat, group.altlng]
                 )
 
-                if (group.distance <= group.nearbygroups * 1609.34) {
+                if (group.distance <= group.showjoin * 1609.34) {
                   ret.push(group)
                 }
               }
