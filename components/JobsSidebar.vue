@@ -15,11 +15,11 @@
         </b-btn>
         <nuxt-link to="/jobs">
           <h2 class="header--size4 pl-1 pt-1">
-            <v-icon name="briefcase" scale="2" /> Jobs
+            <v-icon name="briefcase" scale="2" /> Jobs near you
           </h2>
         </nuxt-link>
         <p class="text-center small">
-          Jobs near you.  Freegle gets a small amount if you click.
+          Freegle gets a small amount if you are interested and click.
         </p>
         <ul class="list-unstyled">
           <li v-for="job in visibleJobs" :key="'job-' + job.job_reference">
