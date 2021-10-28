@@ -179,6 +179,7 @@
               :centerat="{ lat: group.lat, lng: group.lng }"
               :position="{ lat: position.lat, lng: position.lng }"
               locked
+              :boundary="group.polygon"
               :height="150"
             />
           </b-col>
