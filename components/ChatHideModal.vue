@@ -8,7 +8,12 @@
     <template slot="default">
       <b-row>
         <b-col>
-          <p>If you do this, this chat won't show in your list until there are new messages from them.</p>
+          <p v-if="id">
+            If you do this, this chat won't show in your list until there are new messages from them.
+          </p>
+          <p v-else>
+            If you do this, all these chats will be removed until there are new messages
+          </p>
           <p>Are you sure?</p>
         </b-col>
       </b-row>
@@ -31,7 +36,8 @@ export default {
   props: {
     id: {
       type: Number,
-      required: true
+      required: false,
+      default: null
     },
     user: {
       type: Object,
