@@ -134,5 +134,15 @@ export const actions = {
     await dispatch('fetch', {
       id: params.groupid
     })
+  },
+
+  async confirmAffiliation({ commit, dispatch }, params) {
+    await this.$api.group.patch({
+      id: params.id,
+      affiliationconfirmed: new Date().toISOString()
+    })
+    await dispatch('fetch', {
+      id: params.id
+    })
   }
 }
