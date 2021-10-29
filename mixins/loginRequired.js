@@ -25,10 +25,13 @@ export default {
         }
       )
 
-      // Fire off a get of our user, to make sure we're roughly in sync (groups, whether we're logged in).
-      this.$store.dispatch('auth/fetchUser', {
-        components: ['me', 'groups']
-      })
+      // Fire off a get of our user, to make sure we're roughly in sync (groups, whether we're logged in).  Defer
+      // it as we can get snappier rendering of pages if this isn't the first request.
+      setTimeout(() => {
+        this.$store.dispatch('auth/fetchUser', {
+          components: ['me', 'groups']
+        })
+      }, 100)
     }
   },
 

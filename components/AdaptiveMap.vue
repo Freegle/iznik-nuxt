@@ -644,7 +644,7 @@ export default {
     this.search = this.initialSearch
     this.searchOn = this.initialSearch
   },
-  async mounted() {
+  mounted() {
     this.postMapInitialBounds = this.locked ? this.locked : this.initialBounds
     // this.postMapInitialBounds = this.initialBounds
 
@@ -660,17 +660,19 @@ export default {
     if (!this.startOnGroups) {
       this.context = null
 
-      // Get the messages in our own groups for the initial view.
-      const ret = await this.$api.message.fetchMessages({
-        subaction: 'mygroups'
+      this.$nextTick(async () => {
+        // Get the messages in our own groups for the initial view.
+        const ret = await this.$api.message.fetchMessages({
+          subaction: 'mygroups'
+        })
+
+        if (ret && ret.ret === 0 && ret.messages) {
+          this.messagesInOwnGroups = ret.messages
+
+          // Kick the infinite scroll to show them.
+          this.infiniteId++
+        }
       })
-
-      if (ret && ret.ret === 0 && ret.messages) {
-        this.messagesInOwnGroups = ret.messages
-
-        // Kick the infinite scroll to show them.
-        this.infiniteId++
-      }
     }
 
     this.bounds = L.latLngBounds(

@@ -405,7 +405,6 @@ export default {
       }
     },
     newline: function() {
-      console.log('Newline', this.$refs.chatarea)
       const p = this.$refs.chatarea.selectionStart
       if (p) {
         this.sendmessage =
