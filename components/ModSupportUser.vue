@@ -258,6 +258,8 @@
               <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ message.id }}
             </ExternalLink>
             <span :class="message.collection != 'Approved' ? 'text-danger' : 'text-muted'">{{ message.collection }}</span>
+            <br>
+            <span class="text-muted">{{ message.groupname }}</span>
           </b-col>
           <b-col cols="8" md="6" class="order-2 order-md-3 p-1">
             {{ message.subject }}
