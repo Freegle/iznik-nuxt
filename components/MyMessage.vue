@@ -502,9 +502,7 @@ export default {
   mounted() {
     this.expanded = this.expand
 
-    const me = this.$store.getters['auth/user']
-
-    if (me) {
+    if (this.me) {
       switch (this.action) {
         case 'repost':
           this.repost()

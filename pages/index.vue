@@ -101,17 +101,14 @@ export default {
         }, 1000)
       }
 
-      const user = this.$store.getters['auth/user']
-
-      if (user) {
+      if (this.me) {
         this.goHome()
       } else {
         // Set up a watch on the store.  We do this because initially the store hasn't yet been reloaded from local
         // storage, so we don't know if we're logged in. When it does get loaded, this watch will fire.
         this.userWatch = this.$store.watch(
           (state, getters) => {
-            const user2 = this.$store.getters['auth/user']
-            return user2
+            return this.me
           },
           (newValue, oldValue) => {
             if (newValue) {

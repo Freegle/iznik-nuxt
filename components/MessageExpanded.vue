@@ -159,9 +159,8 @@ export default {
     },
     replyToSend() {
       let ret = null
-      const me = this.$store.getters['auth/user']
 
-      if (me) {
+      if (this.me) {
         ret = this.$store.getters['reply/get']
       }
 

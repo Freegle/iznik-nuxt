@@ -4,13 +4,26 @@ import Vue from 'vue'
 Vue.mixin({
   computed: {
     me() {
-      return this.$store.getters['auth/user']
+      return this.realMe
+    },
+    realMe() {
+      // We have this for impersonation for mods.
+      const me = this.$store.getters['auth/user']
+      return me && me.id ? me : null
     },
     myid() {
       return this.me ? this.me.id : null
     },
     loggedIn() {
       return this.me !== null
+    },
+    mylocation() {
+      return this.me &&
+        this.me.settings &&
+        this.me.settings.mylocation &&
+        this.me.settings.mylocation.name
+        ? this.me.settings.mylocation
+        : null
     },
     mod() {
       return (

@@ -192,8 +192,7 @@ export default {
       return warn
     },
     mine() {
-      const me = this.$store.getters['auth/user']
-      return me && this.item.user.id === me.id
+      return this.item.user.id === this.myid
     }
   },
   methods: {

@@ -146,11 +146,9 @@ export default {
       let nelat = null
       let nelng = null
 
-      const me = this.$store.getters['auth/user']
-
-      if (me && (me.lat || me.lng)) {
-        mylat = me.lat
-        mylng = me.lng
+      if (this.me && (this.me.lat || this.me.lng)) {
+        mylat = this.me.lat
+        mylng = this.me.lng
 
         groups.forEach(g => {
           if (g.polygon) {
@@ -186,7 +184,7 @@ export default {
         nelng !== null
       ) {
         bounds = [[swlat, swlng], [nelat, nelng]]
-      } else if (me && mylat !== null && mylng !== null) {
+      } else if (this.me && mylat !== null && mylng !== null) {
         // We're not a member of any groups, but at least we know where we are.  Centre there, and then let
         // the map zoom to somewhere sensible.
         bounds = [[mylat - 0.01, mylng - 0.01], [mylat + 0.01, mylng + 0.01]]

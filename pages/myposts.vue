@@ -379,9 +379,7 @@ export default {
   },
   methods: {
     async loadMore() {
-      const me = this.$store.getters['auth/user']
-
-      if (me) {
+      if (this.me) {
         const currentCount = this.messages.length
 
         try {
@@ -389,7 +387,7 @@ export default {
             collection: 'AllUser',
             summary: true,
             types: ['Offer', 'Wanted'],
-            fromuser: me.id,
+            fromuser: this.myid,
             context: this.context,
             limit: 15
           })

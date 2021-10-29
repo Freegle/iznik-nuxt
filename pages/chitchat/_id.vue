@@ -271,9 +271,7 @@ export default {
       this.busy = true
       this.scrollTo = this.id
 
-      const user = this.$store.getters['auth/user']
-
-      if (!user) {
+      if (!this.me) {
         if ($state.complete) {
           $state.complete()
         }

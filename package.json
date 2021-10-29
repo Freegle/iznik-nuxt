@@ -69,7 +69,6 @@
     "lodash.merge": "^4.6.2",
     "lru-cache": "^5.1.1",
     "mutation-observer": "^1.0.3",
-    "nchan": "^1.0.10",
     "nuxt": "^2.15.4",
     "nuxt-dayjs-module": "^1.1.1",
     "nuxt-fontawesome": "^0.4.0",

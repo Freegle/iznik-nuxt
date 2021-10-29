@@ -73,8 +73,6 @@ export default {
     }
   },
   async asyncData({ app, params, store }) {
-    const me = store.getters['auth/user']
-
     if (params.id) {
       // We can display these logged out.
       await store.dispatch('communityevents/fetch', {
@@ -84,7 +82,7 @@ export default {
       await store.dispatch('group/fetch', {
         id: params.id
       })
-    } else if (me) {
+    } else if (this.me) {
       // We can fetch all the ones we're a member of.
       await store.dispatch('communityevents/fetch')
     } else {

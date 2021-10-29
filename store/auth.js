@@ -8,7 +8,6 @@ export const state = () => ({
   user: null,
   userFetched: null,
   groups: [],
-  nchan: null,
   loggedInEver: false,
   userlist: [],
   work: [],
@@ -114,10 +113,6 @@ export const mutations = {
     state.userFetched = val
   },
 
-  setNCHAN(state, val) {
-    state.nchan = val
-  },
-
   setLoginType(state, val) {
     state.loginType = val
   }
@@ -158,17 +153,15 @@ export const getters = {
   member: state => id => {
     let ret = false
 
-    for (const group of state.groups) {
-      if (parseInt(group.id) === parseInt(id)) {
-        ret = group.role ? group.role : group.myrole
+    if (state.user) {
+      for (const group of state.groups) {
+        if (parseInt(group.id) === parseInt(id)) {
+          ret = group.role ? group.role : group.myrole
+        }
       }
     }
 
     return ret
-  },
-
-  nchan: state => {
-    return state.nchan
   },
 
   loginType: state => {
@@ -458,10 +451,6 @@ export const actions = {
       force: true
     })
     return state.user
-  },
-
-  setNCHAN({ commit, dispatch, state }, params) {
-    commit('setNCHAN', params)
   },
 
   loggedInEver({ commit }, value) {

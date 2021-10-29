@@ -99,9 +99,13 @@ export default {
       })
 
       const message = this.$store.getters['messages/get'](this.id)
-      const me = this.$store.getters['auth/user']
 
-      if (message && message.fromuser && me && message.fromuser.id !== me.id) {
+      if (
+        message &&
+        message.fromuser &&
+        this.me &&
+        message.fromuser.id !== this.myid
+      ) {
         // Message was from a different user.  Probably logged in as the wrong user.  Let the server know.
         this.$store.dispatch('auth/addRelatedUser', {
           id: message.fromuser.id
@@ -126,7 +130,7 @@ export default {
       // If they have an intended outcome, then we save that to the server now.  This means that if they never
       // get round to doing anything else on this page we'll assume that's what they wanted.  We do this because
       // we've seen people click the button in the email a lot and then bail out.
-      if (this.action && me && me.id === message.fromuser.id) {
+      if (this.action && this.me && this.myid === message.fromuser.id) {
         let outcome = null
 
         if (this.action === 'repost') {

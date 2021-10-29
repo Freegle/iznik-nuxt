@@ -247,9 +247,7 @@ export default {
         console.log('Save', JSON.stringify(replyToSend))
         await this.$store.dispatch('reply/set', replyToSend)
 
-        const me = this.$store.getters['auth/user']
-
-        if (me && me.id) {
+        if (this.me) {
           // We have several things to do:
           // - join a group if need be (doesn't matter which)
           // - post our reply
@@ -274,7 +272,7 @@ export default {
             // Not currently a member.
             console.log('Need to join')
             await this.$store.dispatch('auth/joinGroup', {
-              userid: me.id,
+              userid: this.myid,
               groupid: tojoin
             })
 

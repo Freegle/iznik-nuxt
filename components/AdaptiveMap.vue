@@ -552,9 +552,7 @@ export default {
                 this.bounds.contains([group.altlat, group.altlng]))
             ) {
               // Are we already a member?
-              const member =
-                this.$store.getters['auth/user'] &&
-                this.$store.getters['auth/member'](group.id)
+              const member = this.$store.getters['auth/member'](group.id)
 
               if (!member) {
                 // Visible group?

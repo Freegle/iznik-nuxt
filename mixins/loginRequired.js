@@ -6,15 +6,14 @@ export default {
     // render the page correctly if they are in fact logged in on the client.  So we can live with that.
     if (!process.server) {
       // Initial value
-      const user = this.$store.getters['auth/user']
-      this.$store.dispatch('auth/forceLogin', user === null)
+      this.$store.dispatch('auth/forceLogin', this.me === null)
 
       // Set up a watch on the store.  We do this because initially the store hasn't yet been reloaded from local
       // storage, so we don't know if we're logged in. When it does get loaded, this watch will fire.  So this way
       // we'll end up with the correct value of forceLogin set.
       this.loginRequiredWatch = this.$store.watch(
         () => {
-          return this.$store.getters['auth/user']
+          return this.me
         },
         newValue => {
           if (!newValue) {

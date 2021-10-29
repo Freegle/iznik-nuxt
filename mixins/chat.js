@@ -510,10 +510,9 @@ export default {
 
         this.$nextTick(async () => {
           // Get our offers.
-          const me = this.$store.getters['auth/user']
           await this.$store.dispatch('messages/clear')
           await this.$store.dispatch('messages/fetchMessages', {
-            fromuser: me.id,
+            fromuser: this.myid,
             types: ['Offer'],
             hasoutcome: false,
             limit: 100,

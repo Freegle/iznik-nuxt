@@ -120,17 +120,8 @@ export default {
 
       if (this.suppliedLocation) {
         ret = this.suppliedLocation
-      } else {
-        const me = this.$store.getters['auth/user']
-
-        if (
-          me &&
-          me.settings &&
-          me.settings.mylocation &&
-          me.settings.mylocation.name
-        ) {
-          ret = me.settings.mylocation.name
-        }
+      } else if (this.mylocation) {
+        ret = this.mylocation
       }
 
       return ret

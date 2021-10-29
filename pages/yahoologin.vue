@@ -11,7 +11,6 @@ export default {
     // We have been redirected here after an attempt to sign in with Yahoo from LoginModal.  We should have two
     // url parameters - returnto which we set up, and code which is returned by Yahoo after a successful login
     console.log('Yahoologin mounted')
-    const me = this.$store.getters['auth/user']
 
     const returnto = this.$route.query.returnto
     console.log('Return to', returnto)
@@ -19,7 +18,7 @@ export default {
     const code = this.$route.query.code
     console.log('Auth code', code)
 
-    if (me) {
+    if (this.me) {
       // We are logged in.  Go back to where we want to be.
       console.log('Already logged in')
       if (returnto) {

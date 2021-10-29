@@ -130,12 +130,7 @@ export default {
 
     if (this.pconly && !value) {
       // If we are logged in then we may have a known location to use as the default.
-      value =
-        this.$store.getters['auth/user'] &&
-        this.$store.getters['auth/user'].settings &&
-        this.$store.getters['auth/user'].settings.mylocation
-          ? this.$store.getters['auth/user'].settings.mylocation.name
-          : null
+      value = this.mylocation
     }
 
     if (this.pconly && !value && !this.noStore) {

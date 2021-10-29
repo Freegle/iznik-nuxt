@@ -206,9 +206,7 @@ export default {
     },
     async view() {
       if (this.recordView) {
-        const me = this.$store.getters['auth/user']
-
-        if (me) {
+        if (this.me) {
           await this.$store.dispatch('messages/view', {
             id: this.id
           })

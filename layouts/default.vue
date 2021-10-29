@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import nchanHelper from '@/mixins/nchanHelper'
 import replyToPost from '@/mixins/replyToPost'
 import LocalStorageMonitor from '~/components/LocalStorageMonitor'
 import BouncingEmail from '~/components/BouncingEmail'
@@ -45,11 +44,10 @@ export default {
     ExternalLink,
     MainHeader
   },
-  mixins: [nchanHelper, replyToPost],
+  mixins: [replyToPost],
   data: function() {
     return {
       complete: false,
-      nchan: null,
       timeTimer: null,
       unreadNotificationCount: 0,
       chatCount: 0
@@ -100,9 +98,7 @@ export default {
       l.style.display = 'none'
     }
 
-    const me = this.$store.getters['auth/user']
-
-    if (me && me.id) {
+    if (this.me) {
       // Get chats and poll regularly for new ones
       this.$store.dispatch('chats/fetchLatestChats')
 
@@ -114,9 +110,9 @@ export default {
       // Set the build date.  This may get superceded by Sentry releases, but it does little harm to add it in.
       this.$sentry.setExtra('builddate', process.env.BUILD_DATE)
 
-      if (me) {
+      if (this.me) {
         // Set the context for sentry so that we know which users are having errors.
-        this.$sentry.setUser({ userid: me.id })
+        this.$sentry.setUser({ userid: this.myid })
 
         // eslint-disable-next-line no-undef
         if (typeof __insp !== 'undefined') {
@@ -124,7 +120,7 @@ export default {
           __insp.push([
             'tagSession',
             {
-              userid: me.id,
+              userid: this.myid,
               builddate: process.env.BUILD_DATE
             }
           ])

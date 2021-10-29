@@ -83,14 +83,8 @@ export default {
     }
   },
   mounted() {
-    const me = this.$store.getters['auth/user']
-    if (
-      me &&
-      me.settings &&
-      me.settings.mylocation &&
-      me.settings.mylocation.name
-    ) {
-      this.location = me.settings.mylocation.name
+    if (this.mylocation) {
+      this.location = this.mylocation.name
     }
 
     if (this.location) {

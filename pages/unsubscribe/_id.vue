@@ -146,9 +146,7 @@ export default {
   },
   methods: {
     unsubscribe() {
-      const me = this.$store.getters['auth/user']
-
-      if (!me) {
+      if (!this.me) {
         // If we're trying to do this, we must have logged in at some point in the past, even if not on this device
         // and therefore not according to our store.  Set that, which will force us to show the sign in rather than
         // sign up variant of the login modal.
@@ -161,11 +159,9 @@ export default {
     async leave() {
       this.leaving = true
 
-      const me = this.$store.getters['auth/user']
-
       if (this.groupid) {
         await this.$store.dispatch('auth/leaveGroup', {
-          userid: me.id,
+          userid: this.myid,
           groupid: this.groupid
         })
       }
