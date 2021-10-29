@@ -305,11 +305,7 @@ export default {
       this.$router.push('/')
     },
     async showAboutMe() {
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['me'],
-        force: true
-      })
-
+      await this.fetchMe(['me'], true)
       this.$refs.aboutMeModal.show()
     },
     maybeReload(route) {
@@ -327,10 +323,7 @@ export default {
     },
     async getCounts() {
       await this.$store.dispatch('newsfeed/count')
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['openposts'],
-        force: true
-      })
+      await this.fetchMe(['openposts'], true)
 
       setTimeout(this.getCounts, 60000)
     }

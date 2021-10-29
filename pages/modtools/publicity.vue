@@ -44,6 +44,7 @@ export default {
     await this.$store.dispatch('publicity/fetch', {
       reviewed: 0
     })
+    console.log('Fetched publicity')
   }
 }
 </script>

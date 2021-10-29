@@ -154,10 +154,7 @@ export default {
       return this.busy.indexOf(groupid) !== -1
     },
     updateWork() {
-      this.$store.dispatch('auth/fetchUser', {
-        components: ['work'],
-        force: true
-      })
+      this.fetchMe(['work'])
     }
   }
 }

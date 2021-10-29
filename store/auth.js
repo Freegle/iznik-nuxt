@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import { LoginError, SignUpError } from '../api/BaseAPI'
 
-let first = true
-
 export const state = () => ({
   forceLogin: false,
   user: null,
@@ -290,112 +288,82 @@ export const actions = {
   },
 
   async fetchUser({ commit, store, dispatch, state }, params) {
-    const lastfetch = state.userFetched
+    // We're so vain, we probably think this call is about us.
+    // Get the current work so we can compare counts.
+    const currentTotal = countWork(state.work)
+    const currentData = JSON.stringify(state.work)
 
-    params = params || {
-      components: ['me', 'groups']
-    }
+    const {
+      me,
+      persistent,
+      groups,
+      work,
+      discourse
+    } = await this.$api.session.fetch(params)
 
-    // Always fetch the number of replies we're expecting.
-    params.components.push('expectedreplies')
-
-    // If we have recently fetched the user without some information, but we want it now, then ensure we refetch.
-    for (const component of params.components) {
-      if (component !== 'me' && state.user && !state.user[component]) {
-        params.force = true
-      }
-    }
+    const newTotal = countWork(work)
 
     if (
-      !first &&
-      !params.force &&
-      lastfetch &&
-      Date.now() - lastfetch < 30000
+      work &&
+      newTotal > currentTotal &&
+      state.user &&
+      (!state.user.settings ||
+        !Object.keys(state.user.settings).includes('playbeep') ||
+        state.user.settings.playbeep)
     ) {
-      // We have fetched the user pretty recently.
-    } else {
-      // We're so vain, we probably think this call is about us.
-      first = false
+      // Only trigger this when the counts increase.  There's a minor timing
+      // window where a message could arrive as one is deleted, leaving the
+      // counts the same, but this will resolve itself when our current
+      // count drops to zero, or worst case when we refresh.
+      const sound = new Audio('/alert.wav')
 
-      // Set the time now; this avoids multiple fetches at the start of page loads.
-      commit('setFetched', Date.now())
+      try {
+        // Some browsers prevent us using play unless in response to a
+        // user gesture, so catch any exception.
+        console.log(
+          'Play beep',
+          newTotal,
+          currentTotal,
+          currentData,
+          JSON.stringify(work)
+        )
 
-      // Get the current work so we can compare counts.
-      const currentTotal = countWork(state.work)
-      const currentData = JSON.stringify(state.work)
+        await sound.play()
+      } catch (e) {
+        console.log('Failed to play beep', e.message)
+      }
+    }
 
-      const {
-        me,
-        persistent,
-        groups,
-        work,
-        discourse
-      } = await this.$api.session.fetch(params)
+    if (me) {
+      // Save the persistent session token.
+      me.persistent = persistent
 
-      const newTotal = countWork(work)
-
-      if (
-        work &&
-        newTotal > currentTotal &&
-        state.user &&
-        (!state.user.settings ||
-          !Object.keys(state.user.settings).includes('playbeep') ||
-          state.user.settings.playbeep)
-      ) {
-        // Only trigger this when the counts increase.  There's a minor timing
-        // window where a message could arrive as one is deleted, leaving the
-        // counts the same, but this will resolve itself when our current
-        // count drops to zero, or worst case when we refresh.
-        const sound = new Audio('/alert.wav')
-
-        try {
-          // Some browsers prevent us using play unless in response to a
-          // user gesture, so catch any exception.
-          console.log(
-            'Play beep',
-            newTotal,
-            currentTotal,
-            currentData,
-            JSON.stringify(work)
-          )
-
-          await sound.play()
-        } catch (e) {
-          console.log('Failed to play beep', e.message)
-        }
+      if (groups && groups.length) {
+        me.groups = groups
+        commit('setGroups', groups)
+      } else if (params.components.indexOf('groups') !== -1) {
+        // We asked for groups but got none, so we're not a member of any.
+        commit('setGroups', [])
       }
 
-      if (me) {
-        // Save the persistent session token.
-        me.persistent = persistent
+      // Set the user, which will trigger various re-rendering if we were required to be logged in.
+      commit('setUser', me, params.components)
+      commit('addRelated', me.id)
+      commit('forceLogin', false)
 
-        if (groups && groups.length) {
-          me.groups = groups
-          commit('setGroups', groups)
-        } else if (params.components.indexOf('groups') !== -1) {
-          // We asked for groups but got none, so we're not a member of any.
-          commit('setGroups', [])
-        }
+      // Save off our current email from the account for use in post composing, in case we have changed it since
+      // we last used this device.
+      dispatch('compose/setEmail', me.email, {
+        root: true
+      })
+    }
 
-        // Set the user, which will trigger various re-rendering if we were required to be logged in.
-        commit('setUser', me, params.components)
-        commit('addRelated', me.id)
-        commit('forceLogin', false)
+    if (work) {
+      commit('setWork', work)
+    }
 
-        // Save off our current email from the account for use in post composing, in case we have changed it since
-        // we last used this device.
-        dispatch('compose/setEmail', me.email, {
-          root: true
-        })
-      }
-
-      if (work) {
-        commit('setWork', work)
-      }
-
-      if (discourse) {
-        commit('setDiscourse', discourse)
-      }
+    if (discourse) {
+      commit('setDiscourse', discourse)
     }
   },
 
@@ -421,8 +389,7 @@ export const actions = {
   async saveAndGet({ commit, dispatch, state }, params) {
     await this.$api.session.save(params)
     await dispatch('fetchUser', {
-      components: NONMIN,
-      force: true
+      components: NONMIN
     })
     return state.user
   },
@@ -434,8 +401,7 @@ export const actions = {
   async leaveGroup({ commit, dispatch, state }, params) {
     await this.$api.memberships.leaveGroup(params)
     await dispatch('fetchUser', {
-      components: NONMIN,
-      force: true
+      components: NONMIN
     })
     return state.user
   },
@@ -443,8 +409,7 @@ export const actions = {
   async joinGroup({ commit, dispatch, state }, params) {
     await this.$api.memberships.joinGroup(params)
     await dispatch('fetchUser', {
-      components: NONMIN,
-      force: true
+      components: NONMIN
     })
     return state.user
   },

@@ -104,10 +104,7 @@ export default {
     this.key = this.$route.params.key
   },
   async mounted() {
-    await this.$store.dispatch('auth/fetchUser', {
-      components: ['me'],
-      force: true
-    })
+    await this.fetchMe(['me'])
 
     this.email = this.me.email
 

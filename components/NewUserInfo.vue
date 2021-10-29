@@ -72,9 +72,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('auth/fetchUser', {
-      components: ['me', 'groups']
-    })
+    this.fetchMe(['me', 'groups'])
   },
   methods: {
     async setPassword() {
@@ -108,9 +106,7 @@ export default {
         }
       }
 
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['me', 'groups']
-      })
+      this.fetchMe(['me', 'groups'])
 
       this.emailFrequency = frequency
     },

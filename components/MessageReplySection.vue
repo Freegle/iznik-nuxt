@@ -206,12 +206,7 @@ export default {
           // We registered a new user and logged in.
           this.$store.dispatch('auth/loggedInEver', true)
 
-          console.log('New user')
-          await this.$store.dispatch('auth/fetchUser', {
-            components: ['me'],
-            force: true
-          })
-          console.log('Fetched')
+          await this.fetchMe(['me'], true)
 
           // Show the new user modal.
           this.newUserPassword = ret.password

@@ -226,10 +226,7 @@ export default {
         this.created = false
       }, 2000)
 
-      this.$store.dispatch('auth/fetchUser', {
-        components: ['work'],
-        force: true
-      })
+      this.fetchMe(['work'])
     },
     async fetch(groupid) {
       await this.$store.dispatch('admins/clear')

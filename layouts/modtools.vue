@@ -243,11 +243,7 @@ export default {
       this.$refs.loginModal.show()
     },
     async checkWork() {
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['work'],
-        force: true
-      })
-
+      await this.fetchMe(['work'], true)
       setTimeout(this.checkWork, 30000)
     },
     discourse(e) {

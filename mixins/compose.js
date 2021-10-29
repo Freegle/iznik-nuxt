@@ -271,10 +271,7 @@ export default {
 
             // Fetch the session so that we know we're logged in, and so that we have permission to fetch messages
             // below.
-            await this.$store.dispatch('auth/fetchUser', {
-              components: ['me', 'groups'],
-              force: true
-            })
+            await this.fetchMe(['groups'], true)
           }
         })
 

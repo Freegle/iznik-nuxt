@@ -216,10 +216,7 @@ export default {
         id: this.admin.id
       })
 
-      this.$store.dispatch('auth/fetchUser', {
-        components: ['work'],
-        force: true
-      })
+      this.fetchMe(['work'])
     }
   }
 }

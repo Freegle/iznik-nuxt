@@ -338,9 +338,7 @@ export default {
       console.error('Save last route failed', e)
     }
 
-    await this.$store.dispatch('auth/fetchUser', {
-      components: ['me', 'groups']
-    })
+    await this.fetchMe(['me', 'groups'])
 
     // Ensure we have no cached messages for other searches/groups
     this.$store.dispatch('messages/clear')

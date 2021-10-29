@@ -39,7 +39,7 @@ export default {
         .post(process.env.API + '/session', {
           yahoocodelogin: code
         })
-        .then(result => {
+        .then(async function(result) {
           const ret = result.data
           console.log('Yahoologin session login returned', ret)
           if (ret.ret === 0) {
@@ -49,7 +49,8 @@ export default {
 
             // We are logged in.  Get the logged in user
             console.log('Logged in')
-            this.$store.dispatch('auth/fetchUser')
+            await this.fetchMe(['me', 'groups'], true)
+
             this.pleaseLogin = false
 
             if (returnto) {

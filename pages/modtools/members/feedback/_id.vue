@@ -186,10 +186,7 @@ export default {
           }
         })
 
-        this.$store.dispatch('auth/fetchUser', {
-          components: ['work'],
-          force: true
-        })
+        this.fetchMe(['work'])
       })
     }
   }
