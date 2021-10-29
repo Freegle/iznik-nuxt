@@ -294,20 +294,17 @@ export default {
       return this.$store.getters['auth/groupById'](this.groupid)
     },
     modconfig() {
-      const groups = this.$store.getters['auth/groups']
       let ret = null
       let configid = null
 
-      if (groups) {
-        groups.forEach(group => {
-          if (group.id === this.groupid) {
-            configid = group.configid
-          }
-        })
+      this.mygroups.forEach(group => {
+        if (group.id === this.groupid) {
+          configid = group.configid
+        }
+      })
 
-        const configs = this.$store.getters['modconfigs/configs']
-        ret = configs.find(config => config.id === configid)
-      }
+      const configs = this.$store.getters['modconfigs/configs']
+      ret = configs.find(config => config.id === configid)
 
       return ret
     },

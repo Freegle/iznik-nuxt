@@ -93,10 +93,9 @@ export default {
       // If we have not selected a group, check if we are only a mod on one.  If so, then go to that group so that
       // we don't need to bother selecting it.  We do this here because the interaction with createGroupRoute would
       // be complex.
-      const groups = this.$store.getters['auth/groups']
       let countmod = 0
       let lastmod = null
-      groups.forEach(g => {
+      this.mygroups.forEach(g => {
         if (g.role === 'Moderator' || g.role === 'Owner') {
           countmod++
           lastmod = g.id

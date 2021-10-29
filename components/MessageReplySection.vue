@@ -253,14 +253,13 @@ export default {
           // - post our reply
           // - show/go to the open the popup chat so they see what happened
           this.replying = true
-          const myGroups = this.$store.getters['auth/groups']
           let found = false
           let tojoin = null
 
           for (const messageGroup of this.message.groups) {
             tojoin = messageGroup.groupid
-            Object.keys(myGroups).forEach(key => {
-              const group = myGroups[key]
+            Object.keys(this.mygroups).forEach(key => {
+              const group = this.mygroups[key]
 
               if (messageGroup.groupid === group.id) {
                 found = true

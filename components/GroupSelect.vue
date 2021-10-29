@@ -124,7 +124,7 @@ export default {
           return g.id
         })
       } else {
-        ret = this.$store.getters['auth/groups']
+        ret = this.mygroups
       }
 
       ret = ret || []

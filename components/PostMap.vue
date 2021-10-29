@@ -320,9 +320,6 @@ export default {
 
       return sorted
     },
-    mygroups() {
-      return this.$store.getters['auth/groups']
-    },
     messagesForMap() {
       return this.mapObject &&
         this.messageLocations &&

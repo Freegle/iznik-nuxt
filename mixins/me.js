@@ -17,6 +17,12 @@ Vue.mixin({
     loggedIn() {
       return this.me !== null
     },
+    mygroups() {
+      return this.me ? this.$store.getters['auth/groups'] : []
+    },
+    anyGroups() {
+      return this.mygroups.length > 0
+    },
     mylocation() {
       return this.me &&
         this.me.settings &&
@@ -101,6 +107,11 @@ Vue.mixin({
     }
   },
   methods: {
+    oneOfMyGroups(groupid) {
+      return this.mygroups.find(g => {
+        return g.id === groupid
+      })
+    },
     hasPermission(perm) {
       const perms = this.me ? this.me.permissions : null
       return perms && perms.indexOf(perm) !== -1

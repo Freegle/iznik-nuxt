@@ -77,9 +77,7 @@ export default {
     groupname() {
       if (this.groupid) {
         // Find selected in our groups
-        const myGroups = this.$store.getters['auth/groups']
-
-        for (const group of myGroups) {
+        for (const group of this.mygroups) {
           if (group.id === this.groupid) {
             return group.namedisplay
           }

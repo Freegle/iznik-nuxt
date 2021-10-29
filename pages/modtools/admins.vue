@@ -152,10 +152,9 @@ export default {
   },
   computed: {
     pendingcount() {
-      const myGroups = this.$store.getters['auth/groups']
       let count = 0
 
-      for (const group of myGroups) {
+      for (const group of this.mygroups) {
         if (
           group.type === 'Freegle' &&
           (!this.modonly ||

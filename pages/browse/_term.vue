@@ -126,15 +126,11 @@ export default {
   methods: {
     async calculateInitialMapBounds() {
       // Get our list of groups
-      let groups = this.$store.getters['auth/groups']
-
-      if (!groups) {
+      if (this.anyGroups) {
         await this.$store.dispatch('auth/fetchUser', {
           components: ['me', 'groups']
         })
       }
-
-      groups = this.$store.getters['auth/groups']
 
       // Find a bounding box which is completely full of the group that our own location is within,
       // if we can.
@@ -150,7 +146,7 @@ export default {
         mylat = this.me.lat
         mylng = this.me.lng
 
-        groups.forEach(g => {
+        this.mygroups.forEach(g => {
           if (g.polygon) {
             try {
               const wkt = new Wkt.Wkt()
@@ -205,7 +201,7 @@ export default {
       nelat = null
       nelng = null
 
-      groups.forEach(group => {
+      this.mygroups.forEach(group => {
         if (group.onmap && group.publish) {
           if (
             group.role === 'Member' ||

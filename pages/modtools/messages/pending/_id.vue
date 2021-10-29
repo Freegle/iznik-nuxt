@@ -80,9 +80,7 @@ export default {
 
     // Ask for affiliation not too frequently.
     if (!lastask || now - lastask > 7 * 24 * 60 * 60 * 1000) {
-      const myGroups = this.shuffle(this.$store.getters['auth/groups'])
-
-      for (const group of myGroups) {
+      for (const group of this.mygroups) {
         if (
           group.type === 'Freegle' &&
           (group.role === 'Owner' || group.role === 'Moderator')

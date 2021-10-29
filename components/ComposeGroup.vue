@@ -41,9 +41,7 @@ export default {
       }
 
       // Add any other groups we are a member of and might want to select.
-      const groups = this.$store.getters['auth/groups']
-
-      for (const group of groups) {
+      for (const group of this.mygroups) {
         if (group.type === 'Freegle') {
           if (!ids[group.id]) {
             ret.push({

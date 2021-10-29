@@ -114,8 +114,7 @@ export default {
   },
   computed: {
     groupCount() {
-      const myGroups = this.$store.getters['auth/groups']
-      return myGroups ? myGroups.length : 0
+      return this.mygroups.length
     }
   },
   watch: {

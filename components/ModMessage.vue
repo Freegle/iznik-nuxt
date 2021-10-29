@@ -432,8 +432,7 @@ export default {
 
       if (this.message && this.message.groups && this.message.groups.length) {
         const groupid = this.message.groups[0].groupid
-        const groups = this.$store.getters['auth/groups']
-        ret = groups.find(g => parseInt(g.id) === groupid)
+        ret = this.mygroups.find(g => parseInt(g.id) === groupid)
       }
 
       return ret
@@ -490,20 +489,17 @@ export default {
       return ret
     },
     modconfig() {
-      const groups = this.$store.getters['auth/groups']
       let ret = null
       let configid = null
 
-      if (groups) {
-        groups.forEach(group => {
-          if (group.id === this.groupid) {
-            configid = group.configid
-          }
-        })
+      this.mygroups.forEach(group => {
+        if (group.id === this.groupid) {
+          configid = group.configid
+        }
+      })
 
-        const configs = this.$store.getters['modconfigs/configs']
-        ret = configs.find(config => config.id === configid)
-      }
+      const configs = this.$store.getters['modconfigs/configs']
+      ret = configs.find(config => config.id === configid)
 
       return ret
     },
