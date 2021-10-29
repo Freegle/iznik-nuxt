@@ -25,9 +25,7 @@ export default {
       ]
     },
     group() {
-      return this.groupid
-        ? this.$store.getters['auth/groupById'](this.groupid)
-        : null
+      return this.myGroup(this.groupid)
     },
     groupid() {
       let ret = null

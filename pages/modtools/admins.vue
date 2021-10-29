@@ -154,7 +154,7 @@ export default {
     pendingcount() {
       let count = 0
 
-      for (const group of this.mygroups) {
+      for (const group of this.myGroups) {
         if (
           group.type === 'Freegle' &&
           (!this.modonly ||

@@ -146,7 +146,7 @@ export default {
         mylat = this.me.lat
         mylng = this.me.lng
 
-        this.mygroups.forEach(g => {
+        this.myGroups.forEach(g => {
           if (g.polygon) {
             try {
               const wkt = new Wkt.Wkt()
@@ -201,7 +201,7 @@ export default {
       nelat = null
       nelng = null
 
-      this.mygroups.forEach(group => {
+      this.myGroups.forEach(group => {
         if (group.onmap && group.publish) {
           if (
             group.role === 'Member' ||

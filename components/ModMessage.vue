@@ -432,7 +432,7 @@ export default {
 
       if (this.message && this.message.groups && this.message.groups.length) {
         const groupid = this.message.groups[0].groupid
-        ret = this.mygroups.find(g => parseInt(g.id) === groupid)
+        ret = this.myGroups.find(g => parseInt(g.id) === groupid)
       }
 
       return ret
@@ -492,7 +492,7 @@ export default {
       let ret = null
       let configid = null
 
-      this.mygroups.forEach(group => {
+      this.myGroups.forEach(group => {
         if (group.id === this.groupid) {
           configid = group.configid
         }
@@ -589,7 +589,7 @@ export default {
       let check = false
 
       this.message.groups.forEach(g => {
-        const group = this.$store.getters['auth/groupById'](g.groupid)
+        const group = this.myGroup(g.groupid)
 
         if (
           group &&

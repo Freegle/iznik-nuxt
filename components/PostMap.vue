@@ -371,7 +371,7 @@ export default {
 
       if (groupid) {
         // Use the bounding box for the group.
-        const group = this.$store.getters['auth/groupById'](groupid)
+        const group = this.myGroup(groupid)
 
         if (group.bbox) {
           const bounds = new L.LatLngBounds([

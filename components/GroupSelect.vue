@@ -124,7 +124,7 @@ export default {
           return g.id
         })
       } else {
-        ret = this.mygroups
+        ret = this.myGroups
       }
 
       ret = ret || []

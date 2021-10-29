@@ -62,7 +62,7 @@ export default {
   },
   computed: {
     group() {
-      return this.$store.getters['auth/groupById'](this.groupid)
+      return this.myGroup(this.groupid)
     }
   },
   methods: {

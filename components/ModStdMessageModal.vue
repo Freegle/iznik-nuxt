@@ -380,7 +380,7 @@ export default {
     },
     substitutionStrings(text) {
       const self = this
-      const group = this.$store.getters['auth/groupById'](this.groupid)
+      const group = this.myGroup(this.groupid)
 
       if (text) {
         text = text.replace(/\$networkname/g, 'Freegle')

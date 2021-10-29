@@ -150,7 +150,7 @@ export default {
     },
     groupname() {
       let ret = null
-      const group = this.$store.getters['auth/groupById'](this.admin.groupid)
+      const group = this.myGroup(this.admin.groupid)
 
       if (group) {
         ret = group.namedisplay

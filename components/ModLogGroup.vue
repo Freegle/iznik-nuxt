@@ -40,7 +40,7 @@ export default {
 
         if (!ret) {
           // We might know it - should be one of ours if we're looking at the logs.
-          ret = this.$store.getters['auth/groupById'](this.log.groupid)
+          ret = this.myGroup(this.log.groupid)
         }
 
         return ret

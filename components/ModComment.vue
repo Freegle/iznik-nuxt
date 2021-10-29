@@ -64,7 +64,7 @@ export default {
       let ret = null
 
       if (this.comment.groupid) {
-        ret = this.$store.getters['auth/groupById'](this.comment.groupid)
+        ret = this.myGroup(this.comment.groupid)
 
         if (!ret) {
           ret = this.$store.getters['group/get'](this.comment.groupid)

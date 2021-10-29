@@ -291,13 +291,13 @@ export default {
       return this.member.groupid
     },
     group() {
-      return this.$store.getters['auth/groupById'](this.groupid)
+      return this.myGroup(this.groupid)
     },
     modconfig() {
       let ret = null
       let configid = null
 
-      this.mygroups.forEach(group => {
+      this.myGroups.forEach(group => {
         if (group.id === this.groupid) {
           configid = group.configid
         }

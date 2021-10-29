@@ -440,7 +440,7 @@ export default {
       return desc
     },
     enabled() {
-      const group = this.$store.getters['auth/groupById'](this.groupid)
+      const group = this.myGroup(this.groupid)
 
       let ret = true
 

@@ -95,7 +95,7 @@ export default {
       // be complex.
       let countmod = 0
       let lastmod = null
-      this.mygroups.forEach(g => {
+      this.myGroups.forEach(g => {
         if (g.role === 'Moderator' || g.role === 'Owner') {
           countmod++
           lastmod = g.id

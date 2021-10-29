@@ -58,7 +58,7 @@ export default {
       const ret = []
 
       // Cloning to avoid some strange issues which cause loops.
-      const groups = cloneDeep(this.mygroups)
+      const groups = cloneDeep(this.myGroups)
 
       this.item.uids.forEach(uid => {
         for (const group of groups) {

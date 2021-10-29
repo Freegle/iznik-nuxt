@@ -258,8 +258,8 @@ export default {
 
           for (const messageGroup of this.message.groups) {
             tojoin = messageGroup.groupid
-            Object.keys(this.mygroups).forEach(key => {
-              const group = this.mygroups[key]
+            Object.keys(this.myGroups).forEach(key => {
+              const group = this.myGroups[key]
 
               if (messageGroup.groupid === group.id) {
                 found = true

@@ -130,7 +130,7 @@ export default {
 
     if (this.pconly && !value) {
       // If we are logged in then we may have a known location to use as the default.
-      value = this.mylocation
+      value = this.myLocation
     }
 
     if (this.pconly && !value && !this.noStore) {
@@ -157,7 +157,7 @@ export default {
       this.$emit('selected', loc.data.locations[0])
     }
 
-    this.mylocation = value
+    this.myLocation = value
 
     if (this.$refs.autocomplete) {
       // Might have gone from DOM by now due to navigation.

@@ -41,7 +41,7 @@ export default {
       }
 
       // Add any other groups we are a member of and might want to select.
-      for (const group of this.mygroups) {
+      for (const group of this.myGroups) {
         if (group.type === 'Freegle') {
           if (!ids[group.id]) {
             ret.push({

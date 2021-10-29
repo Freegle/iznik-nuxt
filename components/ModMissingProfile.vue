@@ -30,7 +30,7 @@ export default {
     missing() {
       const ret = []
 
-      for (const group of this.mygroups) {
+      for (const group of this.myGroups) {
         if (
           group.type === 'Freegle' &&
           (group.role === 'Moderator' || group.role === 'Owner') &&

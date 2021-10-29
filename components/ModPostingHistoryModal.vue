@@ -70,7 +70,7 @@ export default {
         })
 
         ret.forEach(message => {
-          const group = this.$store.getters['auth/groupById'](message.groupid)
+          const group = this.myGroup(message.groupid)
           message.groupname = group ? group.namedisplay : '#' + message.groupid
         })
 

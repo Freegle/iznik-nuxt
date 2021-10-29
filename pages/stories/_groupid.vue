@@ -77,7 +77,7 @@ export default {
     groupname() {
       if (this.groupid) {
         // Find selected in our groups
-        for (const group of this.mygroups) {
+        for (const group of this.myGroups) {
           if (group.id === this.groupid) {
             return group.namedisplay
           }

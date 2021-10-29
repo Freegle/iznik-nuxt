@@ -114,7 +114,7 @@ export default {
   },
   computed: {
     groupCount() {
-      return this.mygroups.length
+      return this.myGroups.length
     }
   },
   watch: {

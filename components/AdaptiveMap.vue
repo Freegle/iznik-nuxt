@@ -346,8 +346,8 @@ export default {
 
       if (this.selectedGroup) {
         ret = this.$store.getters['group/get'](this.selectedGroup)
-      } else if (this.mygroups && this.mygroups.length === 1) {
-        ret = this.$store.getters['group/get'](this.mygroups[0].id)
+      } else if (this.myGroups && this.myGroups.length === 1) {
+        ret = this.$store.getters['group/get'](this.myGroups[0].id)
       }
 
       return ret
@@ -645,10 +645,10 @@ export default {
     this.postMapInitialBounds = this.locked ? this.locked : this.initialBounds
     // this.postMapInitialBounds = this.initialBounds
 
-    if (this.mygroups && this.mygroups.length === 1) {
+    if (this.myGroups && this.myGroups.length === 1) {
       // We will be showing the single group; make sure we have any description.
       this.$store.dispatch('group/fetch', {
-        id: this.mygroups[0].id
+        id: this.myGroups[0].id
       })
     }
 

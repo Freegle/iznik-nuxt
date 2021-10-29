@@ -120,8 +120,8 @@ export default {
 
       if (this.suppliedLocation) {
         ret = this.suppliedLocation
-      } else if (this.mylocation) {
-        ret = this.mylocation
+      } else if (this.myLocation) {
+        ret = this.myLocation
       }
 
       return ret

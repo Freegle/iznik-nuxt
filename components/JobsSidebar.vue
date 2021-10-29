@@ -83,8 +83,8 @@ export default {
     }
   },
   mounted() {
-    if (this.mylocation) {
-      this.location = this.mylocation.name
+    if (this.myLocation) {
+      this.location = this.myLocation.name
     }
 
     if (this.location) {
