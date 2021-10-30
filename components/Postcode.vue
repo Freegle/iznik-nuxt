@@ -111,7 +111,7 @@ export default {
     return {
       source: process.env.API + '/locations',
       results: [],
-      mylocation: null,
+      composeLocation: null,
       locating: false,
       locationFailed: false,
       showToolTip: false,
@@ -157,7 +157,7 @@ export default {
       this.$emit('selected', loc.data.locations[0])
     }
 
-    this.myLocation = value
+    this.composeLocation = value
 
     if (this.$refs.autocomplete) {
       // Might have gone from DOM by now due to navigation.
