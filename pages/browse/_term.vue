@@ -50,7 +50,6 @@
 </template>
 
 <script>
-import leafletPip from '@mapbox/leaflet-pip'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
@@ -63,14 +62,6 @@ const SidebarRight = () => import('~/components/SidebarRight')
 const ExpectedRepliesWarning = () =>
   import('~/components/ExpectedRepliesWarning')
 const MicroVolunteering = () => import('~/components/MicroVolunteering.vue')
-
-let Wkt = null
-let L = null
-
-if (process.browser) {
-  Wkt = require('wicket')
-  L = require('leaflet')
-}
 
 export default {
   components: {
@@ -142,26 +133,17 @@ export default {
         mylng = this.me.lng
 
         this.myGroups.forEach(g => {
-          if (g.polygon) {
-            try {
-              const wkt = new Wkt.Wkt()
-              wkt.read(g.polygon)
-              // eslint-disable-next-line new-cap
-              const geoJSON = new L.geoJSON(wkt.toJson())
-              const inside = leafletPip.pointInLayer(
-                new L.LatLng(mylat, mylng),
-                geoJSON
-              )
-
-              if (inside.length && g.bbox) {
-                swlat = (g.bbox.swlat + g.bbox.nelat) / 2
-                swlng = g.bbox.swlng
-                nelat = (g.bbox.swlat + g.bbox.nelat) / 2
-                nelng = g.bbox.nelng
-              }
-            } catch (e) {
-              console.log('WKT error', location, e)
-            }
+          if (
+            g.bbox &&
+            mylat >= g.bbox.swlat &&
+            mylat <= g.bbox.nelat &&
+            mylng >= g.bbox.swlng &&
+            mylng <= g.bbox.nelng
+          ) {
+            swlat = (g.bbox.swlat + g.bbox.nelat) / 2
+            swlng = g.bbox.swlng
+            nelat = (g.bbox.swlat + g.bbox.nelat) / 2
+            nelng = g.bbox.nelng
           }
         })
       }
