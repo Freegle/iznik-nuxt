@@ -1,4 +1,6 @@
-export default {
+import Vue from 'vue'
+
+Vue.mixin({
   methods: {
     waitForRef(name, callback) {
       // When a component is conditional using a v-if, it sometimes takes more than one tick for it to appear.  So
@@ -12,4 +14,4 @@ export default {
       }
     }
   }
-}
+})
