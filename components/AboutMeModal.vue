@@ -4,7 +4,7 @@
       <b-modal
         id="aboutmemodal"
         v-model="showModal"
-        title="Complete your public profile"
+        title="Why not complete your public profile?"
         size="lg"
         no-stacking
       >
@@ -31,7 +31,7 @@
             placeholder="Tell us a bit about yourself!"
             rows="8"
           />
-          <notice-message variant="info" class="mt-1">
+          <notice-message variant="info" class="mt-2">
             <v-icon name="globe-europe" /> Other freeglers will see what you put here, in your profile and on ChitChat.  That's the point!
           </notice-message>
         </template>

@@ -39,6 +39,9 @@
           :show-many="false"
           can-hide
         />
+        <client-only>
+          <AboutMeModal ref="aboutMeModal" />
+        </client-only>
       </b-col>
       <b-col cols="0" lg="3" class="p-0 pl-1">
         <Visible :at="['lg', 'xl']">
@@ -53,8 +56,11 @@
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
+import dayjs from 'dayjs'
+
 import Visible from '../../components/Visible'
 import AdaptiveMap from '~/components/AdaptiveMap'
+import AboutMeModal from '~/components/AboutMeModal'
 
 const GlobalWarning = () => import('~/components/GlobalWarning')
 const SidebarLeft = () => import('~/components/SidebarLeft')
@@ -71,7 +77,8 @@ export default {
     GlobalWarning,
     SidebarLeft,
     SidebarRight,
-    ExpectedRepliesWarning
+    ExpectedRepliesWarning,
+    AboutMeModal
   },
   mixins: [loginRequired, buildHead, map],
   data: function() {
@@ -109,6 +116,25 @@ export default {
       })
 
       this.showRest = true
+
+      if (this.me && (!this.me.aboutme || !this.me.aboutme.text)) {
+        const daysago = dayjs().diff(dayjs(this.me.added), 'days')
+
+        if (daysago > 7) {
+          // Nudge to ask people to to introduce themselves.
+          const lastask = this.$store.getters['misc/get']('lastaboutmeask')
+          const now = new Date().getTime()
+
+          if (!lastask || now - lastask > 90 * 24 * 60 * 60 * 1000) {
+            this.$refs.aboutMeModal.show()
+
+            this.$store.dispatch('misc/set', {
+              key: 'lastaboutmeask',
+              value: now
+            })
+          }
+        }
+      }
     }, 5000)
   },
   created() {
