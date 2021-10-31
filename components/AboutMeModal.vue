@@ -4,8 +4,7 @@
       <b-modal
         id="aboutmemodal"
         v-model="showModal"
-        title="Why not tell other freeglers a bit about yourself?"
-        alt="Why not tell other freeglers a bit about yourself?"
+        title="Complete your public profile"
         size="lg"
         no-stacking
       >
@@ -15,8 +14,17 @@
             and helps get a better response when you're replying to OFFERs.
           </p>
           <p>
-            <strong>No need to say what you're giving/seeking. </strong>This is just to introduce yourself to other people, if
-            you want to.  If you want to talk to someone specific, use the <em>Message</em> link on their profile.
+            <strong>Don't put anything private in here.</strong>
+            It's is public, and it's what everyone on Freegle will see about you.  We'll post it
+            on <em>ChitChat</em> as a way to say hello to everyone, too.
+          </p>
+          <p>
+            It's up to you what you say - why you freegle, general arrangements for collection, hobbies.
+            It'll be visible until you change it in <em>Settings</em>, so write something that'll still make
+            sense in a few months time!
+          </p>
+          <p>
+            If you don't want to do this, that's fine - just click <em>Cancel</em>.
           </p>
           <b-form-textarea
             v-model="text"
