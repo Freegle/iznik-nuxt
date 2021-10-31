@@ -130,7 +130,7 @@ export default {
 
     if (this.pconly && !value) {
       // If we are logged in then we may have a known location to use as the default.
-      value = this.myLocation
+      value = this.myLocation.name
     }
 
     if (this.pconly && !value && !this.noStore) {
