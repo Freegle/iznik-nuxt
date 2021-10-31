@@ -146,6 +146,7 @@ export default {
   },
   methods: {
     async calculateInitialMapBounds() {
+      console.log('Calculate initial bounds')
       await this.fetchMe(['me', 'groups'])
 
       // Find a bounding box which is completely full of the group that our own location is within,
@@ -178,6 +179,17 @@ export default {
         })
       }
 
+      console.log(
+        'After myGroups',
+        this.myGroups,
+        mylat,
+        mylng,
+        swlat,
+        swlng,
+        nelat,
+        nelng
+      )
+
       let bounds = null
 
       if (
@@ -198,58 +210,8 @@ export default {
       }
 
       if (bounds) {
+        console.log('Set initial bounds', bounds)
         this.initialBounds = bounds
-      }
-
-      // Now find the bounds for the initial posts we display.  This needs to cover all the groups within a
-      // reasonable distance of our home location.
-      swlat = null
-      swlng = null
-      nelat = null
-      nelng = null
-
-      this.myGroups.forEach(group => {
-        if (group.onmap && group.publish) {
-          if (
-            group.role === 'Member' ||
-            (!group.mysettings || group.mysettings.active)
-          ) {
-            // For the purposes of the bounding box, we are interested in groups where we are a member or an active
-            // mod.  This excludes groups where we are a backup mod, which may be further away and of less interest.
-            const distAway =
-              mylat !== null
-                ? this.getDistance([group.lat, group.lng], [mylat, mylng])
-                : 0
-
-            if (distAway < 50000 && group.bbox) {
-              swlat =
-                swlat === null
-                  ? group.bbox.swlat
-                  : Math.min(swlat, group.bbox.swlat)
-              swlng =
-                swlng === null
-                  ? group.bbox.swlng
-                  : Math.min(swlng, group.bbox.swlng)
-              nelat =
-                nelat === null
-                  ? group.bbox.nelat
-                  : Math.max(nelat, group.bbox.nelat)
-              nelng =
-                nelng === null
-                  ? group.bbox.nelng
-                  : Math.max(nelng, group.bbox.nelng)
-            }
-          }
-        }
-      })
-
-      if (
-        swlat !== null &&
-        swlng !== null &&
-        nelat !== null &&
-        nelng !== null
-      ) {
-        bounds = [[swlat, swlng], [nelat, nelng]]
       }
     }
   },
