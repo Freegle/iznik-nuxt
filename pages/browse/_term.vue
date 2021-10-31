@@ -146,7 +146,6 @@ export default {
   },
   methods: {
     async calculateInitialMapBounds() {
-      console.log('Calculate initial bounds')
       await this.fetchMe(['me', 'groups'])
 
       // Find a bounding box which is completely full of the group that our own location is within,
@@ -179,17 +178,6 @@ export default {
         })
       }
 
-      console.log(
-        'After myGroups',
-        this.myGroups,
-        mylat,
-        mylng,
-        swlat,
-        swlng,
-        nelat,
-        nelng
-      )
-
       let bounds = null
 
       if (
@@ -210,7 +198,6 @@ export default {
       }
 
       if (bounds) {
-        console.log('Set initial bounds', bounds)
         this.initialBounds = bounds
       }
     }
