@@ -203,6 +203,7 @@
 
 <script>
 // Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.
+import dayjs from 'dayjs'
 import LoginModal from '~/components/LoginModal'
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const ChatMenu = () => import('~/components/ChatMenu')
@@ -272,8 +273,8 @@ export default {
     }
   },
   mounted() {
-    // Look for a custom logo.
     setTimeout(async () => {
+      // Look for a custom logo.
       const res = await this.$axios.get(process.env.API + '/logo')
 
       if (res.status === 200) {
@@ -281,6 +282,25 @@ export default {
 
         if (ret.ret === 0 && ret.logo) {
           this.logo = ret.logo.path.replace(/.*logos/, '/logos')
+        }
+      }
+
+      if (this.me) {
+        const daysago = dayjs().diff(dayjs(this.me.added), 'days')
+
+        if (daysago > 7) {
+          // Nudge to ask people to to introduce themselves.
+          const lastask = this.$store.getters['misc/get']('lastaboutmeask')
+          const now = new Date().getTime()
+
+          if (!lastask || now - lastask > 90 * 24 * 60 * 60 * 1000) {
+            this.$refs.aboutMeModal.show()
+
+            this.$store.dispatch('misc/set', {
+              key: 'lastaboutmeask',
+              value: now
+            })
+          }
         }
       }
     }, 5000)
