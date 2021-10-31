@@ -46,7 +46,6 @@
   </div>
 </template>
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import NoticeMessage from '@/components/NoticeMessage'
 import CommunityEvent from './CommunityEvent'
 import ChatButton from './ChatButton'
@@ -59,7 +58,7 @@ export default {
     CommunityEvent,
     NoticeMessage
   },
-  mixins: [waitForRef],
+
   props: {
     event: {
       type: Object,

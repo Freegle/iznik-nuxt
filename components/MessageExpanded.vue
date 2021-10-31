@@ -62,7 +62,6 @@
 // Need to import rather than async otherwise the render doesn't happen and ref isn't set.
 import Vue from 'vue'
 import { TooltipPlugin } from 'bootstrap-vue'
-import waitForRef from '@/mixins/waitForRef'
 import MessagePromised from '@/components/MessagePromised'
 import MessageActions from '@/components/MessageActions'
 import MessageTextBody from '@/components/MessageTextBody'
@@ -92,7 +91,7 @@ export default {
     MessageHistoryExpanded,
     MessageReplySection
   },
-  mixins: [waitForRef],
+
   props: {
     id: {
       type: Number,

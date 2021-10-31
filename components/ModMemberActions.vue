@@ -27,14 +27,13 @@
   </div>
 </template>
 <script>
-import waitForRef from '../mixins/waitForRef'
 import ModCommentAddModal from './ModCommentAddModal'
 import ModSpammerReport from './ModSpammerReport'
 const ConfirmModal = () => import('./ConfirmModal')
 
 export default {
   components: { ModSpammerReport, ModCommentAddModal, ConfirmModal },
-  mixins: [waitForRef],
+
   props: {
     userid: {
       type: Number,

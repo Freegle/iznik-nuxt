@@ -42,12 +42,11 @@
   </div>
 </template>
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import MessageTag from '@/components/MessageTag'
 
 export default {
   components: { MessageTag },
-  mixins: [waitForRef],
+
   props: {
     id: {
       type: Number,

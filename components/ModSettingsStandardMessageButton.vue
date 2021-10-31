@@ -7,13 +7,12 @@
   </div>
 </template>
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import stdmsgs from '../mixins/stdmsgs'
 import ModSettingsStandardMessageModal from './ModSettingsStandardMessageModal'
 
 export default {
   components: { ModSettingsStandardMessageModal },
-  mixins: [stdmsgs, waitForRef],
+  mixins: [stdmsgs],
   props: {
     stdmsg: {
       type: Object,

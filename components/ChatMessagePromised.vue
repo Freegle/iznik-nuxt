@@ -113,7 +113,6 @@
 
 <script>
 import OutcomeModal from '@/components/OutcomeModal'
-import waitForRef from '../mixins/waitForRef'
 import AddToCalendar from '~/components/AddToCalendar'
 import ChatBase from '~/components/ChatBase'
 import ProfileImage from '~/components/ProfileImage'
@@ -130,7 +129,7 @@ export default {
     PromiseModal
   },
   extends: ChatBase,
-  mixins: [waitForRef],
+
   computed: {
     tryst() {
       return this.otheruser

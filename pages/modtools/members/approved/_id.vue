@@ -45,7 +45,6 @@
 import loginRequired from '@/mixins/loginRequired'
 import modMembersPage from '@/mixins/modMembersPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
-import waitForRef from '@/mixins/waitForRef'
 import ModMember from '../../../../components/ModMember'
 import NoticeMessage from '../../../../components/NoticeMessage'
 import ModMemberSearchbox from '../../../../components/ModMemberSearchbox'
@@ -70,8 +69,7 @@ export default {
   mixins: [
     loginRequired,
     createGroupRoute('modtools/members/approved'),
-    modMembersPage,
-    waitForRef
+    modMembersPage
   ],
   data: function() {
     return {

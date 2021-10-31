@@ -137,7 +137,6 @@
 </template>
 
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import NoticeMessage from './NoticeMessage'
 import twem from '~/assets/js/twem'
 const VolunteerOpportunityModal = () => import('./VolunteerOpportunityModal')
@@ -147,7 +146,7 @@ export default {
     NoticeMessage,
     VolunteerOpportunityModal
   },
-  mixins: [waitForRef],
+
   props: {
     summary: {
       type: Boolean,

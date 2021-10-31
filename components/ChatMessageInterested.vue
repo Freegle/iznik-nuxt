@@ -74,7 +74,6 @@
 </template>
 
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import ChatBase from '~/components/ChatBase'
 import ProfileImage from '~/components/ProfileImage'
 const OutcomeModal = () => import('~/components/OutcomeModal')
@@ -89,7 +88,7 @@ export default {
     ChatMessageSummary
   },
   extends: ChatBase,
-  mixins: [waitForRef],
+
   computed: {
     modtools() {
       return this.$store.getters['misc/get']('modtools')

@@ -147,7 +147,6 @@
 </template>
 <script>
 import MessageMap from '@/components/MessageMap'
-import waitForRef from '../mixins/waitForRef'
 import NoticeMessage from './NoticeMessage'
 import ProfileImage from './ProfileImage'
 import ModPostingHistoryModal from './ModPostingHistoryModal'
@@ -185,7 +184,7 @@ export default {
     ExternalLink,
     Supporter
   },
-  mixins: [waitForRef],
+
   props: {
     member: {
       type: Object,

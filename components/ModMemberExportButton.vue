@@ -32,11 +32,9 @@
 </template>
 <script>
 import saveAs from 'save-file'
-import waitForRef from '@/mixins/waitForRef'
 const createCsvWriter = require('csv-writer').createObjectCsvStringifier
 
 export default {
-  mixins: [waitForRef],
   props: {
     groupid: {
       type: Number,

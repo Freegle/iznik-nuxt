@@ -614,7 +614,6 @@
 
 <script>
 import Vue from 'vue'
-import waitForRef from '@/mixins/waitForRef'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead'
 import EmailValidator from '../../components/EmailValidator'
@@ -661,7 +660,7 @@ export default {
     DonationButton,
     PasswordEntry
   },
-  mixins: [loginRequired, buildHead, waitForRef],
+  mixins: [loginRequired, buildHead],
   data: function() {
     return {
       emailsOn: null,

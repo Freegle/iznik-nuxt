@@ -108,7 +108,6 @@
 </template>
 <script>
 import chat from '@/mixins/chat.js'
-import waitForRef from '@/mixins/waitForRef'
 import Supporter from '~/components/Supporter'
 
 const ChatBlockModal = () => import('./ChatBlockModal')
@@ -126,7 +125,7 @@ export default {
     ChatHideModal,
     ChatReportModal
   },
-  mixins: [waitForRef, chat],
+  mixins: [chat],
   computed: {
     collapsed: {
       get() {

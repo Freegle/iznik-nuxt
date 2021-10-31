@@ -184,6 +184,7 @@ module.exports = {
     { src: '~/mixins/global.js' },
     { src: '~/mixins/filters.js' },
     { src: '~/mixins/me.js' },
+    { src: '~/mixins/waitForRef.js' },
 
     // Our parameters serialize differently from axios defaults
     { src: '~/plugins/axios-serializer.js' },

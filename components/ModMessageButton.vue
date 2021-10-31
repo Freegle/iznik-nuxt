@@ -19,7 +19,6 @@
   </div>
 </template>
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import ConfirmModal from './ConfirmModal'
 import SpinButton from './SpinButton'
 const ModStdMessageModal = () => import('./ModStdMessageModal')
@@ -30,7 +29,7 @@ export default {
     ModStdMessageModal,
     ConfirmModal
   },
-  mixins: [waitForRef],
+
   props: {
     message: {
       type: Object,

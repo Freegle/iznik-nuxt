@@ -38,7 +38,6 @@
 // Need to import rather than async otherwise the render doesn't happen and ref isn't set.
 import Vue from 'vue'
 import { TooltipPlugin } from 'bootstrap-vue'
-import waitForRef from '@/mixins/waitForRef'
 import breakpoints from '@/mixins/breakpoints'
 import MessageItemLocation from '~/components/MessageItemLocation'
 import MessageFreegled from '~/components/MessageFreegled'
@@ -57,7 +56,7 @@ export default {
     MessageAttachments,
     MessageHistory
   },
-  mixins: [waitForRef, breakpoints],
+  mixins: [breakpoints],
   props: {
     id: {
       type: Number,

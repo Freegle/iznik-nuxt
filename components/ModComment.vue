@@ -31,14 +31,13 @@
 </template>
 <script>
 import cloneDeep from 'lodash.clonedeep'
-import waitForRef from '../mixins/waitForRef'
 import NoticeMessage from './NoticeMessage'
 import ModCommentEditModal from './ModCommentEditModal'
 const ConfirmModal = () => import('~/components/ConfirmModal.vue')
 
 export default {
   components: { ModCommentEditModal, NoticeMessage, ConfirmModal },
-  mixins: [waitForRef],
+
   props: {
     comment: {
       type: Object,

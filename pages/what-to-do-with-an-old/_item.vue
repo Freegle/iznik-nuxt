@@ -46,7 +46,6 @@
 </template>
 <script>
 import buildHead from '@/mixins/buildHead.js'
-import waitForRef from '@/mixins/waitForRef'
 import { MAX_MAP_ZOOM } from '../../utils/constants'
 import ClusterMarker from '~/components/ClusterMarker'
 import RandomImage from '~/components/RandomImage'
@@ -67,7 +66,7 @@ function shuffle(array) {
 
 export default {
   components: { RandomImage, ClusterMarker },
-  mixins: [buildHead, waitForRef],
+  mixins: [buildHead],
   data: function() {
     return {
       showCluster: false,

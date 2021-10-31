@@ -60,7 +60,6 @@
   </div>
 </template>
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import PlaceAutocomplete from '../components/PlaceAutocomplete'
 import Visible from '../components/Visible'
 const VisualiseMap = () => import('../components/VisualiseMap')
@@ -73,7 +72,7 @@ export default {
     VisualiseMap,
     MainFooter
   },
-  mixins: [waitForRef],
+
   data: function() {
     return {
       userWatch: null,

@@ -69,7 +69,6 @@ import buildHead from '@/mixins/buildHead'
 import chatPage from '@/mixins/chatPage'
 import loginRequired from '@/mixins/loginRequired.js'
 import dayjs from 'dayjs'
-import waitForRef from '@/mixins/waitForRef'
 import Visible from '../../components/Visible'
 import SidebarRight from '~/components/SidebarRight'
 
@@ -88,7 +87,7 @@ export default {
     ChatListEntry,
     ChatHideModal
   },
-  mixins: [loginRequired, buildHead, chatPage, waitForRef],
+  mixins: [loginRequired, buildHead, chatPage],
   data: function() {
     return {
       showingOlder: false,

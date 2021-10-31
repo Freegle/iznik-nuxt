@@ -40,7 +40,7 @@
           can-hide
         />
         <client-only>
-          <AboutMeModal ref="aboutMeModal" />
+          <AboutMeModal v-if="showAboutMe" ref="aboutMeModal" />
         </client-only>
       </b-col>
       <b-col cols="0" lg="3" class="p-0 pl-1">
@@ -86,7 +86,8 @@ export default {
       initialBounds: null,
       showRest: false,
       bump: 1,
-      searchTerm: null
+      searchTerm: null,
+      showAboutMe: false
     }
   },
   watch: {
@@ -126,7 +127,10 @@ export default {
           const now = new Date().getTime()
 
           if (!lastask || now - lastask > 90 * 24 * 60 * 60 * 1000) {
-            this.$refs.aboutMeModal.show()
+            this.showAboutMe = true
+            this.waitForRef('aboutMeModal', () => {
+              this.$refs.aboutMeModal.show()
+            })
 
             this.$store.dispatch('misc/set', {
               key: 'lastaboutmeask',

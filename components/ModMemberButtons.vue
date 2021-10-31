@@ -137,7 +137,6 @@
   </div>
 </template>
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import ModMemberButton from './ModMemberButton'
 import ModMemberActions from './ModMemberActions'
 import ModCommentAddModal from '~/components/ModCommentAddModal'
@@ -151,7 +150,7 @@ export default {
     ModMemberButton,
     OurToggle
   },
-  mixins: [waitForRef],
+
   props: {
     member: {
       type: Object,

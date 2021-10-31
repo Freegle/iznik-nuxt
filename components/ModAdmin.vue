@@ -120,13 +120,12 @@
   </div>
 </template>
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import ConfirmModal from './ConfirmModal'
 import NoticeMessage from './NoticeMessage'
 
 export default {
   components: { NoticeMessage, ConfirmModal },
-  mixins: [waitForRef],
+
   props: {
     id: {
       type: Number,

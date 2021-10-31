@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import CommunityEvent from './CommunityEvent'
 import VolunteerOpportunity from './VolunteerOpportunity'
 const CommunityEventModal = () => import('~/components/CommunityEventModal')
@@ -47,7 +46,7 @@ export default {
     CommunityEventModal,
     VolunteerOpportunityModal
   },
-  mixins: [waitForRef],
+
   props: {
     items: {
       type: Array,

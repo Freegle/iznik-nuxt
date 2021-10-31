@@ -102,7 +102,6 @@
 </template>
 
 <script>
-import waitForRef from '../mixins/waitForRef'
 import LoginModal from '~/components/LoginModal'
 const ModMenuItemLeft = () => import('../components/ModMenuItemLeft')
 const ModStatus = () => import('~/components/ModStatus')
@@ -121,7 +120,7 @@ export default {
     ExternalLink,
     ModZoomStock
   },
-  mixins: [waitForRef],
+
   data: function() {
     return {
       logo: require(`@/static/icon_modtools.png`),

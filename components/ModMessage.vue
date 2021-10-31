@@ -315,7 +315,6 @@
   </div>
 </template>
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import keywords from '@/mixins/keywords.js'
 import MessageHistory from './MessageHistory'
 import MessageUserInfo from './MessageUserInfo'
@@ -369,7 +368,7 @@ export default {
     MessageHistory,
     Highlighter
   },
-  mixins: [waitForRef, keywords],
+  mixins: [keywords],
   props: {
     message: {
       type: Object,

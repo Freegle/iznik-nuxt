@@ -40,7 +40,6 @@ import loginRequired from '@/mixins/loginRequired'
 import modMessagesPage from '@/mixins/modMessagesPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
 import ModZoomStock from '@/components/ModZoomStock'
-import waitForRef from '@/mixins/waitForRef'
 import NoticeMessage from '../../../../components/NoticeMessage'
 import GroupSelect from '../../../../components/GroupSelect'
 import ModMessage from '../../../../components/ModMessage'
@@ -63,7 +62,6 @@ export default {
     loginRequired,
     createGroupRoute('modtools/messages/pending'),
     modMessagesPage,
-    waitForRef,
     shuffle
   ],
   data: function() {

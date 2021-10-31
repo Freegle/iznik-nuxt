@@ -103,7 +103,6 @@
 </template>
 
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import Supporter from '~/components/Supporter'
 import ProfileImage from '~/components/ProfileImage'
 
@@ -121,7 +120,7 @@ export default {
     ProfileImage,
     ProfileModal
   },
-  mixins: [waitForRef],
+
   props: {
     message: {
       type: Object,

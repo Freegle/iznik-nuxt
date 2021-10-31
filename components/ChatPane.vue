@@ -62,7 +62,6 @@ import Vue from 'vue'
 import InfiniteLoading from 'vue-infinite-loading'
 import chatCollate from '@/mixins/chatCollate.js'
 import chat from '@/mixins/chat.js'
-import waitForRef from '@/mixins/waitForRef'
 import ChatHeader from './ChatHeader'
 import ChatFooter from './ChatFooter'
 
@@ -79,7 +78,7 @@ export default {
     InfiniteLoading,
     ChatMessage
   },
-  mixins: [chatCollate, waitForRef, chat],
+  mixins: [chatCollate, chat],
   data: function() {
     return {
       headerLoaded: false

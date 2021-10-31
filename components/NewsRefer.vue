@@ -35,13 +35,12 @@
   </div>
 </template>
 <script>
-import waitForRef from '../mixins/waitForRef'
 import NoticeMessage from './NoticeMessage'
 const ConfirmModal = () => import('~/components/ConfirmModal.vue')
 
 export default {
   components: { NoticeMessage, ConfirmModal },
-  mixins: [waitForRef],
+
   props: {
     id: {
       type: Number,

@@ -197,7 +197,6 @@
   </div>
 </template>
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import ModConfigSetting from './ModConfigSetting'
 import NoticeMessage from './NoticeMessage'
 import ModSettingsStandardMessageSet from './ModSettingsStandardMessageSet'
@@ -214,7 +213,7 @@ export default {
     NoticeMessage,
     ModConfigSetting
   },
-  mixins: [waitForRef],
+
   data: function() {
     return {
       loading: false,

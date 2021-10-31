@@ -12,15 +12,12 @@
   </div>
 </template>
 <script>
-import waitForRef from '@/mixins/waitForRef'
-
 const AREA_FILL_COLOUR = 'lightgreen'
 const FILL_OPACITY = 0.5
 const AREA_BOUNDARY_COLOUR = 'darkblue'
 const SELECTED = '#990000'
 
 export default {
-  mixins: [waitForRef],
   props: {
     location: {
       type: Object,

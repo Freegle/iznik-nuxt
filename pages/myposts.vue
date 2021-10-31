@@ -178,7 +178,6 @@
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
-import waitForRef from '@/mixins/waitForRef'
 import Invite from '../components/Invite'
 import Visible from '../components/Visible'
 const JustPosted = () => import('~/components/JustPosted')
@@ -202,7 +201,7 @@ export default {
     DonationAskModal,
     ExpectedRepliesWarning
   },
-  mixins: [loginOptional, buildHead, waitForRef],
+  mixins: [loginOptional, buildHead],
   data() {
     return {
       justPosted: null,

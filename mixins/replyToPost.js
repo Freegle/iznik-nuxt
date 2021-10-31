@@ -1,8 +1,7 @@
-import waitForRef from '@/mixins/waitForRef'
 import breakpoints from '@/mixins/breakpoints'
 
 export default {
-  mixins: [waitForRef, breakpoints],
+  mixins: [breakpoints],
   computed: {
     replyToSend() {
       // This is here because we can arrive back at the site after a login which was triggered because we were

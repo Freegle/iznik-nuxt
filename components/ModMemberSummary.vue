@@ -33,13 +33,12 @@
   </div>
 </template>
 <script>
-import waitForRef from '../mixins/waitForRef'
 import ModPostingHistoryModal from './ModPostingHistoryModal'
 import ModLogsModal from './ModLogsModal'
 
 export default {
   components: { ModLogsModal, ModPostingHistoryModal },
-  mixins: [waitForRef],
+
   props: {
     member: {
       type: Object,

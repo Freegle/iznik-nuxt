@@ -217,7 +217,6 @@
 </template>
 
 <script>
-import waitForRef from '../mixins/waitForRef'
 import NewsLovesModal from './NewsLovesModal'
 import OurFilePond from './OurFilePond'
 import SpinButton from './SpinButton'
@@ -253,7 +252,7 @@ export default {
     ProfileImage,
     ConfirmModal
   },
-  mixins: [waitForRef],
+
   props: {
     id: {
       type: Number,

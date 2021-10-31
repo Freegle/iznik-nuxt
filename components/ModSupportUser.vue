@@ -313,7 +313,6 @@
   </b-card>
 </template>
 <script>
-import waitForRef from '../mixins/waitForRef'
 import ModSupportMembership from './ModSupportMembership'
 import ModLogsModal from './ModLogsModal'
 import ConfirmModal from './ConfirmModal'
@@ -352,7 +351,7 @@ export default {
     ExternalLink,
     ModCommentAddModal
   },
-  mixins: [waitForRef],
+
   props: {
     id: {
       type: Number,

@@ -110,7 +110,6 @@ import VueDraggableResizable from 'vue-draggable-resizable/src/components/vue-dr
 import cloneDeep from 'lodash.clonedeep'
 import Vue from 'vue'
 import map from '@/mixins/map.js'
-import waitForRef from '@/mixins/waitForRef'
 import { GestureHandling } from 'leaflet-gesture-handling'
 import GroupMarker from './GroupMarker'
 import BrowseHomeIcon from './BrowseHomeIcon'
@@ -132,7 +131,7 @@ export default {
     VueDraggableResizable,
     GroupMarker
   },
-  mixins: [map, waitForRef],
+  mixins: [map],
   props: {
     initialBounds: {
       type: Array,

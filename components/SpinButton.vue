@@ -15,12 +15,11 @@
   </div>
 </template>
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import ConfirmModal from './ConfirmModal'
 
 export default {
   components: { ConfirmModal },
-  mixins: [waitForRef],
+
   props: {
     variant: {
       type: String,

@@ -38,7 +38,6 @@
 
 <script>
 // Use import rather than async otherwise we have trouble with refs.
-import waitForRef from '../mixins/waitForRef'
 import ProfileModal from '~/components/ProfileModal'
 import NewsUserInfo from '~/components/NewsUserInfo'
 import ProfileImage from '~/components/ProfileImage'
@@ -49,7 +48,7 @@ export default {
     ProfileModal,
     ProfileImage
   },
-  mixins: [waitForRef],
+
   props: {
     userid: {
       type: Number,

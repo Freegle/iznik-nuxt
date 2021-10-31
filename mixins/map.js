@@ -1,5 +1,3 @@
-import waitForRef from '../mixins/waitForRef'
-
 let Wkt = null
 
 if (process.browser) {
@@ -8,7 +6,6 @@ if (process.browser) {
 }
 
 export default {
-  mixins: [waitForRef],
   data: function() {
     return {
       lat: null,

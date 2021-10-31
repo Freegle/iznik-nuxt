@@ -78,7 +78,6 @@
 <script>
 import Vue from 'vue'
 import map from '@/mixins/map.js'
-import waitForRef from '@/mixins/waitForRef'
 import VisualiseSpeech from './VisualiseSpeech'
 
 const VisualiseUser = () => import('./VisualiseUser')
@@ -92,7 +91,7 @@ if (process.browser) {
 
 export default {
   components: { VisualiseMessage, VisualiseUser },
-  mixins: [map, waitForRef],
+  mixins: [map],
   data: function() {
     return {
       context: null,

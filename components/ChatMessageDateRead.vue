@@ -59,7 +59,6 @@
 </template>
 
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import ChatBase from './ChatBase'
 const ModMessageEmailModal = () => import('~/components/ModMessageEmailModal')
 
@@ -68,7 +67,7 @@ export default {
     ModMessageEmailModal
   },
   extends: ChatBase,
-  mixins: [waitForRef],
+
   data: function() {
     return {
       showOriginal: false,

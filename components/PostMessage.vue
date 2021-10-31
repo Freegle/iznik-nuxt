@@ -103,7 +103,6 @@
 </template>
 
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import NoticeMessage from './NoticeMessage'
 import NumberIncrementDecrement from './NumberIncrementDecrement'
 const OurFilePond = () => import('~/components/OurFilePond')
@@ -118,7 +117,7 @@ export default {
     PostPhoto,
     PostItem
   },
-  mixins: [waitForRef],
+
   props: {
     id: {
       type: Number,

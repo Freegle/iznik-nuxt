@@ -187,7 +187,6 @@
   </div>
 </template>
 <script>
-import waitForRef from '../mixins/waitForRef'
 import SettingsGroup from './SettingsGroup'
 import NoticeMessage from './NoticeMessage'
 import ProfileImage from './ProfileImage'
@@ -234,7 +233,7 @@ export default {
     SettingsGroup,
     ExternalLink
   },
-  mixins: [waitForRef],
+
   props: {
     member: {
       type: Object,
