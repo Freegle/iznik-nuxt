@@ -285,7 +285,7 @@ export default {
         }
       }
 
-      if (this.me) {
+      if (this.me && (!this.me.aboutme || !this.me.aboutme.text)) {
         const daysago = dayjs().diff(dayjs(this.me.added), 'days')
 
         if (daysago > 7) {
