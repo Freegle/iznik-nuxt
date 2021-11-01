@@ -34,7 +34,7 @@
       <div v-observe-visibility="mapVisibilityChanged" />
     </client-only>
     <div v-if="mapready" class="rest">
-      <div class="mb-1 border p-2 bg-white">
+      <div v-if="closestGroups && closestGroups.length" class="mb-1 border p-2 bg-white">
         <h2 class="sr-only">
           Nearby commmunities
         </h2>
@@ -127,7 +127,7 @@
           </NoticeMessage>
         </div>
         <GroupHeader v-if="group" :group="group" show-join />
-        <JobsTopBar v-if="jobs" />
+        <JobsTopBar v-if="jobs" class="d-block d-lg-none" />
 
         <h2 class="sr-only">
           List of wanteds and offers

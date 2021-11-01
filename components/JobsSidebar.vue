@@ -10,9 +10,6 @@
     </NoticeMessage>
     <b-card v-else-if="jobs.length" variant="white" no-body>
       <b-card-body class="p-0">
-        <b-btn variant="secondary" class="float-right m-1" size="sm" to="/jobs">
-          <v-icon name="search" /> View more
-        </b-btn>
         <nuxt-link to="/jobs">
           <h2 class="header--size4 pl-1 pt-1">
             <v-icon name="briefcase" scale="2" /> Jobs near you
@@ -37,6 +34,11 @@
             <span slot="spinner" />
           </infinite-loading>
         </client-only>
+        <div class="d-flex justify-content-around mt-2 mb-2">
+          <b-btn variant="secondary" to="/jobs">
+            <v-icon name="search" /> View more jobs
+          </b-btn>
+        </div>
       </b-card-body>
     </b-card>
   </aside>

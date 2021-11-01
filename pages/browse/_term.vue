@@ -45,7 +45,7 @@
       </b-col>
       <b-col cols="0" lg="3" class="p-0 pl-1">
         <Visible :at="['lg', 'xl']">
-          <sidebar-right v-if="showRest" show-volunteer-opportunities />
+          <sidebar-right v-if="showRest" show-volunteer-opportunities show-job-opportunities />
         </Visible>
       </b-col>
     </b-row>

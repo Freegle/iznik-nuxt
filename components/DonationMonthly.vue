@@ -1,7 +1,7 @@
 <template>
   <div class="clickme" @click="submit">
     <b-img-lazy src="~/static/donate_per_month.jpg" alt="Click to support Freegle by donating £1 per month" class="w-100" title="Click here to set up a £1/month donation to Freegle.  Thank you!" />
-    <form ref="donateform" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+    <form ref="donateform" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" class="d-none">
       <input type="hidden" name="cmd" value="_s-xclick">
       <input type="hidden" name="hosted_button_id" value="6VJKBWQ9RQHPU">
       <input type="hidden" name="os0" value="Supporter1">
