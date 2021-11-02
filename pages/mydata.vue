@@ -315,9 +315,8 @@
               <h2>Memberships</h2>
               <p>
                 Which communities you are a member of.  You can change your settings or leave groups from
-                <nuxt-link to="/settings">
-                  here
-                </nuxt-link>.
+                <!-- eslint-disable-next-line-->
+                <nuxt-link to="/settings">Settings</nuxt-link>.
               </p>
               <ShowMore :items="status.data.memberships">
                 <template v-slot:item="s">

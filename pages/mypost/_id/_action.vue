@@ -19,10 +19,10 @@
             <h3>That post wasn't made from {{ me.email }}.</h3>
             <h5>{{ message.subject }}</h5>
             <p>
-              Please change your email from <nuxt-link to="/settings">
-                Settings
-              </nuxt-link> if necessary - we'll
-              merge your accounts.
+              Please change your email from
+              <!-- eslint-disable-next-line-->
+              <nuxt-link to="/settings">Settings</nuxt-link>
+              if necessary - we'll merge your accounts.
             </p>
           </b-alert>
         </div>

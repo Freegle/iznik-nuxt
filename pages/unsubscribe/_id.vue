@@ -21,9 +21,10 @@
             We'd love you to stay, but sometimes if you love someone, you have to let them go.
           </p>
           <notice-message class="mb-3">
-            Too many emails? Don't leave! Go to <nuxt-link to="/settings">
-              Settings
-            </nuxt-link> and adjust your Mail Settings.
+            Too many emails? Don't leave! Go to
+            <!-- eslint-disable-next-line-->
+            <nuxt-link to="/settings">Settings</nuxt-link>
+            and adjust your Mail Settings.
           </notice-message>
           <div v-if="loggedIn">
             <b-btn v-if="!groupid" size="lg" variant="primary" class="mb-2" @click="unsubscribe">

@@ -8,9 +8,9 @@
         We won’t pass on your email address to any organisation outside Freegle, and other freeglers can't see it.
       </p>
       <p>
-        Other freeglers can see your name, profile picture and approximate location.  If you don't want that, you can change it in <nuxt-link to="/settings">
-          Settings.
-        </nuxt-link>
+        Other freeglers can see your name, profile picture and approximate location.  If you don't want that, you can change it in
+        <!-- eslint-disable-next-line-->
+        <nuxt-link to="/settings">Settings</nuxt-link>.
       </p>
       <p>
         We try to protect you from spammers and fraudsters.  Sometimes our volunteers may read what you write to check

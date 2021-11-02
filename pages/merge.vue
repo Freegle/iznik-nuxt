@@ -75,6 +75,12 @@
             <div v-if="mergeComplete">
               <hr>
               <p>
+                We've merged your accounts.  Please check your name in
+                <!-- eslint-disable-next-line-->
+                <nuxt-link to="/settings">Settings</nuxt-link>
+                to make sure it's what you want it to be.
+              </p>
+              <p>
                 You can close this page now, or:
               </p>
               <b-btn size="lg" to="/" variant="primary" class="mb-2">
