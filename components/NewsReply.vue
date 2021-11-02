@@ -365,7 +365,7 @@ export default {
     if (parseInt(this.scrollTo) === this.replyid && this.$el.scrollIntoView) {
       // We want to scroll to this reply to make sure it's visible.
       this.$nextTick(() => {
-        this.$el.scrollIntoView()
+        this.$el.scrollIntoView(false)
       })
     }
   },
