@@ -88,6 +88,7 @@ export default {
       return this.job.body
         .replace(/\\n/g, '\n')
         .replace(/<br>/g, '\n')
+        .replace('Â£', '£')
         .trim()
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
