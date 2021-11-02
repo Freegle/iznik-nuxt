@@ -4,6 +4,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import isBetween from 'dayjs/plugin/isBetween'
+import isToday from 'dayjs/plugin/isToday'
 
 import dayjs from 'dayjs'
 
@@ -13,3 +14,4 @@ dayjs.extend(localizedFormat)
 dayjs.extend(isSameOrBefore)
 dayjs.extend(isSameOrAfter)
 dayjs.extend(isBetween)
+dayjs.extend(isToday)
