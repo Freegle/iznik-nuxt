@@ -11,7 +11,7 @@
         Created <span :title="datetimeshort(savedComment.date)">{{ datetimeshort(savedComment.date) }}</span> reviewed <span :title="datetimeshort(savedComment.reviewed)">{{ datetimeshort(savedComment.reviewed) }}</span>
       </span>
       <span v-else :title="datetimeshort(savedComment.date)">
-        {{ datetimeshort(savedComment.date) }}
+        {{ timeadapt(savedComment.date) }}
       </span>
       <span v-if="savedComment.groupid">
         on {{ groupname }}
