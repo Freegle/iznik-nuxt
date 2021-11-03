@@ -69,9 +69,14 @@ export default {
           return !this.type || this.type === message.type
         })
 
+        const allGroups = this.$store.getters['group/list']
+
         ret.forEach(message => {
-          const group = this.myGroup(message.groupid)
-          message.groupname = group ? group.namedisplay : '#' + message.groupid
+          if (allGroups && allGroups[message.groupid]) {
+            message.groupname = allGroups[message.groupid].namedisplay
+          } else {
+            message.groupname = '#' + message.groupid
+          }
         })
 
         ret.sort((a, b) => {
@@ -81,6 +86,12 @@ export default {
 
       return ret
     }
+  },
+  mounted() {
+    // Not all the groups we show will be ours, so get them all for the group name.
+    this.$store.dispatch('group/list', {
+      grouptype: 'Freegle'
+    })
   }
 }
 </script>
