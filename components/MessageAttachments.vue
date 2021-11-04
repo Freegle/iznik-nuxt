@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="defaultAttachments || !attachments.length">
+    <div v-if="defaultAttachments || !attachments.length" class="d-none d-md-block">
       <MessageTag :id="id" def :message-override="messageOverride" class="pl-2 pr-2" />
       <div class="d-flex justify-content-around bg rounded">
         <b-img src="/camera.png" class="align-self-center justify-se w-100 rounded" />
