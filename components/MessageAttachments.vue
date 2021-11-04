@@ -3,7 +3,7 @@
     <div v-if="defaultAttachments || !attachments.length">
       <MessageTag :id="id" def :message-override="messageOverride" class="pl-2 pr-2" />
       <div class="d-flex justify-content-around bg rounded">
-        <v-icon name="camera" scale="4" class="text-faded align-self-center justify-se" />
+        <b-img src="/camera.png" class="align-self-center justify-se w-100 rounded" />
       </div>
     </div>
     <button v-else class="w-100 p-0 border-0" :disabled="disabled">
