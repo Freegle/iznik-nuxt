@@ -40,7 +40,7 @@
           can-hide
         />
         <client-only>
-          <AboutMeModal v-if="showAboutMe" ref="aboutMeModal" />
+          <AboutMeModal v-if="showAboutMe" ref="aboutMeModal" review="reviewAboutMe" />
         </client-only>
       </b-col>
       <b-col cols="0" lg="3" class="p-0 pl-1">
@@ -87,7 +87,8 @@ export default {
       showRest: false,
       bump: 1,
       searchTerm: null,
-      showAboutMe: false
+      showAboutMe: false,
+      reviewAboutMe: false
     }
   },
   watch: {
@@ -118,25 +119,42 @@ export default {
 
       this.showRest = true
 
-      if (this.me && (!this.me.aboutme || !this.me.aboutme.text)) {
-        const daysago = dayjs().diff(dayjs(this.me.added), 'days')
+      if (this.me) {
+        const lastask = this.$store.getters['misc/get']('lastaboutmeask')
+        const now = new Date().getTime()
 
-        if (daysago > 7) {
-          // Nudge to ask people to to introduce themselves.
-          const lastask = this.$store.getters['misc/get']('lastaboutmeask')
-          const now = new Date().getTime()
+        if (!lastask || now - lastask > 90 * 24 * 60 * 60 * 1000) {
+          // Not asked too recently.
+          if (!this.me.aboutme || !this.me.aboutme.text) {
+            // We have not yet provided one.
+            const daysago = dayjs().diff(dayjs(this.me.added), 'days')
 
-          if (!lastask || now - lastask > 90 * 24 * 60 * 60 * 1000) {
-            this.showAboutMe = true
-            this.waitForRef('aboutMeModal', () => {
-              this.$refs.aboutMeModal.show()
-            })
-
-            this.$store.dispatch('misc/set', {
-              key: 'lastaboutmeask',
-              value: now
-            })
+            if (daysago > 7) {
+              // Nudge to ask people to to introduce themselves.
+              this.showAboutMe = true
+            }
+          } else {
+            const monthsago = dayjs().diff(
+              dayjs(this.me.aboutme.timestamp),
+              'months'
+            )
+            if (monthsago >= 6) {
+              // Old.  Ask them to review it.
+              this.showAboutMe = true
+              this.reviewAboutMe = true
+            }
           }
+        }
+
+        if (this.showAboutMe) {
+          this.waitForRef('aboutMeModal', () => {
+            this.$refs.aboutMeModal.show()
+          })
+
+          this.$store.dispatch('misc/set', {
+            key: 'lastaboutmeask',
+            value: now
+          })
         }
       }
     }, 5000)

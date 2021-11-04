@@ -9,6 +9,10 @@
         no-stacking
       >
         <template slot="default">
+          <notice-message v-if="review" type="info">
+            You added this a while ago - can you just check it still applies?  If it does, just click <em>Cancel</em>.
+            If you want to change it, edit it and click <em>Save</em>.
+          </notice-message>
           <p>
             It's nice to know a bit about other freeglers.  We're not a dating site but it makes freegling more fun
             and helps get a better response when you're replying to OFFERs.
@@ -54,6 +58,13 @@ import NoticeMessage from './NoticeMessage'
 export default {
   components: { NoticeMessage },
   mixins: [modal],
+  props: {
+    review: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
   data: function() {
     return {
       text: null
