@@ -166,7 +166,7 @@ Vue.mixin({
       // want to minimise the number of calls.  We have some fairly complex logic below to keep track of what
       // we are currently fetching so that we can keep the number of parallel calls down and return earlier if
       // we happen to already be fetching what we need.
-      const uniqueid = await this.$store.dispatch('uniqueid/generate')
+      // const uniqueid = await this.$store.dispatch('uniqueid/generate')
       const modtools = this.$store.getters['misc/get']('modtools')
 
       if (!modtools) {
@@ -178,38 +178,38 @@ Vue.mixin({
 
       if (!hitServer) {
         // We don't have to hit the server before we return, but we might need to if there are components missing.
-        console.log(uniqueid + ' Check for missing components')
+        // console.log(uniqueid + ' Check for missing components')
 
         let me = this.$store.getters['auth/user']
 
         for (const component of components) {
           if (component !== 'me' && me && !me[component]) {
             // There is some information that we need which we don't have.  We must hit the server and wait.
-            console.log(
-              uniqueid + ' Missing component:',
-              component,
-              JSON.stringify(fetchingMeComponents)
-            )
+            // console.log(
+            //   uniqueid + ' Missing component:',
+            //   component,
+            //   JSON.stringify(fetchingMeComponents)
+            // )
             if (fetchingMeComponents.indexOf(component) !== -1) {
               // We are in the process of fetching the missing component, so we just need to wait until that
               // completes.
-              console.log(
-                uniqueid + ' ...but already fetching, so wait',
-                component
-              )
+              // console.log(
+              //   uniqueid + ' ...but already fetching, so wait',
+              //   component
+              // )
               await fetchingPromise
-              console.log(
-                uniqueid + ' ...wait for already fetching complete',
-                component
-              )
+              // console.log(
+              //   uniqueid + ' ...wait for already fetching complete',
+              //   component
+              // )
 
               // We may have more info in the store.
               me = this.$store.getters['auth/user']
             } else {
-              console.log(
-                uniqueid + ' ...not fetching so will need to do so',
-                component
-              )
+              // console.log(
+              //   uniqueid + ' ...not fetching so will need to do so',
+              //   component
+              // )
               break
             }
           }
@@ -225,27 +225,27 @@ Vue.mixin({
         // and calls us to fetch it, and the first request is still in transit and returns data before the
         // change.  But this doesn't happen in our code, unless you're reading this comment and have
         // just figured out that it does.
-        console.log(uniqueid + ' asked to hit server')
+        // console.log(uniqueid + ' asked to hit server')
         components.forEach(c => {
           if (!needToFetch && !fetchingMeComponents.includes(c)) {
-            console.log(uniqueid + ' not already fetching', c)
+            // console.log(uniqueid + ' not already fetching', c)
             needToFetch = true
           }
         })
 
         if (!needToFetch) {
-          console.log(uniqueid + ' already fetching everything we need, wait')
+          // console.log(uniqueid + ' already fetching everything we need, wait')
           await fetchingPromise
-          console.log(uniqueid + ' already fetching wait complete')
+          // console.log(uniqueid + ' already fetching wait complete')
         }
       }
 
       if (needToFetch) {
         fetchingMeComponents = union(components, fetchingMeComponents)
-        console.log(
-          uniqueid + ' Stored fetching',
-          JSON.stringify(fetchingMeComponents)
-        )
+        // console.log(
+        //   uniqueid + ' Stored fetching',
+        //   JSON.stringify(fetchingMeComponents)
+        // )
         const thisPromise = this.$store.dispatch('auth/fetchUser', {
           components
         })
@@ -256,42 +256,41 @@ Vue.mixin({
 
         if (hitServer) {
           // We need to wait for the server before returning.
-          console.log(
-            uniqueid + ' Hit server and wait for ',
-            JSON.stringify(components)
-          )
+          // console.log(
+          //   uniqueid + ' Hit server and wait for ',
+          //   JSON.stringify(components)
+          // )
           await fetchingPromise
-          console.log(
-            uniqueid + ' ...wait complete for hitserver',
-            JSON.stringify(components)
-          )
+          // console.log(
+          //   uniqueid + ' ...wait complete for hitserver',
+          //   JSON.stringify(components)
+          // )
           fetchingMeComponents = fetchingMeComponents.filter(
             x => !components.includes(x)
           )
-          console.log(uniqueid + ' Fetching complete for hit server')
+          // console.log(uniqueid + ' Fetching complete for hit server')
           fetchingPromise = null
         } else {
           // We can return immediately, but hit the server to keep us up to date.
-          // TODO Suppress repeated calls.
-          console.log(
-            uniqueid + ' Return but fire off request for',
-            JSON.stringify(components)
-          )
+          // console.log(
+          //   uniqueid + ' Return but fire off request for',
+          //   JSON.stringify(components)
+          // )
           fetchingPromise.then(() => {
-            console.log(
-              uniqueid + ' ...background fetch complete for',
-              JSON.stringify(components)
-            )
+            // console.log(
+            //   uniqueid + ' ...background fetch complete for',
+            //   JSON.stringify(components)
+            // )
             fetchingMeComponents = fetchingMeComponents.filter(
               x => !components.includes(x)
             )
-            console.log(uniqueid + ' Fetching complete for background')
+            // console.log(uniqueid + ' Fetching complete for background')
             fetchingPromise = null
           })
         }
       }
 
-      console.log(uniqueid + ' returning')
+      // console.log(uniqueid + ' returning')
     }
   }
 })
