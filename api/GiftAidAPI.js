@@ -14,6 +14,14 @@ export default class GiftAidAPI extends BaseAPI {
     return ret.giftaids
   }
 
+  async search(val) {
+    const ret = await this.$get('/giftaid', {
+      search: val
+    })
+
+    return ret.giftaids
+  }
+
   save({ period, fullname, homeaddress }) {
     return this.$post('/giftaid', { period, fullname, homeaddress })
   }

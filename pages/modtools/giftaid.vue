@@ -1,6 +1,29 @@
 <template>
   <b-container fluid class="bg-white">
     <ModHelpGiftAid />
+    <b-card no-body class="mb-2">
+      <b-card-body>
+        <b-input-group>
+          <b-input v-model="search" />
+          <b-input-group-append>
+            <SpinButton variant="white" name="search" label="Search" :handler="doSearch" />
+          </b-input-group-append>
+        </b-input-group>
+        <div v-for="result in results" :key="result.id" class="mt-2 d-flex flex-wrap">
+          <v-icon name="hashtag" class="text-muted mt-1" />{{ result.id }} {{ result.fullname }}&nbsp;
+          <span v-if="result.period === 'Since'">
+            Gift Aid consent for all since {{ dateonly(result.timestamp) }}
+          </span>
+          <span v-if="result.period === 'This'">
+            Gift Aid consent for only {{ dateonly(result.timestamp) }}
+          </span>
+          <span v-if="result.period === 'Future'">
+            Gift Aid consent for all future from {{ dateonly(result.timestamp) }}
+          </span>
+          &nbsp;{{ result.homeaddress }}
+        </div>
+      </b-card-body>
+    </b-card>
     <ModGiftAid v-for="giftaid in giftaids" :key="'giftaid-' + giftaid.id" :giftaid="giftaid" class="mt-1" />
     <p v-if="!giftaids.length">
       No gift aid to review.
@@ -12,14 +35,17 @@
 import loginRequired from '@/mixins/loginRequired.js'
 import ModGiftAid from '../../components/ModGiftAid'
 import ModHelpGiftAid from '../../components/ModHelpGiftAid'
+import SpinButton from '~/components/SpinButton'
 
 export default {
-  components: { ModHelpGiftAid, ModGiftAid },
+  components: { ModHelpGiftAid, ModGiftAid, SpinButton },
   layout: 'modtools',
   mixins: [loginRequired],
   data() {
     return {
-      giftaids: []
+      giftaids: [],
+      search: null,
+      results: []
     }
   },
   async mounted() {
@@ -45,6 +71,9 @@ export default {
           return 0
         }
       })
+    },
+    async doSearch() {
+      this.results = await this.$api.giftaid.search(this.search)
     }
   }
 }
