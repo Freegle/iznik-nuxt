@@ -4,16 +4,14 @@
       <MessageFreegled :id="id" />
     </template>
     <div :class="classes" @click="expand">
-      <div>
-        <MessageItemLocation
-          :id="id"
-          :matchedon="message.matchedon"
-          class="mb-1 header-title"
-          :type="message.type"
-          :expanded="false"
-          :message-override="messageOverride"
-        />
-      </div>
+      <MessageItemLocation
+        :id="id"
+        :matchedon="message.matchedon"
+        class="mb-1 header-title"
+        :type="message.type"
+        :expanded="false"
+        :message-override="messageOverride"
+      />
       <MessageHistory :message="message" class="mb-1 header-history" :display-message-link="sm()" />
       <div class="mb-1 header-description">
         <div v-if="!message.attachments || !message.attachments.length" class="d-flex d-md-none" @click="zoom">
