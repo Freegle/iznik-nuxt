@@ -20,7 +20,9 @@
           </b-btn>
         </div>
         <div v-else>
-          <JobsTopBar v-if="!justPosted" />
+          <Visible :at="['xs', 'sm', 'md']">
+            <JobsTopBar v-if="!justPosted" />
+          </Visible>
           <b-card v-if="contactPicker" border-variant="info">
             <Invite class="bg-white" />
           </b-card>
@@ -167,7 +169,7 @@
       </b-col>
       <b-col cols="0" lg="3" class="p-0 pl-1">
         <Visible :at="['lg', 'xl']">
-          <sidebar-right v-if="me && !justPosted" show-volunteer-opportunities />
+          <sidebar-right v-if="me && !justPosted" show-volunteer-opportunities show-job-opportunities />
         </Visible>
       </b-col>
     </b-row>
