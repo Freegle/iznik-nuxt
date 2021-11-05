@@ -1,11 +1,9 @@
 <template>
-  <div v-if="!simple" class="sidebar__wrapper maxheight">
-    <div class="d-flex flex-column justify-content-between">
-      <div>
-        <CommunityEventSidebar v-if="showCommunityEvents && false" class="flex-grow-1 sidebar__community-event" />
-      </div>
-      <BotLeftBox v-if="showBotLeft" class="social-media__wrapper flex-shrink-2" />
+  <div v-if="!simple" class="sidebar__wrapper maxheight d-flex flex-column justify-content-between">
+    <div>
+      <CommunityEventSidebar v-if="showCommunityEvents && false" class="flex-grow-1 sidebar__community-event" />
     </div>
+    <BotLeftBox v-if="showBotLeft" class="social-media__wrapper flex-shrink-2" />
   </div>
 </template>
 
