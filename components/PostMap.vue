@@ -6,6 +6,73 @@
       </b-btn>
     </div>
     <div v-else>
+      <div v-if="isochrone" className="d-flex flex-wrap bg-warning">
+        <NoticeMessage variant="warning">
+          <p>
+            This is a test page to explore showing posts based on how long it
+            would take to get there from a freegler's own location.
+            <b>What you see here isn't exactly what members would see - it's to help us explore the idea.</b>
+          </p>
+          <p>
+            You can experiment using these controls to see how far it would show for different types of transport and
+            different travel times.
+          </p>
+          <div class="d-flex justify-content-between">
+            <div>
+              <label class="font-weight-bold">
+                Mode of transport:
+              </label>
+              <div>
+                <b-btn :variant="transport === 'Walk' ? 'primary' : 'white'" @click="transport='Walk'">
+                  <v-icon name="walking" /> Walk
+                </b-btn>
+                <b-btn :variant="transport === 'Cycle' ? 'primary' : 'white'" @click="transport='Cycle'">
+                  <v-icon name="bicycle" /> Cycle
+                </b-btn>
+                <b-btn :variant="transport === 'Drive' ? 'primary' : 'white'" @click="transport='Drive'">
+                  <v-icon name="car" /> Drive
+                </b-btn>
+              </div>
+            </div>
+            <div class="mb-2">
+              <label class="font-weight-bold">
+                Travel time in minutes:
+              </label>
+              <b-input v-model="minutes" type="number" min="5" max="45" step="5" />
+            </div>
+          </div>
+          <p>
+            You'll see the area covered shaded in blue on the map.  This is the area that we would show posts from.
+          </p>
+          <p>
+            You can see how it would look for members in different places by changing your postcode.  Don't
+            forget to change it back again when you've finished experimenting.
+          </p>
+          <div class="d-flex flex-wrap">
+            <postcode size="sm" @selected="selectPostcode" @cleared="clearPostcode" />
+            <div>
+              <b-button variant="white" size="sm" class="mb-2 pt-1 pb-1 d-inline " :disabled="!pc" @click="savePostcode">
+                <v-icon v-if="savingPostcode" name="sync" class="text-success fa-spin" />
+                <v-icon v-else-if="savedPostcode" name="check" class="text-success" />
+                <v-icon v-else name="save" />&nbsp;
+                Save
+              </b-button>
+            </div>
+          </div>
+          <p>
+            Notes:
+          </p>
+          <ul>
+            <li>
+              This prototype doesn't support multiple locations yet.  Think of it from the perspective of a
+              member who only has one freegling location, even if there are multiple groups nearby.
+            </li>
+            <li>
+              The list of messages below this hasn't changed - just look at the map, not the list.
+            </li>
+          </ul>
+        </NoticeMessage>
+      </div>
       <div ref="mapcont" :style="mapHeight" class="w-100 position-relative mb-1">
         <div class="mapbox">
           <vue-draggable-resizable
@@ -58,6 +125,7 @@
               <div v-else>
                 <GroupMarker v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom" :group="g" :size="largeGroupMarkers ? 'rich' : 'poor'" />
               </div>
+              <l-geojson v-if="isochroneGEOJSON" :geojson="isochroneGEOJSON" :options="isochroneOptions" />
             </l-map>
           </vue-draggable-resizable>
         </div>
@@ -113,12 +181,16 @@ import map from '@/mixins/map.js'
 import { GestureHandling } from 'leaflet-gesture-handling'
 import GroupMarker from './GroupMarker'
 import BrowseHomeIcon from './BrowseHomeIcon'
+import Postcode from '~/components/Postcode'
+const NoticeMessage = () => import('./NoticeMessage')
 const ClusterMarker = () => import('./ClusterMarker')
 
 let L = null
+let Wkt = null
 
 if (process.browser) {
   L = require('leaflet')
+  Wkt = require('wicket')
   require('leaflet-control-geocoder')
   require('leaflet-control-geocoder/dist/Control.Geocoder.css')
   require('leaflet-gesture-handling/dist/leaflet-gesture-handling.css')
@@ -129,7 +201,9 @@ export default {
   components: {
     ClusterMarker,
     VueDraggableResizable,
-    GroupMarker
+    GroupMarker,
+    Postcode,
+    NoticeMessage
   },
   mixins: [map],
   props: {
@@ -196,6 +270,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    isochrone: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -212,7 +291,14 @@ export default {
       lockModal: false,
       unlockModal: false,
       destroyed: false,
-      mapIdle: 0
+      mapIdle: 0,
+      // ISOChrone testing
+      transport: 'Drive',
+      minutes: 30,
+      isochronePolygon: null,
+      savingPostcode: false,
+      savedPostcode: false,
+      pc: null
     }
   },
   computed: {
@@ -345,6 +431,27 @@ export default {
     },
     locked() {
       return this.$store.getters['misc/get']('postmaparea')
+    },
+    isochroneGEOJSON() {
+      if (this.isochronePolygon) {
+        const wkt = new Wkt.Wkt()
+        try {
+          wkt.read(this.isochronePolygon)
+          return wkt.toJson()
+        } catch (e) {
+          console.log('WKT error', location, e)
+        }
+      }
+
+      return null
+    },
+    isochroneOptions() {
+      return {
+        fillColor: 'darkblue',
+        fill: true,
+        fillOpacity: 0.2,
+        color: 'darkblue'
+      }
     }
   },
   watch: {
@@ -383,6 +490,12 @@ export default {
     },
     groupsInBounds(newval) {
       this.$emit('groups', this.groupsInBounds.map(g => g.id))
+    },
+    minutes() {
+      this.$nextTick(this.fetchISOChrone)
+    },
+    transport() {
+      this.$nextTick(this.fetchISOChrone)
     }
   },
   mounted() {
@@ -391,6 +504,10 @@ export default {
     if (this.mapHidden) {
       // Say we're ready so the parent can crack on.
       this.$emit('update:ready', true)
+    }
+
+    if (this.isochrone) {
+      this.fetchISOChrone()
     }
   },
   beforeDestroy() {
@@ -680,6 +797,53 @@ export default {
 
       this.unlockModal = true
       this.bump++
+    },
+    async fetchISOChrone() {
+      const ret = await this.$axios.get(process.env.API + '/isochrone', {
+        params: {
+          transport: this.transport,
+          minutes: this.minutes
+        }
+      })
+
+      if (ret && ret.data && ret.data.isochrone) {
+        this.isochronePolygon = ret.data.isochrone.polygon
+
+        try {
+          const wkt = new Wkt.Wkt()
+          wkt.read(this.isochronePolygon)
+          const mapobj = this.$refs.map.mapObject
+          const obj = wkt.toObject(mapobj.defaults)
+          const bounds = obj.getBounds()
+          mapobj.fitBounds(bounds)
+        } catch (e) {
+          console.log('WKT error', location, e)
+        }
+      }
+    },
+    selectPostcode(pc) {
+      this.pc = pc
+    },
+    clearPostcode() {
+      this.pc = null
+    },
+    async savePostcode() {
+      const settings = this.me.settings
+      this.savingPostcode = true
+
+      if (!settings.mylocation || settings.mylocation.id !== this.pc.id) {
+        settings.mylocation = this.pc
+        await this.$store.dispatch('auth/saveAndGet', {
+          settings: settings
+        })
+      }
+
+      this.savingPostcode = false
+      this.savedPostcode = true
+      this.fetchISOChrone()
+      setTimeout(() => {
+        this.savedPostcode = false
+      }, 2000)
     }
   }
 }

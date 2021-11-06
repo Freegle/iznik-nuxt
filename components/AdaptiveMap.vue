@@ -27,6 +27,7 @@
         :ready.sync="mapready"
         :loading.sync="loading"
         :can-hide="canHide"
+        isochrone
         @searched="selectedGroup = null"
         @messages="messagesChanged($event)"
         @groups="groupsChanged($event)"
@@ -281,6 +282,11 @@ export default {
       type: String,
       required: false,
       default: null
+    },
+    isochrone: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
