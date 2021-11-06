@@ -11,7 +11,9 @@
           <p>
             This is a test page to explore showing posts based on how long it
             would take to get there from a freegler's own location.
-            <b>What you see here isn't exactly what members would see - it's to help us explore the idea.</b>
+            <b>
+              What you see here isn't exactly what members would see - it's to help us explore the idea.
+            </b>
           </p>
           <p>
             You can experiment using these controls to see how far it would show for different types of transport and
@@ -43,6 +45,12 @@
           </div>
           <p>
             You'll see the area covered shaded in blue on the map.  This is the area that we would show posts from.
+          </p>
+          <p>
+            <b>
+              You should think about this from the point of view of a member - is this area a sensible one for someone in
+              that place, prepared to travel that length of time, using that mode of transport.
+            </b>
           </p>
           <p>
             You can see how it would look for members in different places by changing your postcode.  Don't
