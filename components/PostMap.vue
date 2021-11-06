@@ -65,7 +65,7 @@
           <ul>
             <li>
               This prototype doesn't support multiple locations yet.  Think of it from the perspective of a
-              member who only has one freegling location, even if there are multiple groups nearby.
+              someone who always freegles from home, even if they are on multiple groups.
             </li>
             <li>
               The list of messages below this hasn't changed - just look at the map, not the list.
