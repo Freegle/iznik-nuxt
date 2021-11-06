@@ -27,7 +27,7 @@
         :ready.sync="mapready"
         :loading.sync="loading"
         :can-hide="canHide"
-        isochrone
+        :isochrone="isochrone"
         @searched="selectedGroup = null"
         @messages="messagesChanged($event)"
         @groups="groupsChanged($event)"
