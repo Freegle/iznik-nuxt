@@ -4,11 +4,15 @@
       <span v-if="iconlast">
         {{ label }}
       </span>
-      <v-icon v-if="done" name="check" :class="spinclass" />
-      <v-icon v-else-if="doing" name="sync" :class="'fa-spin ' + spinclass" />
-      <v-icon v-else :name="name" />&nbsp;
-      <span v-if="!iconlast">
-        {{ label }}
+      <span>
+        <span v-if="name">
+          <v-icon v-if="done" name="check" :class="spinclass" />
+          <v-icon v-else-if="doing" name="sync" :class="'fa-spin ' + spinclass" />
+          <v-icon v-else :name="name" />&nbsp;
+        </span>
+        <span v-if="!iconlast">
+          {{ label }}
+        </span>
       </span>
     </b-button>
     <ConfirmModal v-if="confirm && showConfirm" ref="modal" @confirm="doIt" />
@@ -27,7 +31,8 @@ export default {
     },
     name: {
       type: String,
-      required: true
+      required: false,
+      default: null
     },
     label: {
       type: String,

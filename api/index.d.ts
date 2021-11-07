@@ -25,6 +25,7 @@ import DonationsAPI from './DonationsAPI.js'
 import GiftAidAPI from './GiftAidAPI.js'
 import GroupAPI from './GroupAPI.js'
 import InvitationAPI from './InvitationAPI.js'
+import IsochroneAPI from './IsochroneAPI.js'
 import JobAPI from './JobAPI.js'
 import LocationAPI from './LocationAPI.js'
 import LogsAPI from './LogsAPI.js'
@@ -65,6 +66,7 @@ interface API {
   giftaid: GiftAidAPI;
   group: GroupAPI;
   invitation: InvitationAPI;
+  isochrone: IsochroneAPI;
   job: JobAPI;
   location: LocationAPI;
   logs: LogsAPI;

@@ -128,7 +128,7 @@ export default {
     // need to render this on the server.
     let value = this.value
 
-    if (this.pconly && !value && this.myLocation) {
+    if (this.pconly && value === null && this.myLocation) {
       // If we are logged in then we may have a known location to use as the default.
       value = this.myLocation.name
     }
