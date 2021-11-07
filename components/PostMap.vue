@@ -22,7 +22,7 @@
           <div class="d-flex justify-content-between">
             <div>
               <label class="font-weight-bold">
-                Mode of transport:
+                Transport:
               </label>
               <div>
                 <b-btn :variant="transport === 'Walk' ? 'primary' : 'white'" @click="transport='Walk'">
@@ -38,9 +38,13 @@
             </div>
             <div class="mb-2">
               <label class="font-weight-bold">
-                Travel time in minutes:
+                Distance:
               </label>
-              <b-input v-model="minutes" type="number" min="5" max="45" step="5" />
+              <div class="d-flex">
+                <label class="font-weight-bold mr-2">Near</label>
+                <b-input v-model="minutes" type="range" min="5" max="45" step="5" />
+                <label class="ml-2 font-weight-bold">Far</label>
+              </div>
             </div>
           </div>
           <p>
