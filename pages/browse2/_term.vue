@@ -59,6 +59,7 @@ import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
 import dayjs from 'dayjs'
 
+import isochroneMixin from '@/mixins/isochrone'
 import Visible from '../../components/Visible'
 import AdaptiveMap from '~/components/AdaptiveMap'
 import AboutMeModal from '~/components/AboutMeModal'
@@ -81,7 +82,7 @@ export default {
     ExpectedRepliesWarning,
     AboutMeModal
   },
-  mixins: [loginRequired, buildHead, map],
+  mixins: [loginRequired, buildHead, map, isochroneMixin],
   data: function() {
     return {
       initialBounds: null,
@@ -167,57 +168,14 @@ export default {
     async calculateInitialMapBounds() {
       await this.fetchMe(['me', 'groups'])
 
-      // Find a bounding box which is completely full of the group that our own location is within,
-      // if we can.
-      let mylat = null
-      let mylng = null
+      // The initial bounds for the map are determined from the isochrones if possible.
+      await this.$store.dispatch('isochrones/fetch')
+      this.initialBounds = this.isochroneBoundsArray
 
-      let swlat = null
-      let swlng = null
-      let nelat = null
-      let nelng = null
-
-      if (this.me && (this.me.lat || this.me.lng)) {
-        mylat = this.me.lat
-        mylng = this.me.lng
-
-        this.myGroups.forEach(g => {
-          if (
-            g.bbox &&
-            mylat >= g.bbox.swlat &&
-            mylat <= g.bbox.nelat &&
-            mylng >= g.bbox.swlng &&
-            mylng <= g.bbox.nelng
-          ) {
-            swlat = (g.bbox.swlat + g.bbox.nelat) / 2
-            swlng = g.bbox.swlng
-            nelat = (g.bbox.swlat + g.bbox.nelat) / 2
-            nelng = g.bbox.nelng
-          }
-        })
-      }
-
-      let bounds = null
-
-      if (
-        swlat !== null &&
-        swlng !== null &&
-        nelat !== null &&
-        nelng !== null
-      ) {
-        bounds = [[swlat, swlng], [nelat, nelng]]
-      } else if (this.me && mylat !== null && mylng !== null) {
-        // We're not a member of any groups, but at least we know where we are.  Centre there, and then let
-        // the map zoom to somewhere sensible.
-        bounds = [[mylat - 0.01, mylng - 0.01], [mylat + 0.01, mylng + 0.01]]
-      } else {
-        // We aren't a member of any groups and we don't know where we are.  This can happen, but it's rare.
-        // Send them to the explore page to pick somewhere.
+      if (!this.initialBounds) {
+        // We don't know where we are.  This can happen, but it's rare. Send them to the explore page to pick
+        // somewhere.
         this.$router.push('/explore')
-      }
-
-      if (bounds) {
-        this.initialBounds = bounds
       }
     }
   },

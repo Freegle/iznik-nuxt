@@ -15,16 +15,16 @@
           <label class="font-weight-bold">
             Nickname (e.g. Work):
           </label>
-          <b-form-input v-model="nickname" placeholder="Where is this?" />
+          <b-form-input v-model="nickname" placeholder="Where is this?" max-length="20" />
         </div>
       </div>
     </div>
-    <div v-if="isochrone" class="d-flex justify-content-between align-items-center">
-      <div class="flex-column justify-content-between">
-        <label class="font-weight-bold">
+    <template v-if="isochrone">
+      <div class="layout">
+        <label class="font-weight-bold sliderLabel">
           <div v-if="id">
             <div v-if="isochrone.nickname">
-              Distance from {{ isochrone.nickname }} <span class="text-muted">({{ isochrone.location.name }})</span>:
+              Distance from {{ isochrone.nickname }}: <span class="text-faded">({{ isochrone.location.name }})</span>
             </div>
             <div v-else>
               Distance: <span class="text-faded"> (from {{ myLocation.name }})</span>
@@ -33,9 +33,23 @@
           <div v-else>
             Distance to show:
           </div>
+          <div class="d-flex flex-column justify-content-around">
+            <b-btn v-if="addButton" variant="link" class="ml-2 p-0" size="sm" @click="$emit('add')">
+              Add location
+            </b-btn>
+            <SpinButton
+              v-else-if="isochrone.nickname"
+              variant="link"
+              button-class="ml-2 p-0 mb-1"
+              :handler="remove"
+              confirm
+              size="sm"
+              label="Remove"
+            />
+          </div>
         </label>
-        <div class="d-flex">
-          <label class="font-weight-bold mr-2">Near</label>
+        <div class="slider">
+          <span class="mr-2">Near</span>
           <b-input
             v-model="minutes"
             type="range"
@@ -43,23 +57,12 @@
             max="45"
             step="5"
           />
-          <label class="ml-2 font-weight-bold">Far</label>
+          <span class="ml-2">Far</span>
         </div>
-        <SpinButton
-          v-if="isochrone.nickname"
-          variant="link"
-          class="pl-0 pr-0"
-          :handler="remove"
-          confirm
-          size="sm"
-          label="Remove"
-        />
-      </div>
-      <div>
-        <label class="font-weight-bold">
-          Travelling by:
+        <label class="font-weight-bold travelLabel">
+          Travel by:
         </label>
-        <div>
+        <div class="travel">
           <b-btn :variant="isochrone.transport === 'Walk' ? 'primary' : 'white'" @click="changeTransport('Walk')">
             <v-icon name="walking" /> Walk
           </b-btn>
@@ -71,16 +74,16 @@
           </b-btn>
         </div>
       </div>
-    </div>
-    <div v-if="!id">
-      <b-btn v-if="showAdd" variant="primary" size="lg" class="mt-2" @click="add">
-        Add location
-      </b-btn>
-      <b-btn v-else variant="secondary" size="lg" class="mt-2" @click="$emit('cancel')">
-        Cancel
-      </b-btn>
-    </div>
-    <hr class="text-muted">
+      <div v-if="!id">
+        <b-btn v-if="showAdd" variant="primary" size="lg" class="mt-2" @click="add">
+          Add location
+        </b-btn>
+        <b-btn v-else variant="secondary" size="lg" class="mt-2" @click="$emit('cancel')">
+          Cancel
+        </b-btn>
+      </div>
+      <hr v-if="!last" class="text-muted mb-1 mt-1">
+    </template>
   </div>
 </template>
 <script>
@@ -97,6 +100,16 @@ export default {
       type: Number,
       required: false,
       default: null
+    },
+    addButton: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    last: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data() {
@@ -203,3 +216,78 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+.layout {
+  display: grid;
+
+  grid-template-rows: auto auto auto auto;
+  grid-template-colums: auto;
+
+  .sliderLabel {
+    grid-row: 1 / 2;
+    grid-column: 1 / 2;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .slider {
+    grid-row: 2 / 3;
+    grid-column: 1 / 2;
+    display: flex;
+  }
+
+  .travelLabel {
+    grid-row: 3 / 4;
+    grid-column: 1 / 2;
+    display: none;
+  }
+
+  .travel {
+    grid-row: 4 / 5;
+    grid-column: 1 / 2;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    margin-bottom: 0.25rem;
+  }
+
+  @include media-breakpoint-up(md) {
+    grid-template-rows: auto auto;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 50px;
+
+    .sliderLabel {
+      grid-row: 1 / 2;
+      grid-column: 1 / 2;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .slider {
+      grid-row: 2 / 3;
+      grid-column: 1 / 2;
+      display: flex;
+    }
+
+    .travelLabel {
+      grid-row: 1 / 2;
+      grid-column: 2 / 3;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .travel {
+      grid-row: 2 / 3;
+      grid-column: 2 / 3;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+}
+</style>

@@ -1,12 +1,14 @@
 <template>
   <div>
-    <Isochrone v-for="isochrone in list" :id="isochrone.id" :key="'isochrone-' + isochrone.id" />
-    <b-btn v-if="!showAdd" variant="link" class="pl-0 pr-0" size="sm" @click="add">
-      Add new location
-    </b-btn>
-    <div v-else>
-      <Isochrone @added="showAdd = false" @cancel="showAdd = false" />
-    </div>
+    <Isochrone
+      v-for="(isochrone, ix) in list"
+      :id="isochrone.id"
+      :key="'isochrone-' + isochrone.id"
+      :add-button="ix === 0"
+      :last="ix === list.length - 1"
+      @add="showAdd = true"
+    />
+    <Isochrone v-if="showAdd" @added="showAdd = false" @cancel="showAdd = false" />
   </div>
 </template>
 <script>
@@ -22,7 +24,7 @@ export default {
   },
   computed: {
     list() {
-      return this.$store.getters['isochrones/list']
+      return Object.values(this.$store.getters['isochrones/list'])
     }
   },
   methods: {

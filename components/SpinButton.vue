@@ -1,6 +1,6 @@
 <template>
   <div class="d-inline-block">
-    <b-button :variant="variant" :disabled="disabled" :size="size" @click="click">
+    <b-button :variant="variant" :disabled="disabled" :size="size" :class="buttonClass" @click="click">
       <span v-if="iconlast">
         {{ label }}
       </span>
@@ -75,6 +75,11 @@ export default {
     },
     handlerData: {
       type: Object,
+      required: false,
+      default: null
+    },
+    buttonClass: {
+      type: String,
       required: false,
       default: null
     }

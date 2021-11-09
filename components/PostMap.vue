@@ -16,24 +16,25 @@
             </b>
           </p>
           <p>
-            You can experiment using these controls to see how far it would show for different types of transport and
+            You can experiment to see how far it would show for different types of transport and
             different travel times.  The controls would look a bit like this:
           </p>
-          <Isochrones />
-          <hr>
           <p>
-            You'll see the areas covered shaded in blue on the map.  This is where we would show posts from.
+            You'll see the areas covered shaded in blue on the map.  This is where we would show and email posts from.
           </p>
           <p>
             <b>
               You should think about this from the point of view of a member - is this area a sensible one for someone in
-              that place, prepared to travel that length of time, using that mode of transport.
+              that place, prepared to travel that length of time, using that mode of transport?
             </b>
           </p>
           <p>
-            The list of messages below this hasn't changed - just look at the map, not the list.
+            The list of messages below this hasn't changed yet - just look at the map, not the list.
           </p>
         </NoticeMessage>
+      </div>
+      <div class="mb-1 border p-2 bg-white">
+        <Isochrones />
       </div>
       <div ref="mapcont" :style="mapHeight" class="w-100 position-relative mb-1">
         <div class="mapbox">
@@ -59,6 +60,7 @@
               :min-zoom="minZoom"
               :max-zoom="maxZoom"
               :options="mapOptions"
+              :bounds="bounds"
               @ready="ready"
               @update:bounds="idle"
               @zoomend="idle"
@@ -68,12 +70,14 @@
                 <b-btn v-if="canHide" variant="link" class="pauto black p-1" @click="hideMap">
                   <v-icon name="times-circle" title="Hide map" />
                 </b-btn>
-                <b-btn v-if="!locked" variant="link" class="pauto black p-1" @click="lockMap">
-                  <v-icon name="lock-open" title="Lock the map to this area on this devices" />
-                </b-btn>
-                <b-btn v-else variant="link" class="pauto black p-1" @click="unlockMap">
-                  <v-icon name="lock" title="Unlock the map area" />
-                </b-btn>
+                <template v-if="!isochrone">
+                  <b-btn v-if="!locked" variant="link" class="pauto black p-1" @click="lockMap">
+                    <v-icon name="lock-open" title="Lock the map to this area on this devices" />
+                  </b-btn>
+                  <b-btn v-else variant="link" class="pauto black p-1" @click="unlockMap">
+                    <v-icon name="lock" title="Unlock the map area" />
+                  </b-btn>
+                </template>
               </div>
               <l-tile-layer :url="osmtile" :attribution="attribution" />
               <div v-if="showMessages">
@@ -142,6 +146,7 @@ import Vue from 'vue'
 import map from '@/mixins/map.js'
 import { GestureHandling } from 'leaflet-gesture-handling'
 import Isochrones from '@/components/Isochrones'
+import isochroneMixin from '@/mixins/isochrone'
 import GroupMarker from './GroupMarker'
 import BrowseHomeIcon from './BrowseHomeIcon'
 const NoticeMessage = () => import('./NoticeMessage')
@@ -167,7 +172,7 @@ export default {
     GroupMarker,
     NoticeMessage
   },
-  mixins: [map],
+  mixins: [map, isochroneMixin],
   props: {
     initialBounds: {
       type: Array,
@@ -461,19 +466,18 @@ export default {
       this.$nextTick(this.fetchISOChrone)
     },
     isochrones() {
-      this.fitMapToIsochrones()
+      this.$refs.map.mapObject.fitBounds(this.isochroneBounds)
     }
   },
   mounted() {
+    // Initial ISOChrone fetch has been done by the parent or grandparent.
+
+    this.bounds = this.initialBounds
     this.messageLocations = this.initialMessageLocations
 
     if (this.mapHidden) {
       // Say we're ready so the parent can crack on.
       this.$emit('update:ready', true)
-    }
-
-    if (this.isochrone) {
-      this.fetchISOChrone()
     }
   },
   beforeDestroy() {
@@ -532,8 +536,6 @@ export default {
               }
             })
             .addTo(this.mapObject)
-
-          this.mapObject.fitBounds(this.initialBounds)
         }
       })
     },
@@ -766,30 +768,6 @@ export default {
     },
     async fetchISOChrone() {
       await this.$store.dispatch('isochrones/fetch')
-    },
-    fitMapToIsochrones() {
-      const isochrones = this.$store.getters['isochrones/list']
-      console.log('Got isochrones', isochrones)
-
-      if (isochrones) {
-        // eslint-disable-next-line new-cap
-        const fg = new L.featureGroup()
-
-        const mapobj = this.$refs.map.mapObject
-
-        Object.values(isochrones).forEach(i => {
-          try {
-            const wkt = new Wkt.Wkt()
-            wkt.read(i.polygon)
-            const obj = wkt.toObject(mapobj.defaults)
-            fg.addLayer(obj)
-          } catch (e) {
-            console.log('WKT error', location, e)
-          }
-        })
-
-        mapobj.fitBounds(fg.getBounds().pad(0.1))
-      }
     }
   }
 }

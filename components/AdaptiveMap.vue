@@ -649,7 +649,6 @@ export default {
   },
   mounted() {
     this.postMapInitialBounds = this.locked ? this.locked : this.initialBounds
-    // this.postMapInitialBounds = this.initialBounds
 
     if (this.myGroups && this.myGroups.length === 1) {
       // We will be showing the single group; make sure we have any description.
