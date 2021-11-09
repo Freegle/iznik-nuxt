@@ -401,7 +401,16 @@ export default {
       Object.values(this.isochrones).forEach(i => {
         const wkt = new Wkt.Wkt()
         try {
-          wkt.read(i.polygon)
+          // If this is a LINESTRING, it will not fill correctly because of how Leaflet handles those.  Convert to
+          // a POLYGON instead.
+          let str = i.polygon
+
+          if (str.indexOf('LINESTRING') !== -1) {
+            str = str.replace('LINESTRING', 'POLYGON(')
+            str = str.replace(')', '))')
+          }
+
+          wkt.read(str)
           ret.push({
             id: i.id,
             json: wkt.toJson()
