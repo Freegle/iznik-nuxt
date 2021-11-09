@@ -24,14 +24,14 @@
         <label class="font-weight-bold sliderLabel">
           <div v-if="id">
             <div v-if="isochrone.nickname">
-              Distance from {{ isochrone.nickname }}: <span class="text-faded">({{ isochrone.location.name }})</span>
+              Travel time from {{ isochrone.nickname }}: <span class="text-faded">({{ isochrone.location.name }})</span>
             </div>
             <div v-else>
-              Distance: <span class="text-faded"> (from {{ myLocation.name }})</span>
+              Travel time: <span class="text-faded"> (from {{ myLocation.name }})</span>
             </div>
           </div>
           <div v-else>
-            Distance to show:
+            Travel time:
           </div>
           <div class="d-flex flex-column justify-content-around">
             <b-btn v-if="addButton" variant="link" class="ml-2 p-0" size="sm" @click="$emit('add')">

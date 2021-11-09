@@ -33,7 +33,7 @@
           </p>
         </NoticeMessage>
       </div>
-      <div class="mb-1 border p-2 bg-white">
+      <div v-if="isochrone" class="mb-1 border p-2 bg-white">
         <Isochrones />
       </div>
       <div ref="mapcont" :style="mapHeight" class="w-100 position-relative mb-1">
@@ -291,6 +291,7 @@ export default {
     },
     showMessages() {
       // We're zoomed in far enough or we're forcing ourselves to show them (but not so that it's silly)
+      console.log('Zoom', this.zoom, this.postZoom, this.forceMessages)
       return (
         this.zoom >= this.postZoom || (this.forceMessages && this.zoom >= 7)
       )
@@ -545,6 +546,10 @@ export default {
               }
             })
             .addTo(this.mapObject)
+
+          if (!this.isochrone) {
+            this.$refs.map.mapObject.fitBounds(this.initialBounds)
+          }
         }
       })
     },
