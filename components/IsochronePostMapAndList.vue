@@ -4,10 +4,10 @@
       Map of offers and wanteds
     </h2>
     <client-only>
-      <PostMap
-        v-if="postMapInitialBounds"
+      <IsochronePostMap
+        v-if="initialBounds"
         :key="'postmap-' + bump"
-        :initial-bounds="postMapInitialBounds"
+        :initial-bounds="initialBounds"
         :height-fraction="heightFraction"
         :bounds.sync="bounds"
         :min-zoom="minZoom"
@@ -16,12 +16,10 @@
         :force-messages="forceMessages"
         :type="selectedType"
         :search="searchOn"
-        :search-on-groups="!mapMoved"
         :show-many="showMany"
         :groupid="selectedGroup"
         :region="region"
         :show-groups.sync="showGroups"
-        :moved.sync="mapMoved"
         :zoom.sync="zoom"
         :centre.sync="centre"
         :ready.sync="mapready"
@@ -184,16 +182,13 @@ const ExternalLink = () => import('./ExternalLink')
 const GroupSelect = () => import('./GroupSelect')
 const NoticeMessage = () => import('./NoticeMessage')
 const Message = () => import('~/components/Message.vue')
-const PostMap = () => import('~/components/PostMap')
+const IsochronePostMap = () => import('~/components/IsochronePostMap')
 const allSettled = require('promise.allsettled')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const JobsTopBar = () => import('~/components/JobsTopBar')
 
-let L = null
-
 if (process.browser) {
   Vue.use(VueObserveVisibility)
-  L = require('leaflet')
 }
 
 export default {
@@ -206,7 +201,7 @@ export default {
     AdaptiveMapGroup,
     InfiniteLoading,
     Message,
-    PostMap,
+    IsochronePostMap,
     JobsTopBar
   },
   mixins: [map],
@@ -285,8 +280,6 @@ export default {
   },
   data: function() {
     return {
-      postMapInitialBounds: null,
-
       // Map stuff
       heightFraction: 3,
       postcode: null,
@@ -304,7 +297,6 @@ export default {
       showGroups: true,
       mapready: process.server,
       mapVisible: true,
-      mapMoved: false,
       messagesOnMap: [],
       bump: 1,
 
@@ -346,8 +338,6 @@ export default {
 
       if (this.selectedGroup) {
         ret = this.$store.getters['group/get'](this.selectedGroup)
-      } else if (this.myGroups && this.myGroups.length === 1) {
-        ret = this.$store.getters['group/get'](this.myGroups[0].id)
       }
 
       return ret
@@ -377,26 +367,10 @@ export default {
       const count = this.messages ? this.messages.length : 0
       return count
     },
-    locked() {
-      return this.$store.getters['misc/get']('postmaparea')
-    },
     messagesForList() {
       let msgs = []
 
-      if (this.locked) {
-        // If the post map is locked to an area, then we always show the posts in that area.
-        msgs = this.sortedMessagesOnMap
-      } else if (this.search) {
-        // Whether or not the map has moved, the messages are returned through the map.
-        msgs = this.sortedMessagesOnMap
-      } else if (!this.mapMoved && this.me) {
-        // Until the map moves we show posts from the member's groups.  This is to handle people who don't engage
-        // with the map at all and just want to see the posts from their groups (which is perfectly reasonable).
-        msgs = this.messagesInOwnGroups
-      } else {
-        // Once the map has moved we show posts from within the map area.
-        msgs = this.sortedMessagesOnMap
-      }
+      msgs = this.sortedMessagesOnMap
 
       if (this.selectedGroup) {
         msgs = msgs.filter(m => m.groupid === this.selectedGroup)
@@ -615,20 +589,6 @@ export default {
         // We've cleared the search box, so cancel the search and return the map to normal.
         this.searchOn = null
       }
-    },
-    locked() {
-      // When the post map is locked/unlocked we need to reset the infinite scroll so that we see the appropriate
-      // messages.
-      this.infiniteId++
-
-      if (this.locked) {
-        this.postMapInitialBounds = this.locked
-      } else {
-        this.postMapInitialBounds = this.initialBounds
-      }
-
-      this.bump++
-      this.$store.dispatch('messages/clear')
     }
   },
   created() {
@@ -642,39 +602,6 @@ export default {
     this.searchOn = this.initialSearch
   },
   mounted() {
-    this.postMapInitialBounds = this.locked ? this.locked : this.initialBounds
-    // this.postMapInitialBounds = this.initialBounds
-
-    if (this.myGroups && this.myGroups.length === 1) {
-      // We will be showing the single group; make sure we have any description.
-      this.$store.dispatch('group/fetch', {
-        id: this.myGroups[0].id
-      })
-    }
-
-    if (!this.startOnGroups) {
-      this.context = null
-
-      this.$nextTick(async () => {
-        // Get the messages in our own groups for the initial view.
-        const ret = await this.$api.message.fetchMessages({
-          subaction: 'mygroups'
-        })
-
-        if (ret && ret.ret === 0 && ret.messages) {
-          this.messagesInOwnGroups = ret.messages
-
-          // Kick the infinite scroll to show them.
-          this.infiniteId++
-        }
-      })
-    }
-
-    this.bounds = L.latLngBounds(
-      L.latLng(this.swlat, this.swlng),
-      L.latLng(this.nelat, this.nelng)
-    )
-
     // We might have a preference for which type of posts we view.
     const postType = this.$store.getters['misc/get']('postType')
     if (postType) {

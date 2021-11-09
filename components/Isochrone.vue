@@ -1,6 +1,7 @@
 <template>
   <div>
     <div v-if="!id">
+      <hr>
       <p>
         You can add extra postcodes, and we'll show you the posts from near there too.
       </p>

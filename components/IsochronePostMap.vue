@@ -1,5 +1,35 @@
 <template>
   <div v-if="initialBounds">
+    <div className="d-flex flex-wrap bg-warning">
+      <NoticeMessage variant="warning">
+        <p>
+          This is a test page to explore showing posts based on how long it
+          would take to get there from a freegler's own location.
+        </p>
+        <p>
+          <b>
+            You should think about this from the point of view of a member - does it show a sensible area for someone in
+            that place using that mode of transport?
+          </b>
+        </p>
+        <p>
+          The blue shaded map area shows is what decides which posts appear in the list below.  It's where we
+          would also email posts from.  Analysis of a sample of users suggests they would see more posts, and closer
+          posts, this way.
+        </p>
+        <p>
+          You can experiment to see how far it would show for different types of transport and
+          different travel times.
+        </p>
+      </NoticeMessage>
+    </div>
+    <div class="mb-1 border p-2 bg-white">
+      <Isochrones />
+      <div class="small">
+        <!-- eslint-disable-next-line-->
+        Show posts from <b-btn variant="link" size="sm" class="mb-1 p-0" @click="showPostsFromMyGroups">all my communities</b-btn>.
+      </div>
+    </div>
     <div v-if="mapHidden" class="d-flex justify-content-end">
       <b-btn variant="link" @click="showMap">
         Show map of posts
@@ -30,6 +60,7 @@
               :min-zoom="minZoom"
               :max-zoom="maxZoom"
               :options="mapOptions"
+              :bounds="bounds"
               @ready="ready"
               @update:bounds="idle"
               @zoomend="idle"
@@ -38,12 +69,6 @@
               <div class="leaflet-top leaflet-right d-flex flex-column justify-content-center">
                 <b-btn v-if="canHide" variant="link" class="pauto black p-1" @click="hideMap">
                   <v-icon name="times-circle" title="Hide map" />
-                </b-btn>
-                <b-btn v-if="!locked" variant="link" class="pauto black p-1" @click="lockMap">
-                  <v-icon name="lock-open" title="Lock the map to this area on this devices" />
-                </b-btn>
-                <b-btn v-else variant="link" class="pauto black p-1" @click="unlockMap">
-                  <v-icon name="lock" title="Unlock the map area" />
                 </b-btn>
               </div>
               <l-tile-layer :url="osmtile" :attribution="attribution" />
@@ -58,51 +83,12 @@
               <div v-else>
                 <GroupMarker v-for="g in groupsInBounds" :key="'marker-' + g.id + '-' + zoom" :group="g" :size="largeGroupMarkers ? 'rich' : 'poor'" />
               </div>
+              <l-geojson v-for="g in isochroneGEOJSONs" :key="'isochrone' + g.id" :geojson="g.json" :options="isochroneOptions" />
             </l-map>
           </vue-draggable-resizable>
         </div>
       </div>
     </div>
-    <b-modal
-      id="postMapLock"
-      v-model="lockModal"
-      title="Map Locked"
-      generator-unable-to-provide-required-alt=""
-      no-stacking
-      ok-only
-    >
-      <template slot="default">
-        <p>
-          The map is now locked to this position.  The posts you see below will only be the ones from this map
-          area.
-        </p>
-        <p>
-          If you want to move the map, or revert to seeing the posts from all your communities when you load this
-          page, then click again to unlock the map.
-        </p>
-      </template>
-    </b-modal>
-    <b-modal
-      id="postMapUnlock"
-      v-model="unlockModal"
-      title="Map Unlocked"
-      generator-unable-to-provide-required-alt=""
-      no-stacking
-      ok-only
-    >
-      <template slot="default">
-        <p>
-          The map is now unlocked.  The posts you see below when you first come to this page will be the ones from
-          your communities.
-        </p>
-        <p>
-          Once you move the map then they will be the ones shown from the map area.
-        </p>
-        <p>
-          If you want to lock the map to a new area, click again to lock it.
-        </p>
-      </template>
-    </b-modal>
   </div>
 </template>
 <script>
@@ -111,14 +97,19 @@ import cloneDeep from 'lodash.clonedeep'
 import Vue from 'vue'
 import map from '@/mixins/map.js'
 import { GestureHandling } from 'leaflet-gesture-handling'
+import Isochrones from '@/components/Isochrones'
+import isochroneMixin from '@/mixins/isochrone'
 import GroupMarker from './GroupMarker'
 import BrowseHomeIcon from './BrowseHomeIcon'
+const NoticeMessage = () => import('./NoticeMessage')
 const ClusterMarker = () => import('./ClusterMarker')
 
 let L = null
+let Wkt = null
 
 if (process.browser) {
   L = require('leaflet')
+  Wkt = require('wicket')
   require('leaflet-control-geocoder')
   require('leaflet-control-geocoder/dist/Control.Geocoder.css')
   require('leaflet-gesture-handling/dist/leaflet-gesture-handling.css')
@@ -127,11 +118,13 @@ if (process.browser) {
 
 export default {
   components: {
+    Isochrones,
     ClusterMarker,
     VueDraggableResizable,
-    GroupMarker
+    GroupMarker,
+    NoticeMessage
   },
-  mixins: [map],
+  mixins: [map, isochroneMixin],
   props: {
     initialBounds: {
       type: Array,
@@ -167,11 +160,6 @@ export default {
       required: false,
       default: null
     },
-    searchOnGroups: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
     type: {
       type: String,
       required: false,
@@ -204,13 +192,10 @@ export default {
       messageLocations: [],
       mapObject: null,
       manyToShow: 20,
-      shownMany: false,
       bump: 1,
       resizedHeight: null,
       lastBounds: null,
       zoom: 5,
-      lockModal: false,
-      unlockModal: false,
       destroyed: false,
       mapIdle: 0
     }
@@ -218,9 +203,9 @@ export default {
   computed: {
     mapOptions() {
       return {
-        zoomControl: !this.locked,
-        dragging: !this.locked && !L.Browser.mobile,
-        touchZoom: !this.locked,
+        zoomControl: true,
+        dragging: !L.Browser.mobile,
+        touchZoom: true,
         scrollWheelZoom: false,
         bounceAtZoomLimits: true,
         gestureHandling: true
@@ -245,6 +230,7 @@ export default {
     },
     showMessages() {
       // We're zoomed in far enough or we're forcing ourselves to show them (but not so that it's silly)
+      console.log('Zoom', this.zoom, this.postZoom, this.forceMessages)
       return (
         this.zoom >= this.postZoom || (this.forceMessages && this.zoom >= 7)
       )
@@ -343,8 +329,43 @@ export default {
         className: 'bg-none top'
       })
     },
-    locked() {
-      return this.$store.getters['misc/get']('postmaparea')
+    isochrones() {
+      return this.$store.getters['isochrones/list']
+    },
+    isochroneGEOJSONs() {
+      const ret = []
+
+      Object.values(this.isochrones).forEach(i => {
+        const wkt = new Wkt.Wkt()
+        try {
+          // If this is a LINESTRING, it will not fill correctly because of how Leaflet handles those.  Convert to
+          // a POLYGON instead.
+          let str = i.polygon
+
+          if (str.indexOf('LINESTRING') !== -1) {
+            str = str.replace('LINESTRING', 'POLYGON(')
+            str = str.replace(')', '))')
+          }
+
+          wkt.read(str)
+          ret.push({
+            id: i.id,
+            json: wkt.toJson()
+          })
+        } catch (e) {
+          console.log('WKT error', location, e)
+        }
+      })
+
+      return ret
+    },
+    isochroneOptions() {
+      return {
+        fillColor: 'darkblue',
+        fill: true,
+        fillOpacity: 0.2,
+        color: 'darkblue'
+      }
     }
   },
   watch: {
@@ -383,9 +404,21 @@ export default {
     },
     groupsInBounds(newval) {
       this.$emit('groups', this.groupsInBounds.map(g => g.id))
+    },
+    minutes() {
+      this.$nextTick(this.fetchISOChrone)
+    },
+    transport() {
+      this.$nextTick(this.fetchISOChrone)
+    },
+    isochrones() {
+      this.$refs.map.mapObject.fitBounds(this.isochroneBounds)
     }
   },
   mounted() {
+    // Initial ISOChrone fetch has been done by the parent or grandparent.
+
+    this.bounds = this.initialBounds
     this.messageLocations = this.initialMessageLocations
 
     if (this.mapHidden) {
@@ -405,9 +438,7 @@ export default {
 
         if (process.client) {
           L.Control.geocoder({
-            placeholder: this.locked
-              ? 'Unlock map and search...'
-              : 'Search for a place...',
+            placeholder: 'Search for a place...',
             defaultMarkGeocode: false,
             geocoder: L.Control.Geocoder.photon({
               geocodingQueryParams: {
@@ -425,7 +456,7 @@ export default {
               serviceUrl:
                 process.env.GEOCODE || 'https://geocode.ilovefreegle.org/api'
             }),
-            collapsed: this.locked
+            collapsed: false
           })
             .on('markgeocode', function(e) {
               if (e && e.geocode && e.geocode.bbox) {
@@ -438,9 +469,6 @@ export default {
                 // Empty out the query box so that the dropdown closes.
                 this.setQuery('')
 
-                // If we don't find anything at this location we will want to zoom out.
-                self.shownMany = false
-
                 self.$nextTick(() => {
                   // Move the map to the location we've found.
                   self.mapObject.flyToBounds(e.geocode.bbox)
@@ -449,8 +477,6 @@ export default {
               }
             })
             .addTo(this.mapObject)
-
-          this.mapObject.fitBounds(this.initialBounds)
         }
       })
     },
@@ -492,35 +518,21 @@ export default {
       this.$emit('update:loading', true)
 
       if (this.mapObject) {
-        // Get the messages from the server which are in the bounds of the map.
-        const bounds = this.mapObject.getBounds()
-
-        if (this.mapObject.getZoom() < this.minZoom) {
-          // The parent may  replace us with something else at this point, e.g. with a group map.  But maybe not.
-          // Their call.
-          this.$emit('minzoom', this.mapObject.getBounds())
-        }
-
-        const swlat = bounds.getSouthWest().lat
-        const swlng = bounds.getSouthWest().lng
-        const nelat = bounds.getNorthEast().lat
-        const nelng = bounds.getNorthEast().lng
+        // Get the messages from the server which are in the user's isochrones.
         let params = null
 
-        if (!this.search) {
-          // Get the messages in the map view.
-          params = {
-            subaction: 'inbounds',
-            swlat: swlat,
-            swlng: swlng,
-            nelat: nelat,
-            nelng: nelng,
-            groupid: this.groupid
-          }
+        params = {
+          subaction: 'isochrones',
+          groupid: this.groupid,
+          search: this.search
+        }
 
+        if (!this.search && !this.groupid) {
           // See if we have values cached.  We don't need to worry too much about the group and bounds because
           // it'll sort itself out if it's wrong.  We just want to get something up on the screen rapidly if we can.
-          const cache = this.$store.getters['misc/get']('cache.postmap')
+          const cache = this.$store.getters['misc/get'](
+            'cache.isochronespostmap'
+          )
 
           if (cache) {
             try {
@@ -530,33 +542,6 @@ export default {
               console.log('Got cached messages')
             } catch (e) {
               console.log('Failed to parse cache, ignore')
-            }
-          }
-        } else {
-          // We are searching.  Get the list of messages from the server.
-          // eslint-disable-next-line no-lonely-if
-          if (this.searchOnGroups) {
-            // We want the server to search on our own groups.
-            params = {
-              collection: 'Approved',
-              subaction: 'searchmess',
-              messagetype: this.type,
-              search: this.search,
-              groupid: this.groupid,
-              searchmygroups: true
-            }
-          } else {
-            // We want to search within the map area.
-            params = {
-              collection: 'Approved',
-              subaction: 'searchmess',
-              messagetype: this.type,
-              search: this.search,
-              groupid: this.groupid,
-              swlat: swlat,
-              swlng: swlng,
-              nelat: nelat,
-              nelng: nelng
             }
           }
         }
@@ -579,48 +564,16 @@ export default {
               return m.type === this.type
             })
           }
-
-          let countInBounds = 0
-
-          messages.forEach(m => {
-            if (
-              swlat <= m.lat &&
-              m.lat <= nelat &&
-              swlng <= m.lng &&
-              m.lng <= nelng
-            ) {
-              countInBounds++
-            }
-          })
-
-          if (countInBounds >= this.manyToShow) {
-            // We have seen lots, so we don't need to do the auto zoom out thing now.
-            this.shownMany = true
-          } else if (
-            !this.search &&
-            this.showMany &&
-            countInBounds < this.manyToShow &&
-            !this.shownMany
-          ) {
-            // If we haven't got more than 1 message at this zoom level, zoom out.  That means we'll always show at
-            // least something.  This is useful when we search for a specific place.
-            const currzoom = this.mapObject.getZoom()
-            if (currzoom > this.minZoom) {
-              this.mapObject.setZoom(currzoom - 1)
-            } else {
-              this.shownMany = true
-            }
-          }
         }
 
         this.messageLocations = messages
         this.$emit('messages', messages)
         this.$emit('update:loading', false)
 
-        if (!this.search) {
+        if (!this.search && !this.groupid) {
           // Update cache of messages.
           this.$store.dispatch('misc/set', {
-            key: 'cache.postmap',
+            key: 'cache.isochronespostmap',
             value: JSON.stringify(messages)
           })
         }
@@ -680,6 +633,17 @@ export default {
 
       this.unlockModal = true
       this.bump++
+    },
+    async fetchISOChrone() {
+      await this.$store.dispatch('isochrones/fetch')
+    },
+    async showPostsFromMyGroups() {
+      const settings = this.me.settings
+      settings.browseView = 'mygroups'
+
+      await this.$store.dispatch('auth/saveAndGet', {
+        settings: settings
+      })
     }
   }
 }

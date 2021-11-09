@@ -27,19 +27,39 @@
             </div>
           </div>
         </div>
-        <AdaptiveMap
-          v-if="initialBounds"
-          :key="'map-' + bump"
-          :initial-bounds="initialBounds"
-          :initial-search="searchTerm"
-          class="mt-2"
-          force-messages
-          group-info
-          jobs
-          :show-many="false"
-          can-hide
-          isochrone
-        />
+        <div v-if="initialBounds">
+          <IsochronePostMapAndList
+            v-if="browseView === 'nearby'"
+            :key="'map-' + bump"
+            :initial-bounds="initialBounds"
+            :initial-search="searchTerm"
+            class="mt-2"
+            force-messages
+            group-info
+            jobs
+            :show-many="false"
+            can-hide
+          />
+          <div v-else-if="browseView === 'mygroups'" class="bg-white">
+            <div class="small d-flex justify-content-end">
+              <div>
+                <!-- eslint-disable-next-line-->
+                Show posts from <b-btn variant="link" class="mb-1 p-0" size="sm" @click="showPostsFromNearby">nearby</b-btn>.
+              </div>
+            </div>
+            <AdaptiveMap
+              :key="'map-' + bump"
+              :initial-bounds="initialBounds"
+              :initial-search="searchTerm"
+              class="mt-2"
+              force-messages
+              group-info
+              jobs
+              :show-many="false"
+              can-hide
+            />
+          </div>
+        </div>
         <client-only>
           <AboutMeModal v-if="showAboutMe" ref="aboutMeModal" review="reviewAboutMe" />
         </client-only>
@@ -61,8 +81,9 @@ import dayjs from 'dayjs'
 
 import isochroneMixin from '@/mixins/isochrone'
 import Visible from '../../components/Visible'
-import AdaptiveMap from '~/components/AdaptiveMap'
+import IsochronePostMapAndList from '~/components/IsochronePostMapAndList'
 import AboutMeModal from '~/components/AboutMeModal'
+import AdaptiveMap from '~/components/AdaptiveMap'
 
 const GlobalWarning = () => import('~/components/GlobalWarning')
 const SidebarLeft = () => import('~/components/SidebarLeft')
@@ -73,9 +94,10 @@ const MicroVolunteering = () => import('~/components/MicroVolunteering.vue')
 
 export default {
   components: {
+    AdaptiveMap,
     Visible,
     MicroVolunteering,
-    AdaptiveMap,
+    IsochronePostMapAndList,
     GlobalWarning,
     SidebarLeft,
     SidebarRight,
@@ -91,6 +113,13 @@ export default {
       searchTerm: null,
       showAboutMe: false,
       reviewAboutMe: false
+    }
+  },
+  computed: {
+    browseView() {
+      return this.me && this.me.settings && this.me.settings.browseView
+        ? this.me.settings.browseView
+        : 'nearby'
     }
   },
   watch: {
@@ -177,6 +206,14 @@ export default {
         // somewhere.
         this.$router.push('/explore')
       }
+    },
+    async showPostsFromNearby() {
+      const settings = this.me.settings
+      settings.browseView = 'nearby'
+
+      await this.$store.dispatch('auth/saveAndGet', {
+        settings: settings
+      })
     }
   },
   head() {
