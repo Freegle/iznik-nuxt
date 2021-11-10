@@ -137,7 +137,7 @@
         </client-only>
         <div v-if="filteredMessages && filteredMessages.length">
           <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
-            <Message :id="message.id" record-view class="mb-2 mb-sm-3" />
+            <Message :id="message.id" record-view class="mb-2 mb-sm-3" @view="recordView" />
           </div>
         </div>
         <client-only>
@@ -680,6 +680,11 @@ export default {
     if (postType) {
       this.selectedType = postType
     }
+
+    this.$api.bandit.shown({
+      uid: 'browsepage',
+      variant: 'oldskool'
+    })
   },
   methods: {
     loadMore: async function($state) {
@@ -793,6 +798,12 @@ export default {
         (!this.selectedGroup ||
           parseInt(m.groupid) === parseInt(this.selectedGroup))
       )
+    },
+    recordView() {
+      this.$api.bandit.chosen({
+        uid: 'browsepage',
+        variant: 'oldskool'
+      })
     }
   }
 }

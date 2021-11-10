@@ -210,6 +210,8 @@ export default {
             id: this.id
           })
         }
+
+        this.$emit('view')
       }
     }
   }
