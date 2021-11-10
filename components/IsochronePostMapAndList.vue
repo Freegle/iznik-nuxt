@@ -175,6 +175,7 @@ import Vue from 'vue'
 import VueObserveVisibility from 'vue-observe-visibility'
 import InfiniteLoading from 'vue-infinite-loading'
 import map from '@/mixins/map.js'
+import dayjs from 'dayjs'
 import { MAX_MAP_ZOOM } from '../utils/constants'
 import JoinWithConfirm from '~/components/JoinWithConfirm'
 const AdaptiveMapGroup = () => import('./AdaptiveMapGroup')
@@ -329,7 +330,8 @@ export default {
       selectedGroup: null,
       search: null,
       searchOn: null,
-      context: null
+      context: null,
+      trackViews: false
     }
   },
   computed: {
@@ -608,10 +610,19 @@ export default {
       this.selectedType = postType
     }
 
-    this.$api.bandit.shown({
-      uid: 'browsepage',
-      variant: 'newskool'
-    })
+    // We want to track views of messages for new members.
+    if (this.me) {
+      const now = dayjs()
+      const daysago = now.diff(dayjs(this.me.added), 'days')
+
+      if (daysago < 14) {
+        this.trackViews = true
+        this.$api.bandit.shown({
+          uid: 'browsepage',
+          variant: 'newskool'
+        })
+      }
+    }
   },
   methods: {
     loadMore: async function($state) {
@@ -727,10 +738,12 @@ export default {
       )
     },
     recordView() {
-      this.$api.bandit.chosen({
-        uid: 'browsepage',
-        variant: 'newskool'
-      })
+      if (this.trackViews) {
+        this.$api.bandit.chosen({
+          uid: 'browsepage',
+          variant: 'newskool'
+        })
+      }
     }
   }
 }
