@@ -37,8 +37,6 @@
     </div>
     <div v-else>
       <div ref="mapcont" :style="mapHeight" class="w-100 position-relative mb-1">
-        Show isochrones {{ showIsochrones }} show bounds {{ showInBounds }}, fetchedSecondaryMessages {{ fetchedSecondaryMessages.length }}, filtered {{ secondaryMessageList.length }},
-        fetchedPrimaryMessages {{ fetchedPrimaryMessages.length }}, filtered {{ primaryMessageList.length }}
         <div class="mapbox">
           <vue-draggable-resizable
             :class="{
@@ -732,7 +730,7 @@ export default {
 
 /deep/ .fadedMarker {
   filter: grayscale(100%);
-  opacity: 50%;
+  opacity: 0.5;
   z-index: -1 !important;
 
   .icon {
