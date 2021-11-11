@@ -442,6 +442,9 @@ export default {
     },
     isochrones() {
       this.$refs.map.mapObject.fitBounds(this.isochroneBounds)
+      this.showIsochrones = true
+      this.showInBounds = false
+      this.initialCentre = null
     },
     primaryMessageList: {
       immediate: true,
