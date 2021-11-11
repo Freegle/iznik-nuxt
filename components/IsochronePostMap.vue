@@ -378,11 +378,20 @@ export default {
         }
       })
     },
+    primaryMessageIds() {
+      const ret = []
+
+      this.primaryMessageList.forEach(m => {
+        ret[m.id] = true
+      })
+
+      return ret
+    },
     secondaryMessageList() {
       // Return anything relevant we have fetched which is not already in the primary one.
       return this.fetchedSecondaryMessages.filter(m => {
         if (
-          !this.primaryMessageList.find(m2 => m.id === m2.id) &&
+          !this.primaryMessageIds[m.id] &&
           (!this.groupid || m.groupid === this.groupid) &&
           (this.type === 'All' || m.type === this.type)
         ) {
@@ -591,13 +600,11 @@ export default {
         }
 
         const ret = await this.$api.message.fetchMessages(params)
-        console.log('Fetch primary messages', params)
         this.fetchedPrimaryMessages =
           ret.ret === 0 && ret.messages ? ret.messages : []
 
         if (!this.destroyed) {
           if (!this.search && this.showIsochrones) {
-            console.log('Fetch secondary messages')
             this.fetchSecondaryMessages()
           } else {
             this.secondaryMesageList = []

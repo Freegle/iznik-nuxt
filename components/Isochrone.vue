@@ -57,6 +57,7 @@
             min="5"
             max="45"
             step="5"
+            @change="changeMinutes"
           />
           <span class="ml-2">Far</span>
         </div>
@@ -161,15 +162,6 @@ export default {
       return ret
     }
   },
-  watch: {
-    minutes(newVal) {
-      this.$store.dispatch('isochrones/edit', {
-        id: this.id,
-        minutes: this.minutes,
-        transport: this.isochrone.tranport
-      })
-    }
-  },
   created() {
     if (this.id) {
       this.minutes = this.$store.getters['isochrones/get'](this.id).minutes
@@ -178,6 +170,15 @@ export default {
     }
   },
   methods: {
+    changeMinutes(newVal) {
+      if (this.id) {
+        this.$store.dispatch('isochrones/edit', {
+          id: this.id,
+          minutes: this.minutes,
+          transport: this.isochrone.transport
+        })
+      }
+    },
     changeTransport(type) {
       if (this.id) {
         this.$store.dispatch('isochrones/edit', {
