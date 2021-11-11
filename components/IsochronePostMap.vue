@@ -37,6 +37,8 @@
     </div>
     <div v-else>
       <div ref="mapcont" :style="mapHeight" class="w-100 position-relative mb-1">
+        Show isochrones {{ showIsochrones }} show bounds {{ showInBounds }}, fetchedSecondaryMessages {{ fetchedSecondaryMessages.length }}, filtered {{ secondaryMessageList.length }},
+        fetchedPrimaryMessages {{ fetchedPrimaryMessages.length }}, filtered {{ primaryMessageList.length }}
         <div class="mapbox">
           <vue-draggable-resizable
             :class="{
@@ -588,11 +590,13 @@ export default {
         }
 
         const ret = await this.$api.message.fetchMessages(params)
+        console.log('Fetch primary messages', params)
         this.fetchedPrimaryMessages =
           ret.ret === 0 && ret.messages ? ret.messages : []
 
         if (!this.destroyed) {
           if (!this.search && this.showIsochrones) {
+            console.log('Fetch secondary messages')
             this.fetchSecondaryMessages()
           } else {
             this.secondaryMesageList = []
