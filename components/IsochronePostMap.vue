@@ -62,9 +62,10 @@
               :options="mapOptions"
               :bounds="bounds"
               @ready="ready"
-              @update:bounds="idle"
-              @zoomend="idle"
-              @moveend="idle"
+              @update:bounds="boundsChange"
+              @update:center="centreChange"
+              @zoomend="boundsChange"
+              @moveend="boundsChange"
             >
               <div class="leaflet-top leaflet-right d-flex flex-column justify-content-center">
                 <b-btn v-if="canHide" variant="link" class="pauto black p-1" @click="hideMap">
@@ -72,8 +73,24 @@
                 </b-btn>
               </div>
               <l-tile-layer :url="osmtile" :attribution="attribution" />
-              <div v-if="showMessages">
-                <ClusterMarker v-if="messagesForMap.length" :markers="messagesForMap" :map="mapObject" :tag="['post', 'posts']" @click="idle" />
+              <div v-if="showMessages && mapObject">
+                <div v-if="showIsochrones">
+                  <ClusterMarker :markers="primaryMessageList" :map="mapObject" :tag="['post', 'posts']" @click="boundsChange" />
+                  <ClusterMarker
+                    :markers="secondaryMessageList"
+                    :map="mapObject"
+                    :tag="['post', 'posts']"
+                    css-class="fadedMarker"
+                    @click="boundsChange"
+                  />
+                </div>
+                <ClusterMarker
+                  v-else
+                  :markers="primaryMessageList"
+                  :map="mapObject"
+                  :tag="['post', 'posts']"
+                  @click="boundsChange"
+                />
                 <l-marker v-if="me && me.settings && me.settings.mylocation" :lat-lng="[me.lat, me.lng]" :icon="homeIcon" @click="goHome">
                   <l-tooltip>
                     This is where your postcode is. You can change your postcode from Settings.
@@ -93,7 +110,6 @@
 </template>
 <script>
 import VueDraggableResizable from 'vue-draggable-resizable/src/components/vue-draggable-resizable'
-import cloneDeep from 'lodash.clonedeep'
 import Vue from 'vue'
 import map from '@/mixins/map.js'
 import { GestureHandling } from 'leaflet-gesture-handling'
@@ -189,7 +205,8 @@ export default {
   data: function() {
     return {
       context: null,
-      messageLocations: [],
+      fetchedPrimaryMessages: [],
+      fetchedSecondaryMessages: [],
       mapObject: null,
       manyToShow: 20,
       bump: 1,
@@ -197,7 +214,10 @@ export default {
       lastBounds: null,
       zoom: 5,
       destroyed: false,
-      mapIdle: 0
+      mapboundsChangeCount: 0,
+      initialCentre: null,
+      showIsochrones: true,
+      showInBounds: false
     }
   },
   computed: {
@@ -229,8 +249,7 @@ export default {
       return height
     },
     showMessages() {
-      // We're zoomed in far enough or we're forcing ourselves to show them (but not so that it's silly)
-      console.log('Zoom', this.zoom, this.postZoom, this.forceMessages)
+      // We're zoomed in far enough or we're forcing ourselves to show them (but not so far that it's silly).
       return (
         this.zoom >= this.postZoom || (this.forceMessages && this.zoom >= 7)
       )
@@ -238,8 +257,8 @@ export default {
     groups() {
       const ret = []
 
-      if (this.messageLocations) {
-        this.messageLocations.forEach(m => {
+      if (this.primaryMessageList) {
+        this.primaryMessageList.forEach(m => {
           if (ret.indexOf(m.groupid) === -1) {
             ret.push(m.groupid)
           }
@@ -256,8 +275,8 @@ export default {
       return this.$store.getters['group/list']
     },
     groupsInBounds() {
-      // Reference map idle so that we recalc.
-      const groups = this.mapIdle ? this.allGroups : []
+      // Reference map boundsChange so that we recalc.
+      const groups = this.mapboundsChangeCount ? this.allGroups : []
       const bounds = this.mapObject ? this.mapObject.getBounds() : null
       const ret = []
 
@@ -305,23 +324,14 @@ export default {
 
       return sorted
     },
-    messagesForMap() {
-      return this.mapObject &&
-        this.messageLocations &&
-        this.messageLocations.length
-        ? this.messageLocations
-        : []
-    },
     groupIcon() {
       return new L.Icon({
         iconUrl: '/mapmarker.gif'
       })
     },
     homeIcon() {
-      // Render the component off document.
       const Mine = Vue.extend(BrowseHomeIcon)
       let re = new Mine()
-
       re = re.$mount().$el
 
       return new L.DivIcon({
@@ -338,16 +348,7 @@ export default {
       Object.values(this.isochrones).forEach(i => {
         const wkt = new Wkt.Wkt()
         try {
-          // If this is a LINESTRING, it will not fill correctly because of how Leaflet handles those.  Convert to
-          // a POLYGON instead.
-          let str = i.polygon
-
-          if (str.indexOf('LINESTRING') !== -1) {
-            str = str.replace('LINESTRING', 'POLYGON(')
-            str = str.replace(')', '))')
-          }
-
-          wkt.read(str)
+          wkt.read(i.polygon)
           ret.push({
             id: i.id,
             json: wkt.toJson()
@@ -366,25 +367,49 @@ export default {
         fillOpacity: 0.2,
         color: 'darkblue'
       }
+    },
+    primaryMessageList() {
+      return this.fetchedPrimaryMessages.filter(m => {
+        if (
+          (!this.groupid || m.groupid === this.groupid) &&
+          (this.type === 'All' || m.type === this.type)
+        ) {
+          return true
+        }
+      })
+    },
+    secondaryMessageList() {
+      // Return anything relevant we have fetched which is not already in the primary one.
+      return this.fetchedSecondaryMessages.filter(m => {
+        if (
+          !this.primaryMessageList.find(m2 => m.id === m2.id) &&
+          (!this.groupid || m.groupid === this.groupid) &&
+          (this.type === 'All' || m.type === this.type)
+        ) {
+          return true
+        }
+      })
     }
   },
   watch: {
     groups: {
       immediate: true,
       handler(newval) {
-        this.$emit('groups', newval)
+        if (!this.destroyed) {
+          this.$emit('groups', newval)
+        }
       }
     },
     type() {
       this.lastBounds = null
 
       if (this.zoom >= this.postZoom) {
-        this.getMessages()
+        this.fetchMessages()
       }
     },
     search() {
       this.lastBounds = null
-      this.getMessages()
+      this.fetchMessages()
     },
     groupid(groupid) {
       this.lastBounds = null
@@ -400,10 +425,14 @@ export default {
           ]).pad(0.1)
           this.mapObject.flyToBounds(bounds)
         }
+      } else {
+        this.$refs.map.mapObject.fitBounds(this.isochroneBounds)
       }
     },
     groupsInBounds(newval) {
-      this.$emit('groups', this.groupsInBounds.map(g => g.id))
+      if (!this.destroyed) {
+        this.$emit('groups', this.groupsInBounds.map(g => g.id))
+      }
     },
     minutes() {
       this.$nextTick(this.fetchISOChrone)
@@ -413,13 +442,20 @@ export default {
     },
     isochrones() {
       this.$refs.map.mapObject.fitBounds(this.isochroneBounds)
+    },
+    primaryMessageList: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal) {
+          if (!this.destroyed) {
+            this.$emit('messages', newVal)
+          }
+        }
+      }
     }
   },
   mounted() {
-    // Initial ISOChrone fetch has been done by the parent or grandparent.
-
     this.bounds = this.initialBounds
-    this.messageLocations = this.initialMessageLocations
 
     if (this.mapHidden) {
       // Say we're ready so the parent can crack on.
@@ -480,8 +516,18 @@ export default {
         }
       })
     },
-    idle() {
-      this.mapIdle++
+    centreChange(a, b) {
+      if (!this.initialCentre) {
+        // We get called once on map load, which doesn't count.
+        this.initialCentre = this.mapObject.getCenter().toString()
+      } else if (this.mapObject.getCenter().toString() !== this.initialCentre) {
+        // We are panning, not just zooming.  We want to shift to showing all messages in the map bounds.
+        this.showInBounds = true
+        this.showIsochrones = false
+      }
+    },
+    boundsChange() {
+      this.mapboundsChangeCount++
 
       if (this.mapObject) {
         // We need to update the parent about our zoom level and whether we are showing the posts or groups.
@@ -493,19 +539,8 @@ export default {
           this.$emit('update:showGroups', false)
         }
 
-        const bounds = this.mapObject.getBounds().toBBoxString()
-
-        if (bounds !== this.lastBounds) {
-          if (this.lastBounds !== null) {
-            // The map has now moved from the initial position.
-            this.$emit('update:moved', true)
-          }
-
-          this.lastBounds = bounds
-
-          if (this.showMessages) {
-            this.getMessages()
-          }
+        if (this.showMessages) {
+          this.fetchMessages()
         }
 
         this.$emit('update:bounds', this.mapObject.getBounds())
@@ -513,73 +548,79 @@ export default {
         this.$emit('update:centre', this.mapObject.getCenter())
       }
     },
-    async getMessages() {
-      let messages = []
+    async fetchMessages() {
       this.$emit('update:loading', true)
 
       if (this.mapObject) {
-        // Get the messages from the server which are in the user's isochrones.
-        let params = null
+        let params
+        const bounds = this.mapObject.getBounds()
 
-        params = {
-          subaction: 'isochrones',
-          groupid: this.groupid,
-          search: this.search
-        }
-
-        if (!this.search && !this.groupid) {
-          // See if we have values cached.  We don't need to worry too much about the group and bounds because
-          // it'll sort itself out if it's wrong.  We just want to get something up on the screen rapidly if we can.
-          const cache = this.$store.getters['misc/get'](
-            'cache.isochronespostmap'
-          )
-
-          if (cache) {
-            try {
-              messages = JSON.parse(cache)
-              this.$emit('messages', messages)
-              this.$emit('update:loading', false)
-              console.log('Got cached messages')
-            } catch (e) {
-              console.log('Failed to parse cache, ignore')
-            }
+        if (this.search) {
+          // We're searching.
+          params = {
+            collection: 'Approved',
+            subaction: 'searchmess',
+            messagetype: this.type,
+            search: this.search,
+            groupid: this.groupid,
+            swlat: bounds.getSouthWest().lat,
+            swlng: bounds.getSouthWest().lng,
+            nelat: bounds.getNorthEast().lat,
+            nelng: bounds.getNorthEast().lng
+          }
+        } else if (this.showIsochrones) {
+          // The default view unless we've moved the map is the messages in the isochrone.
+          params = {
+            subaction: 'isochrones',
+            groupid: this.groupid,
+            search: this.search
+          }
+        } else if (this.showInBounds) {
+          // If we've moved the map then we show the posts in the map bounds.
+          params = {
+            subaction: 'inbounds',
+            swlat: bounds.getSouthWest().lat,
+            swlng: bounds.getSouthWest().lng,
+            nelat: bounds.getNorthEast().lat,
+            nelng: bounds.getNorthEast().lng,
+            groupid: this.groupid
           }
         }
 
         const ret = await this.$api.message.fetchMessages(params)
+        this.fetchedPrimaryMessages =
+          ret.ret === 0 && ret.messages ? ret.messages : []
 
-        if (ret.ret === 0 && ret.messages && !this.destroyed) {
-          // Don't really understand why the clone is necessary, but it is - without it we seem to process
-          // old data inside the watch().
-          messages = cloneDeep(ret.messages)
-
-          if (this.groupid) {
-            messages = messages.filter(m => {
-              return m.groupid === this.groupid
-            })
+        if (!this.destroyed) {
+          if (!this.search && this.showIsochrones) {
+            this.fetchSecondaryMessages()
+          } else {
+            this.secondaryMesageList = []
           }
-
-          if (this.type !== 'All') {
-            messages = messages.filter(m => {
-              return m.type === this.type
-            })
-          }
-        }
-
-        this.messageLocations = messages
-        this.$emit('messages', messages)
-        this.$emit('update:loading', false)
-
-        if (!this.search && !this.groupid) {
-          // Update cache of messages.
-          this.$store.dispatch('misc/set', {
-            key: 'cache.isochronespostmap',
-            value: JSON.stringify(messages)
-          })
         }
       }
 
-      return cloneDeep(messages)
+      this.$emit('update:loading', false)
+    },
+    async fetchSecondaryMessages() {
+      if (!this.mapHidden) {
+        // We're showing the isochrones.  But we also want to get the other messages, so that we can display those
+        // faded on the map.  This allows them to see that there is activity in another area which they might
+        // want to explore, without it being as prominent as the main activity we want to show.
+        const bounds = this.mapObject.getBounds()
+        const params = {
+          subaction: 'inbounds',
+          swlat: bounds.getSouthWest().lat,
+          swlng: bounds.getSouthWest().lng,
+          nelat: bounds.getNorthEast().lat,
+          nelng: bounds.getNorthEast().lng
+        }
+
+        const ret = await this.$api.message.fetchMessages(params)
+
+        this.fetchedSecondaryMessages =
+          ret.ret === 0 && ret.messages ? ret.messages : []
+      }
     },
     onResize(x, y, width, height) {
       if (this.mapObject) {
@@ -596,7 +637,17 @@ export default {
       }
     },
     goHome() {
+      this.showInBounds = false
+      this.showIsochrones = true
+      this.initialCentre = null
       this.mapObject.flyTo(new L.LatLng(this.me.lat, this.me.lng))
+
+      setTimeout(() => {
+        // Bit of a hack.  If we pan the map, then click home, we want to revert to showing the isochrone area.  But
+        // the flyTo takes a while to complete.  So do that twice, to make it less likely that then zooming will
+        // mess up.  I'm not sure how to fix this properly, but it's a rare case.
+        this.initialCentre = null
+      }, 2000)
     },
     hideMap() {
       this.$store.dispatch('misc/set', {
@@ -615,24 +666,6 @@ export default {
         [bounds.getSouthWest().lat, bounds.getSouthWest().lng],
         [bounds.getNorthEast().lat, bounds.getNorthEast().lng]
       ]
-    },
-    lockMap() {
-      this.$store.dispatch('misc/set', {
-        key: 'postmaparea',
-        value: this.toJSON(this.mapObject.getBounds())
-      })
-
-      this.lockModal = true
-      this.bump++
-    },
-    unlockMap() {
-      this.$store.dispatch('misc/set', {
-        key: 'postmaparea',
-        value: null
-      })
-
-      this.unlockModal = true
-      this.bump++
     },
     async fetchISOChrone() {
       await this.$store.dispatch('isochrones/fetch')
@@ -656,7 +689,7 @@ export default {
 
 .mapbox {
   width: 100%;
-  top: 0px;
+  top: 0;
   left: 0;
   border: 1px solid $color-gray--light;
 }
@@ -691,5 +724,15 @@ export default {
 
 .pauto {
   pointer-events: auto;
+}
+
+/deep/ .fadedMarker {
+  filter: grayscale(100%);
+  opacity: 50%;
+  z-index: -1 !important;
+
+  .icon {
+    border: 5px solid $color-gray--light;
+  }
 }
 </style>

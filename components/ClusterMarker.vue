@@ -71,6 +71,11 @@ export default {
       type: Array,
       required: false,
       default: null
+    },
+    cssClass: {
+      type: String,
+      required: false,
+      default: ''
     }
   },
   computed: {
@@ -186,7 +191,7 @@ export default {
 
       return new L.DivIcon({
         html: re.outerHTML,
-        className: 'clear'
+        className: 'clear ' + this.cssClass
       })
     },
     clusterClick(cluster) {
