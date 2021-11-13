@@ -4,7 +4,7 @@
       <b-modal
         id="aboutmemodal"
         v-model="showModal"
-        title="Why not complete your public profile?"
+        :title="review ? 'Why not complete your public profile?' : 'Please review your public profile'"
         size="lg"
         no-stacking
       >
@@ -71,7 +71,9 @@ export default {
     }
   },
   methods: {
-    show() {
+    async show() {
+      await this.fetchMe(['me', 'aboutme'])
+
       this.text =
         this.me && this.me.aboutme && this.me.aboutme.text
           ? this.me.aboutme.text
