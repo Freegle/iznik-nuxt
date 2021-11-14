@@ -306,7 +306,7 @@
               :groupid="groupid"
               name="settings.reposts.max"
               label="Max auto-reposts"
-              description="Auto-reposting is proven to help more posts get replies. We mail the member before auto-reposting, and we don't auto-repost messages which have replies (which might be in progress).  0 to disable."
+              description="Auto-reposting is proven to help more posts get replies. We mail the member before auto-reposting so that they can choose what happens.  0 to disable."
               class="mr-2"
             />
             <ModGroupSetting
