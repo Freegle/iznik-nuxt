@@ -167,7 +167,7 @@ export default {
   },
   methods: {
     async calculateInitialMapBounds() {
-      await this.fetchMe(['me', 'groups'])
+      await this.fetchMe(['me', 'groups'], true)
 
       // Find a bounding box which is completely full of the group that our own location is within,
       // if we can.
