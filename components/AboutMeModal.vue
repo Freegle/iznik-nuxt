@@ -4,7 +4,7 @@
       <b-modal
         id="aboutmemodal"
         v-model="showModal"
-        :title="review ? 'Why not complete your public profile?' : 'Please review your public profile'"
+        :title="!review ? 'Why not complete your public profile?' : 'Please review your public profile'"
         size="lg"
         no-stacking
       >

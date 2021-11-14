@@ -40,7 +40,7 @@
           can-hide
         />
         <client-only>
-          <AboutMeModal v-if="showAboutMe" ref="aboutMeModal" review="reviewAboutMe" />
+          <AboutMeModal v-if="showAboutMe" ref="aboutMeModal" :review="reviewAboutMe" />
         </client-only>
       </b-col>
       <b-col cols="0" lg="3" class="p-0 pl-1">
@@ -140,6 +140,7 @@ export default {
               dayjs(this.me.aboutme.timestamp),
               'months'
             )
+
             if (monthsago >= 6) {
               // Old.  Ask them to review it.
               this.showAboutMe = true
