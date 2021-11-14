@@ -92,9 +92,11 @@ export default {
     }
   },
   watch: {
-    me() {
-      this.calculateInitialMapBounds()
-      this.bump++
+    me(newVal, oldVal) {
+      if (newVal && !oldVal) {
+        this.calculateInitialMapBounds()
+        this.bump++
+      }
     }
   },
   mounted() {

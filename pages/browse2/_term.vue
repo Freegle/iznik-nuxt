@@ -124,8 +124,10 @@ export default {
   },
   watch: {
     me() {
-      this.calculateInitialMapBounds()
-      this.bump++
+      if (newVal && !oldVal) {
+        this.calculateInitialMapBounds()
+        this.bump++
+      }
     }
   },
   mounted() {
