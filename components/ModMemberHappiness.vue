@@ -103,7 +103,7 @@ export default {
     },
     groupname() {
       let ret = null
-      const group = this.$store.getters['auth/groupById'](this.member.groupid)
+      const group = this.myGroup(this.member.groupid)
 
       if (group) {
         ret = group.namedisplay

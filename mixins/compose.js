@@ -125,21 +125,18 @@ export default {
     email: {
       get() {
         let email = null
-        const user = this.$store.getters['auth/user']
 
         // See if we have a local email stored from last time we were logged in.
         email = this.$store.getters['compose/getEmail']
 
-        if (!email && user && user.email) {
+        if (!email && this.me && this.me.email) {
           // If we're logged in, then we have an email from that which takes precedence.
-          email = user.email
+          email = this.me.email
         }
 
-        console.log('Get compose email', email)
         return email
       },
       set(newValue) {
-        console.log('Set compose email', newValue)
         this.$store.dispatch('compose/setEmail', newValue)
       }
     },
@@ -274,10 +271,7 @@ export default {
 
             // Fetch the session so that we know we're logged in, and so that we have permission to fetch messages
             // below.
-            await this.$store.dispatch('auth/fetchUser', {
-              components: ['me', 'groups'],
-              force: true
-            })
+            await this.fetchMe(['groups'], true)
           }
         })
 

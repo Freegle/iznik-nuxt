@@ -105,11 +105,6 @@ export default {
     // Ensure we have no cached members for other searches/groups
     this.$store.dispatch('members/clear')
 
-    // Get our list of groups
-    this.$store.dispatch('auth/fetchUser', {
-      components: ['me', 'groups']
-    })
-
     if (process.client && this.groupid) {
       this.$store.dispatch('group/fetch', {
         id: this.groupid

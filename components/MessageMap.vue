@@ -10,6 +10,7 @@
     <l-tile-layer :url="osmtile" :attribution="attribution" />
     <l-marker v-if="home" :lat-lng="[home.lat, home.lng]" :interactive="false" :icon="homeicon" class="bg-none" />
     <l-marker :lat-lng="[position.lat, position.lng]" :interactive="false" :icon="blurmarker" />
+    <l-geojson v-if="boundary" :geojson="boundaryJSON" :options="cgaOptions" />
   </l-map>
 </template>
 <script>
@@ -18,9 +19,15 @@ import map from '@/mixins/map.js'
 import { MAX_MAP_ZOOM } from '../utils/constants'
 import HomeIcon from './HomeIcon'
 
+const AREA_FILL_COLOUR = 'darkblue'
+const CGA_BOUNDARY_COLOUR = 'darkblue'
+
 let L = null
+let Wkt = null
 
 if (process.browser) {
+  Wkt = require('wicket')
+  require('wicket/wicket-leaflet')
   L = require('leaflet')
   require('wicket/wicket-leaflet')
 }
@@ -41,6 +48,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    boundary: {
+      type: String,
+      required: false,
+      default: null
     },
     maxZoom: {
       type: Number,
@@ -63,6 +75,13 @@ export default {
         bounceAtZoomLimits: true
       }
     },
+    cgaOptions() {
+      return {
+        fillColor: AREA_FILL_COLOUR,
+        fillOpacity: 0,
+        color: CGA_BOUNDARY_COLOUR
+      }
+    },
     homeicon() {
       // Render the component off document.
       const Mine = Vue.extend(HomeIcon)
@@ -76,10 +95,23 @@ export default {
       })
     },
     blurmarker() {
+      const modtools = this.$store.getters['misc/get']('modtools')
+
       return new L.Icon({
-        iconUrl: '/blurmarker.png',
+        iconUrl: modtools ? '/bluering.png' : '/blurmarker.png',
         iconSize: [100, 100]
       })
+    },
+    boundaryJSON() {
+      const wkt = new Wkt.Wkt()
+      try {
+        wkt.read(this.boundary)
+        return wkt.toJson()
+      } catch (e) {
+        console.log('WKT error', this.boundary, e)
+      }
+
+      return null
     }
   },
   methods: {

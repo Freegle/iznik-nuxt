@@ -13,16 +13,19 @@
         :message-override="messageOverride"
       />
       <MessageHistory :message="message" class="mb-1 header-history" :display-message-link="sm()" />
-      <MessageDescription :id="id" :matchedon="message.matchedon" class="mb-1 header-description" />
+      <div class="mb-1 header-description">
+        <div v-if="!message.attachments || !message.attachments.length" class="d-flex d-md-none" @click="zoom">
+          <MessageTag :id="id" :message-override="messageOverride" class="pl-2 pr-2" inline />
+          <div class="flex-grow-1" />
+        </div>
+        <MessageDescription :id="id" :matchedon="message.matchedon" />
+      </div>
       <div v-if="!message.successful && replyable" class="header-expand mt-2 mt-sm-0">
         <b-button variant="primary" class="mt-2" @click="expand">
           {{ expandButtonText }}
         </b-button>
       </div>
-      <div
-        class="image-wrapper"
-        @click="zoom"
-      >
+      <div class="image-wrapper" @click="zoom">
         <MessageAttachments
           :id="id"
           :attachments="message.attachments"
@@ -38,8 +41,8 @@
 // Need to import rather than async otherwise the render doesn't happen and ref isn't set.
 import Vue from 'vue'
 import { TooltipPlugin } from 'bootstrap-vue'
-import waitForRef from '@/mixins/waitForRef'
 import breakpoints from '@/mixins/breakpoints'
+import MessageTag from '@/components/MessageTag'
 import MessageItemLocation from '~/components/MessageItemLocation'
 import MessageFreegled from '~/components/MessageFreegled'
 import MessageAttachments from '~/components/MessageAttachments'
@@ -55,9 +58,10 @@ export default {
     MessageItemLocation,
     MessageFreegled,
     MessageAttachments,
-    MessageHistory
+    MessageHistory,
+    MessageTag
   },
-  mixins: [waitForRef, breakpoints],
+  mixins: [breakpoints],
   props: {
     id: {
       type: Number,
@@ -209,6 +213,14 @@ export default {
       grid-column: 1 / 2;
       grid-row: 1 / 5;
       width: unset;
+    }
+
+    &.noattachments {
+      display: none;
+
+      @include media-breakpoint-up(md) {
+        display: block;
+      }
     }
   }
 

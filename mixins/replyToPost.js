@@ -1,15 +1,12 @@
-import waitForRef from '@/mixins/waitForRef'
 import breakpoints from '@/mixins/breakpoints'
 
 export default {
-  mixins: [waitForRef, breakpoints],
+  mixins: [breakpoints],
   computed: {
     replyToSend() {
       // This is here because we can arrive back at the site after a login which was triggered because we were
       // trying to reply.
-      const me = this.$store.getters['auth/user']
-
-      if (me) {
+      if (this.me) {
         const ret = this.$store.getters['reply/get']
 
         if (

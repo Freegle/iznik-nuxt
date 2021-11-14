@@ -1,8 +1,12 @@
 <template>
-  <div v-if="!simple" class="d-flex flex-column sidebar__wrapper">
-    <DonationMonthly v-if="supporter && !donor" class="mb-2 w-100" variant="sidebar" />
-    <VolunteerOpportunitySidebar v-if="showVolunteerOpportunities && false" :class="itemclass" />
-    <JobsSidebar v-if="showJobOpportunities" :class="itemclass" />
+  <div v-if="!simple" class="sidebar__wrapper">
+    <div class="d-flex flex-column justify-content-between">
+      <div>
+        <DonationMonthly v-if="supporter && !donor" class="w-100" variant="sidebar" />
+        <VolunteerOpportunitySidebar v-if="showVolunteerOpportunities && false" :class="itemclass" />
+      </div>
+      <JobsSidebar v-if="showJobOpportunities" :class="itemclass" />
+    </div>
   </div>
 </template>
 
@@ -33,7 +37,7 @@ export default {
       return this.showJobOpportunities && this.showVolunteerOpportunities
     },
     itemclass() {
-      return this.both ? 'sidebar__item' : 'sidebar__full'
+      return (this.both ? 'sidebar__item' : 'sidebar__full') + ' mt-2'
     }
   }
 }

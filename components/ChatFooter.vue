@@ -211,7 +211,6 @@ import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import chat from '@/mixins/chat.js'
 import chatCollate from '@/mixins/chatCollate.js'
-import waitForRef from '@/mixins/waitForRef'
 import ExternalLink from './ExternalLink'
 import ModComments from './ModComments'
 
@@ -246,7 +245,7 @@ export default {
     ChatRSVPModal,
     MicroVolunteering
   },
-  mixins: [waitForRef, chat, chatCollate],
+  mixins: [chat, chatCollate],
   computed: {
     noticesToShow() {
       const modtools = this.$store.getters['misc/get']('modtools')

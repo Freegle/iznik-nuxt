@@ -217,7 +217,6 @@
 </template>
 
 <script>
-import waitForRef from '../mixins/waitForRef'
 import NewsLovesModal from './NewsLovesModal'
 import OurFilePond from './OurFilePond'
 import SpinButton from './SpinButton'
@@ -253,7 +252,7 @@ export default {
     ProfileImage,
     ConfirmModal
   },
-  mixins: [waitForRef],
+
   props: {
     id: {
       type: Number,
@@ -366,7 +365,7 @@ export default {
     if (parseInt(this.scrollTo) === this.replyid && this.$el.scrollIntoView) {
       // We want to scroll to this reply to make sure it's visible.
       this.$nextTick(() => {
-        this.$el.scrollIntoView()
+        this.$el.scrollIntoView(false)
       })
     }
   },

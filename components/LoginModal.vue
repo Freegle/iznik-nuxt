@@ -442,11 +442,9 @@ export default {
               }
 
               console.log('Current path', this.$nuxt, this.$router, this.$route)
+
               // Pick up the new user
-              await this.$store.dispatch('auth/fetchUser', {
-                components: ['me'],
-                force: true
-              })
+              await this.fetchMe(['me'], true)
 
               if (this.$route.path === '/' || !this.$route.path) {
                 // We've signed up from the home page.  Send them to the explore page to find a group.

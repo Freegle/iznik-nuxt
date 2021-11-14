@@ -7,12 +7,11 @@
   </div>
 </template>
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import ModMergeMemberModal from './ModMergeMemberModal'
 
 export default {
   components: { ModMergeMemberModal },
-  mixins: [waitForRef],
+
   methods: {
     mergeMember() {
       this.waitForRef('mergemodal', () => {

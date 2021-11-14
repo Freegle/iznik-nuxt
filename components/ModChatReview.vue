@@ -144,7 +144,6 @@
 </template>
 <script>
 import chat from '@/mixins/chat.js'
-import waitForRef from '../mixins/waitForRef'
 import NoticeMessage from './NoticeMessage'
 import ModChatReviewUser from './ModChatReviewUser'
 import ChatMessage from './ChatMessage'
@@ -166,7 +165,7 @@ export default {
     ModMessageEmailModal,
     ExternalLink
   },
-  mixins: [waitForRef, chat],
+  mixins: [chat],
   props: {
     message: {
       type: Object,

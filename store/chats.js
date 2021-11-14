@@ -255,11 +255,18 @@ export const actions = {
     const chat = getters.get(params.id)
 
     if (chat && chat.unseen > 0) {
-      await this.$api.chat.markSeen(chat.id, chat.lastmsg)
+      await this.$api.chat.markSeen(chat.id, chat.lastmsg, false)
       await dispatch('fetch', {
         id: params.id
       })
     }
+  },
+
+  async markUnseen({ commit, getters, dispatch }, params) {
+    await this.$api.chat.markSeen(params.chatid, params.msgid, true)
+    await dispatch('fetch', {
+      id: params.chatid
+    })
   },
 
   async hide({ dispatch, commit }, params) {

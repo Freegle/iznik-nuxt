@@ -57,10 +57,9 @@ export default {
   },
   computed: {
     invalid() {
-      const groups = this.$store.getters['auth/groups']
       const ret = []
 
-      for (const group of groups) {
+      for (const group of this.myGroups) {
         if (
           group.type === 'Freegle' &&
           (group.role === 'Moderator' || group.role === 'Owner') &&
@@ -78,10 +77,9 @@ export default {
       return ret
     },
     notlinked() {
-      const groups = this.$store.getters['auth/groups']
       const ret = []
 
-      for (const group of groups) {
+      for (const group of this.myGroups) {
         if (
           group.type === 'Freegle' &&
           (group.role === 'Moderator' || group.role === 'Owner') &&

@@ -280,8 +280,8 @@ export default {
     }
   },
   mounted() {
-    // Look for a custom logo.
     setTimeout(async () => {
+      // Look for a custom logo.
       const res = await this.$axios.get(process.env.API + '/logo')
 
       if (res.status === 200) {
@@ -313,11 +313,7 @@ export default {
       this.$router.push('/')
     },
     async showAboutMe() {
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['me'],
-        force: true
-      })
-
+      await this.fetchMe(['me'], true)
       this.$refs.aboutMeModal.show()
     },
     refresh() { // IS_APP
@@ -338,10 +334,7 @@ export default {
     },
     async getCounts() {
       await this.$store.dispatch('newsfeed/count')
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['openposts'],
-        force: true
-      })
+      await this.fetchMe(['openposts'], true)
 
       setTimeout(this.getCounts, 60000)
     }

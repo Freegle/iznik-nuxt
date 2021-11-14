@@ -8,10 +8,10 @@
         <v-icon name="tag" /> by {{ savedComment.byuser.displayname }}
       </span>
       <span v-if="savedComment.date !== savedComment.reviewed">
-        Created {{ timeago(savedComment.date) }} reviewed {{ timeago(savedComment.reviewed) }}
+        Created <span :title="datetimeshort(savedComment.date)">{{ datetimeshort(savedComment.date) }}</span> reviewed <span :title="datetimeshort(savedComment.reviewed)">{{ datetimeshort(savedComment.reviewed) }}</span>
       </span>
-      <span v-else>
-        {{ timeago(savedComment.date) }}
+      <span v-else :title="datetimeshort(savedComment.date)">
+        {{ timeadapt(savedComment.date) }}
       </span>
       <span v-if="savedComment.groupid">
         on {{ groupname }}
@@ -31,14 +31,13 @@
 </template>
 <script>
 import cloneDeep from 'lodash.clonedeep'
-import waitForRef from '../mixins/waitForRef'
 import NoticeMessage from './NoticeMessage'
 import ModCommentEditModal from './ModCommentEditModal'
 const ConfirmModal = () => import('~/components/ConfirmModal.vue')
 
 export default {
   components: { ModCommentEditModal, NoticeMessage, ConfirmModal },
-  mixins: [waitForRef],
+
   props: {
     comment: {
       type: Object,
@@ -64,7 +63,7 @@ export default {
       let ret = null
 
       if (this.comment.groupid) {
-        ret = this.$store.getters['auth/groupById'](this.comment.groupid)
+        ret = this.myGroup(this.comment.groupid)
 
         if (!ret) {
           ret = this.$store.getters['group/get'](this.comment.groupid)

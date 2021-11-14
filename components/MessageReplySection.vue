@@ -206,12 +206,7 @@ export default {
           // We registered a new user and logged in.
           this.$store.dispatch('auth/loggedInEver', true)
 
-          console.log('New user')
-          await this.$store.dispatch('auth/fetchUser', {
-            components: ['me'],
-            force: true
-          })
-          console.log('Fetched')
+          await this.fetchMe(['me'], true)
 
           // Show the new user modal.
           this.newUserPassword = ret.password
@@ -247,22 +242,19 @@ export default {
         console.log('Save', JSON.stringify(replyToSend))
         await this.$store.dispatch('reply/set', replyToSend)
 
-        const me = this.$store.getters['auth/user']
-
-        if (me && me.id) {
+        if (this.me) {
           // We have several things to do:
           // - join a group if need be (doesn't matter which)
           // - post our reply
           // - show/go to the open the popup chat so they see what happened
           this.replying = true
-          const myGroups = this.$store.getters['auth/groups']
           let found = false
           let tojoin = null
 
           for (const messageGroup of this.message.groups) {
             tojoin = messageGroup.groupid
-            Object.keys(myGroups).forEach(key => {
-              const group = myGroups[key]
+            Object.keys(this.myGroups).forEach(key => {
+              const group = this.myGroups[key]
 
               if (messageGroup.groupid === group.id) {
                 found = true
@@ -274,7 +266,7 @@ export default {
             // Not currently a member.
             console.log('Need to join')
             await this.$store.dispatch('auth/joinGroup', {
-              userid: me.id,
+              userid: this.myid,
               groupid: tojoin
             })
 

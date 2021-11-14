@@ -63,7 +63,6 @@
 </template>
 <script>
 import draggable from 'vuedraggable'
-import waitForRef from '@/mixins/waitForRef'
 import stdmsgs from '../mixins/stdmsgs'
 import ModConfigSetting from './ModConfigSetting'
 import ModSettingsStandardMessageButton from './ModSettingsStandardMessageButton'
@@ -76,7 +75,7 @@ export default {
     draggable,
     ModSettingsStandardMessageModal
   },
-  mixins: [waitForRef, stdmsgs],
+  mixins: [stdmsgs],
   props: {
     cc: {
       type: String,

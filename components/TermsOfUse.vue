@@ -37,9 +37,9 @@
         </nuxt-link>
       </li>
       <li>
-        We will email you posts, replies, events, newsletters, etc. - control these in <nuxt-link to="/settings">
-          Settings.
-        </nuxt-link>
+        We will email you posts, replies, events, newsletters, etc. - control these in
+        <!-- eslint-disable-next-line-->
+        <nuxt-link to="/settings">Settings</nuxt-link>.
       </li>
       <li>
         We will make your post public to publicise Freegle, but not your email address - see <nuxt-link to="/privacy">

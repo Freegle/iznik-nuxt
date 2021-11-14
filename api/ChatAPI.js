@@ -27,8 +27,12 @@ export default class ChatAPI extends BaseAPI {
     return this.$get('/chatrooms', { id: chatid })
   }
 
-  markSeen(chatid, lastmsg) {
-    return this.$post('/chatrooms', { id: chatid, lastmsgseen: lastmsg })
+  markSeen(chatid, lastmsg, allowback) {
+    return this.$post('/chatrooms', {
+      id: chatid,
+      lastmsgseen: lastmsg,
+      allowback
+    })
   }
 
   openChat(params, logError) {

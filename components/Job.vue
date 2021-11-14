@@ -3,7 +3,7 @@
     <div v-if="summary" class="ml-2 mr-2">
       <ExternalLink :href="job.url">
         <h4>
-          {{ job.title }}
+          {{ title }}
           <span v-if="job.location" class="text-muted">
             {{ location }}
           </span>
@@ -16,7 +16,7 @@
     <b-card v-else no-body variant="info" :class="highlight ? 'job-row bg-info': 'job-row'">
       <b-card-body class="job-row">
         <b-card-title class="job-title">
-          {{ job.title }}
+          {{ title }}
         </b-card-title>
         <b-card-sub-title v-if="job.location">
           <span class="location">
@@ -69,6 +69,13 @@ export default {
     }
   },
   computed: {
+    title() {
+      if (!this.job || !this.job.title) {
+        return ''
+      }
+
+      return this.filterNonsense(this.job.title)
+    },
     location() {
       if (
         this.job &&
@@ -85,12 +92,7 @@ export default {
         return ''
       }
 
-      return this.job.body
-        .replace(/\\n/g, '\n')
-        .replace(/<br>/g, '\n')
-        .trim()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
+      return this.filterNonsense(this.job.body)
     }
   },
   methods: {
@@ -98,6 +100,15 @@ export default {
       this.$store.dispatch('jobs/log', {
         id: this.job.id
       })
+    },
+    filterNonsense(val) {
+      return val
+        .replace(/\\n/g, '\n')
+        .replace(/<br>/g, '\n')
+        .replace('Â£', '£')
+        .trim()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
     }
   }
 }

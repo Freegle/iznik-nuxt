@@ -187,7 +187,6 @@
   </div>
 </template>
 <script>
-import waitForRef from '../mixins/waitForRef'
 import SettingsGroup from './SettingsGroup'
 import NoticeMessage from './NoticeMessage'
 import ProfileImage from './ProfileImage'
@@ -234,7 +233,7 @@ export default {
     SettingsGroup,
     ExternalLink
   },
-  mixins: [waitForRef],
+
   props: {
     member: {
       type: Object,
@@ -291,23 +290,20 @@ export default {
       return this.member.groupid
     },
     group() {
-      return this.$store.getters['auth/groupById'](this.groupid)
+      return this.myGroup(this.groupid)
     },
     modconfig() {
-      const groups = this.$store.getters['auth/groups']
       let ret = null
       let configid = null
 
-      if (groups) {
-        groups.forEach(group => {
-          if (group.id === this.groupid) {
-            configid = group.configid
-          }
-        })
+      this.myGroups.forEach(group => {
+        if (group.id === this.groupid) {
+          configid = group.configid
+        }
+      })
 
-        const configs = this.$store.getters['modconfigs/configs']
-        ret = configs.find(config => config.id === configid)
-      }
+      const configs = this.$store.getters['modconfigs/configs']
+      ret = configs.find(config => config.id === configid)
 
       return ret
     },

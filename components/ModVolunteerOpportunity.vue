@@ -49,7 +49,6 @@
   </div>
 </template>
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import NoticeMessage from '@/components/NoticeMessage'
 import VolunteerOpportunity from './VolunteerOpportunity'
 import ChatButton from './ChatButton'
@@ -62,7 +61,7 @@ export default {
     ChatButton,
     VolunteerOpportunity
   },
-  mixins: [waitForRef],
+
   props: {
     volunteering: {
       type: Object,

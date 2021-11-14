@@ -104,13 +104,9 @@ export default {
     this.key = this.$route.params.key
   },
   async mounted() {
-    await this.$store.dispatch('auth/fetchUser', {
-      components: ['me'],
-      force: true
-    })
+    await this.fetchMe(['me'])
 
-    const me = this.$store.getters['auth/user']
-    this.email = me.email
+    this.email = this.me.email
 
     try {
       await this.$store.dispatch('auth/saveAndGet', {

@@ -21,9 +21,10 @@
             We'd love you to stay, but sometimes if you love someone, you have to let them go.
           </p>
           <notice-message class="mb-3">
-            Too many emails? Don't leave! Go to <nuxt-link to="/settings">
-              Settings
-            </nuxt-link> and adjust your Mail Settings.
+            Too many emails? Don't leave! Go to
+            <!-- eslint-disable-next-line-->
+            <nuxt-link to="/settings">Settings</nuxt-link>
+            and adjust your Mail Settings.
           </notice-message>
           <div v-if="loggedIn">
             <b-btn v-if="!groupid" size="lg" variant="primary" class="mb-2" @click="unsubscribe">
@@ -114,8 +115,7 @@ export default {
   },
   computed: {
     groupCount() {
-      const myGroups = this.$store.getters['auth/groups']
-      return myGroups ? myGroups.length : 0
+      return this.myGroups.length
     }
   },
   watch: {
@@ -146,9 +146,7 @@ export default {
   },
   methods: {
     unsubscribe() {
-      const me = this.$store.getters['auth/user']
-
-      if (!me) {
+      if (!this.me) {
         // If we're trying to do this, we must have logged in at some point in the past, even if not on this device
         // and therefore not according to our store.  Set that, which will force us to show the sign in rather than
         // sign up variant of the login modal.
@@ -161,11 +159,9 @@ export default {
     async leave() {
       this.leaving = true
 
-      const me = this.$store.getters['auth/user']
-
       if (this.groupid) {
         await this.$store.dispatch('auth/leaveGroup', {
-          userid: me.id,
+          userid: this.myid,
           groupid: this.groupid
         })
       }

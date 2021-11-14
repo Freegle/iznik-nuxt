@@ -152,10 +152,9 @@ export default {
   },
   computed: {
     pendingcount() {
-      const myGroups = this.$store.getters['auth/groups']
       let count = 0
 
-      for (const group of myGroups) {
+      for (const group of this.myGroups) {
         if (
           group.type === 'Freegle' &&
           (!this.modonly ||
@@ -227,10 +226,7 @@ export default {
         this.created = false
       }, 2000)
 
-      this.$store.dispatch('auth/fetchUser', {
-        components: ['work'],
-        force: true
-      })
+      this.fetchMe(['work'])
     },
     async fetch(groupid) {
       await this.$store.dispatch('admins/clear')

@@ -5,9 +5,9 @@
         That chat isn't for this account.
       </h3>
       <p>
-        Please check your email in <nuxt-link to="/settings">
-          Settings
-        </nuxt-link>.  If you have trouble, please contact
+        Please check your email in            <!-- eslint-disable-next-line-->
+        <nuxt-link to="/settings">Settings</nuxt-link>.
+        If you have trouble, please contact
         <!-- eslint-disable-next-line -->
         <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink>
         who can help you merge multiple accounts.
@@ -36,13 +36,14 @@
             </infinite-loading>
             <div v-if="otheruser || chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'" class="pt-1 mb-1 w-100">
               <ChatMessage
-                v-for="chatmessage in chatmessages"
+                v-for="(chatmessage, index) in chatmessages"
                 :key="'chatmessage-' + chatmessage.id"
                 :chatmessage="chatmessage"
                 :chat="chat"
                 :otheruser="otheruser"
                 :last="chatmessage.id === chatmessages[chatmessages.length - 1].id"
                 :chatusers="chatusers"
+                :prevmessage="index > 0 ? chatmessages[index - 1].id : null"
               />
             </div>
             <div v-if="chatBusy && headerLoaded" class="text-center">
@@ -61,7 +62,6 @@ import Vue from 'vue'
 import InfiniteLoading from 'vue-infinite-loading'
 import chatCollate from '@/mixins/chatCollate.js'
 import chat from '@/mixins/chat.js'
-import waitForRef from '@/mixins/waitForRef'
 import ChatHeader from './ChatHeader'
 import ChatFooter from './ChatFooter'
 
@@ -78,7 +78,7 @@ export default {
     InfiniteLoading,
     ChatMessage
   },
-  mixins: [chatCollate, waitForRef, chat],
+  mixins: [chatCollate, chat],
   data: function() {
     return {
       headerLoaded: false

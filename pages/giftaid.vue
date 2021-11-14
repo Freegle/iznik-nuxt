@@ -138,7 +138,6 @@
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
-import waitForRef from '@/mixins/waitForRef'
 import SpinButton from '../components/SpinButton'
 import NoticeMessage from '../components/NoticeMessage'
 
@@ -150,7 +149,7 @@ if (process.client) {
 
 export default {
   components: { SpinButton, NoticeMessage, OurToggle },
-  mixins: [loginRequired, buildHead, waitForRef],
+  mixins: [loginRequired, buildHead],
   data() {
     return {
       period: 'Since',

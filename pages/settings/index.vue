@@ -616,7 +616,6 @@
 
 <script>
 import Vue from 'vue'
-import waitForRef from '@/mixins/waitForRef'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead'
 import EmailValidator from '../../components/EmailValidator'
@@ -663,7 +662,7 @@ export default {
     DonationButton,
     PasswordEntry
   },
-  mixins: [loginRequired, buildHead, waitForRef],
+  mixins: [loginRequired, buildHead],
   data: function() {
     return {
       emailsOn: null,
@@ -873,12 +872,15 @@ export default {
         setTimeout(this.checkUser, 200)
       }
     },
+    async fetch() {
+      await this.fetchMe(
+        ['me', 'phone', 'groups', 'aboutme', 'notifications'],
+        true
+      )
+    },
     async update() {
       try {
-        await this.$store.dispatch('auth/fetchUser', {
-          components: ['me', 'phone', 'groups', 'aboutme', 'notifications'],
-          force: true
-        })
+        await this.fetch()
 
         this.$nextTick(() => {
           if (this.me) {
@@ -890,10 +892,7 @@ export default {
       }
     },
     async addAbout() {
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['me', 'phone', 'groups', 'aboutme', 'notifications'],
-        force: true
-      })
+      await this.fetch()
 
       this.waitForRef('aboutmemodal', () => {
         this.$refs.aboutmemodal.show()
@@ -991,9 +990,7 @@ export default {
         }
       }
 
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['me', 'phone', 'groups', 'aboutme', 'notifications']
-      })
+      await this.fetch()
     },
     async groupChange(e) {
       const params = {
@@ -1003,9 +1000,7 @@ export default {
       params[e.param] = e.val
       await this.$store.dispatch('auth/setGroup', params)
 
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['me', 'phone', 'groups', 'aboutme', 'notifications']
-      })
+      await this.fetch()
     },
     async changeNotification(e, type) {
       const settings = this.me.settings
@@ -1084,17 +1079,7 @@ export default {
         user: true
       })
 
-      await this.$store.dispatch('auth/fetchUser', {
-        components: [
-          'me',
-          'phone',
-          'groups',
-          'aboutme',
-          'phone',
-          'notifications'
-        ],
-        force: true
-      })
+      await this.fetch()
 
       this.cacheBust = Date.now()
     },

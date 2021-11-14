@@ -405,7 +405,6 @@ export default {
       }
     },
     newline: function() {
-      console.log('Newline', this.$refs.chatarea)
       const p = this.$refs.chatarea.selectionStart
       if (p) {
         this.sendmessage =
@@ -511,10 +510,9 @@ export default {
 
         this.$nextTick(async () => {
           // Get our offers.
-          const me = this.$store.getters['auth/user']
           await this.$store.dispatch('messages/clear')
           await this.$store.dispatch('messages/fetchMessages', {
-            fromuser: me.id,
+            fromuser: this.myid,
             types: ['Offer'],
             hasoutcome: false,
             limit: 100,

@@ -58,7 +58,7 @@ export default {
       const ret = []
 
       // Cloning to avoid some strange issues which cause loops.
-      const groups = cloneDeep(this.$store.getters['auth/groups'])
+      const groups = cloneDeep(this.myGroups)
 
       this.item.uids.forEach(uid => {
         for (const group of groups) {
@@ -154,10 +154,7 @@ export default {
       return this.busy.indexOf(groupid) !== -1
     },
     updateWork() {
-      this.$store.dispatch('auth/fetchUser', {
-        components: ['work'],
-        force: true
-      })
+      this.fetchMe(['work'])
     }
   }
 }

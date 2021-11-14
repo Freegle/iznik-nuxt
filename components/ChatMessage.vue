@@ -1,5 +1,11 @@
 <template>
-  <div>
+  <div @click.prevent.stop="handleClick($event)">
+    <vue-simple-context-menu
+      ref="vueSimpleContextMenu"
+      :element-id="uniqueid"
+      :options="options"
+      @option-clicked="optionClicked"
+    />
     <div v-if="chatmessage.type === 'Default'">
       <chat-message-text
         :chat="chat"
@@ -133,6 +139,7 @@
 </template>
 <script>
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
+import VueSimpleContextMenu from 'vue-simple-context-menu'
 import ChatMessageText from './ChatMessageText'
 import ChatMessageImage from './ChatMessageImage'
 import ChatMessageInterested from './ChatMessageInterested'
@@ -146,6 +153,7 @@ import ChatMessageModMail from './ChatMessageModMail'
 import ChatMessageSchedule from './ChatMessageSchedule'
 import ChatMessageReport from './ChatMessageReport'
 import ChatMessageWarning from '~/components/ChatMessageWarning'
+import 'vue-simple-context-menu/dist/vue-simple-context-menu.css'
 
 // System chat message doesn't seem to be used; ReportedUser is for ModTools only.
 
@@ -163,7 +171,8 @@ export default {
     ChatMessageNudge,
     ChatMessageModMail,
     ChatMessageSchedule,
-    ChatMessageReport
+    ChatMessageReport,
+    VueSimpleContextMenu
   },
   props: {
     chat: {
@@ -197,6 +206,35 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    prevmessage: {
+      type: Number,
+      required: false,
+      default: null
+    }
+  },
+  data() {
+    return {
+      uniqueid: '',
+      options: [
+        {
+          name: 'Mark unread'
+        }
+      ]
+    }
+  },
+  async mounted() {
+    this.uniqueid = await this.$store.dispatch('uniqueid/generate')
+  },
+  methods: {
+    handleClick(event) {
+      this.$refs.vueSimpleContextMenu.showMenu(event)
+    },
+    async optionClicked(val) {
+      await this.$store.dispatch('chats/markUnseen', {
+        chatid: this.chat.id,
+        msgid: this.prevmessage
+      })
     }
   }
 }
@@ -268,5 +306,9 @@ export default {
 /deep/ .highlight {
   color: $color-orange--dark !important;
   background-color: initial;
+}
+
+/deep/ .vue-simple-context-menu {
+  position: fixed !important;
 }
 </style>

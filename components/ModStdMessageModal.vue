@@ -79,14 +79,13 @@
 <script>
 import modal from '@/mixins/modal'
 import keywords from '@/mixins/keywords.js'
-import waitForRef from '@/mixins/waitForRef'
 import Postcode from './Postcode'
 import NoticeMessage from './NoticeMessage'
 import SpinButton from './SpinButton'
 
 export default {
   components: { SpinButton, NoticeMessage, Postcode },
-  mixins: [keywords, waitForRef, modal],
+  mixins: [keywords, modal],
   props: {
     message: {
       type: Object,
@@ -380,7 +379,7 @@ export default {
     },
     substitutionStrings(text) {
       const self = this
-      const group = this.$store.getters['auth/groupById'](this.groupid)
+      const group = this.myGroup(this.groupid)
 
       if (text) {
         text = text.replace(/\$networkname/g, 'Freegle')

@@ -18,7 +18,6 @@
   </div>
 </template>
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import ConfirmModal from './ConfirmModal'
 import ModSpammerReport from './ModSpammerReport'
 import SpinButton from './SpinButton'
@@ -31,7 +30,7 @@ export default {
     ModStdMessageModal,
     ConfirmModal
   },
-  mixins: [waitForRef],
+
   props: {
     member: {
       type: Object,

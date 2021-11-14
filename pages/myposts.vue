@@ -21,7 +21,9 @@
           </b-btn>
         </div>
         <div v-else>
-          <JobsTopBar v-if="!justPosted" />
+          <Visible :at="['xs', 'sm', 'md']">
+            <JobsTopBar v-if="!justPosted" />
+          </Visible>
           <b-card v-if="contactPicker" border-variant="info">
             <Invite class="bg-white" />
           </b-card>
@@ -162,7 +164,7 @@
       </b-col>
       <b-col cols="0" lg="3" class="p-0 pl-1">
         <Visible :at="['lg', 'xl']">
-          <sidebar-right v-if="me && !justPosted" show-volunteer-opportunities />
+          <sidebar-right v-if="me && !justPosted" show-volunteer-opportunities show-job-opportunities />
         </Visible>
       </b-col>
     </b-row>
@@ -174,7 +176,6 @@
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
-import waitForRef from '@/mixins/waitForRef'
 import AppUpdateAvailable from '~/components/AppUpdateAvailable.vue'
 import Invite from '../components/Invite'
 import Visible from '../components/Visible'
@@ -202,7 +203,7 @@ export default {
     RateAppModal,
     ExpectedRepliesWarning
   },
-  mixins: [loginOptional, buildHead, waitForRef],
+  mixins: [loginOptional, buildHead],
   data() {
     return {
       justPosted: null,
@@ -338,9 +339,7 @@ export default {
       console.error('Save last route failed', e)
     }
 
-    await this.$store.dispatch('auth/fetchUser', {
-      components: ['me', 'groups']
-    })
+    await this.fetchMe(['me', 'groups'])
 
     // Ensure we have no cached messages for other searches/groups
     this.$store.dispatch('messages/clear')
@@ -379,9 +378,7 @@ export default {
   },
   methods: {
     async loadMore() {
-      const me = this.$store.getters['auth/user']
-
-      if (me) {
+      if (this.me) {
         const currentCount = this.messages.length
 
         try {
@@ -389,7 +386,7 @@ export default {
             collection: 'AllUser',
             summary: true,
             types: ['Offer', 'Wanted'],
-            fromuser: me.id,
+            fromuser: this.myid,
             context: this.context,
             limit: 15
           })

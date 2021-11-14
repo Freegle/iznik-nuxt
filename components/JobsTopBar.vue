@@ -18,9 +18,9 @@
         Jobs
       </h2>
       <div class="mb-1 text-center small text-muted">
-        Jobs near you.  Freegle gets a <span class="d-none d-md-inline">small amount</span><span class="d-inline d-md-none">little</span> if you click<span class="d-none d-md-inline">, which helps keep us going</span>.  <nuxt-link to="/jobs">
-          <!-- eslint-disable-next-line -->
-        See more<span class="d-none d-md-inline"> jobs</span></nuxt-link>.
+        Jobs near you.  Freegle gets a <span class="d-none d-md-inline">small amount if you are interested and click</span><span class="d-inline d-md-none">little if you click</span><span class="d-none d-md-inline">, which helps keep us going</span>.
+        <!-- eslint-disable-next-line -->
+        <nuxt-link to="/jobs">See more<span class="d-none d-md-inline"> jobs</span></nuxt-link>.
       </div>
       <ul class="list-unstyled">
         <li v-for="(job, index) in jobs" :key="'job-' + job.job_reference">
@@ -59,14 +59,8 @@ export default {
     }
   },
   mounted() {
-    const me = this.$store.getters['auth/user']
-    if (
-      me &&
-      me.settings &&
-      me.settings.mylocation &&
-      me.settings.mylocation.name
-    ) {
-      this.location = me.settings.mylocation.name
+    if (this.myLocation) {
+      this.location = this.myLocation.name
     }
 
     if (this.location) {

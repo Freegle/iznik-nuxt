@@ -19,7 +19,6 @@
   </div>
 </template>
 <script>
-import waitForRef from '../mixins/waitForRef'
 import ModComment from './ModComment'
 import ModCommentAddModal from './ModCommentAddModal'
 import ExternalLink from '~/components/ExternalLink'
@@ -28,7 +27,7 @@ const REVIEWCHAT = null
 
 export default {
   components: { ExternalLink, ModCommentAddModal, ModComment },
-  mixins: [waitForRef],
+
   props: {
     user: {
       type: Object,

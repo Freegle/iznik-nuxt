@@ -60,6 +60,7 @@ function trySaving(storage, settingState) {
 
     try {
       storage.setItem(STORAGE_KEY, JSON.stringify(smallerState))
+      console.log('Saved smaller state')
     } catch (e) {
       // Plough on regardless and see what happens.  We'll probably get another exception and
       // fail, but not always.
@@ -129,7 +130,7 @@ export default ({ store }) => {
         }
       }
 
-      // Auth groups are a special case - prune the polygon.
+      // Auth groups are a special case - prune the polygon for size.
       if (state.auth && state.auth.groups) {
         newstate.auth.groups = []
 

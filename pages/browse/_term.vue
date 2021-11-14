@@ -41,10 +41,13 @@
           :show-many="false"
           can-hide
         />
+        <client-only>
+          <AboutMeModal v-if="showAboutMe" ref="aboutMeModal" :review="reviewAboutMe" />
+        </client-only>
       </b-col>
       <b-col cols="0" lg="3" class="p-0 pl-1">
         <Visible :at="['lg', 'xl']">
-          <sidebar-right v-if="showRest" show-volunteer-opportunities />
+          <sidebar-right v-if="showRest" show-volunteer-opportunities show-job-opportunities />
         </Visible>
       </b-col>
     </b-row>
@@ -52,12 +55,14 @@
 </template>
 
 <script>
-import leafletPip from '@mapbox/leaflet-pip'
 import loginRequired from '@/mixins/loginRequired.js'
 import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
+import dayjs from 'dayjs'
+
 import Visible from '../../components/Visible'
 import AdaptiveMap from '~/components/AdaptiveMap'
+import AboutMeModal from '~/components/AboutMeModal'
 
 import AppUpdateAvailable from '~/components/AppUpdateAvailable.vue'
 const GlobalWarning = () => import('~/components/GlobalWarning')
@@ -66,14 +71,6 @@ const SidebarRight = () => import('~/components/SidebarRight')
 const ExpectedRepliesWarning = () =>
   import('~/components/ExpectedRepliesWarning')
 const MicroVolunteering = () => import('~/components/MicroVolunteering.vue')
-
-let Wkt = null
-let L = null
-
-if (process.browser) {
-  Wkt = require('wicket')
-  L = require('leaflet')
-}
 
 export default {
   components: {
@@ -84,7 +81,8 @@ export default {
     GlobalWarning,
     SidebarLeft,
     SidebarRight,
-    ExpectedRepliesWarning
+    ExpectedRepliesWarning,
+    AboutMeModal
   },
   mixins: [loginRequired, buildHead, map],
   data: function() {
@@ -92,13 +90,17 @@ export default {
       initialBounds: null,
       showRest: false,
       bump: 1,
-      searchTerm: null
+      searchTerm: null,
+      showAboutMe: false,
+      reviewAboutMe: false
     }
   },
   watch: {
-    me() {
-      this.calculateInitialMapBounds()
-      this.bump++
+    me(newVal, oldVal) {
+      if (newVal && !oldVal) {
+        this.calculateInitialMapBounds()
+        this.bump++
+      }
     }
   },
   mounted() {
@@ -122,6 +124,46 @@ export default {
       })
 
       this.showRest = true
+
+      if (this.me) {
+        const lastask = this.$store.getters['misc/get']('lastaboutmeask')
+        const now = new Date().getTime()
+
+        if (!lastask || now - lastask > 90 * 24 * 60 * 60 * 1000) {
+          // Not asked too recently.
+          if (!this.me.aboutme || !this.me.aboutme.text) {
+            // We have not yet provided one.
+            const daysago = dayjs().diff(dayjs(this.me.added), 'days')
+
+            if (daysago > 7) {
+              // Nudge to ask people to to introduce themselves.
+              this.showAboutMe = true
+            }
+          } else {
+            const monthsago = dayjs().diff(
+              dayjs(this.me.aboutme.timestamp),
+              'months'
+            )
+
+            if (monthsago >= 6) {
+              // Old.  Ask them to review it.
+              this.showAboutMe = true
+              this.reviewAboutMe = true
+            }
+          }
+        }
+
+        if (this.showAboutMe) {
+          this.waitForRef('aboutMeModal', () => {
+            this.$refs.aboutMeModal.show()
+          })
+
+          this.$store.dispatch('misc/set', {
+            key: 'lastaboutmeask',
+            value: now
+          })
+        }
+      }
     }, 5000)
   },
   created() {
@@ -129,10 +171,7 @@ export default {
   },
   methods: {
     async calculateInitialMapBounds() {
-      // Get our list of groups
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['me', 'groups']
-      })
+      await this.fetchMe(['me', 'groups'])
 
       // Find a bounding box which is completely full of the group that our own location is within,
       // if we can.
@@ -144,34 +183,22 @@ export default {
       let nelat = null
       let nelng = null
 
-      const me = this.$store.getters['auth/user']
+      if (this.me && (this.me.lat || this.me.lng)) {
+        mylat = this.me.lat
+        mylng = this.me.lng
 
-      if (me && (me.lat || me.lng)) {
-        mylat = me.lat
-        mylng = me.lng
-
-        const groups = this.$store.getters['auth/groups']
-        groups.forEach(g => {
-          if (g.polygon) {
-            try {
-              const wkt = new Wkt.Wkt()
-              wkt.read(g.polygon)
-              // eslint-disable-next-line new-cap
-              const geoJSON = new L.geoJSON(wkt.toJson())
-              const inside = leafletPip.pointInLayer(
-                new L.LatLng(mylat, mylng),
-                geoJSON
-              )
-
-              if (inside.length && g.bbox) {
-                swlat = (g.bbox.swlat + g.bbox.nelat) / 2
-                swlng = g.bbox.swlng
-                nelat = (g.bbox.swlat + g.bbox.nelat) / 2
-                nelng = g.bbox.nelng
-              }
-            } catch (e) {
-              console.log('WKT error', location, e)
-            }
+        this.myGroups.forEach(g => {
+          if (
+            g.bbox &&
+            mylat >= g.bbox.swlat &&
+            mylat <= g.bbox.nelat &&
+            mylng >= g.bbox.swlng &&
+            mylng <= g.bbox.nelng
+          ) {
+            swlat = (g.bbox.swlat + g.bbox.nelat) / 2
+            swlng = g.bbox.swlng
+            nelat = (g.bbox.swlat + g.bbox.nelat) / 2
+            nelng = g.bbox.nelng
           }
         })
       }
@@ -185,7 +212,7 @@ export default {
         nelng !== null
       ) {
         bounds = [[swlat, swlng], [nelat, nelng]]
-      } else if (me && mylat !== null && mylng !== null) {
+      } else if (this.me && mylat !== null && mylng !== null) {
         // We're not a member of any groups, but at least we know where we are.  Centre there, and then let
         // the map zoom to somewhere sensible.
         bounds = [[mylat - 0.01, mylng - 0.01], [mylat + 0.01, mylng + 0.01]]
@@ -197,59 +224,6 @@ export default {
 
       if (bounds) {
         this.initialBounds = bounds
-      }
-
-      // Now find the bounds for the initial posts we display.  This needs to cover all the groups within a
-      // reasonable distance of our home location.
-      swlat = null
-      swlng = null
-      nelat = null
-      nelng = null
-
-      const groups = this.$store.getters['auth/groups']
-
-      groups.forEach(group => {
-        if (group.onmap && group.publish) {
-          if (
-            group.role === 'Member' ||
-            (!group.mysettings || group.mysettings.active)
-          ) {
-            // For the purposes of the bounding box, we are interested in groups where we are a member or an active
-            // mod.  This excludes groups where we are a backup mod, which may be further away and of less interest.
-            const distAway =
-              mylat !== null
-                ? this.getDistance([group.lat, group.lng], [mylat, mylng])
-                : 0
-
-            if (distAway < 50000 && group.bbox) {
-              swlat =
-                swlat === null
-                  ? group.bbox.swlat
-                  : Math.min(swlat, group.bbox.swlat)
-              swlng =
-                swlng === null
-                  ? group.bbox.swlng
-                  : Math.min(swlng, group.bbox.swlng)
-              nelat =
-                nelat === null
-                  ? group.bbox.nelat
-                  : Math.max(nelat, group.bbox.nelat)
-              nelng =
-                nelng === null
-                  ? group.bbox.nelng
-                  : Math.max(nelng, group.bbox.nelng)
-            }
-          }
-        }
-      })
-
-      if (
-        swlat !== null &&
-        swlng !== null &&
-        nelat !== null &&
-        nelng !== null
-      ) {
-        bounds = [[swlat, swlng], [nelat, nelng]]
       }
     }
   },

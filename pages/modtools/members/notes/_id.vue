@@ -67,6 +67,7 @@ export default {
   watch: {
     groupid() {
       this.bump++
+      this.context = null
     }
   },
   mounted() {

@@ -175,9 +175,7 @@ export default {
         this.message = this.$store.getters['messages/get'](this.id)
       }
 
-      const me = this.$store.getters['auth/user']
-
-      if (me) {
+      if (this.me) {
         this.$store.dispatch('messages/view', {
           id: this.id
         })

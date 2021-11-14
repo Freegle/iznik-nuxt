@@ -306,7 +306,7 @@
               :groupid="groupid"
               name="settings.reposts.max"
               label="Max auto-reposts"
-              description="Auto-reposting is proven to help more posts get replies. We mail the member before auto-reposting, and we don't auto-repost messages which have replies (which might be in progress).  0 to disable."
+              description="Auto-reposting is proven to help more posts get replies. We mail the member before auto-reposting so that they can choose what happens.  0 to disable."
               class="mr-2"
             />
             <ModGroupSetting
@@ -322,6 +322,22 @@
               label="WANTED repost time"
               description="Controls when the member can manually repost, and when auto-repost kicks in.  0 = always show manual Repost button."
               class="mr-2"
+            />
+            <ModGroupSetting
+              :groupid="groupid"
+              name="settings.nearbygroups"
+              label="Show posts to nearby freeglers?"
+              description="Freeglers may live just outside your community.  Some posts from your community may be closer than some in the community they live in.  We can add posts from your community which are near their location to their mails so that they don't miss out.  In miles, 0 to disable."
+              type="number"
+              :step="1"
+            />
+            <ModGroupSetting
+              :groupid="groupid"
+              name="settings.showjoin"
+              label="Show Join button?"
+              description="On the map in Browse, Join buttons will display below the map.  You can control how far from the member's own location (i.e. their postcode) this community will show.  You can use this to discourage people joining from further away, but please remember that many people commute to work, might be moving house, or have friends/family/partners in different locations.  In miles, 0 = always show."
+              type="number"
+              :step="1"
             />
           </b-card-body>
         </b-collapse>
@@ -358,14 +374,6 @@
               type="toggle"
               toggle-checked="Yes"
               toggle-unchecked="No"
-            />
-            <ModGroupSetting
-              :groupid="groupid"
-              name="settings.nearbygroups"
-              label="Nearby members?"
-              description="Members may live outside your community, but near the boundary.  You can make them aware of your community if they are nearby.  In miles, 0 to disable."
-              type="number"
-              :step="1"
             />
           </b-card-body>
         </b-collapse>
@@ -897,10 +905,7 @@ export default {
         settings
       })
 
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['me', 'groups'],
-        force: true
-      })
+      this.fetchMe(['me', 'groups'])
     },
     uploadProfile() {
       this.uploadingProfile = true

@@ -228,7 +228,6 @@
   </div>
 </template>
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import MessagePhotosModal from '@/components/MessagePhotosModal'
 import MyMessagePromisedTo from '@/components/MyMessagePromisedTo'
 import OutcomeModal from './OutcomeModal'
@@ -260,7 +259,7 @@ export default {
     NoticeMessage,
     LoveJunkModal
   },
-  mixins: [waitForRef],
+
   props: {
     message: {
       type: Object,
@@ -502,9 +501,7 @@ export default {
   mounted() {
     this.expanded = this.expand
 
-    const me = this.$store.getters['auth/user']
-
-    if (me) {
+    if (this.me) {
       switch (this.action) {
         case 'repost':
           this.repost()

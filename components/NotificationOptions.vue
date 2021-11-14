@@ -83,9 +83,7 @@ export default {
     }
   },
   mounted() {
-    const me = this.$store.getters['auth/user']
-
-    if (me && me.id) {
+    if (this.me) {
       // Get notifications and poll regularly for new ones.
       this.$store.dispatch('notifications/updateNotifications')
     }

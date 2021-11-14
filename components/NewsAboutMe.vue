@@ -61,11 +61,7 @@ export default {
   extends: NewsBase,
   methods: {
     async showModal() {
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['me'],
-        force: true
-      })
-
+      await this.fetchMe(['me'], true)
       this.$refs.modal.show()
     }
   }

@@ -433,10 +433,7 @@ export default {
         })
       }
 
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['me', 'groups'],
-        force: true
-      })
+      this.fetchMe(['me', 'groups'])
 
       this.showInvite = false
     },

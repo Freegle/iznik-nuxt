@@ -76,12 +76,11 @@ import modal from '@/mixins/modal'
 import InfiniteLoading from 'vue-infinite-loading'
 import chatCollate from '@/mixins/chatCollate.js'
 import chat from '@/mixins/chat.js'
-import waitForRef from '@/mixins/waitForRef'
 const ChatMessage = () => import('~/components/ChatMessage')
 
 export default {
   components: { ChatMessage, InfiniteLoading },
-  mixins: [chatCollate, chat, modal, waitForRef],
+  mixins: [chatCollate, chat, modal],
   props: {
     id: {
       type: Number,

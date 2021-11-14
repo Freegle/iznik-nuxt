@@ -62,10 +62,10 @@
                 </template>
                 <template slot="content">
                   <p>
-                    If you go to the <nuxt-link to="/settings">
-                      Settings Page
-                    </nuxt-link> then you can change how many mails
-                    you get in your <em>Mail Settings</em>.
+                    If you go to
+                    <!-- eslint-disable-next-line-->
+                    <nuxt-link to="/settings">Settings</nuxt-link>
+                    then you can change how many mails you get in your <em>Mail Settings</em>.
                   </p>
                   <p>
                     If you want to pause mails for a while, you can do that there too.

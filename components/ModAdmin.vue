@@ -120,13 +120,12 @@
   </div>
 </template>
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import ConfirmModal from './ConfirmModal'
 import NoticeMessage from './NoticeMessage'
 
 export default {
   components: { NoticeMessage, ConfirmModal },
-  mixins: [waitForRef],
+
   props: {
     id: {
       type: Number,
@@ -150,7 +149,7 @@ export default {
     },
     groupname() {
       let ret = null
-      const group = this.$store.getters['auth/groupById'](this.admin.groupid)
+      const group = this.myGroup(this.admin.groupid)
 
       if (group) {
         ret = group.namedisplay
@@ -216,10 +215,7 @@ export default {
         id: this.admin.id
       })
 
-      this.$store.dispatch('auth/fetchUser', {
-        components: ['work'],
-        force: true
-      })
+      this.fetchMe(['work'])
     }
   }
 }

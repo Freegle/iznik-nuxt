@@ -90,9 +90,7 @@ export default {
         : null
     },
     group() {
-      return this.groupid
-        ? this.$store.getters['auth/groupById'](this.groupid)
-        : null
+      return this.myGroup(this.groupid)
     }
   },
   async mounted() {
@@ -126,7 +124,7 @@ export default {
 
         if (groupid) {
           // Get the group into store if not already present.
-          const group = this.$store.getters['auth/groupById'](this.groupid)
+          const group = this.myGroup(this.groupid)
 
           if (!group) {
             console.log('Fetch just posted group', groupid)

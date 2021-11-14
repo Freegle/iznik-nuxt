@@ -38,6 +38,11 @@
                 Show older chats
               </b-btn>
             </div>
+            <div class="d-flex justify-content-around mt-2">
+              <b-btn v-if="complete && visibleChats && visibleChats.length" variant="link" size="sm" @click="showHideAll">
+                Hide all chats
+              </b-btn>
+            </div>
           </Visible>
         </b-col>
         <b-col cols="12" md="8" xl="6" class="chatback p-0">
@@ -54,6 +59,7 @@
           </Visible>
         </b-col>
       </b-row>
+      <ChatHideModal v-if="showHideAllModal" ref="chathideall" @confirm="hideAll" />
     </b-container>
   </client-only>
 </template>
@@ -70,6 +76,7 @@ import SidebarRight from '~/components/SidebarRight'
 // still waiting for the import to complete.
 import ChatListEntry from '~/components/ChatListEntry.vue'
 const ChatPane = () => import('~/components/ChatPane.vue')
+const ChatHideModal = () => import('~/components/ChatHideModal')
 
 export default {
   components: {
@@ -77,12 +84,14 @@ export default {
     InfiniteLoading,
     SidebarRight,
     ChatPane,
-    ChatListEntry
+    ChatListEntry,
+    ChatHideModal
   },
   mixins: [loginRequired, buildHead, chatPage],
   data: function() {
     return {
-      showingOlder: false
+      showingOlder: false,
+      showHideAllModal: false
     }
   },
   computed: {
@@ -105,6 +114,25 @@ export default {
     fetchOlder() {
       this.showingOlder = true
       this.listChats('11 September 2009')
+    },
+    showHideAll() {
+      this.showHideAllModal = true
+
+      this.waitForRef('chathideall', () => {
+        this.$refs.chathideall.show()
+      })
+    },
+    async hideAll() {
+      const self = this
+
+      for (let i = 0; i < this.visibleChats.length; i++) {
+        await self.$store.dispatch('chats/hide', {
+          id: this.visibleChats[i].id
+        })
+      }
+
+      const modtools = this.$store.getters['misc/get']('modtools')
+      this.$router.push((modtools ? '/modtools' : '') + '/chats')
     }
   },
   head() {

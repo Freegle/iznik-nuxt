@@ -45,7 +45,6 @@
 import loginRequired from '@/mixins/loginRequired'
 import modMembersPage from '@/mixins/modMembersPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
-import waitForRef from '@/mixins/waitForRef'
 import ModMember from '../../../../components/ModMember'
 import NoticeMessage from '../../../../components/NoticeMessage'
 import ModMemberSearchbox from '../../../../components/ModMemberSearchbox'
@@ -70,8 +69,7 @@ export default {
   mixins: [
     loginRequired,
     createGroupRoute('modtools/members/approved'),
-    modMembersPage,
-    waitForRef
+    modMembersPage
   ],
   data: function() {
     return {
@@ -93,10 +91,9 @@ export default {
       // If we have not selected a group, check if we are only a mod on one.  If so, then go to that group so that
       // we don't need to bother selecting it.  We do this here because the interaction with createGroupRoute would
       // be complex.
-      const groups = this.$store.getters['auth/groups']
       let countmod = 0
       let lastmod = null
-      groups.forEach(g => {
+      this.myGroups.forEach(g => {
         if (g.role === 'Moderator' || g.role === 'Owner') {
           countmod++
           lastmod = g.id

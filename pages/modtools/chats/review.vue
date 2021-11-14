@@ -38,7 +38,6 @@
 </template>
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
-import waitForRef from '@/mixins/waitForRef'
 import loginRequired from '@/mixins/loginRequired.js'
 import ModChatReview from '../../../components/ModChatReview'
 import GroupSelect from '../../../components/GroupSelect'
@@ -59,7 +58,7 @@ export default {
     ModChatReview,
     InfiniteLoading
   },
-  mixins: [loginRequired, waitForRef],
+  mixins: [loginRequired],
   data: function() {
     return {
       context: null,

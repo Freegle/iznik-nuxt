@@ -106,6 +106,7 @@ require('vue-awesome/icons/umbrella')
 require('vue-awesome/icons/user')
 require('vue-awesome/icons/users')
 require('vue-awesome/icons/utensils')
+require('vue-awesome/icons/walking')
 require('vue-awesome/icons/window-maximize')
 require('vue-awesome/icons/window-restore')
 

@@ -24,6 +24,7 @@ import DonationsAPI from './DonationsAPI.js'
 import GiftAidAPI from './GiftAidAPI.js'
 import GroupAPI from './GroupAPI.js'
 import InvitationAPI from './InvitationAPI.js'
+import IsochroneAPI from './IsochroneAPI.js'
 import JobAPI from './JobAPI.js'
 import LocationAPI from './LocationAPI.js'
 import LogsAPI from './LogsAPI.js'
@@ -67,6 +68,7 @@ export default ({ $axios, store }) => {
     giftaid: new GiftAidAPI(options),
     group: new GroupAPI(options),
     invitation: new InvitationAPI(options),
+    isochrone: new IsochroneAPI(options),
     job: new JobAPI(options),
     location: new LocationAPI(options),
     logs: new LogsAPI(options),

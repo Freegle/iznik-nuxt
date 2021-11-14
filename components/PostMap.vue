@@ -110,7 +110,6 @@ import VueDraggableResizable from 'vue-draggable-resizable/src/components/vue-dr
 import cloneDeep from 'lodash.clonedeep'
 import Vue from 'vue'
 import map from '@/mixins/map.js'
-import waitForRef from '@/mixins/waitForRef'
 import { GestureHandling } from 'leaflet-gesture-handling'
 import GroupMarker from './GroupMarker'
 import BrowseHomeIcon from './BrowseHomeIcon'
@@ -132,7 +131,7 @@ export default {
     VueDraggableResizable,
     GroupMarker
   },
-  mixins: [map, waitForRef],
+  mixins: [map],
   props: {
     initialBounds: {
       type: Array,
@@ -320,9 +319,6 @@ export default {
 
       return sorted
     },
-    mygroups() {
-      return this.$store.getters['auth/groups']
-    },
     messagesForMap() {
       return this.mapObject &&
         this.messageLocations &&
@@ -374,7 +370,7 @@ export default {
 
       if (groupid) {
         // Use the bounding box for the group.
-        const group = this.$store.getters['auth/groupById'](groupid)
+        const group = this.myGroup(groupid)
 
         if (group.bbox) {
           const bounds = new L.LatLngBounds([
@@ -521,6 +517,21 @@ export default {
             nelng: nelng,
             groupid: this.groupid
           }
+
+          // See if we have values cached.  We don't need to worry too much about the group and bounds because
+          // it'll sort itself out if it's wrong.  We just want to get something up on the screen rapidly if we can.
+          const cache = this.$store.getters['misc/get']('cache.postmap')
+
+          if (cache) {
+            try {
+              messages = JSON.parse(cache)
+              this.$emit('messages', messages)
+              this.$emit('update:loading', false)
+              console.log('Got cached messages')
+            } catch (e) {
+              console.log('Failed to parse cache, ignore')
+            }
+          }
         } else {
           // We are searching.  Get the list of messages from the server.
           // eslint-disable-next-line no-lonely-if
@@ -605,6 +616,14 @@ export default {
         this.messageLocations = messages
         this.$emit('messages', messages)
         this.$emit('update:loading', false)
+
+        if (!this.search) {
+          // Update cache of messages.
+          this.$store.dispatch('misc/set', {
+            key: 'cache.postmap',
+            value: JSON.stringify(messages)
+          })
+        }
       }
 
       return cloneDeep(messages)

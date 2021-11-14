@@ -35,12 +35,11 @@ export default {
   computed: {
     sortedComments() {
       const ret = this.user ? this.user.comments : []
-      const myGroups = this.$store.getters['auth/groups']
 
       if (ret) {
         ret.sort((a, b) => {
-          const aone = this.oneOfMine(a.groupid, myGroups)
-          const bone = this.oneOfMine(b.groupid, myGroups)
+          const aone = this.oneOfMyGroups(a.groupid)
+          const bone = this.oneOfMyGroups(b.groupid)
 
           if (aone && !bone) {
             return -1
@@ -62,13 +61,6 @@ export default {
       } else {
         return []
       }
-    }
-  },
-  methods: {
-    oneOfMine(groupid, myGroups) {
-      return myGroups.find(g => {
-        return g.id === groupid
-      })
     }
   }
 }

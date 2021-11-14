@@ -37,7 +37,6 @@
 // Need to import rather than async otherwise the render doesn't happen and ref isn't set.
 import Vue from 'vue'
 import { TooltipPlugin } from 'bootstrap-vue'
-import waitForRef from '@/mixins/waitForRef'
 import MessageSummary from '@/components/MessageSummary'
 
 import MessageModal from '@/components/MessageModal'
@@ -54,7 +53,7 @@ export default {
     MessageSummary,
     MessagePhotosModal
   },
-  mixins: [waitForRef],
+
   props: {
     id: {
       type: Number,
@@ -206,13 +205,13 @@ export default {
     },
     async view() {
       if (this.recordView) {
-        const me = this.$store.getters['auth/user']
-
-        if (me) {
+        if (this.me) {
           await this.$store.dispatch('messages/view', {
             id: this.id
           })
         }
+
+        this.$emit('view')
       }
     },
     share() {

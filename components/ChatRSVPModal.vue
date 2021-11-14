@@ -69,11 +69,9 @@ export default {
     },
     mylast() {
       let ret = null
-      const me = this.$store.getters['auth/user']
-      const myid = me ? me.id : null
 
       for (const msg of this.chatmessages) {
-        if (parseInt(msg.userid) === parseInt(myid)) {
+        if (parseInt(msg.userid) === parseInt(this.myid)) {
           ret = msg
         }
       }

@@ -38,7 +38,6 @@
 
 <script>
 // Need to import rather than async otherwise the render doesn't happen and ref isn't set.
-import waitForRef from '@/mixins/waitForRef'
 import breakpoints from '@/mixins/breakpoints'
 import MessageItemLocation from '~/components/MessageItemLocation'
 
@@ -51,7 +50,7 @@ export default {
     MessageHistory,
     NoticeMessage
   },
-  mixins: [waitForRef, breakpoints],
+  mixins: [breakpoints],
   props: {
     message: {
       type: Object,

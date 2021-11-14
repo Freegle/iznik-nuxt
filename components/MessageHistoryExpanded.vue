@@ -43,14 +43,13 @@
 <script>
 import ProfileImage from '@/components/ProfileImage'
 import Supporter from '@/components/Supporter'
-import waitForRef from '@/mixins/waitForRef'
 
 const ProfileModal = () => import('~/components/ProfileModal')
 
 export default {
   name: 'MessageHistory',
   components: { Supporter, ProfileImage, ProfileModal },
-  mixins: [waitForRef],
+
   props: {
     id: {
       type: Number,

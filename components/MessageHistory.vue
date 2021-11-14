@@ -24,7 +24,7 @@
     </div>
     <div v-if="modinfo && message.groups && message.groups.length && message.groups[0].arrival !== message.date" class="small">
       <span v-if="!today">
-        First posted {{ datetime(message.date) }}
+        First posted on {{ message.groups[0].namedisplay }} on {{ datetime(message.date) }}
       </span>
     </div>
   </div>

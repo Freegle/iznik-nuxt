@@ -12,7 +12,7 @@
           </h3>
           <NoticeMessage variant="info" class="mb-2">
             <p>
-              Freegle will get a small amount if you click to view any of them, which will help keep us going.
+              Freegle will get a small amount if you are interested and click to view any of them, which will help keep us going.
             </p>
             <p>
               Some may ask you to sign up - sorry about that, it's not under our control.
@@ -120,17 +120,8 @@ export default {
 
       if (this.suppliedLocation) {
         ret = this.suppliedLocation
-      } else {
-        const me = this.$store.getters['auth/user']
-
-        if (
-          me &&
-          me.settings &&
-          me.settings.mylocation &&
-          me.settings.mylocation.name
-        ) {
-          ret = me.settings.mylocation.name
-        }
+      } else if (this.myLocation) {
+        ret = this.myLocation
       }
 
       return ret

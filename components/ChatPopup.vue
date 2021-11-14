@@ -133,7 +133,6 @@ import { TooltipPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
 import InfiniteLoading from 'vue-infinite-loading'
 import VueDraggableResizable from 'vue-draggable-resizable/src/components/vue-draggable-resizable'
-import waitForRef from '@/mixins/waitForRef'
 import chat from '@/mixins/chat.js'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
@@ -165,7 +164,7 @@ export default {
     NudgeTooSoonWarningModal,
     NudgeWarningModal
   },
-  mixins: [chatCollate, waitForRef, chat],
+  mixins: [chatCollate, chat],
   computed: {
     minheight() {
       return Math.min(this.maxheight, HEIGHT)

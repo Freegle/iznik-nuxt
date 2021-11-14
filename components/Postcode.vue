@@ -111,7 +111,7 @@ export default {
     return {
       source: process.env.API + '/locations',
       results: [],
-      mylocation: null,
+      composeLocation: null,
       locating: false,
       locationFailed: false,
       showToolTip: false,
@@ -129,14 +129,9 @@ export default {
     // need to render this on the server.
     let value = this.value
 
-    if (this.pconly && !value) {
+    if (this.pconly && value === null && this.myLocation) {
       // If we are logged in then we may have a known location to use as the default.
-      value =
-        this.$store.getters['auth/user'] &&
-        this.$store.getters['auth/user'].settings &&
-        this.$store.getters['auth/user'].settings.mylocation
-          ? this.$store.getters['auth/user'].settings.mylocation.name
-          : null
+      value = this.myLocation.name
     }
 
     if (this.pconly && !value && !this.noStore) {
@@ -163,7 +158,7 @@ export default {
       this.$emit('selected', loc.data.locations[0])
     }
 
-    this.mylocation = value
+    this.composeLocation = value
 
     if (this.$refs.autocomplete) {
       // Might have gone from DOM by now due to navigation.

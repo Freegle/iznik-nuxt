@@ -14,6 +14,16 @@ Vue.mixin({
 
       return f
     },
+    timeadapt(val) {
+      const t = dayjs(val)
+
+      if (t.isToday()) {
+        // For today, just show the time.
+        return t.format('HH:mm')
+      } else {
+        return t.format('DD MMM YYYY HH:mm')
+      }
+    },
     dateonly(val) {
       return dayjs(val).format('Do MMMM, YYYY')
     },

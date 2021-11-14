@@ -102,7 +102,6 @@
 </template>
 
 <script>
-import waitForRef from '../mixins/waitForRef'
 import LoginModal from '~/components/LoginModal'
 const ModMenuItemLeft = () => import('../components/ModMenuItemLeft')
 const ModStatus = () => import('~/components/ModStatus')
@@ -122,7 +121,7 @@ import { setBadgeCount } from '../plugins/app-init-push' // CC
     ExternalLink,
     ModZoomStock
   },
-  mixins: [waitForRef],
+
   data: function() {
     return {
       logo: require(`@/static/icon_modtools.png`),
@@ -253,11 +252,7 @@ import { setBadgeCount } from '../plugins/app-init-push' // CC
       this.$refs.loginModal.show()
     },
     async checkWork() {
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['work'],
-        force: true
-      })
-
+      await this.fetchMe(['work'], true)
       setTimeout(this.checkWork, 30000)
     },
     discourse(e) {

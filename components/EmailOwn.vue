@@ -21,10 +21,7 @@ export default {
         email: this.email.email
       })
 
-      await this.$store.dispatch('auth/fetchUser', {
-        components: ['me', 'groups', 'aboutme', 'phone', 'notifications'],
-        force: true
-      })
+      this.fetchMe(['me', 'groups', 'aboutme', 'phone', 'notifications'])
     }
   }
 }

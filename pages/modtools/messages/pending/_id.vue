@@ -21,6 +21,8 @@
         <div :ref="'bottom' + message.id" />
       </div>
 
+      <ModAffiliationConfirmModal v-if="affiliationGroup" ref="affiliation" :groupid="affiliationGroup" />
+
       <infinite-loading :key="'infinite-' + groupid + '-' + messages.length" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
         <span slot="no-results" />
         <span slot="no-more" />
@@ -33,6 +35,7 @@
   </div>
 </template>
 <script>
+import shuffle from '@/mixins/shuffle'
 import loginRequired from '@/mixins/loginRequired'
 import modMessagesPage from '@/mixins/modMessagesPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
@@ -42,9 +45,11 @@ import GroupSelect from '../../../../components/GroupSelect'
 import ModMessage from '../../../../components/ModMessage'
 import ModCakeModal from '~/components/ModCakeModal'
 import ScrollToTop from '~/components/ScrollToTop'
+import ModAffiliationConfirmModal from '~/components/ModAffiliationConfirmModal'
 
 export default {
   components: {
+    ModAffiliationConfirmModal,
     ModZoomStock,
     ScrollToTop,
     ModCakeModal,
@@ -56,12 +61,46 @@ export default {
   mixins: [
     loginRequired,
     createGroupRoute('modtools/messages/pending'),
-    modMessagesPage
+    modMessagesPage,
+    shuffle
   ],
   data: function() {
     return {
       collection: 'Pending',
-      workType: 'pending'
+      workType: 'pending',
+      affiliationGroup: null
+    }
+  },
+  mounted() {
+    // Consider affiliation ask.
+    const lastask = this.$store.getters['misc/get']('lastaffiliationask')
+    const now = new Date().getTime()
+
+    // Ask for affiliation not too frequently.
+    if (!lastask || now - lastask > 7 * 24 * 60 * 60 * 1000) {
+      for (const group of this.myGroups) {
+        if (
+          group.type === 'Freegle' &&
+          (group.role === 'Owner' || group.role === 'Moderator')
+        ) {
+          const postdate = this.$dayjs(group.affiliationconfirmed)
+          const daysago = this.$dayjs().diff(postdate, 'day')
+
+          if (!group.affiliationconfirmed || daysago > 365) {
+            this.affiliationGroup = group.id
+            this.waitForRef('affiliation', () => {
+              this.$refs.affiliation.show()
+            })
+
+            break
+          }
+        }
+      }
+
+      this.$store.dispatch('misc/set', {
+        key: 'lastaffiliationask',
+        value: now
+      })
     }
   },
   methods: {

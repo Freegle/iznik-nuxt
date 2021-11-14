@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div v-if="defaultAttachments || !attachments.length">
+    <div v-if="defaultAttachments || !attachments.length" class="d-none d-md-block">
       <MessageTag :id="id" def :message-override="messageOverride" class="pl-2 pr-2" />
       <div class="d-flex justify-content-around bg rounded">
-        <v-icon name="camera" scale="4" class="text-faded align-self-center justify-se" />
+        <b-img src="/camera.png" class="align-self-center justify-se w-100 rounded" />
       </div>
     </div>
     <button v-else class="w-100 p-0 border-0" :disabled="disabled">
@@ -42,12 +42,11 @@
   </div>
 </template>
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import MessageTag from '@/components/MessageTag'
 
 export default {
   components: { MessageTag },
-  mixins: [waitForRef],
+
   props: {
     id: {
       type: Number,
@@ -94,8 +93,7 @@ export default {
 
       if (this.message && this.message.groups && this.message.groups.length) {
         const groupid = this.message.groups[0].groupid
-        const groups = this.$store.getters['auth/groups']
-        ret = groups.find(g => parseInt(g.id) === groupid)
+        ret = this.myGroups.find(g => parseInt(g.id) === groupid)
       }
 
       return ret

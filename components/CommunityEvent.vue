@@ -120,7 +120,6 @@
 </template>
 
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import twem from '~/assets/js/twem'
 const CommunityEventModal = () => import('./CommunityEventModal')
 
@@ -128,7 +127,7 @@ export default {
   components: {
     CommunityEventModal
   },
-  mixins: [waitForRef],
+
   props: {
     summary: {
       type: Boolean,

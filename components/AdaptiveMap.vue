@@ -34,7 +34,7 @@
       <div v-observe-visibility="mapVisibilityChanged" />
     </client-only>
     <div v-if="mapready" class="rest">
-      <div v-if="showClosestGroups" class="mb-1 border p-2 bg-white">
+      <div v-if="closestGroups && closestGroups.length" class="mb-1 border p-2 bg-white">
         <h2 class="sr-only">
           Nearby commmunities
         </h2>
@@ -127,7 +127,7 @@
           </NoticeMessage>
         </div>
         <GroupHeader v-if="group" :group="group" show-join />
-        <JobsTopBar v-if="jobs" />
+        <JobsTopBar v-if="jobs" class="d-block d-lg-none" />
 
         <h2 class="sr-only">
           List of wanteds and offers
@@ -137,7 +137,7 @@
         </client-only>
         <div v-if="filteredMessages && filteredMessages.length">
           <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
-            <Message :id="message.id" record-view class="mb-2 mb-sm-3" />
+            <Message :id="message.id" record-view class="mb-2 mb-sm-3" @view="recordView" />
           </div>
         </div>
         <client-only>
@@ -177,6 +177,7 @@ import Vue from 'vue'
 import VueObserveVisibility from 'vue-observe-visibility'
 import InfiniteLoading from 'vue-infinite-loading'
 import map from '@/mixins/map.js'
+import dayjs from 'dayjs'
 import { MAX_MAP_ZOOM } from '../utils/constants'
 import JoinWithConfirm from '~/components/JoinWithConfirm'
 const AdaptiveMapGroup = () => import('./AdaptiveMapGroup')
@@ -337,18 +338,18 @@ export default {
       selectedGroup: null,
       search: null,
       searchOn: null,
-      context: null
+      context: null,
+      trackView: false
     }
   },
   computed: {
     group: function() {
       let ret = null
-      const mygroups = this.$store.getters['auth/groups']
 
       if (this.selectedGroup) {
         ret = this.$store.getters['group/get'](this.selectedGroup)
-      } else if (mygroups && mygroups.length === 1) {
-        ret = this.$store.getters['group/get'](mygroups[0].id)
+      } else if (this.myGroups && this.myGroups.length === 1) {
+        ret = this.$store.getters['group/get'](this.myGroups[0].id)
       }
 
       return ret
@@ -535,13 +536,6 @@ export default {
       // zoomed out)
       return process.server || !this.showRegions
     },
-    showClosestGroups() {
-      // We only want to show the closest groups to join if there aren't too many.  Otherwise they're probably
-      // zoomed way out and would join the wrong ones.
-      return (
-        this.groupids && this.groupids.length < 20 && this.closestGroups.length
-      )
-    },
     closestGroups() {
       const ret = []
 
@@ -550,28 +544,43 @@ export default {
 
         for (const ix in allGroups) {
           const group = allGroups[ix]
-          const member =
-            this.$store.getters['auth/user'] &&
-            this.$store.getters['auth/member'](group.id)
 
-          if (!member) {
-            if (group && group.onmap && group.publish) {
-              group.distance = this.getDistance(
-                [this.centre.lat, this.centre.lng],
-                [group.lat, group.lng]
-              )
+          if (group) {
+            // See if the group is showing in the map area.
+            if (
+              this.bounds.contains([group.lat, group.lng]) ||
+              ((group.altlat || group.altlng) &&
+                this.bounds.contains([group.altlat, group.altlng]))
+            ) {
+              // Are we already a member?
+              const member = this.$store.getters['auth/member'](group.id)
 
-              if (group.distance <= group.nearbygroups * 1609.34) {
-                ret.push(group)
-              } else if (group.altlat || group.altlng) {
-                // A few groups have two centres because they are large.
-                group.distance = this.getDistance(
-                  [this.centre.lat, this.centre.lng],
-                  [group.altlat, group.altlng]
-                )
+              if (!member) {
+                // Visible group?
+                if (group.onmap && group.publish) {
+                  // How far away?
+                  group.distance = this.getDistance(
+                    [this.centre.lat, this.centre.lng],
+                    [group.lat, group.lng]
+                  )
 
-                if (group.distance <= group.nearbygroups * 1609.34) {
-                  ret.push(group)
+                  // Allowed to show?
+                  if (
+                    !group.showjoin ||
+                    group.distance <= group.showjoin * 1609.34
+                  ) {
+                    ret.push(group)
+                  } else if (group.altlat || group.altlng) {
+                    // A few groups have two centres because they are large.
+                    group.distance = this.getDistance(
+                      [this.centre.lat, this.centre.lng],
+                      [group.altlat, group.altlng]
+                    )
+
+                    if (group.distance <= group.showjoin * 1609.34) {
+                      ret.push(group)
+                    }
+                  }
                 }
               }
             }
@@ -634,33 +643,33 @@ export default {
     this.search = this.initialSearch
     this.searchOn = this.initialSearch
   },
-  async mounted() {
+  mounted() {
     this.postMapInitialBounds = this.locked ? this.locked : this.initialBounds
     // this.postMapInitialBounds = this.initialBounds
 
-    const mygroups = this.$store.getters['auth/groups']
-
-    if (mygroups && mygroups.length === 1) {
+    if (this.myGroups && this.myGroups.length === 1) {
       // We will be showing the single group; make sure we have any description.
       this.$store.dispatch('group/fetch', {
-        id: mygroups[0].id
+        id: this.myGroups[0].id
       })
     }
 
     if (!this.startOnGroups) {
       this.context = null
 
-      // Get the messages in our own groups for the initial view.
-      const ret = await this.$api.message.fetchMessages({
-        subaction: 'mygroups'
+      this.$nextTick(async () => {
+        // Get the messages in our own groups for the initial view.
+        const ret = await this.$api.message.fetchMessages({
+          subaction: 'mygroups'
+        })
+
+        if (ret && ret.ret === 0 && ret.messages) {
+          this.messagesInOwnGroups = ret.messages
+
+          // Kick the infinite scroll to show them.
+          this.infiniteId++
+        }
       })
-
-      if (ret && ret.ret === 0 && ret.messages) {
-        this.messagesInOwnGroups = ret.messages
-
-        // Kick the infinite scroll to show them.
-        this.infiniteId++
-      }
     }
 
     this.bounds = L.latLngBounds(
@@ -672,6 +681,19 @@ export default {
     const postType = this.$store.getters['misc/get']('postType')
     if (postType) {
       this.selectedType = postType
+    }
+
+    // We want to track views of messages for new members.
+    if (this.me) {
+      const now = dayjs()
+      const daysago = now.diff(dayjs(this.me.added), 'days')
+
+      if (daysago < 14) {
+        this.$api.bandit.shown({
+          uid: 'browsepage',
+          variant: 'oldskool'
+        })
+      }
     }
   },
   methods: {
@@ -786,6 +808,15 @@ export default {
         (!this.selectedGroup ||
           parseInt(m.groupid) === parseInt(this.selectedGroup))
       )
+    },
+    recordView() {
+      // TODO Remove after 2022-03-01
+      if (this.trackViews) {
+        this.$api.bandit.chosen({
+          uid: 'browsepage',
+          variant: 'oldskool'
+        })
+      }
     }
   }
 }

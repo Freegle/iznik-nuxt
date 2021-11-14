@@ -20,7 +20,7 @@
         variant="primary"
         icon="envelope"
         leave
-        label="Reply"
+        label="Blank Reply"
       />
     </div>
     <div v-else-if="pending" class="d-inline">
@@ -68,7 +68,7 @@
         variant="primary"
         icon="envelope"
         leave
-        label="Reply"
+        label="Blank Reply"
       />
       <ModMessageButton
         :message="message"

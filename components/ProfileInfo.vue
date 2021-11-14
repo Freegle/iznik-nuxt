@@ -119,7 +119,6 @@
 </template>
 
 <script>
-import waitForRef from '@/mixins/waitForRef'
 import SupporterInfoModal from '~/components/SupporterInfoModal'
 import NoticeMessage from '~/components/NoticeMessage'
 import twem from '~/assets/js/twem'
@@ -136,7 +135,7 @@ export default {
     Message,
     ProfileHeader
   },
-  mixins: [waitForRef],
+
   props: {
     id: {
       type: Number,

@@ -7,12 +7,11 @@
   </div>
 </template>
 <script>
-import waitForRef from '../mixins/waitForRef'
 import ModChatModal from './ModChatModal'
 
 export default {
   components: { ModChatModal },
-  mixins: [waitForRef],
+
   props: {
     id: {
       type: Number,
