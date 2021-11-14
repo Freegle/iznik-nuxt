@@ -315,6 +315,7 @@ export const actions = {
 
     const {
       me,
+      session, // CC
       persistent,
       groups,
       work,
@@ -380,6 +381,7 @@ export const actions = {
         root: true
       })
     } else if (session) { // Store sessionid for iOS apps // CC
+      console.log('AUTH: setSession')
       commit('setSession', session)
     }
 
