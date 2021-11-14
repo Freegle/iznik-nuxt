@@ -123,7 +123,7 @@ export default {
     }
   },
   watch: {
-    me() {
+    me(newVal, oldVal) {
       if (newVal && !oldVal) {
         this.calculateInitialMapBounds()
         this.bump++
