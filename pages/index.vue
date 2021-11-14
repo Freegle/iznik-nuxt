@@ -89,26 +89,28 @@ export default {
       return
     }
     if (process.browser) {
-      // Ensure we can still load the page if we get an API error.
-      try {
-        const type = await this.$store.$api.bandit.choose({
-          uid: 'landing'
-        })
-
-        this.type = type.variant
-      } catch (e) {}
-
-      if (this.type !== 'Map') {
-        // The video plays with sound, wrongly, even if the muted attribute is set.  So set it here.
-        setTimeout(() => {
-          this.timeToPlay = true
-          this.play()
-        }, 1000)
-      }
+      await this.fetchMe(['me', 'groups'])
 
       if (this.me) {
         this.goHome()
       } else {
+        // Ensure we can still load the page if we get an API error.
+        try {
+          const type = await this.$store.$api.bandit.choose({
+            uid: 'landing'
+          })
+
+          this.type = type.variant
+        } catch (e) {}
+
+        if (this.type !== 'Map') {
+          // The video plays with sound, wrongly, even if the muted attribute is set.  So set it here.
+          setTimeout(() => {
+            this.timeToPlay = true
+            this.play()
+          }, 1000)
+        }
+
         // Set up a watch on the store.  We do this because initially the store hasn't yet been reloaded from local
         // storage, so we don't know if we're logged in. When it does get loaded, this watch will fire.
         this.userWatch = this.$store.watch(
