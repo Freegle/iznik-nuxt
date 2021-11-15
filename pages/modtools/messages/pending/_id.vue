@@ -78,7 +78,9 @@ export default {
 
     // Ask for affiliation not too frequently.
     if (!lastask || now - lastask > 7 * 24 * 60 * 60 * 1000) {
-      for (const group of this.myGroups) {
+      const myGroups = this.shuffle(this.myGroups)
+
+      for (const group of myGroups) {
         if (
           group.type === 'Freegle' &&
           (group.role === 'Owner' || group.role === 'Moderator')
