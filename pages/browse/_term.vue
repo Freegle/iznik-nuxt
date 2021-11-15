@@ -114,7 +114,7 @@ export default {
 
     // Also get all the groups.  This allows us to suggest other groups to join from within the map.  No rush
     // though, so delay it.
-    setTimeout(() => {
+    setTimeout(async () => {
       this.$store.dispatch('group/list', {
         grouptype: 'Freegle'
       })
@@ -127,6 +127,8 @@ export default {
 
         if (!lastask || now - lastask > 90 * 24 * 60 * 60 * 1000) {
           // Not asked too recently.
+          await this.fetchMe(['me', 'aboutme'])
+
           if (!this.me.aboutme || !this.me.aboutme.text) {
             // We have not yet provided one.
             const daysago = dayjs().diff(dayjs(this.me.added), 'days')
