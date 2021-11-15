@@ -249,10 +249,8 @@ export default {
       return height
     },
     showMessages() {
-      // We're zoomed in far enough or we're forcing ourselves to show them (but not so far that it's silly).
-      return (
-        this.zoom >= this.postZoom || (this.forceMessages && this.zoom >= 7)
-      )
+      // We're zoomed in far enough or we're forcing ourselves to show them.
+      return this.zoom >= this.postZoom || this.forceMessages
     },
     groups() {
       const ret = []
@@ -525,6 +523,11 @@ export default {
               }
             })
             .addTo(this.mapObject)
+
+          console.log('Fetch messages?', this.showMessages)
+          if (this.showMessages) {
+            this.fetchMessages()
+          }
         }
       })
     },
