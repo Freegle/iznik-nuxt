@@ -323,6 +323,9 @@
               description="Controls when the member can manually repost, and when auto-repost kicks in.  0 = always show manual Repost button."
               class="mr-2"
             />
+            <NoticeMessage variant="warning">
+              The following setting will soon be retired in favour of the "post visibility" setting further down.
+            </NoticeMessage>
             <ModGroupSetting
               :groupid="groupid"
               name="settings.nearbygroups"
@@ -331,6 +334,7 @@
               type="number"
               :step="1"
             />
+            <ModGroupPostVisibility :groupid="groupid" />
             <ModGroupSetting
               :groupid="groupid"
               name="settings.showjoin"
@@ -748,6 +752,7 @@ import ModGroupSetting from './ModGroupSetting'
 import SpinButton from './SpinButton'
 import NoticeMessage from './NoticeMessage'
 import ModSettingsGroupFacebook from './ModSettingsGroupFacebook'
+import ModGroupPostVisibility from './ModGroupPostVisibility'
 const ExternalLink = () => import('~/components/ExternalLink')
 
 const OurToggle = () => import('~/components/OurToggle')
@@ -774,7 +779,8 @@ export default {
     ModSettingShortlink,
     GroupSelect,
     VueEditor,
-    ExternalLink
+    ExternalLink,
+    ModGroupPostVisibility
   },
   props: {
     initialGroup: {
