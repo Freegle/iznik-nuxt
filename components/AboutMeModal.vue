@@ -19,7 +19,7 @@
           </p>
           <p>
             <strong>Don't put anything private in here.</strong>
-            It's is public, and it's what everyone on Freegle will see about you.  We'll post it
+            It's public, and it's what everyone on Freegle will see about you.  We'll post it
             on <em>ChitChat</em> as a way to say hello to everyone, too.
           </p>
           <p>
