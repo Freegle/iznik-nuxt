@@ -504,7 +504,9 @@ export default {
     if (this.me) {
       switch (this.action) {
         case 'repost':
-          this.repost()
+          if (this.message.canrepost) {
+            this.repost()
+          }
           break
         case 'withdraw':
           this.outcome('Withdrawn')
