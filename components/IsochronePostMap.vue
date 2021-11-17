@@ -464,10 +464,13 @@ export default {
       }
     }
   },
-  mounted() {
+  async mounted() {
     this.bounds = this.initialBounds
 
     if (this.mapHidden) {
+      // Fetch the messages, since the ready event isn't going to fire.
+      await this.fetchMessages()
+
       // Say we're ready so the parent can crack on.
       this.$emit('update:ready', true)
     }
@@ -566,52 +569,52 @@ export default {
     async fetchMessages() {
       this.$emit('update:loading', true)
 
-      if (this.mapObject) {
-        let params
-        const bounds = this.mapObject.getBounds()
+      let params
+      const bounds = this.mapObject
+        ? this.mapObject.getBounds()
+        : new L.LatLngBounds(this.initialBounds)
 
-        if (this.search) {
-          // We're searching.
-          params = {
-            collection: 'Approved',
-            subaction: 'searchmess',
-            messagetype: this.type,
-            search: this.search,
-            groupid: this.groupid,
-            swlat: bounds.getSouthWest().lat,
-            swlng: bounds.getSouthWest().lng,
-            nelat: bounds.getNorthEast().lat,
-            nelng: bounds.getNorthEast().lng
-          }
-        } else if (this.showIsochrones) {
-          // The default view unless we've moved the map is the messages in the isochrone.
-          params = {
-            subaction: 'isochrones',
-            groupid: this.groupid,
-            search: this.search
-          }
-        } else if (this.showInBounds) {
-          // If we've moved the map then we show the posts in the map bounds.
-          params = {
-            subaction: 'inbounds',
-            swlat: bounds.getSouthWest().lat,
-            swlng: bounds.getSouthWest().lng,
-            nelat: bounds.getNorthEast().lat,
-            nelng: bounds.getNorthEast().lng,
-            groupid: this.groupid
-          }
+      if (this.search) {
+        // We're searching.
+        params = {
+          collection: 'Approved',
+          subaction: 'searchmess',
+          messagetype: this.type,
+          search: this.search,
+          groupid: this.groupid,
+          swlat: bounds.getSouthWest().lat,
+          swlng: bounds.getSouthWest().lng,
+          nelat: bounds.getNorthEast().lat,
+          nelng: bounds.getNorthEast().lng
         }
+      } else if (this.showIsochrones) {
+        // The default view unless we've moved the map is the messages in the isochrone.
+        params = {
+          subaction: 'isochrones',
+          groupid: this.groupid,
+          search: this.search
+        }
+      } else if (this.showInBounds) {
+        // If we've moved the map then we show the posts in the map bounds.
+        params = {
+          subaction: 'inbounds',
+          swlat: bounds.getSouthWest().lat,
+          swlng: bounds.getSouthWest().lng,
+          nelat: bounds.getNorthEast().lat,
+          nelng: bounds.getNorthEast().lng,
+          groupid: this.groupid
+        }
+      }
 
-        const ret = await this.$api.message.fetchMessages(params)
-        this.fetchedPrimaryMessages =
-          ret.ret === 0 && ret.messages ? ret.messages : []
+      const ret = await this.$api.message.fetchMessages(params)
+      this.fetchedPrimaryMessages =
+        ret.ret === 0 && ret.messages ? ret.messages : []
 
-        if (!this.destroyed) {
-          if (!this.search && this.showIsochrones) {
-            this.fetchSecondaryMessages()
-          } else {
-            this.secondaryMesageList = []
-          }
+      if (!this.destroyed) {
+        if (!this.search && this.showIsochrones) {
+          this.fetchSecondaryMessages()
+        } else {
+          this.secondaryMesageList = []
         }
       }
 
