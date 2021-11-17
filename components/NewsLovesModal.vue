@@ -94,9 +94,9 @@ export default {
       this.showModal = true
     },
     goToProfile(id) {
-      console.log('Go to profile', id)
-      this.$router.push({
-        path: '/profile/' + id
+      this.showModal = false
+      this.$nextTick(() => {
+        this.$router.push('/profile/' + id)
       })
     }
   }
