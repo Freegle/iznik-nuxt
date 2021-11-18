@@ -75,7 +75,7 @@ export default {
       return this.image || require('~/static/defaultprofile.png')
     },
     className() {
-      let ret = 'p-0 profile--' + this.size
+      let ret = 'p-0 profile profile--' + this.size
 
       if (this.border) {
         ret += ' ourBorder'
@@ -97,6 +97,10 @@ export default {
 @import 'bootstrap/scss/_functions';
 @import 'bootstrap/scss/_variables';
 @import 'bootstrap/scss/mixins/_breakpoints';
+
+.profile {
+  object-fit: cover;
+}
 
 .profile--sm {
   width: 20px;
