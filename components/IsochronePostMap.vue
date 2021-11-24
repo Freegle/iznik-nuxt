@@ -1,29 +1,17 @@
 <template>
   <div v-if="initialBounds">
-    <div className="d-flex flex-wrap bg-warning">
-      <NoticeMessage variant="warning">
-        <p>
-          This is a test page to explore showing posts based on how long it
-          would take to get there from a freegler's own location.
-        </p>
-        <p>
-          <b>
-            You should think about this from the point of view of a member - does it show a sensible area for someone in
-            that place using that mode of transport?
-          </b>
-        </p>
-        <p>
-          The blue shaded map area shows is what decides which posts appear in the list below.  It's where we
-          would also email posts from.  Analysis of a sample of users suggests they would see more posts, and closer
-          posts, this way.
-        </p>
-        <p>
-          You can experiment to see how far it would show for different types of transport and
-          different travel times.
-        </p>
-      </NoticeMessage>
-    </div>
     <div class="mb-1 border p-2 bg-white">
+      <NoticeMessage v-if="everFetched && !primaryMessageList.length" variant="warning">
+        There are no posts in this area at the moment.  You can check back later, or use the controls below:
+        <ul>
+          <li>The <em>Travel time</em> slider lets you see posts from further away.</li>
+          <li>
+            <!-- eslint-disable-next-line-->
+            You can change your location in <nuxt-link to="/settings">Settings</nuxt-link>.
+          </li>
+          <li>The <em>Add location</em> link lets you show posts from another postcode.</li>
+        </ul>
+      </NoticeMessage>
       <Isochrones />
       <div class="small">
         <!-- eslint-disable-next-line-->
@@ -205,6 +193,7 @@ export default {
   data: function() {
     return {
       context: null,
+      everFetched: false,
       fetchedPrimaryMessages: [],
       fetchedSecondaryMessages: [],
       mapObject: null,
@@ -527,7 +516,6 @@ export default {
             })
             .addTo(this.mapObject)
 
-          console.log('Fetch messages?', this.showMessages)
           if (this.showMessages) {
             this.fetchMessages()
           }
@@ -609,6 +597,8 @@ export default {
       const ret = await this.$api.message.fetchMessages(params)
       this.fetchedPrimaryMessages =
         ret.ret === 0 && ret.messages ? ret.messages : []
+
+      this.everFetched = true
 
       if (!this.destroyed) {
         if (!this.search && this.showIsochrones) {
