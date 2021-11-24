@@ -16,8 +16,8 @@
         <ModMemberSearchbox v-model="search" :groupid="groupid" />
       </div>
       <div v-if="groupid">
-        <p v-if="group && group.membercount" class="mt-1">
-          This group has {{ group.membercount | pluralize('member', { includeNumber: true }) }}.
+        <p v-if="memberCount" class="mt-1">
+          This group has {{ memberCount | pluralize('member', { includeNumber: true }) }}.
         </p>
         <div v-for="member in visibleMembers" :key="'memberlist-' + member.id" class="p-0 mt-2">
           <ModMember :member="member" :actions="false" :expand-comments="parseInt(filter) === 1" />
@@ -75,7 +75,8 @@ export default {
     return {
       collection: 'Approved',
       search: null,
-      filter: '0'
+      filter: '0',
+      memberCount: 0
     }
   },
   watch: {
@@ -86,7 +87,7 @@ export default {
       }
     }
   },
-  mounted() {
+  async mounted() {
     if (!this.groupid) {
       // If we have not selected a group, check if we are only a mod on one.  If so, then go to that group so that
       // we don't need to bother selecting it.  We do this here because the interaction with createGroupRoute would
@@ -103,6 +104,13 @@ export default {
       if (countmod === 1) {
         this.$router.push('/modtools/members/approved/' + lastmod)
       }
+    } else {
+      // Make sure we have the member count.
+      await this.$store.dispatch('group/fetch', {
+        id: this.groupid
+      })
+      const group = this.$store.getters['group/get'](this.groupid)
+      this.memberCount = group.membercount
     }
   },
   methods: {
