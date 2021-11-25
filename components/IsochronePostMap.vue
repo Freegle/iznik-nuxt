@@ -15,7 +15,7 @@
       <Isochrones />
       <div class="small">
         <!-- eslint-disable-next-line-->
-        Show posts from <b-btn variant="link" size="sm" class="mb-1 p-0" @click="showPostsFromMyGroups">all my communities</b-btn>.
+        Show posts from <b-btn variant="link" size="sm" class="mb-1 p-0" @click="showPostsFromMyGroups">all my communities</b-btn> instead.
       </div>
     </div>
     <div v-if="mapHidden" class="d-flex justify-content-end">
