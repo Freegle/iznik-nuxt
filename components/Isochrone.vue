@@ -28,7 +28,7 @@
               Travel time from {{ isochrone.nickname }}: <span class="text-faded">({{ isochrone.location.name }})</span>
             </div>
             <div v-else>
-              Travel time: <span class="text-faded"> (from {{ myLocation.name }})</span>
+              Travel time: <span v-if="myLocation" class="text-faded"> (from {{ myLocation.name }})</span>
             </div>
           </div>
           <div v-else>
