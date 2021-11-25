@@ -142,6 +142,7 @@ export default {
     this.$store.dispatch('messages/clear')
 
     this.calculateInitialMapBounds()
+    console.log('Initial bounds', this.initialBounds)
 
     // TODO Remove after experiment.
     // We are running an experiment to measure whether the isochrone view is more or less effective than the old
@@ -229,9 +230,45 @@ export default {
       this.initialBounds = this.isochroneBoundsArray
 
       if (!this.initialBounds) {
-        // We don't know where we are.  This can happen, but it's rare. Send them to the explore page to pick
-        // somewhere.
-        this.$router.push('/explore')
+        // We don't know where we are yet.
+        const groups = this.$store.getters['auth/groups']
+
+        if (!groups.length) {
+          // Don't even know any groups - encourage them to join.
+          this.$router.push('/explore')
+        } else {
+          // Generate bounds based on the groups we're in.
+          // eslint-disable-next-line new-cap
+          let swlat = null
+          let swlng = null
+          let nelat = null
+          let nelng = null
+
+          groups.forEach(group => {
+            if (group.bbox) {
+              swlat =
+                swlat === null
+                  ? group.bbox.swlat
+                  : Math.min(swlat, group.bbox.swlat)
+              swlng =
+                swlng === null
+                  ? group.bbox.swlng
+                  : Math.min(swlng, group.bbox.swlng)
+              nelat =
+                nelat === null
+                  ? group.bbox.nelat
+                  : Math.min(nelat, group.bbox.nelat)
+              nelng =
+                nelng === null
+                  ? group.bbox.nelng
+                  : Math.min(nelng, group.bbox.nelng)
+            }
+          })
+
+          if (swlat !== null) {
+            this.initialBounds = [[swlat, swlng], [nelat, nelng]]
+          }
+        }
       }
     },
     async showPostsFromNearby() {

@@ -12,7 +12,7 @@ export default {
       const isochrones = this.$store.getters['isochrones/list']
       let bounds = null
 
-      if (isochrones) {
+      if (isochrones && isochrones.length) {
         // eslint-disable-next-line new-cap
         const fg = new L.featureGroup()
 
