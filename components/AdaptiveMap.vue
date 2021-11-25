@@ -339,7 +339,7 @@ export default {
       search: null,
       searchOn: null,
       context: null,
-      trackView: false
+      trackViews: false
     }
   },
   computed: {
@@ -689,6 +689,8 @@ export default {
       const daysago = now.diff(dayjs(this.me.added), 'days')
 
       if (daysago < 14) {
+        this.trackViews = true
+
         this.$api.bandit.shown({
           uid: 'browsepage',
           variant: 'oldskool'
