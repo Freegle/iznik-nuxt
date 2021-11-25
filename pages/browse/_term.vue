@@ -231,43 +231,57 @@ export default {
 
       if (!this.initialBounds) {
         // We don't know where we are yet.
-        const groups = this.$store.getters['auth/groups']
+        // Find a bounding box which is completely full of the group that our own location is within,
+        // if we can.
+        let mylat = null
+        let mylng = null
 
-        if (!groups.length) {
-          // Don't even know any groups - encourage them to join.
-          this.$router.push('/explore')
-        } else {
-          // Generate bounds based on the groups we're in.
-          // eslint-disable-next-line new-cap
-          let swlat = null
-          let swlng = null
-          let nelat = null
-          let nelng = null
+        let swlat = null
+        let swlng = null
+        let nelat = null
+        let nelng = null
 
-          groups.forEach(group => {
-            if (group.bbox) {
-              swlat =
-                swlat === null
-                  ? group.bbox.swlat
-                  : Math.min(swlat, group.bbox.swlat)
-              swlng =
-                swlng === null
-                  ? group.bbox.swlng
-                  : Math.min(swlng, group.bbox.swlng)
-              nelat =
-                nelat === null
-                  ? group.bbox.nelat
-                  : Math.min(nelat, group.bbox.nelat)
-              nelng =
-                nelng === null
-                  ? group.bbox.nelng
-                  : Math.min(nelng, group.bbox.nelng)
+        if (this.me && (this.me.lat || this.me.lng)) {
+          mylat = this.me.lat
+          mylng = this.me.lng
+
+          this.myGroups.forEach(g => {
+            if (
+              g.bbox &&
+              mylat >= g.bbox.swlat &&
+              mylat <= g.bbox.nelat &&
+              mylng >= g.bbox.swlng &&
+              mylng <= g.bbox.nelng
+            ) {
+              swlat = (g.bbox.swlat + g.bbox.nelat) / 2
+              swlng = g.bbox.swlng
+              nelat = (g.bbox.swlat + g.bbox.nelat) / 2
+              nelng = g.bbox.nelng
             }
           })
+        }
 
-          if (swlat !== null) {
-            this.initialBounds = [[swlat, swlng], [nelat, nelng]]
-          }
+        let bounds = null
+
+        if (
+          swlat !== null &&
+          swlng !== null &&
+          nelat !== null &&
+          nelng !== null
+        ) {
+          bounds = [[swlat, swlng], [nelat, nelng]]
+        } else if (this.me && mylat !== null && mylng !== null) {
+          // We're not a member of any groups, but at least we know where we are.  Centre there, and then let
+          // the map zoom to somewhere sensible.
+          bounds = [[mylat - 0.01, mylng - 0.01], [mylat + 0.01, mylng + 0.01]]
+        } else {
+          // We aren't a member of any groups and we don't know where we are.  This can happen, but it's rare.
+          // Send them to the explore page to pick somewhere.
+          this.$router.push('/explore')
+        }
+
+        if (bounds) {
+          this.initialBounds = bounds
         }
       }
     },
