@@ -9,10 +9,13 @@ if (process.browser) {
 export default {
   computed: {
     isochroneBounds() {
-      const isochrones = this.$store.getters['isochrones/list']
+      let isochrones = this.$store.getters['isochrones/list']
+      console.log('Isochrones', isochrones)
       let bounds = null
 
-      if (isochrones && isochrones.length) {
+      if (isochrones) {
+        isochrones = Object.values(isochrones)
+
         // eslint-disable-next-line new-cap
         const fg = new L.featureGroup()
 
@@ -29,6 +32,8 @@ export default {
 
         bounds = fg.getBounds().pad(0.1)
       }
+
+      console.log('Compute isochroneBounds', bounds)
 
       return bounds
     },
@@ -48,6 +53,7 @@ export default {
         ]
       }
 
+      console.log('Compute isochroneBoundsArray', ret)
       return ret
     }
   }

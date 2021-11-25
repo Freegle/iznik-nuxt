@@ -436,11 +436,14 @@ export default {
     transport() {
       this.$nextTick(this.fetchISOChrone)
     },
-    isochrones() {
-      this.$refs.map.mapObject.fitBounds(this.isochroneBounds)
-      this.showIsochrones = true
-      this.showInBounds = false
-      this.initialCentre = null
+    isochroneBounds(newVal) {
+      console.log('Bounds changed', newVal)
+      if (newVal) {
+        this.$refs.map.mapObject.fitBounds(newVal)
+        this.showIsochrones = true
+        this.showInBounds = false
+        this.initialCentre = null
+      }
     },
     primaryMessageList: {
       immediate: true,

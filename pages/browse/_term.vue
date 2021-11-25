@@ -227,6 +227,7 @@ export default {
 
       // The initial bounds for the map are determined from the isochrones if possible.
       await this.$store.dispatch('isochrones/fetch')
+      console.log('Calc initial', this.isochroneBoundsArray)
       this.initialBounds = this.isochroneBoundsArray
 
       if (!this.initialBounds) {
