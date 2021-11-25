@@ -282,6 +282,11 @@ export default {
       type: String,
       required: false,
       default: null
+    },
+    track: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -684,7 +689,7 @@ export default {
     }
 
     // We want to track views of messages for new members.
-    if (this.me) {
+    if (this.track && this.me) {
       const now = dayjs()
       const daysago = now.diff(dayjs(this.me.added), 'days')
 

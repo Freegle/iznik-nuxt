@@ -57,6 +57,7 @@
               jobs
               :show-many="false"
               can-hide
+              track
             />
           </div>
         </div>
