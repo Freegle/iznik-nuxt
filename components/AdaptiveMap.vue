@@ -34,13 +34,13 @@
       <div v-observe-visibility="mapVisibilityChanged" />
     </client-only>
     <div v-if="mapready" class="rest">
-      <div v-if="closestGroups && closestGroups.length" class="mb-1 border p-2 bg-white">
+      <div v-if="closestGroups && closestGroups.length && closestGroups.length < 20" class="mb-1 border p-2 bg-white">
         <h2 class="sr-only">
           Nearby commmunities
         </h2>
         <div class="d-flex flex-wrap justify-content-center">
           <div
-            v-for="g in closestGroups"
+            v-for="g in closestGroups.slice(0, 3)"
             :key="'group-' + g.id"
           >
             <JoinWithConfirm
@@ -592,7 +592,7 @@ export default {
         })
       }
 
-      return ret.slice(0, 3)
+      return ret
     }
   },
   watch: {
