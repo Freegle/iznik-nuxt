@@ -344,7 +344,8 @@ export default {
       search: null,
       searchOn: null,
       context: null,
-      trackViews: false
+      trackViews: false,
+      trackedView: false
     }
   },
   computed: {
@@ -818,7 +819,9 @@ export default {
     },
     recordView() {
       // TODO Remove after 2022-03-01
-      if (this.trackViews) {
+      if (this.trackViews && !this.trackedView) {
+        this.trackedView = true
+
         this.$api.bandit.chosen({
           uid: 'browsepage',
           variant: 'oldskool'

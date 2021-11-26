@@ -331,7 +331,8 @@ export default {
       search: null,
       searchOn: null,
       context: null,
-      trackViews: false
+      trackViews: false,
+      trackedView: false
     }
   },
   computed: {
@@ -738,7 +739,9 @@ export default {
       )
     },
     recordView() {
-      if (this.trackViews) {
+      if (this.trackViews && !this.trackedView) {
+        this.trackedView = true
+
         this.$api.bandit.chosen({
           uid: 'browsepage',
           variant: 'newskool'
