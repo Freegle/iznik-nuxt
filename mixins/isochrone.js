@@ -28,6 +28,7 @@ export default {
         })
 
         console.log('Layers', fg.getLayers())
+        console.log('Layers length', fg.getLayers().length)
 
         if (fg.getLayers().length) {
           bounds = fg.getBounds().pad(0.1)
