@@ -34,7 +34,7 @@ export default {
             nelat = nelat === null ? thisne.lat : Math.max(nelat, thisne.lat)
             nelng = nelng === null ? thisne.lng : Math.min(nelng, thisne.lng)
           } catch (e) {
-            console.log('WKT error', location, e)
+            console.log('WKT parse error', i.polygon)
           }
         })
 
