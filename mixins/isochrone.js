@@ -27,7 +27,11 @@ export default {
           }
         })
 
-        bounds = fg.getBounds().pad(0.1)
+        console.log('Layers', fg.getLayers())
+
+        if (fg.getLayers().length) {
+          bounds = fg.getBounds().pad(0.1)
+        }
       }
 
       console.log('Compute isochroneBounds', bounds)
