@@ -131,7 +131,9 @@ export default {
       }
     }
   },
-  async mounted() {
+  async created() {
+    this.searchTerm = this.$route.params.term
+
     // We want this to be our next home page.
     try {
       localStorage.setItem('Iznik>lasthomepage', 'mygroups')
@@ -218,9 +220,6 @@ export default {
         }
       }
     }, 5000)
-  },
-  created() {
-    this.searchTerm = this.$route.params.term
   },
   methods: {
     async calculateInitialMapBounds() {
