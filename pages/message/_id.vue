@@ -174,12 +174,6 @@ export default {
 
         this.message = this.$store.getters['messages/get'](this.id)
       }
-
-      if (this.me) {
-        this.$store.dispatch('messages/view', {
-          id: this.id
-        })
-      }
     }
   }
 }
