@@ -701,6 +701,13 @@ export default {
           uid: 'browsepage',
           variant: 'oldskool'
         })
+
+        // eslint-disable-next-line no-undef
+        try {
+          window.__insp.push(['tagSession', { browsepage: 'oldskool' }])
+        } catch (e) {
+          console.log('Failed to tag inspectlet')
+        }
       }
     }
   },
