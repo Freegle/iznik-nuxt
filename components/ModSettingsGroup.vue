@@ -576,7 +576,10 @@
               <ExternalLink href="https://arthur-e.github.io/Wicket/sandbox-gmaps3.html">this tool</ExternalLink>.
               You can also view all community areas
               <!-- eslint-disable-next-line -->
-              <nuxt-link to="/modtools/map">here</nuxt-link>.
+              <nuxt-link to="/modtools/map">here</nuxt-link>,
+              or all caretaker communities
+              <!-- eslint-disable-next-line -->
+              <nuxt-link to="/modtools/map/caretaker">here</nuxt-link>.
             </b-form-text>
             <b-form-group label="Areas">
               <b-form-text class="mb-2">
