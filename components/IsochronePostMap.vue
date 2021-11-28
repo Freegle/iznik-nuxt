@@ -12,6 +12,12 @@
           <li>The <em>Add location</em> link lets you show posts from another postcode.</li>
         </ul>
       </NoticeMessage>
+      <NoticeMessage v-if="!isochrones.length" variant="warning">
+        <p class="font-weight-bold">
+          What's your postcode?  We'll show you posts nearby.
+        </p>
+        <Postcode @selected="savePostcode" />
+      </NoticeMessage>
       <Isochrones />
       <div class="small">
         <!-- eslint-disable-next-line-->
@@ -105,7 +111,9 @@ import Isochrones from '@/components/Isochrones'
 import isochroneMixin from '@/mixins/isochrone'
 import GroupMarker from './GroupMarker'
 import BrowseHomeIcon from './BrowseHomeIcon'
-const NoticeMessage = () => import('./NoticeMessage')
+import NoticeMessage from './NoticeMessage'
+import Postcode from '~/components/Postcode'
+
 const ClusterMarker = () => import('./ClusterMarker')
 
 let L = null
@@ -126,7 +134,8 @@ export default {
     ClusterMarker,
     VueDraggableResizable,
     GroupMarker,
-    NoticeMessage
+    NoticeMessage,
+    Postcode
   },
   mixins: [map, isochroneMixin],
   props: {
@@ -327,12 +336,12 @@ export default {
       })
     },
     isochrones() {
-      return this.$store.getters['isochrones/list']
+      return Object.values(this.$store.getters['isochrones/list'])
     },
     isochroneGEOJSONs() {
       const ret = []
 
-      Object.values(this.isochrones).forEach(i => {
+      this.isochrones.forEach(i => {
         const wkt = new Wkt.Wkt()
         try {
           wkt.read(i.polygon)
@@ -579,11 +588,26 @@ export default {
           nelng: bounds.getNorthEast().lng
         }
       } else if (this.showIsochrones) {
-        // The default view unless we've moved the map is the messages in the isochrone.
-        params = {
-          subaction: 'isochrones',
-          groupid: this.groupid,
-          search: this.search
+        // The default view unless we've moved the map is the messages in the isochrones.
+        if (this.isochrones.length) {
+          // We have some.
+          params = {
+            subaction: 'isochrones',
+            groupid: this.groupid,
+            search: this.search
+          }
+        } else {
+          // We don't, which will be because we don't have a location.  Use the bounding boxes of the groups we
+          // are in.
+          const groupbounds = this.myGroupsBoundingBox
+          params = {
+            subaction: 'inbounds',
+            swlat: groupbounds[0][0],
+            swlng: groupbounds[0][1],
+            nelat: groupbounds[1][0],
+            nelng: groupbounds[1][1],
+            groupid: this.groupid
+          }
         }
       } else if (this.showInBounds) {
         // If we've moved the map then we show the posts in the map bounds.
@@ -688,6 +712,19 @@ export default {
       await this.$store.dispatch('auth/saveAndGet', {
         settings: settings
       })
+    },
+    async savePostcode(pc) {
+      const settings = this.me.settings
+
+      if (!settings.mylocation || settings.mylocation.id !== pc.id) {
+        settings.mylocation = pc
+        await this.$store.dispatch('auth/saveAndGet', {
+          settings: settings
+        })
+
+        // Now get an isochrone at this location.
+        await this.$store.dispatch('isochrones/fetch')
+      }
     }
   }
 }

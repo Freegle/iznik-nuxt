@@ -227,13 +227,12 @@ export default {
 
       // The initial bounds for the map are determined from the isochrones if possible.
       await this.$store.dispatch('isochrones/fetch')
-      console.log('Calc initial', this.isochroneBoundsArray)
+      console.log('Calc initial isochrones bounds', this.isochroneBoundsArray)
       this.initialBounds = this.isochroneBoundsArray
 
       if (!this.initialBounds) {
-        // We don't know where we are yet.
-        // Find a bounding box which is completely full of the group that our own location is within,
-        // if we can.
+        // We don't have any isochrones yet. Use the bounding box of the group that our own
+        // location is within.
         let mylat = null
         let mylng = null
 
