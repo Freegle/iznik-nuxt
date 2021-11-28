@@ -5,8 +5,8 @@ export default class ActivityAPI extends BaseAPI {
     return this.$put('/isochrone', params)
   }
 
-  fetch() {
-    return this.$get('/isochrone')
+  fetch(params) {
+    return this.$get('/isochrone', params)
   }
 
   patch(params) {
