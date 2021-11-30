@@ -166,7 +166,7 @@ export default {
     if (this.id) {
       this.minutes = this.$store.getters['isochrones/get'](this.id).minutes
     } else {
-      this.minutes = 25
+      this.minutes = 20
     }
   },
   methods: {
