@@ -517,9 +517,12 @@ export default {
                 this.setQuery('')
 
                 self.$nextTick(() => {
-                  // Move the map to the location we've found.
-                  self.mapObject.flyToBounds(e.geocode.bbox)
-                  self.$emit('searched')
+                  if (self.$refs.map.mapObject) {
+                    // Move the map to the location we've found.
+                    console.log('Fly to', e.geocode)
+                    self.$refs.map.mapObject.flyToBounds(e.geocode.bbox)
+                    self.$emit('searched')
+                  }
                 })
               }
             })
