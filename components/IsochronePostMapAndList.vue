@@ -282,7 +282,7 @@ export default {
   data: function() {
     return {
       // Map stuff
-      heightFraction: 3,
+      heightFraction: 4,
       postcode: null,
       loading: false,
       lat: null,

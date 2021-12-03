@@ -19,7 +19,7 @@
         <Postcode @selected="savePostcode" />
       </NoticeMessage>
       <Isochrones />
-      <div class="small">
+      <div class="small mt-1">
         <!-- eslint-disable-next-line-->
         Show posts from <b-btn variant="link" size="sm" class="mb-1 p-0" @click="showPostsFromMyGroups">all my communities</b-btn> instead.
       </div>
