@@ -215,7 +215,8 @@ export default {
       mapboundsChangeCount: 0,
       initialCentre: null,
       showIsochrones: true,
-      showInBounds: false
+      showInBounds: false,
+      searched: false
     }
   },
   computed: {
@@ -509,13 +510,9 @@ export default {
             collapsed: false
           })
             .on('markgeocode', function(e) {
-              if (e && e.geocode && e.geocode.bbox) {
-                // Searching unlocks the map
-                self.$store.dispatch('misc/set', {
-                  key: 'postmaparea',
-                  value: null
-                })
+              self.searched = true
 
+              if (e && e.geocode && e.geocode.bbox) {
                 // Empty out the query box so that the dropdown closes.
                 this.setQuery('')
 
@@ -535,13 +532,18 @@ export default {
       })
     },
     centreChange(a, b) {
-      if (!this.initialCentre) {
+      console.log('Centre change')
+      if (!this.initialCentre && !this.searched) {
         // We get called once on map load, which doesn't count.
         this.initialCentre = this.mapObject.getCenter().toString()
+        console.log('Initial')
       } else if (this.mapObject.getCenter().toString() !== this.initialCentre) {
         // We are panning, not just zooming.  We want to shift to showing all messages in the map bounds.
+        console.log('Panning')
         this.showInBounds = true
         this.showIsochrones = false
+      } else {
+        console.log('Other')
       }
     },
     boundsChange() {
