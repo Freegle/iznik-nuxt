@@ -104,7 +104,8 @@ export default {
         offer: this.message.type === 'Offer',
         wanted: this.message.type === 'Wanted',
         clickme: !this.message.successful,
-        promisedfade: this.message.promised && this.replyable,
+        promisedfade:
+          this.message.promised && this.replyable && !this.message.promisedtome,
         'p-2': true,
         'p-sm-3': true
       }
