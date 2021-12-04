@@ -131,7 +131,7 @@ export default {
       }
     }
   },
-  async created() {
+  created() {
     this.searchTerm = this.$route.params.term
 
     // We want this to be our next home page.
@@ -146,29 +146,6 @@ export default {
 
     this.calculateInitialMapBounds()
     console.log('Initial bounds', this.initialBounds)
-
-    // TODO Remove after experiment.
-    // We are running an experiment to measure whether the isochrone view is more or less effective than the old
-    // group view.  We do this on new users, because existing users will have established preferences.
-    //
-    // See also code in IsochronePostMapAndList.
-    if (this.me) {
-      const now = dayjs()
-      const daysago = now.diff(dayjs(this.me.added), 'days')
-
-      if ((daysago < 14 && !this.me.settings) || !this.me.settings.browseView) {
-        // We don't yet have a preference.  Assign half to the old and half to the new.  Store what we choose so
-        // that we can see who changes it.
-        const settings = this.me.settings
-        const view = Math.random() < 0.5 ? 'mygroups' : 'nearby'
-        settings.browseView = view
-        settings.browseViewInitial = view
-
-        await this.$store.dispatch('auth/saveAndGet', {
-          settings: settings
-        })
-      }
-    }
 
     // Also get all the groups.  This allows us to suggest other groups to join from within the map.  No rush
     // though, so delay it.

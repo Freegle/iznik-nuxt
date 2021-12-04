@@ -177,7 +177,6 @@ import Vue from 'vue'
 import VueObserveVisibility from 'vue-observe-visibility'
 import InfiniteLoading from 'vue-infinite-loading'
 import map from '@/mixins/map.js'
-import dayjs from 'dayjs'
 import { MAX_MAP_ZOOM } from '../utils/constants'
 import JoinWithConfirm from '~/components/JoinWithConfirm'
 const AdaptiveMapGroup = () => import('./AdaptiveMapGroup')
@@ -691,23 +690,18 @@ export default {
 
     // We want to track views of messages for new members.
     if (this.track && this.me) {
-      const now = dayjs()
-      const daysago = now.diff(dayjs(this.me.added), 'days')
+      this.trackViews = true
 
-      if (daysago < 14) {
-        this.trackViews = true
+      this.$api.bandit.shown({
+        uid: 'browsepage',
+        variant: 'oldskool'
+      })
 
-        this.$api.bandit.shown({
-          uid: 'browsepage',
-          variant: 'oldskool'
-        })
-
-        // eslint-disable-next-line no-undef
-        try {
-          window.__insp.push(['tagSession', { browsepage: 'oldskool' }])
-        } catch (e) {
-          console.log('Failed to tag inspectlet')
-        }
+      // eslint-disable-next-line no-undef
+      try {
+        window.__insp.push(['tagSession', { browsepage: 'oldskool' }])
+      } catch (e) {
+        console.log('Failed to tag inspectlet')
       }
     }
   },
