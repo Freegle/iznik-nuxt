@@ -7,7 +7,7 @@
           <h3>
             Jobs
             <span v-if="location">
-              near {{ location }}
+              near {{ location.name }}
             </span>
           </h3>
           <NoticeMessage variant="info" class="mb-2">

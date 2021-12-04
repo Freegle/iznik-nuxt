@@ -1,5 +1,5 @@
 <template>
-  <VisualiseMap />
+  <VisualiseMap class="map" />
 </template>
 <script>
 import loginOptional from '@/mixins/loginOptional.js'
@@ -16,3 +16,20 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+.map {
+  @include media-breakpoint-up(sm) {
+    height: 300px;
+  }
+
+  @include media-breakpoint-up(lg) {
+    height: calc(100vh - 150px);
+    max-height: 800px;
+  }
+}
+</style>

@@ -1,33 +1,27 @@
 <template>
   <div v-if="initialBounds">
-    <div className="d-flex flex-wrap bg-warning">
-      <NoticeMessage variant="warning">
-        <p>
-          This is a test page to explore showing posts based on how long it
-          would take to get there from a freegler's own location.
-        </p>
-        <p>
-          <b>
-            You should think about this from the point of view of a member - does it show a sensible area for someone in
-            that place using that mode of transport?
-          </b>
-        </p>
-        <p>
-          The blue shaded map area shows is what decides which posts appear in the list below.  It's where we
-          would also email posts from.  Analysis of a sample of users suggests they would see more posts, and closer
-          posts, this way.
-        </p>
-        <p>
-          You can experiment to see how far it would show for different types of transport and
-          different travel times.
-        </p>
-      </NoticeMessage>
-    </div>
     <div class="mb-1 border p-2 bg-white">
+      <NoticeMessage v-if="everFetched && !primaryMessageList.length" variant="warning">
+        There are no posts in this area at the moment.  You can check back later, or use the controls below:
+        <ul>
+          <li>The <em>Travel time</em> slider lets you see posts from further away.</li>
+          <li>
+            <!-- eslint-disable-next-line-->
+            You can change your location in <nuxt-link to="/settings">Settings</nuxt-link>.
+          </li>
+          <li>The <em>Add location</em> link lets you show posts from another postcode.</li>
+        </ul>
+      </NoticeMessage>
+      <NoticeMessage v-if="!isochrones.length" variant="warning">
+        <p class="font-weight-bold">
+          What's your postcode?  We'll show you posts nearby.
+        </p>
+        <Postcode @selected="savePostcode" />
+      </NoticeMessage>
       <Isochrones />
-      <div class="small">
+      <div class="small mt-1">
         <!-- eslint-disable-next-line-->
-        Show posts from <b-btn variant="link" size="sm" class="mb-1 p-0" @click="showPostsFromMyGroups">all my communities</b-btn>.
+        Show posts from <b-btn variant="link" size="sm" class="mb-1 p-0" @click="showPostsFromMyGroups">all my communities</b-btn> instead.
       </div>
     </div>
     <div v-if="mapHidden" class="d-flex justify-content-end">
@@ -117,7 +111,9 @@ import Isochrones from '@/components/Isochrones'
 import isochroneMixin from '@/mixins/isochrone'
 import GroupMarker from './GroupMarker'
 import BrowseHomeIcon from './BrowseHomeIcon'
-const NoticeMessage = () => import('./NoticeMessage')
+import NoticeMessage from './NoticeMessage'
+import Postcode from '~/components/Postcode'
+
 const ClusterMarker = () => import('./ClusterMarker')
 
 let L = null
@@ -138,7 +134,8 @@ export default {
     ClusterMarker,
     VueDraggableResizable,
     GroupMarker,
-    NoticeMessage
+    NoticeMessage,
+    Postcode
   },
   mixins: [map, isochroneMixin],
   props: {
@@ -205,6 +202,7 @@ export default {
   data: function() {
     return {
       context: null,
+      everFetched: false,
       fetchedPrimaryMessages: [],
       fetchedSecondaryMessages: [],
       mapObject: null,
@@ -217,7 +215,8 @@ export default {
       mapboundsChangeCount: 0,
       initialCentre: null,
       showIsochrones: true,
-      showInBounds: false
+      showInBounds: false,
+      searched: false
     }
   },
   computed: {
@@ -249,10 +248,8 @@ export default {
       return height
     },
     showMessages() {
-      // We're zoomed in far enough or we're forcing ourselves to show them (but not so far that it's silly).
-      return (
-        this.zoom >= this.postZoom || (this.forceMessages && this.zoom >= 7)
-      )
+      // We're zoomed in far enough or we're forcing ourselves to show them.
+      return this.zoom >= this.postZoom || this.forceMessages
     },
     groups() {
       const ret = []
@@ -340,12 +337,12 @@ export default {
       })
     },
     isochrones() {
-      return this.$store.getters['isochrones/list']
+      return Object.values(this.$store.getters['isochrones/list'])
     },
     isochroneGEOJSONs() {
       const ret = []
 
-      Object.values(this.isochrones).forEach(i => {
+      this.isochrones.forEach(i => {
         const wkt = new Wkt.Wkt()
         try {
           wkt.read(i.polygon)
@@ -449,11 +446,14 @@ export default {
     transport() {
       this.$nextTick(this.fetchISOChrone)
     },
-    isochrones() {
-      this.$refs.map.mapObject.fitBounds(this.isochroneBounds)
-      this.showIsochrones = true
-      this.showInBounds = false
-      this.initialCentre = null
+    isochroneBounds(newVal) {
+      console.log('Bounds changed', newVal)
+      if (newVal) {
+        this.$refs.map.mapObject.fitBounds(newVal)
+        this.showIsochrones = true
+        this.showInBounds = false
+        this.initialCentre = null
+      }
     },
     primaryMessageList: {
       immediate: true,
@@ -466,10 +466,13 @@ export default {
       }
     }
   },
-  mounted() {
+  async mounted() {
     this.bounds = this.initialBounds
 
     if (this.mapHidden) {
+      // Fetch the messages, since the ready event isn't going to fire.
+      await this.fetchMessages()
+
       // Say we're ready so the parent can crack on.
       this.$emit('update:ready', true)
     }
@@ -507,35 +510,43 @@ export default {
             collapsed: false
           })
             .on('markgeocode', function(e) {
-              if (e && e.geocode && e.geocode.bbox) {
-                // Searching unlocks the map
-                self.$store.dispatch('misc/set', {
-                  key: 'postmaparea',
-                  value: null
-                })
+              self.searched = true
 
+              if (e && e.geocode && e.geocode.bbox) {
                 // Empty out the query box so that the dropdown closes.
                 this.setQuery('')
 
                 self.$nextTick(() => {
-                  // Move the map to the location we've found.
-                  self.mapObject.flyToBounds(e.geocode.bbox)
-                  self.$emit('searched')
+                  if (self.$refs.map.mapObject) {
+                    // Move the map to the location we've found.
+                    console.log('Fly to', e.geocode)
+                    self.$refs.map.mapObject.flyToBounds(e.geocode.bbox)
+                    self.$emit('searched')
+                  }
                 })
               }
             })
             .addTo(this.mapObject)
+
+          if (this.showMessages) {
+            this.fetchMessages()
+          }
         }
       })
     },
     centreChange(a, b) {
-      if (!this.initialCentre) {
+      console.log('Centre change')
+      if (!this.initialCentre && !this.searched) {
         // We get called once on map load, which doesn't count.
         this.initialCentre = this.mapObject.getCenter().toString()
+        console.log('Initial')
       } else if (this.mapObject.getCenter().toString() !== this.initialCentre) {
         // We are panning, not just zooming.  We want to shift to showing all messages in the map bounds.
+        console.log('Panning')
         this.showInBounds = true
         this.showIsochrones = false
+      } else {
+        console.log('Other')
       }
     },
     boundsChange() {
@@ -563,52 +574,69 @@ export default {
     async fetchMessages() {
       this.$emit('update:loading', true)
 
-      if (this.mapObject) {
-        let params
-        const bounds = this.mapObject.getBounds()
+      let params
+      const bounds = this.mapObject
+        ? this.mapObject.getBounds()
+        : new L.LatLngBounds(this.initialBounds)
 
-        if (this.search) {
-          // We're searching.
-          params = {
-            collection: 'Approved',
-            subaction: 'searchmess',
-            messagetype: this.type,
-            search: this.search,
-            groupid: this.groupid,
-            swlat: bounds.getSouthWest().lat,
-            swlng: bounds.getSouthWest().lng,
-            nelat: bounds.getNorthEast().lat,
-            nelng: bounds.getNorthEast().lng
-          }
-        } else if (this.showIsochrones) {
-          // The default view unless we've moved the map is the messages in the isochrone.
+      if (this.search) {
+        // We're searching.
+        params = {
+          collection: 'Approved',
+          subaction: 'searchmess',
+          messagetype: this.type,
+          search: this.search,
+          groupid: this.groupid,
+          swlat: bounds.getSouthWest().lat,
+          swlng: bounds.getSouthWest().lng,
+          nelat: bounds.getNorthEast().lat,
+          nelng: bounds.getNorthEast().lng
+        }
+      } else if (this.showIsochrones) {
+        // The default view unless we've moved the map is the messages in the isochrones.
+        if (this.isochrones.length) {
+          // We have some.
           params = {
             subaction: 'isochrones',
             groupid: this.groupid,
             search: this.search
           }
-        } else if (this.showInBounds) {
-          // If we've moved the map then we show the posts in the map bounds.
+        } else {
+          // We don't, which will be because we don't have a location.  Use the bounding boxes of the groups we
+          // are in.
+          const groupbounds = this.myGroupsBoundingBox
           params = {
             subaction: 'inbounds',
-            swlat: bounds.getSouthWest().lat,
-            swlng: bounds.getSouthWest().lng,
-            nelat: bounds.getNorthEast().lat,
-            nelng: bounds.getNorthEast().lng,
+            swlat: groupbounds[0][0],
+            swlng: groupbounds[0][1],
+            nelat: groupbounds[1][0],
+            nelng: groupbounds[1][1],
             groupid: this.groupid
           }
         }
+      } else if (this.showInBounds) {
+        // If we've moved the map then we show the posts in the map bounds.
+        params = {
+          subaction: 'inbounds',
+          swlat: bounds.getSouthWest().lat,
+          swlng: bounds.getSouthWest().lng,
+          nelat: bounds.getNorthEast().lat,
+          nelng: bounds.getNorthEast().lng,
+          groupid: this.groupid
+        }
+      }
 
-        const ret = await this.$api.message.fetchMessages(params)
-        this.fetchedPrimaryMessages =
-          ret.ret === 0 && ret.messages ? ret.messages : []
+      const ret = await this.$api.message.fetchMessages(params)
+      this.fetchedPrimaryMessages =
+        ret.ret === 0 && ret.messages ? ret.messages : []
 
-        if (!this.destroyed) {
-          if (!this.search && this.showIsochrones) {
-            this.fetchSecondaryMessages()
-          } else {
-            this.secondaryMesageList = []
-          }
+      this.everFetched = true
+
+      if (!this.destroyed) {
+        if (!this.search && this.showIsochrones) {
+          this.fetchSecondaryMessages()
+        } else {
+          this.secondaryMesageList = []
         }
       }
 
@@ -689,6 +717,19 @@ export default {
       await this.$store.dispatch('auth/saveAndGet', {
         settings: settings
       })
+    },
+    async savePostcode(pc) {
+      const settings = this.me.settings
+
+      if (!settings.mylocation || settings.mylocation.id !== pc.id) {
+        settings.mylocation = pc
+        await this.$store.dispatch('auth/saveAndGet', {
+          settings: settings
+        })
+
+        // Now get an isochrone at this location.
+        await this.$store.dispatch('isochrones/fetch')
+      }
     }
   }
 }

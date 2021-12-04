@@ -3,7 +3,7 @@
     <ModHelpMap />
     <div v-if="loaded">
       <ModGroupMap v-if="groupid" :groupid="groupid" />
-      <ModGroupMap v-else :groups="true" />
+      <ModGroupMap v-else :groups="true" :caretaker="caretaker" />
     </div>
     <div v-else class="d-flex justify-content-around">
       <b-img-lazy src="~/static/loader.gif" alt="Loading" />
@@ -25,7 +25,9 @@ export default {
   data: function() {
     return {
       groupid: null,
-      loaded: false
+      loaded: false,
+      all: false,
+      caretaker: false
     }
   },
   async mounted() {
@@ -47,7 +49,13 @@ export default {
     this.loaded = true
   },
   created() {
-    this.groupid = parseInt(this.$route.params.groupid)
+    if (this.$route.params.groupid === 'all') {
+      this.all = true
+    } else if (this.$route.params.groupid === 'caretaker') {
+      this.caretaker = true
+    } else {
+      this.groupid = parseInt(this.$route.params.groupid)
+    }
   }
 }
 </script>

@@ -109,6 +109,23 @@ Vue.mixin({
           this.me.trustlevel === 'Moderate' ||
           this.me.trustlevel === 'Advanced')
       )
+    },
+    myGroupsBoundingBox() {
+      let swlat = null
+      let swlng = null
+      let nelat = null
+      let nelng = null
+
+      this.myGroups.forEach(g => {
+        if (g.bbox) {
+          swlat = swlat === null ? g.bbox.swlat : Math.min(swlat, g.bbox.swlat)
+          swlng = swlng === null ? g.bbox.swlng : Math.min(swlng, g.bbox.swlng)
+          nelat = nelat === null ? g.bbox.nelat : Math.max(nelat, g.bbox.nelat)
+          nelng = nelng === null ? g.bbox.nelng : Math.min(nelng, g.bbox.nelng)
+        }
+      })
+
+      return [[swlat, swlng], [nelat, nelng]]
     }
   },
   methods: {

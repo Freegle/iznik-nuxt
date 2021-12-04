@@ -323,6 +323,9 @@
               description="Controls when the member can manually repost, and when auto-repost kicks in.  0 = always show manual Repost button."
               class="mr-2"
             />
+            <NoticeMessage variant="warning">
+              The following setting will soon be retired in favour of the "post visibility" setting further down.
+            </NoticeMessage>
             <ModGroupSetting
               :groupid="groupid"
               name="settings.nearbygroups"
@@ -331,6 +334,7 @@
               type="number"
               :step="1"
             />
+            <ModGroupPostVisibility :groupid="groupid" />
             <ModGroupSetting
               :groupid="groupid"
               name="settings.showjoin"
@@ -572,7 +576,10 @@
               <ExternalLink href="https://arthur-e.github.io/Wicket/sandbox-gmaps3.html">this tool</ExternalLink>.
               You can also view all community areas
               <!-- eslint-disable-next-line -->
-              <nuxt-link to="/modtools/map">here</nuxt-link>.
+              <nuxt-link to="/modtools/map">here</nuxt-link>,
+              or all caretaker communities
+              <!-- eslint-disable-next-line -->
+              <nuxt-link to="/modtools/map/caretaker">here</nuxt-link>.
             </b-form-text>
             <b-form-group label="Areas">
               <b-form-text class="mb-2">
@@ -748,6 +755,7 @@ import ModGroupSetting from './ModGroupSetting'
 import SpinButton from './SpinButton'
 import NoticeMessage from './NoticeMessage'
 import ModSettingsGroupFacebook from './ModSettingsGroupFacebook'
+import ModGroupPostVisibility from './ModGroupPostVisibility'
 const ExternalLink = () => import('~/components/ExternalLink')
 
 const OurToggle = () => import('~/components/OurToggle')
@@ -774,7 +782,8 @@ export default {
     ModSettingShortlink,
     GroupSelect,
     VueEditor,
-    ExternalLink
+    ExternalLink,
+    ModGroupPostVisibility
   },
   props: {
     initialGroup: {

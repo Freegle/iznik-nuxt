@@ -1,30 +1,34 @@
 <template>
   <div v-if="group && group.onmap">
-    <div class="media clickme">
-      <div class="media-left">
-        <div class="media-object">
-          <GroupProfileImage :image="group.profile ? group.profile : '/icon.png'" :alt-text="'Profile picture for ' + group.namedisplay" class="ml-0 ml-md-2 mr-2" />
-        </div>
+    <div class="layout">
+      <div class="profile">
+        <GroupProfileImage :image="group.profile ? group.profile : '/icon.png'" :alt-text="'Profile picture for ' + group.namedisplay" />
       </div>
-      <div class="media-body">
-        <div>
-          <b-btn variant="primary" class="float-right mr-2" :to="'/explore/' + group.nameshort">
-            Explore
-          </b-btn>
-          <nuxt-link :to="'/explore/' + group.nameshort">
-            {{ group.namedisplay }}
-          </nuxt-link>
-        </div>
+      <nuxt-link :to="'/explore/' + group.nameshort" class="name font-weight-bold">
+        {{ group.namedisplay }}
+      </nuxt-link>
+      <div class="tagline">
         <div v-if="group.tagline">
           {{ group.tagline }}
         </div>
-        <br v-else>
-        <span class="text-muted">
-          <ExternalLink :href="'mailto:' + group.modsmail"><v-icon name="envelope" title="Contact volunteers" /></ExternalLink>
-        </span>
+        <ExternalLink :href="'mailto:' + group.modsmail" class="text-muted small">
+          <v-icon name="envelope" title="Contact volunteers" scale="0.8" /> Contact volunteers
+        </ExternalLink>
+      </div>
+      <div class="join">
+        <b-btn variant="primary" :to="'/explore/join/' + group.id">
+          Join
+        </b-btn>
+      </div>
+      <div class="explore">
+        <div>
+          <b-btn variant="secondary" :to="'/explore/' + group.nameshort">
+            Explore
+          </b-btn>
+        </div>
       </div>
     </div>
-    <hr class="text-muted">
+    <hr class="text-muted mt-0">
   </div>
 </template>
 <script>
@@ -46,3 +50,73 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-rows: auto auto auto auto;
+  grid-column-gap: 0.5rem;
+  grid-row-gap: 0.5rem;
+
+  .profile {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+    margin-left: 0.5rem;
+
+    /deep/ .img-thumbnail {
+      max-width: unset;
+    }
+  }
+
+  .name {
+    grid-column: 2 / 4;
+    grid-row: 1 / 2;
+
+    @include media-breakpoint-up(lg) {
+      grid-column: 2 / 3;
+    }
+  }
+
+  .tagline {
+    grid-column: 2 / 4;
+    grid-row: 2 / 3;
+
+    @include media-breakpoint-up(lg) {
+      grid-column: 2 / 3;
+    }
+  }
+
+  .join {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+    margin-left: 0.5rem;
+
+    @include media-breakpoint-up(lg) {
+      grid-column: 3 / 4;
+      grid-row: 1 / 2;
+      margin-left: unset;
+      margin-right: 0.5rem;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+
+  .explore {
+    grid-column: 3 / 4;
+    grid-row: 3 / 4;
+    margin-right: 0.5rem;
+    display: flex;
+    justify-content: flex-end;
+
+    @include media-breakpoint-up(lg) {
+      grid-column: 3 / 4;
+      grid-row: 2 / 3;
+    }
+  }
+}
+</style>

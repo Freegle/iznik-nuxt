@@ -90,6 +90,9 @@
             </div>
           </div>
         </div>
+        <NoticeMessage v-if="message.availableinitially > 1 && left > 0" variant="warning">
+          There will still be some left.  If you're giving them all away now, please adjust the numbers above.
+        </NoticeMessage>
       </template>
       <template slot="modal-footer">
         <div>

@@ -171,6 +171,11 @@ export default {
       type: Number,
       required: false,
       default: null
+    },
+    caretaker: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -205,7 +210,13 @@ export default {
       return height
     },
     allgroups() {
-      return Object.values(this.$store.getters['group/list'])
+      let groups = Object.values(this.$store.getters['group/list'])
+
+      if (this.caretaker) {
+        groups = groups.filter(g => g.mentored)
+      }
+
+      return groups
     },
     group() {
       return this.groupid

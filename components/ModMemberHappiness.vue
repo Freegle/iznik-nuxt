@@ -17,7 +17,7 @@
             <span v-if="member.reviewed">
               reviewed
             </span>
-            <span v-else class="text-warning">
+            <span v-else class="text-danger font-weight-bold">
               new
             </span>
           </b-col>

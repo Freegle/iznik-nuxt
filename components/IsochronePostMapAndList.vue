@@ -175,7 +175,6 @@ import Vue from 'vue'
 import VueObserveVisibility from 'vue-observe-visibility'
 import InfiniteLoading from 'vue-infinite-loading'
 import map from '@/mixins/map.js'
-import dayjs from 'dayjs'
 import { MAX_MAP_ZOOM } from '../utils/constants'
 import JoinWithConfirm from '~/components/JoinWithConfirm'
 const AdaptiveMapGroup = () => import('./AdaptiveMapGroup')
@@ -282,7 +281,7 @@ export default {
   data: function() {
     return {
       // Map stuff
-      heightFraction: 3,
+      heightFraction: 4,
       postcode: null,
       loading: false,
       lat: null,
@@ -331,7 +330,8 @@ export default {
       search: null,
       searchOn: null,
       context: null,
-      trackViews: false
+      trackViews: false,
+      trackedView: false
     }
   },
   computed: {
@@ -612,15 +612,17 @@ export default {
 
     // We want to track views of messages for new members.
     if (this.me) {
-      const now = dayjs()
-      const daysago = now.diff(dayjs(this.me.added), 'days')
+      this.trackViews = true
+      this.$api.bandit.shown({
+        uid: 'browsepage',
+        variant: 'newskool'
+      })
 
-      if (daysago < 14) {
-        this.trackViews = true
-        this.$api.bandit.shown({
-          uid: 'browsepage',
-          variant: 'newskool'
-        })
+      // eslint-disable-next-line no-undef
+      try {
+        window.__insp.push(['tagSession', { browsepage: 'newskool' }])
+      } catch (e) {
+        console.log('Failed to tag inspectlet')
       }
     }
   },
@@ -738,7 +740,9 @@ export default {
       )
     },
     recordView() {
-      if (this.trackViews) {
+      if (this.trackViews && !this.trackedView) {
+        this.trackedView = true
+
         this.$api.bandit.chosen({
           uid: 'browsepage',
           variant: 'newskool'

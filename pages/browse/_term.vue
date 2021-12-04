@@ -29,18 +29,40 @@
             </div>
           </div>
         </div>
-        <AdaptiveMap
-          v-if="initialBounds"
-          :key="'map-' + bump"
-          :initial-bounds="initialBounds"
-          :initial-search="searchTerm"
-          class="mt-2"
-          force-messages
-          group-info
-          jobs
-          :show-many="false"
-          can-hide
-        />
+        <div v-if="initialBounds">
+          <IsochronePostMapAndList
+            v-if="browseView === 'nearby'"
+            :key="'map-' + bump"
+            :initial-bounds="initialBounds"
+            :initial-search="searchTerm"
+            class="mt-2"
+            force-messages
+            group-info
+            jobs
+            :show-many="false"
+            can-hide
+          />
+          <div v-else-if="browseView === 'mygroups'" class="bg-white">
+            <div class="small d-flex justify-content-end">
+              <div>
+                <!-- eslint-disable-next-line-->
+                Show posts from <b-btn variant="link" class="mb-1 p-0" size="sm" @click="showPostsFromNearby">nearby instead</b-btn>.
+              </div>
+            </div>
+            <AdaptiveMap
+              :key="'map-' + bump"
+              :initial-bounds="initialBounds"
+              :initial-search="searchTerm"
+              class="mt-2"
+              force-messages
+              group-info
+              jobs
+              :show-many="false"
+              can-hide
+              track
+            />
+          </div>
+        </div>
         <client-only>
           <AboutMeModal v-if="showAboutMe" ref="aboutMeModal" :review="reviewAboutMe" />
         </client-only>
@@ -60,9 +82,11 @@ import buildHead from '@/mixins/buildHead.js'
 import map from '@/mixins/map.js'
 import dayjs from 'dayjs'
 
+import isochroneMixin from '@/mixins/isochrone'
 import Visible from '../../components/Visible'
-import AdaptiveMap from '~/components/AdaptiveMap'
+import IsochronePostMapAndList from '~/components/IsochronePostMapAndList'
 import AboutMeModal from '~/components/AboutMeModal'
+import AdaptiveMap from '~/components/AdaptiveMap'
 
 import AppUpdateAvailable from '~/components/AppUpdateAvailable.vue'
 const GlobalWarning = () => import('~/components/GlobalWarning')
@@ -74,17 +98,19 @@ const MicroVolunteering = () => import('~/components/MicroVolunteering.vue')
 
 export default {
   components: {
+    AdaptiveMap,
     Visible,
     MicroVolunteering,
     AdaptiveMap,
     AppUpdateAvailable,
+    IsochronePostMapAndList,
     GlobalWarning,
     SidebarLeft,
     SidebarRight,
     ExpectedRepliesWarning,
     AboutMeModal
   },
-  mixins: [loginRequired, buildHead, map],
+  mixins: [loginRequired, buildHead, map, isochroneMixin],
   data: function() {
     return {
       initialBounds: null,
@@ -95,6 +121,13 @@ export default {
       reviewAboutMe: false
     }
   },
+  computed: {
+    browseView() {
+      return this.me && this.me.settings && this.me.settings.browseView
+        ? this.me.settings.browseView
+        : 'nearby'
+    }
+  },
   watch: {
     me(newVal, oldVal) {
       if (newVal && !oldVal) {
@@ -103,7 +136,9 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
+    this.searchTerm = this.$route.params.term
+
     // We want this to be our next home page.
     try {
       localStorage.setItem('Iznik>lasthomepage', 'mygroups')
@@ -115,10 +150,11 @@ export default {
     this.$store.dispatch('messages/clear')
 
     this.calculateInitialMapBounds()
+    console.log('Initial bounds', this.initialBounds)
 
     // Also get all the groups.  This allows us to suggest other groups to join from within the map.  No rush
     // though, so delay it.
-    setTimeout(() => {
+    setTimeout(async () => {
       this.$store.dispatch('group/list', {
         grouptype: 'Freegle'
       })
@@ -131,6 +167,8 @@ export default {
 
         if (!lastask || now - lastask > 90 * 24 * 60 * 60 * 1000) {
           // Not asked too recently.
+          await this.fetchMe(['me', 'aboutme'])
+
           if (!this.me.aboutme || !this.me.aboutme.text) {
             // We have not yet provided one.
             const daysago = dayjs().diff(dayjs(this.me.added), 'days')
@@ -144,7 +182,6 @@ export default {
               dayjs(this.me.aboutme.timestamp),
               'months'
             )
-
             if (monthsago >= 6) {
               // Old.  Ask them to review it.
               this.showAboutMe = true
@@ -166,65 +203,77 @@ export default {
       }
     }, 5000)
   },
-  created() {
-    this.searchTerm = this.$route.params.term
-  },
   methods: {
     async calculateInitialMapBounds() {
-      await this.fetchMe(['me', 'groups'], true)
+      await this.fetchMe(['me', 'groups'])
 
-      // Find a bounding box which is completely full of the group that our own location is within,
-      // if we can.
-      let mylat = null
-      let mylng = null
+      // The initial bounds for the map are determined from the isochrones if possible.
+      await this.$store.dispatch('isochrones/fetch')
+      console.log('Calc initial isochrones bounds', this.isochroneBoundsArray)
+      this.initialBounds = this.isochroneBoundsArray
 
-      let swlat = null
-      let swlng = null
-      let nelat = null
-      let nelng = null
+      if (!this.initialBounds) {
+        // We don't have any isochrones yet. Use the bounding box of the group that our own
+        // location is within.
+        let mylat = null
+        let mylng = null
 
-      if (this.me && (this.me.lat || this.me.lng)) {
-        mylat = this.me.lat
-        mylng = this.me.lng
+        let swlat = null
+        let swlng = null
+        let nelat = null
+        let nelng = null
 
-        this.myGroups.forEach(g => {
-          if (
-            g.bbox &&
-            mylat >= g.bbox.swlat &&
-            mylat <= g.bbox.nelat &&
-            mylng >= g.bbox.swlng &&
-            mylng <= g.bbox.nelng
-          ) {
-            swlat = (g.bbox.swlat + g.bbox.nelat) / 2
-            swlng = g.bbox.swlng
-            nelat = (g.bbox.swlat + g.bbox.nelat) / 2
-            nelng = g.bbox.nelng
-          }
-        })
+        if (this.me && (this.me.lat || this.me.lng)) {
+          mylat = this.me.lat
+          mylng = this.me.lng
+
+          this.myGroups.forEach(g => {
+            if (
+              g.bbox &&
+              mylat >= g.bbox.swlat &&
+              mylat <= g.bbox.nelat &&
+              mylng >= g.bbox.swlng &&
+              mylng <= g.bbox.nelng
+            ) {
+              swlat = (g.bbox.swlat + g.bbox.nelat) / 2
+              swlng = g.bbox.swlng
+              nelat = (g.bbox.swlat + g.bbox.nelat) / 2
+              nelng = g.bbox.nelng
+            }
+          })
+        }
+
+        let bounds = null
+
+        if (
+          swlat !== null &&
+          swlng !== null &&
+          nelat !== null &&
+          nelng !== null
+        ) {
+          bounds = [[swlat, swlng], [nelat, nelng]]
+        } else if (this.me && mylat !== null && mylng !== null) {
+          // We're not a member of any groups, but at least we know where we are.  Centre there, and then let
+          // the map zoom to somewhere sensible.
+          bounds = [[mylat - 0.01, mylng - 0.01], [mylat + 0.01, mylng + 0.01]]
+        } else {
+          // We aren't a member of any groups and we don't know where we are.  This can happen, but it's rare.
+          // Send them to the explore page to pick somewhere.
+          this.$router.push('/explore')
+        }
+
+        if (bounds) {
+          this.initialBounds = bounds
+        }
       }
+    },
+    async showPostsFromNearby() {
+      const settings = this.me.settings
+      settings.browseView = 'nearby'
 
-      let bounds = null
-
-      if (
-        swlat !== null &&
-        swlng !== null &&
-        nelat !== null &&
-        nelng !== null
-      ) {
-        bounds = [[swlat, swlng], [nelat, nelng]]
-      } else if (this.me && mylat !== null && mylng !== null) {
-        // We're not a member of any groups, but at least we know where we are.  Centre there, and then let
-        // the map zoom to somewhere sensible.
-        bounds = [[mylat - 0.01, mylng - 0.01], [mylat + 0.01, mylng + 0.01]]
-      } else {
-        // We aren't a member of any groups and we don't know where we are.  This can happen, but it's rare.
-        // Send them to the explore page to pick somewhere.
-        this.$router.push('/explore')
-      }
-
-      if (bounds) {
-        this.initialBounds = bounds
-      }
+      await this.$store.dispatch('auth/saveAndGet', {
+        settings: settings
+      })
     }
   },
   head() {
