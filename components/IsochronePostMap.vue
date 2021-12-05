@@ -227,7 +227,9 @@ export default {
         touchZoom: true,
         scrollWheelZoom: false,
         bounceAtZoomLimits: true,
-        gestureHandling: true
+        gestureHandling: true,
+        zoomSnap: 0.25,
+        zoomDelta: 0.25
       }
     },
     mapHidden() {
