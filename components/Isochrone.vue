@@ -57,8 +57,8 @@
           <b-input
             v-model="minutes"
             type="range"
-            min="5"
-            max="45"
+            :min="minMinutes"
+            :max="maxMinutes"
             :step="step"
             class="pt-2"
             @change="changeMinutes"
@@ -124,6 +124,8 @@ export default {
   data() {
     return {
       minutes: null,
+      minMinutes: 5,
+      maxMinutes: 45,
       transport: null,
       pc: null,
       nickname: null,
@@ -179,11 +181,11 @@ export default {
   },
   methods: {
     increment() {
-      this.minutes += this.step
+      this.minutes = Math.min(this.minutes + this.step, this.maxMinutes)
       this.changeMinutes(this.minutes)
     },
     decrement() {
-      this.minutes -= this.step
+      this.minutes = Math.max(this.minutes - this.step, this.minMinutes)
       this.changeMinutes(this.minutes)
     },
     changeMinutes(newVal) {
