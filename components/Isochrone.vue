@@ -251,7 +251,7 @@ export default {
     grid-row: 1 / 2;
     grid-column: 1 / 3;
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
   }
 
   .slider {
@@ -270,7 +270,7 @@ export default {
     grid-row: 2 / 3;
     grid-column: 2 / 3;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     margin-left: 1rem;
   }
 
