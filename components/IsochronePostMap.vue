@@ -69,13 +69,13 @@
               <l-tile-layer :url="osmtile" :attribution="attribution" />
               <div v-if="showMessages && mapObject">
                 <div v-if="showIsochrones">
-                  <ClusterMarker :markers="primaryMessageList" :map="mapObject" :tag="['post', 'posts']" @click="boundsChange" />
+                  <ClusterMarker :markers="primaryMessageList" :map="mapObject" :tag="['post', 'posts']" @click="clusterClick" />
                   <ClusterMarker
                     :markers="secondaryMessageList"
                     :map="mapObject"
                     :tag="['post', 'posts']"
                     css-class="fadedMarker"
-                    @click="boundsChange"
+                    @click="clusterClick"
                   />
                 </div>
                 <ClusterMarker
@@ -83,7 +83,7 @@
                   :markers="primaryMessageList"
                   :map="mapObject"
                   :tag="['post', 'posts']"
-                  @click="boundsChange"
+                  @click="clusterClick"
                 />
                 <l-marker v-if="me && me.settings && me.settings.mylocation" :lat-lng="[me.lat, me.lng]" :icon="homeIcon" @click="goHome">
                   <l-tooltip>
@@ -216,7 +216,8 @@ export default {
       initialCentre: null,
       showIsochrones: true,
       showInBounds: false,
-      searched: false
+      searched: false,
+      clusterBump: 0
     }
   },
   computed: {
@@ -551,6 +552,12 @@ export default {
         console.log('Other')
       }
     },
+    clusterClick() {
+      // Once we have interacted with the map, switch to showing what's in bounds.
+      console.log('Cluster click')
+      this.showInBounds = true
+      this.showIsochrones = false
+    },
     boundsChange() {
       this.mapboundsChangeCount++
 
@@ -642,6 +649,10 @@ export default {
         }
       }
 
+      setTimeout(10000, () => {
+        this.clusterBump++
+      })
+
       this.$emit('update:loading', false)
     },
     async fetchSecondaryMessages() {
@@ -662,6 +673,8 @@ export default {
 
         this.fetchedSecondaryMessages =
           ret.ret === 0 && ret.messages ? ret.messages : []
+
+        this.clusterBump++
       }
     },
     onResize(x, y, width, height) {
