@@ -241,12 +241,16 @@ export default {
 
       this.allgroups.forEach(g => {
         if (g.polyofficial) {
-          const wkt = new Wkt.Wkt()
-          wkt.read(g.polyofficial)
-          ret.push({
-            json: wkt.toJson(),
-            group: g
-          })
+          try {
+            const wkt = new Wkt.Wkt()
+            wkt.read(g.polyofficial)
+            ret.push({
+              json: wkt.toJson(),
+              group: g
+            })
+          } catch (e) {
+            console.error('Failed to read WKT', g)
+          }
         }
       })
 
@@ -257,12 +261,16 @@ export default {
 
       this.allgroups.forEach(g => {
         if (g.poly) {
-          const wkt = new Wkt.Wkt()
-          wkt.read(g.poly)
-          ret.push({
-            json: wkt.toJson(),
-            group: g
-          })
+          try {
+            const wkt = new Wkt.Wkt()
+            wkt.read(g.poly)
+            ret.push({
+              json: wkt.toJson(),
+              group: g
+            })
+          } catch (e) {
+            console.error('Failed to read WKT', g)
+          }
         }
       })
 
