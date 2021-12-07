@@ -69,7 +69,12 @@
               <l-tile-layer :url="osmtile" :attribution="attribution" />
               <div v-if="showMessages && mapObject">
                 <div v-if="showIsochrones">
-                  <ClusterMarker :markers="primaryMessageList" :map="mapObject" :tag="['post', 'posts']" @click="clusterClick" />
+                  <ClusterMarker
+                    :markers="primaryMessageList"
+                    :map="mapObject"
+                    :tag="['post', 'posts']"
+                    @click="clusterClick"
+                  />
                   <ClusterMarker
                     :markers="secondaryMessageList"
                     :map="mapObject"
@@ -217,7 +222,8 @@ export default {
       showIsochrones: true,
       showInBounds: false,
       searched: false,
-      clusterBump: 0
+      lastFetchedPrimaryParams: null,
+      lastFetchedSecondaryParams: null
     }
   },
   computed: {
@@ -369,14 +375,20 @@ export default {
       }
     },
     primaryMessageList() {
-      return this.fetchedPrimaryMessages.filter(m => {
-        if (
-          (!this.groupid || m.groupid === this.groupid) &&
-          (this.type === 'All' || m.type === this.type)
-        ) {
-          return true
-        }
-      })
+      console.log('Compute primary')
+      if (!this.groupid && this.type === 'All') {
+        // No filtering - return them all.
+        return this.fetchedPrimaryMessages
+      } else {
+        return this.fetchedPrimaryMessages.filter(m => {
+          if (
+            (!this.groupid || m.groupid === this.groupid) &&
+            (this.type === 'All' || m.type === this.type)
+          ) {
+            return true
+          }
+        })
+      }
     },
     primaryMessageIds() {
       const ret = []
@@ -388,16 +400,29 @@ export default {
       return ret
     },
     secondaryMessageList() {
-      // Return anything relevant we have fetched which is not already in the primary one.
-      return this.fetchedSecondaryMessages.filter(m => {
-        if (
-          !this.primaryMessageIds[m.id] &&
-          (!this.groupid || m.groupid === this.groupid) &&
-          (this.type === 'All' || m.type === this.type)
-        ) {
-          return true
-        }
-      })
+      console.log(
+        'Compute secondary',
+        this.fetchedSecondaryMessages.length,
+        this.primaryMessageIds.length,
+        this.groupid,
+        this.type
+      )
+      if (this.fetchedSecondaryMessages.length > 200) {
+        // So many posts that the precise numbers no longer matter that much.  So return all the ones we have fetched
+        // rather than spend CPU on filtering (which is a significant issue on slow browsers).
+        return this.fetchedSecondaryMessages
+      } else {
+        // Return anything relevant we have fetched which is not already in the primary one.
+        return this.fetchedSecondaryMessages.filter(m => {
+          if (
+            !this.primaryMessageIds[m.id] &&
+            (!this.groupid || m.groupid === this.groupid) &&
+            (this.type === 'All' || m.type === this.type)
+          ) {
+            return true
+          }
+        })
+      }
     }
   },
   watch: {
@@ -635,11 +660,23 @@ export default {
         }
       }
 
-      const ret = await this.$api.message.fetchMessages(params)
-      this.fetchedPrimaryMessages =
-        ret.ret === 0 && ret.messages ? ret.messages : []
+      const paramstr = JSON.stringify(params)
 
-      this.everFetched = true
+      if (
+        !this.lastFetchedPrimaryParams ||
+        this.lastFetchedPrimaryParams !== paramstr
+      ) {
+        console.log('Fetch primary messages', JSON.stringify(params))
+        this.lastFetchedPrimaryParams = paramstr
+
+        const ret = await this.$api.message.fetchMessages(params)
+        this.fetchedPrimaryMessages =
+          ret.ret === 0 && ret.messages ? ret.messages : []
+
+        this.everFetched = true
+      } else {
+        console.log('Ignore dup primary fetch')
+      }
 
       if (!this.destroyed) {
         if (!this.search && this.showIsochrones) {
@@ -648,10 +685,6 @@ export default {
           this.secondaryMesageList = []
         }
       }
-
-      setTimeout(10000, () => {
-        this.clusterBump++
-      })
 
       this.$emit('update:loading', false)
     },
@@ -669,12 +702,22 @@ export default {
           nelng: bounds.getNorthEast().lng
         }
 
-        const ret = await this.$api.message.fetchMessages(params)
+        const paramstr = JSON.stringify(params)
 
-        this.fetchedSecondaryMessages =
-          ret.ret === 0 && ret.messages ? ret.messages : []
+        if (
+          !this.lastFetchedSecondaryParams ||
+          this.lastFetchedSecondaryParams !== paramstr
+        ) {
+          console.log('Fetch secondary messages', JSON.stringify(params))
+          this.lastFetchedSecondaryParams = paramstr
 
-        this.clusterBump++
+          const ret = await this.$api.message.fetchMessages(params)
+
+          this.fetchedSecondaryMessages =
+            ret.ret === 0 && ret.messages ? ret.messages : []
+        } else {
+          console.log('Ignore dup secondary fetch', paramstr)
+        }
       }
     },
     onResize(x, y, width, height) {
