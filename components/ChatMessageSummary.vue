@@ -24,7 +24,7 @@
         <MessageHistory :message="message" class="mb-1 header-history" :display-message-link="sm()" />
       </div>
     </div>
-    <notice-message v-if="message.outcomes && message.outcomes.length && false" class="mt-2 mb-2">
+    <notice-message v-if="message.outcomes && message.outcomes.length || message.deleted" class="mt-2 mb-2">
       <v-icon name="info-circle" />
       <span v-if="message.type === 'Offer'">
         This is no longer available.
