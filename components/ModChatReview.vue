@@ -253,7 +253,7 @@ export default {
             break
           }
           case 'URL on DBL': {
-            ret = 'It refers to a website which is suspicious.'
+            ret = 'It refers to a suspicious website.'
             break
           }
           case 'BulkVolunteerMail': {
