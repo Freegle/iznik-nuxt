@@ -6,9 +6,6 @@
           <div class="date small">
             {{ datetimeshort(item.timestamp) }}
           </div>
-          <nuxt-link class="user" :to="'/modtools/members/approved/search/' + item.user.id">
-            <v-icon name="hashtag" class="text-muted small" scale="0.75" />{{ item.user.id }} ({{ email }})
-          </nuxt-link>
           <div class="action font-italic">
             <div v-if="item.rotatedimage">
               <span v-if="item.result === 'Approve'">
@@ -98,10 +95,10 @@ export default {
 .layout {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: auto auto auto auto;
+  grid-template-rows: auto auto auto;
 
   @include media-breakpoint-up(md) {
-    grid-template-columns: 1fr 2fr 1fr 3fr;
+    grid-template-columns: 2fr 2fr 3fr;
     grid-template-rows: auto;
   }
 
@@ -115,7 +112,7 @@ export default {
     }
   }
 
-  .user {
+  .action {
     grid-row: 2 / 3;
     grid-column: 1 / 2;
 
@@ -125,23 +122,13 @@ export default {
     }
   }
 
-  .action {
+  .object {
     grid-row: 3 / 4;
     grid-column: 1 / 2;
 
     @include media-breakpoint-up(md) {
       grid-row: 1 / 2;
       grid-column: 3 / 4;
-    }
-  }
-
-  .object {
-    grid-row: 4 / 5;
-    grid-column: 1 / 2;
-
-    @include media-breakpoint-up(md) {
-      grid-row: 1 / 2;
-      grid-column: 4 / 5;
     }
   }
 }
