@@ -3,7 +3,7 @@
     <client-only>
       <ScrollToTop />
       <ModHelpMicrovolunteering />
-      <GroupSelect v-model="groupid" modonly all remember="membersmicrovol" />
+      <GroupSelect v-model="groupid" modonly all remember="membersmicrovol" :disabled="busy" />
 
       <div v-if="busy" class="d-flex justify-content-around">
         <b-img-lazy src="~/static/loader.gif" alt="Loading" />
