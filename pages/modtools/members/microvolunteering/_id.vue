@@ -8,30 +8,19 @@
       <div v-if="busy" class="d-flex justify-content-around">
         <b-img-lazy src="~/static/loader.gif" alt="Loading" />
       </div>
-      <div v-else-if="!groupid">
-        <NoticeMessage variant="info">
+      <div v-else-if="!groupid" class="mt-2">
+        <NoticeMessage variant="warning">
           Please choose a community.
         </NoticeMessage>
       </div>
-      <div v-else>
+      <div v-else class="mt-2">
         <h2>Top Micro-volunteers</h2>
-        <p>
-          These are the people who've done most volunteering on this community in the last 90 days.
-        </p>
-        <ul>
-          <li>
-            The activity graph shows how often they've been active.
-          </li>
-          <li>
-            Accuracy indicates how often they have agreed with the consensus from other micro-volunteers.  High is
-            good, low is bad.
-          </li>
-        </ul>
         <b-table-simple>
           <b-thead class="font-weight-bold">
             <b-tr>
               <b-th>ID</b-th>
               <b-th>Name</b-th>
+              <b-th>Level</b-th>
               <b-th>Accuracy</b-th>
               <b-th>Micro-volunteering Activity</b-th>
               <b-th>Details</b-th>
@@ -48,6 +37,9 @@
                 {{ userActivity[user.userid][0].user.displayname }}
               </b-td>
               <b-td>
+                {{ userActivity[user.userid][0].user.trustlevel }}
+              </b-td>
+              <b-td>
                 <div v-if="accuracyTotal(userActivity[user.userid]) === 0">
                   <span class="small text-muted">
                     No data
@@ -62,25 +54,18 @@
               </b-td>
               <b-td>
                 <GChart
-                  type="LineChart"
+                  type="AreaChart"
                   :data="activityData(userActivity[user.userid])"
                   :options="activityOptions"
                   style="width: 300px; height: 100px;"
                 />
               </b-td>
               <b-td>
-                <b-btn variant="link">
-                  View
-                </b-btn>
+                <ModMicrovolunteeringDetailsButton :user="userActivity[user.userid][0].user" :items="userActivity[user.userid]" />
               </b-td>
             </b-tr>
           </b-tbody>
         </b-table-simple>
-      </div>
-      <div v-if="false">
-        <div v-for="item in items" :key="'item-' + item.id" class="p-0 mt-2">
-          <ModMicrovolunteering :id="item.id" />
-        </div>
       </div>
     </client-only>
   </div>
@@ -91,10 +76,10 @@ import createGroupRoute from '@/mixins/createGroupRoute'
 import { GChart } from 'vue-google-charts'
 import { TablePlugin } from 'bootstrap-vue'
 import Vue from 'vue'
-import ScrollToTop from '../../../../components/ScrollToTop'
-import ModHelpMicrovolunteering from '../../../../components/ModHelpMicrovolunteering'
+import ScrollToTop from '~/components/ScrollToTop'
+import ModHelpMicrovolunteering from '~/components/ModHelpMicrovolunteering'
+import ModMicrovolunteeringDetailsButton from '~/components/ModMicrovolunteeringDetailsButton'
 import GroupSelect from '~/components/GroupSelect'
-import ModMicrovolunteering from '~/components/ModMicrovolunteering'
 import NoticeMessage from '~/components/NoticeMessage'
 
 Vue.use(TablePlugin)
@@ -102,11 +87,11 @@ Vue.use(TablePlugin)
 export default {
   components: {
     GroupSelect,
-    ModMicrovolunteering,
     ScrollToTop,
     ModHelpMicrovolunteering,
     NoticeMessage,
-    GChart
+    GChart,
+    ModMicrovolunteeringDetailsButton
   },
   layout: 'modtools',
   mixins: [
@@ -119,15 +104,17 @@ export default {
     }
   },
   computed: {
-    activityOptions: {
-      interpolateNulls: false,
-      legend: { position: 'none' },
-      vAxis: { viewWindow: { min: 0 } },
-      hAxis: {
-        format: 'MMM yyyy'
-      },
-      series: {
-        0: { color: 'blue' }
+    activityOptions() {
+      return {
+        interpolateNulls: false,
+        legend: { position: 'none' },
+        vAxis: { viewWindow: { min: 0 } },
+        hAxis: {
+          format: 'MMM yyyy'
+        },
+        series: {
+          0: { color: 'blue' }
+        }
       }
     },
     items() {
@@ -154,10 +141,12 @@ export default {
       const ret2 = []
 
       for (const r in ret) {
-        ret2.push({
-          userid: r,
-          count: ret[r]
-        })
+        if (ret[r]) {
+          ret2.push({
+            userid: r,
+            count: ret[r]
+          })
+        }
       }
 
       ret2.sort(function(a, b) {
@@ -215,6 +204,15 @@ export default {
     },
     activityData(data) {
       const dates = []
+
+      // Empty out the series so that we get data at each point.
+      for (let i = 0; i <= 90; i++) {
+        dates[
+          this.$dayjs()
+            .subtract(i, 'day')
+            .format('YYYY-MM-DD')
+        ] = 0
+      }
 
       data.forEach(d => {
         const date = this.$dayjs(d.timestamp).format('YYYY-MM-DD')
