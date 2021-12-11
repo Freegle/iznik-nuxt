@@ -70,11 +70,13 @@ export default {
     email() {
       let ret = null
 
-      this.item.user.emails.forEach(e => {
-        if (!e.ourdomain && (!ret || e.preferred)) {
-          ret = e.email
-        }
-      })
+      if (this.item.user && this.item.user.emails) {
+        this.item.user.emails.forEach(e => {
+          if (!e.ourdomain && (!ret || e.preferred)) {
+            ret = e.email
+          }
+        })
+      }
 
       return ret
     }

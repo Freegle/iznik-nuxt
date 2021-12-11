@@ -42,11 +42,11 @@ export const getters = {
 }
 
 export const actions = {
-  async list({ commit }, params) {
+  async fetch({ commit }, params) {
     const {
       context,
       microvolunteerings
-    } = await this.$api.microvolunteering.list(params.context, params.groupid)
+    } = await this.$api.microvolunteering.fetch(params)
 
     microvolunteerings.forEach(m => {
       commit('add', m)
