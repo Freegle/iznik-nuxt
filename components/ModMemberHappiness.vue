@@ -30,7 +30,7 @@
             {{ member.message.subject }}
           </b-col>
           <b-col cols="4">
-            <b-btn :to="'/modtools/members/approved/search/' + member.groupid + '/' + member.user.id" variant="link" class="text-white p-0">
+            <b-btn :to="'/modtools/members/approved/search/' + member.groupid + '/' + member.user.id" variant="link" :class="(icon === 'meh' ? 'text-dark' : 'text-white') + ' p-0'">
               <v-icon name="hashtag" scale="0.75" />{{ member.message.id }}
               <span v-if="groupname">
                 on {{ groupname }}
