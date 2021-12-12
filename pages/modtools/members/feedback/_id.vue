@@ -137,17 +137,7 @@ export default {
           ? member.comments.replace(/[\n\r]+/g, '').trim()
           : ''
 
-        // This code matches the code in Group.php on the server.
-        if (
-          comment.length &&
-          comment !== 'Sorry, this is no longer available.' &&
-          comment !== 'Thanks, this has now been taken.' &&
-          comment !== "Thanks, I'm no longer looking for this." &&
-          comment !== 'Sorry, this has now been taken.' &&
-          comment !== 'Thanks for the interest, but this has now been taken.' &&
-          comment !== 'Thanks, these have now been taken.' &&
-          comment !== 'Thanks, this has now been received.'
-        ) {
+        if (comment.length) {
           return true
         }
       } else {
