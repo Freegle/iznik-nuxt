@@ -84,8 +84,12 @@ export default {
       filter: 'Comments',
       happinessOptions: {
         // title: 'Freegler Feedback',
-        chartArea: { width: '80%', height: '80%' },
-        colors: ['green', 'blue', 'orange'],
+        chartArea: {
+          width: '80%',
+          height: '80%'
+        },
+        pieSliceBorderColor: 'darkgrey',
+        colors: ['green', '#f8f9fa', 'orange'],
         slices2: {
           1: { offset: 0.2 },
           2: { offset: 0.2 },
