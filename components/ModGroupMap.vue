@@ -100,8 +100,8 @@
             </b-card-header>
             <b-card-body>
               <p>
-                You can see which community and area a postcode will map to. It may take upto an hour after changing a polygon
-                before postcodes will map to it.
+                You can see which community and area a postcode will map to. <b>It may take several hours after changing
+                  a polygon before postcode mapping is updated.</b>
               </p>
               <Postcode :find="false" @selected="postcodeSelect" />
               <div v-if="postcode" class="mt-2">
