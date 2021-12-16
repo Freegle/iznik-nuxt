@@ -17,15 +17,19 @@
         <b-form-checkbox v-model="shade" class="ml-2 font-weight-bold">
           Shade areas
         </b-form-checkbox>
+        <b-form-checkbox v-model="showDodgy" class="ml-2 font-weight-bold">
+          Mapping improvements
+        </b-form-checkbox>
+        Zoom {{ zoom }}
       </div>
       <b-row class="m-0">
         <b-col ref="mapcont" cols="12" md="8" lg="9" class="p-0 w-100">
           <l-map
             ref="map"
-            :zoom="groups ? 5 : 13"
+            :zoom="zoom"
             :center="center"
             :style="'width: ' + mapWidth + 'px; height: ' + mapHeight + 'px'"
-            :min-zoom="groups ? 5 : 12"
+            :min-zoom="5"
             :max-zoom="17"
             :options="{ dragging: selectedWKT, touchZoom: true }"
             @update:bounds="boundsChanged"
@@ -42,19 +46,35 @@
             </div>
             <div v-if="groupid">
               <l-feature-group>
-                <ModGroupMapLocation
-                  v-for="l in locationsInBounds"
-                  :key="'location-' + l.id"
-                  :ref="'location-' + l.id"
-                  :location="l"
-                  :selected="selectedObj === l"
-                  :shade="shade"
-                  :labels="labels"
-                  :map="map"
-                  @click="selectLocation(l)"
+                <div v-if="zoom >= 12">
+                  <ModGroupMapLocation
+                    v-for="l in locationsInBounds"
+                    :key="'location-' + l.id"
+                    :ref="'location-' + l.id"
+                    :location="l"
+                    :selected="selectedObj === l"
+                    :shade="shade"
+                    :labels="labels"
+                    :map="map"
+                    @click="selectLocation(l)"
+                  />
+                </div>
+              </l-feature-group>
+            </div>
+            <div v-if="showDodgy">
+              <ClusterMarker v-if="mapObject && zoom < 10" :markers="dodgyInBounds" :map="mapObject" />
+              <l-feature-group v-else>
+                <l-circle-marker
+                  v-for="d in dodgyInBounds"
+                  :key="d.id"
+                  :lat-lng="d"
+                  :interactive="false"
+                  :radius="1"
+                  :options="{ color: 'red'}"
                 />
               </l-feature-group>
             </div>
+
             <div v-if="groups && zoom > 7">
               <l-circle-marker v-for="g in allgroups" :key="'groupcentre-' + g.id" :lat-lng="[g.lat, g.lng]" :options="{ radius: zoom, color: 'darkgreen', fill: true, fillColor: 'darkgreen', fillOpacity: 1 }" />
             </div>
@@ -137,6 +157,7 @@ import map from '@/mixins/map.js'
 import Postcode from './Postcode'
 import SpinButton from './SpinButton'
 import ModGroupMapLocation from './ModGroupMapLocation'
+import ClusterMarker from '~/components/ClusterMarker'
 
 let Wkt = null
 let L = null
@@ -159,7 +180,7 @@ const DPA_BOUNDARY_COLOUR = 'darkblue'
 // const CENTRE_BORDER_COLOUR = 'darkgrey'
 
 export default {
-  components: { ModGroupMapLocation, SpinButton, Postcode },
+  components: { ModGroupMapLocation, SpinButton, Postcode, ClusterMarker },
   mixins: [map],
   props: {
     groups: {
@@ -187,13 +208,16 @@ export default {
       cga: true,
       shade: true,
       labels: true,
+      showDodgy: false,
       selectedName: null,
       selectedWKT: null,
       selectedObj: null,
       selectedId: null,
       postcode: null,
       busy: false,
-      intersects: false
+      intersects: false,
+      mapObject: null,
+      zoom: 12
     }
   },
   computed: {
@@ -314,12 +338,27 @@ export default {
         fillOpacity: this.shade ? FILL_OPACITY : 0,
         color: DPA_BOUNDARY_COLOUR
       }
+    },
+    dodgy() {
+      return Object.values(this.$store.getters['locations/dodgy'])
+    },
+    dodgyInBounds() {
+      return this.dodgy.filter(
+        d => this.bounds && this.bounds.contains([d.lat, d.lng])
+      )
     }
   },
   mounted() {
     // Add the draw toolbar as per https://github.com/vue-leaflet/Vue2Leaflet/issues/331
-    this.$nextTick(() => {
+    this.waitForRef('map', () => {
       const themap = this.$refs.map.mapObject
+      this.mapObject = themap
+
+      if (this.groups) {
+        this.zoom = 5
+      } else {
+        this.zoom = 13
+      }
 
       // Last layer is drawn items.  Seems to be, anyway.  Need to use this so that we can turn on editing for
       // the locations we've already got, as well as any new ones we draw.
@@ -481,7 +520,9 @@ export default {
             const mapobj = this.$refs.map.mapObject
             const obj = wkt.toObject(mapobj.defaults)
             bounds = obj.getBounds()
-            mapobj.fitBounds(bounds)
+            this.$nextTick(() => {
+              mapobj.fitBounds(bounds)
+            })
           } else {
             // Get the locations in this area
             bounds = this.$refs.map.mapObject.getBounds()
@@ -496,7 +537,9 @@ export default {
             nelng: bounds.getNorthEast().lng
           }
 
-          await this.$store.dispatch('locations/fetch', data)
+          if (this.zoom >= 12) {
+            await this.$store.dispatch('locations/fetch', data)
+          }
 
           this.busy = false
         }
@@ -514,7 +557,7 @@ export default {
         nelng: this.bounds.getNorthEast().lng
       }
 
-      if (this.group) {
+      if (this.group && this.zoom >= 12) {
         await this.$store.dispatch('locations/fetch', data)
       }
 
