@@ -18,10 +18,62 @@
           Shade areas
         </b-form-checkbox>
         <b-form-checkbox v-model="showDodgy" class="ml-2 font-weight-bold">
-          Mapping improvements
+          Upcoming Mapping Changes
         </b-form-checkbox>
-        Zoom {{ zoom }}
       </div>
+      <b-modal id="mappingChanges" ref="mappingChanges" v-model="showMappingChanges">
+        <p>
+          We are looking at changing the way we map postcodes to areas to make it faster and more accurrate. We want to check
+          that the results will be OK before the change affects members.
+        </p>
+        <p>
+          If you have the "Upcoming Mapping Changes" checkbox ticked, you'll see the new areas that will be used.
+          Red dots show postcodes where the postcode will map to a different named area.
+        </p>
+        <ul>
+          <li>
+            The occasional dot is OK.
+            Clusters of dots in a single area are worth reviewing.
+          </li>
+          <li>
+            The dots might highlight areas where the existing mapping is poor.  Typical problem are places where
+            areas overlap, or where there are gaps between areas.
+          </li>
+          <li>
+            Click on a postcode in this section to centre the map on it, then zoom in if you need to.
+          </li>
+        </ul>
+        <p class="font-weight-bold text-danger">
+          Please don't make any area changes yet.  At the moment, I just want us to check whether the new mapping generally
+          looks better, and whether the red dots show in places where it looks like the areas need improvement.
+        </p>
+        <!--        <p>-->
+        <!--          We should fix these.-->
+        <!--        </p>-->
+        <!--        <ul>-->
+        <!--          <li>-->
+        <!--            You can adjust area boundaries.-->
+        <!--          </li>-->
+        <!--          <li>-->
+        <!--            You can add new areas.-->
+        <!--          </li>-->
+        <!--          <li>-->
+        <!--            You can delete areas.-->
+        <!--          </li>-->
+        <!--        </ul>-->
+        <!--        <p class="font-weight-bold">-->
+        <!--          At the moment changes don't happen immediately - maybe once per day.  In particular, the red dots won't-->
+        <!--          change, and new areas you've added may not appear (but won't have been lost).-->
+        <!--        </p>-->
+        <p>
+          To help more widely, you can zoom the map out to view the whole UK.  Once you zoom out far enough you'll see the numbers of
+          postcodes which need attention - you can click on those to zoom in.
+        </p>
+        <p>
+          Once we've reviewed the worst cases where the areas are bad, we will be in a better position to check
+          whether the new mapping algorithm is OK.
+        </p>
+      </b-modal>
       <b-row class="m-0">
         <b-col ref="mapcont" cols="12" md="8" lg="9" class="p-0 w-100">
           <l-map
@@ -65,12 +117,20 @@
               <ClusterMarker v-if="mapObject && zoom < 10" :markers="dodgyInBounds" :map="mapObject" />
               <l-feature-group v-else>
                 <l-circle-marker
+                  v-if="highlighted"
+                  :key="'highlighted-' + highlighted.id"
+                  :lat-lng="[ highlighted.lat, highlighted.lng ]"
+                  :interactive="false"
+                  :radius="10"
+                  :options="{ color: 'blue'}"
+                />
+                <l-circle-marker
                   v-for="d in dodgyInBounds"
                   :key="d.id"
                   :lat-lng="d"
-                  :interactive="false"
                   :radius="1"
-                  :options="{ color: 'red'}"
+                  :options="{ color: 'red' }"
+                  @click="selected = d"
                 />
               </l-feature-group>
             </div>
@@ -146,6 +206,28 @@
               </div>
             </b-card-body>
           </b-card>
+          <b-card v-if="dodgyInBounds.length" no-body style="max-height: 600px; overflow-y: scroll">
+            <b-card-header class="bg-warning d-flex justify-content-between">
+              Mapping Changes
+              <b-btn variant="white" @click="showMappingChanges = true">
+                Details
+              </b-btn>
+            </b-card-header>
+            <b-card-body>
+              <div v-if="dodgyInBounds.length < 100">
+                <ModChangedMapping
+                  v-for="d in dodgyInBounds"
+                  :key="d.id"
+                  :changed="d"
+                  :highlighted="highlighted"
+                  @click="highlightPostcode(d)"
+                />
+              </div>
+              <p v-else>
+                Too many changes to show; zoom in.
+              </p>
+            </b-card-body>
+          </b-card>
         </b-col>
       </b-row>
     </client-only>
@@ -154,6 +236,7 @@
 
 <script>
 import map from '@/mixins/map.js'
+import ModChangedMapping from '@/components/ModChangedMapping'
 import Postcode from './Postcode'
 import SpinButton from './SpinButton'
 import ModGroupMapLocation from './ModGroupMapLocation'
@@ -180,7 +263,13 @@ const DPA_BOUNDARY_COLOUR = 'darkblue'
 // const CENTRE_BORDER_COLOUR = 'darkgrey'
 
 export default {
-  components: { ModGroupMapLocation, SpinButton, Postcode, ClusterMarker },
+  components: {
+    ModChangedMapping,
+    ModGroupMapLocation,
+    SpinButton,
+    Postcode,
+    ClusterMarker
+  },
   mixins: [map],
   props: {
     groups: {
@@ -217,7 +306,10 @@ export default {
       busy: false,
       intersects: false,
       mapObject: null,
-      zoom: 12
+      zoom: 12,
+      lastLocationFetch: null,
+      showMappingChanges: false,
+      highlighted: null
     }
   },
   computed: {
@@ -346,6 +438,24 @@ export default {
       return this.dodgy.filter(
         d => this.bounds && this.bounds.contains([d.lat, d.lng])
       )
+    }
+  },
+  watch: {
+    async showDodgy(newVal) {
+      this.busy = true
+      const bounds = this.$refs.map.mapObject.getBounds()
+
+      const data = {
+        swlat: bounds.getSouthWest().lat,
+        swlng: bounds.getSouthWest().lng,
+        nelat: bounds.getNorthEast().lat,
+        nelng: bounds.getNorthEast().lng
+      }
+
+      data.dodgy = newVal
+
+      await this.$store.dispatch('locations/fetch', data)
+      this.busy = false
     }
   },
   mounted() {
@@ -534,35 +644,41 @@ export default {
             swlat: bounds.getSouthWest().lat,
             swlng: bounds.getSouthWest().lng,
             nelat: bounds.getNorthEast().lat,
-            nelng: bounds.getNorthEast().lng
+            nelng: bounds.getNorthEast().lng,
+            dodgy: this.showDodgy,
+            areas: this.zoom >= 12
           }
 
-          if (this.zoom >= 12) {
-            await this.$store.dispatch('locations/fetch', data)
-          }
+          await this.fetchLocations(data)
 
           this.busy = false
         }
       }
     },
     async boundsChanged() {
-      this.bounds = this.$refs.map.mapObject.getBounds()
-      this.zoom = this.$refs.map.mapObject.getZoom()
-      this.busy = true
+      if (this.$refs.map && this.$refs.map.mapObject) {
+        this.bounds = this.$refs.map.mapObject.getBounds()
+        this.zoom = this.$refs.map.mapObject.getZoom()
+        this.busy = true
 
-      const data = {
-        swlat: this.bounds.getSouthWest().lat,
-        swlng: this.bounds.getSouthWest().lng,
-        nelat: this.bounds.getNorthEast().lat,
-        nelng: this.bounds.getNorthEast().lng
+        const data = {
+          swlat: this.bounds.getSouthWest().lat,
+          swlng: this.bounds.getSouthWest().lng,
+          nelat: this.bounds.getNorthEast().lat,
+          nelng: this.bounds.getNorthEast().lng,
+          dodgy: this.showDodgy,
+          areas: this.zoom >= 12
+        }
+
+        if (this.group) {
+          await this.fetchLocations(data)
+        }
+
+        if (this.$refs.map && this.$refs.map.mapObject) {
+          // Sometimes the map needs a kick to show correctly.
+          this.$refs.map.mapObject.invalidateSize()
+        }
       }
-
-      if (this.group && this.zoom >= 12) {
-        await this.$store.dispatch('locations/fetch', data)
-      }
-
-      // Sometimes the map needs a kick to show correctly.
-      this.$refs.map.mapObject.invalidateSize()
 
       this.busy = false
     },
@@ -573,18 +689,21 @@ export default {
         // This is a new area.
         await this.$store.dispatch('locations/add', {
           name: this.selectedName,
-          polygon: this.selectedWKT
+          polygon: this.selectedWKT,
+          remap: false
         })
       } else {
         // This is an existing area
         await this.$store.dispatch('locations/update', {
           id: this.selectedId,
           name: this.selectedName,
-          polygon: this.selectedWKT
+          polygon: this.selectedWKT,
+          remap: false
         })
       }
 
       this.clearSelection()
+      this.lastLocationFetch = null
       this.boundsChanged()
 
       this.busy = false
@@ -594,11 +713,29 @@ export default {
 
       await this.$store.dispatch('locations/delete', {
         id: this.selectedId,
-        groupid: this.groupid
+        groupid: this.groupid,
+        remap: false
       })
 
       this.clearSelection()
+      this.lastLocationFetch = null
       this.busy = false
+    },
+    async fetchLocations(data) {
+      const thisFetch = JSON.stringify(data)
+
+      if (this.lastLocationFetch === thisFetch) {
+        console.log('Already fetching, skip')
+      } else {
+        console.log('Fetch', thisFetch, this.lastLocationFetch)
+        this.lastLocationFetch = thisFetch
+
+        await this.$store.dispatch('locations/fetch', data)
+      }
+    },
+    highlightPostcode(pc) {
+      this.$refs.map.mapObject.flyTo([pc.lat, pc.lng])
+      this.highlighted = pc
     }
   }
 }
