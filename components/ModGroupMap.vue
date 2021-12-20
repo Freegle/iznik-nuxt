@@ -18,17 +18,16 @@
           Shade areas
         </b-form-checkbox>
         <b-form-checkbox v-model="showDodgy" class="ml-2 font-weight-bold">
-          Upcoming Mapping Changes
+          Areas to Review
         </b-form-checkbox>
       </div>
       <b-modal id="mappingChanges" ref="mappingChanges" v-model="showMappingChanges">
         <p>
-          We are looking at changing the way we map postcodes to areas to make it faster and more accurrate. We want to check
-          that the results will be OK before the change affects members.
+          If you have the "Areas to Review" checkbox ticked, you'll see the red dots for
+          postcodes which might need better mapping.
         </p>
-        <p>
-          If you have the "Upcoming Mapping Changes" checkbox ticked, you'll see the new areas that will be used.
-          Red dots show postcodes where the postcode will map to a different named area.
+        <p class="font-weight-bold text-danger">
+          The red dots indicate where mapping has changed recently.  You can review these to check if it looks OK.
         </p>
         <ul>
           <li>
@@ -43,35 +42,26 @@
             Click on a postcode in this section to centre the map on it, then zoom in if you need to.
           </li>
         </ul>
-        <p class="font-weight-bold text-danger">
-          Please don't make any area changes yet.  At the moment, I just want us to check whether the new mapping generally
-          looks better, and whether the red dots show in places where it looks like the areas need improvement.
+        <p>
+          You can fix these:
         </p>
-        <!--        <p>-->
-        <!--          We should fix these.-->
-        <!--        </p>-->
-        <!--        <ul>-->
-        <!--          <li>-->
-        <!--            You can adjust area boundaries.-->
-        <!--          </li>-->
-        <!--          <li>-->
-        <!--            You can add new areas.-->
-        <!--          </li>-->
-        <!--          <li>-->
-        <!--            You can delete areas.-->
-        <!--          </li>-->
-        <!--        </ul>-->
-        <!--        <p class="font-weight-bold">-->
-        <!--          At the moment changes don't happen immediately - maybe once per day.  In particular, the red dots won't-->
-        <!--          change, and new areas you've added may not appear (but won't have been lost).-->
-        <!--        </p>-->
+        <ul>
+          <li>
+            You can adjust area boundaries.
+          </li>
+          <li>
+            You can add new areas.
+          </li>
+          <li>
+            You can delete areas.
+          </li>
+        </ul>
+        <p class="font-weight-bold text-danger">
+          The red dots don't get updated at the moment.  Soon.
+        </p>
         <p>
           To help more widely, you can zoom the map out to view the whole UK.  Once you zoom out far enough you'll see the numbers of
           postcodes which need attention - you can click on those to zoom in.
-        </p>
-        <p>
-          Once we've reviewed the worst cases where the areas are bad, we will be in a better position to check
-          whether the new mapping algorithm is OK.
         </p>
       </b-modal>
       <b-row class="m-0">
@@ -180,8 +170,9 @@
             </b-card-header>
             <b-card-body>
               <p>
-                You can see which community and area a postcode will map to. <b>It may take several hours after changing
-                  a polygon before postcode mapping is updated.</b>
+                You can see which community and area a postcode will map to. <b>Postcode changes within an area you
+                  change should take effect immediately, but ones outside the areas may may take several hours
+                  before postcode mapping is updated.</b>
               </p>
               <Postcode :find="false" @selected="postcodeSelect" />
               <div v-if="postcode" class="mt-2">
