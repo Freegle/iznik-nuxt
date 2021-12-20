@@ -214,7 +214,7 @@
               </b-btn>
             </b-card-header>
             <b-card-body>
-              <div v-if="dodgyInBounds.length < 100">
+              <div v-if="dodgyInBounds.length < 200">
                 <ModChangedMapping
                   v-for="d in dodgyInBounds"
                   :key="d.id"
