@@ -736,7 +736,9 @@ export default {
       return (
         (this.selectedType === 'All' || this.selectedType === m.type) &&
         (!this.selectedGroup ||
-          parseInt(m.groupid) === parseInt(this.selectedGroup))
+          parseInt(m.groupid) === parseInt(this.selectedGroup)) &&
+        // Make the item filter also work to filter out the successful posts.
+        (this.selectedType === 'All' || !m.successful)
       )
     },
     recordView() {
