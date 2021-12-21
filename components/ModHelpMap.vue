@@ -8,7 +8,7 @@
     </p>
     <ul>
       <li>Click on the little polygon on the top right of the map, under the Search box, to add a new area.</li>
-      <li>Click on an existing area to select it.  Untick <em>Share areas</em> if one is hidden below another.</li>
+      <li>Click on an existing area to select it.  If one is hidden below another, change the shape of the one on top, save it, then click the one underneath, then change the shape back afterwards.</li>
       <li>Once selected, an area will be red.  Click on it again to make it editable - you'll see little dots appear which you can then drag.</li>
       <li>Once you select an area, you can't move or zoom the map, so position the map first.  Click <em>Cancel</em> to unselect it.</li>
       <li>If you're remapping an area with a lot of points, it might be simpler to add a new simpler one and delete the old one.</li>
