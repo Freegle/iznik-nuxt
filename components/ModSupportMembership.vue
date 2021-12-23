@@ -165,7 +165,7 @@ export default {
     remove() {
       this.$store.dispatch('members/remove', {
         userid: this.userid,
-        groupid: this.groupid
+        groupid: this.membership.id
       })
     }
   }
