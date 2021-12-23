@@ -107,46 +107,19 @@
             </div>
           </div>
         </div>
-        <div v-for="m in memberof" :key="'membership-' + m.membershipid" class="p-1 mr-1">
-          <strong>{{ m.namedisplay.length > 32 ? (m.namedisplay.substring(0, 32) + '...') : m.namedisplay }}</strong>
-          <span :class="'small ' + (daysago(m.added) < 31 ? 'text-danger font-weight-bold' : 'text-muted')">joined {{ timeago(m.added) }}</span>
-          <span v-if="m.reviewreason" class="text-danger ml-1 mr-1">{{ m.reviewreason }}</span>
-          <b-btn v-if="amAModOn(m.id)" :to="'/modtools/members/approved/search/' + m.id + '/' + member.userid" variant="link" class="p-0 border-0 align-top">
-            Go to membership
-          </b-btn>
-        </div>
+        <ModMemberReviewActions v-for="m in memberof" :key="'membership-' + m.membershipid" :membership="m" :member="member" class="p-1 mr-1" />
         <b-badge v-if="hiddenmemberofs" variant="info" class="clickme mb-1" @click="allmemberships = !allmemberships">
           +{{ hiddenmemberofs }} groups
         </b-badge>
       </b-card-body>
-      <b-card-footer class="d-flex justify-content-start flex-wrap">
-        <SpinButton
-          variant="danger"
-          name="ban"
-          label="Report Spammer"
-          class="mr-1 mt-1"
-          :handler="spamReport"
-        />
-        <SpinButton
-          v-for="group in reviewgroups"
-          :key="'reviewgroup-' + group.id"
-          :member="member"
-          variant="primary"
-          name="check"
-          :label="'Ignore on ' + group.namedisplay"
-          :handler="spamIgnore"
-          :handler-data="{ groupid: group.id }"
-          class="mr-1 mt-1"
-        />
-      </b-card-footer>
     </b-card>
     <ModPostingHistoryModal ref="history" :user="member" :type="type" />
     <ModLogsModal ref="logs" :userid="member.userid" />
-    <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="reportUser" :whitelist="whitelist" />
   </div>
 </template>
 <script>
 import MessageMap from '@/components/MessageMap'
+import ModMemberReviewActions from '@/components/ModMemberReviewActions'
 import NoticeMessage from './NoticeMessage'
 import ProfileImage from './ProfileImage'
 import ModPostingHistoryModal from './ModPostingHistoryModal'
@@ -157,8 +130,6 @@ import ModLogsModal from './ModLogsModal'
 import ModBouncing from './ModBouncing'
 import ModMemberLogins from './ModMemberLogins'
 import ModMemberButton from './ModMemberButton'
-import ModSpammerReport from './ModSpammerReport'
-import SpinButton from './SpinButton'
 import Supporter from '~/components/Supporter'
 
 const ExternalLink = () => import('~/components/ExternalLink')
@@ -169,8 +140,6 @@ export default {
   name: 'ModMember',
   components: {
     MessageMap,
-    SpinButton,
-    ModSpammerReport,
     ModMemberButton,
     ModMemberLogins,
     ModBouncing,
@@ -182,7 +151,8 @@ export default {
     ProfileImage,
     NoticeMessage,
     ExternalLink,
-    Supporter
+    Supporter,
+    ModMemberReviewActions
   },
 
   props: {
@@ -198,8 +168,7 @@ export default {
       showEmails: false,
       type: null,
       allmemberships: false,
-      showSpamModal: false,
-      ignored: []
+      showSpamModal: false
     }
   },
   computed: {
@@ -219,8 +188,7 @@ export default {
       return ms.filter(g => {
         return (
           this.amActiveModOn(g.id) &&
-          ('reviewrequestedat' in g || g.collection === 'Spam') &&
-          !this.ignored[g.id]
+          ('reviewrequestedat' in g || g.collection === 'Spam')
         )
       })
     },
@@ -390,34 +358,6 @@ export default {
         id: this.user.id,
         newslettersallowed: e.value
       })
-    },
-    async spamReport() {
-      if (!this.user) {
-        await this.$store.dispatch('user/fetch', {
-          id: this.member.userid,
-          info: true
-        })
-      }
-
-      this.whitelist = false
-      this.showSpamModal = true
-
-      this.waitForRef('spamConfirm', () => {
-        this.$refs.spamConfirm.show()
-      })
-    },
-    async spamIgnore(data) {
-      const groupid = data.groupid
-
-      await this.$store.dispatch('members/spamignore', {
-        userid: this.member.userid,
-        groupid: groupid
-      })
-
-      this.ignored[groupid] = true
-    },
-    daysago(d) {
-      return this.$dayjs().diff(this.$dayjs(d), 'days')
     }
   }
 }
