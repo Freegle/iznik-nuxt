@@ -6,7 +6,7 @@
         <span :class="'small ' + (daysago(membership.added) < 31 ? 'text-danger font-weight-bold' : 'text-muted')">joined {{ timeago(membership.added) }}</span>
         <span v-if="membership.reviewreason" class="text-danger ml-1 mr-1">{{ membership.reviewreason }}</span>
       </div>
-      <div v-if="amAModOn(membership.id) && !membership.reviewedat && !reviewed" class="d-flex mt-2">
+      <div v-if="amAModOn(membership.id) && needsReview" class="d-flex mt-2">
         <SpinButton
           name="check"
           spinclass="success"
@@ -53,6 +53,18 @@ export default {
   data: function() {
     return {
       reviewed: false
+    }
+  },
+  computed: {
+    needsReview() {
+      if (this.reviewed) {
+        return false
+      }
+
+      return (
+        new Date(this.membership.reviewrequestedat).getTime() >
+        new Date(this.membership.reviewedat).getTime()
+      )
     }
   },
   methods: {
