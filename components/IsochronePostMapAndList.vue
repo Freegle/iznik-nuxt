@@ -613,10 +613,6 @@ export default {
     // We want to track views of messages for new members.
     if (this.me) {
       this.trackViews = true
-      this.$api.bandit.shown({
-        uid: 'browsepage',
-        variant: 'newskool'
-      })
 
       // eslint-disable-next-line no-undef
       try {
@@ -746,8 +742,8 @@ export default {
         this.trackedView = true
 
         this.$api.bandit.chosen({
-          uid: 'browsepage',
-          variant: 'newskool'
+          uid: 'messageview',
+          variant: 'isochrone'
         })
       }
     }

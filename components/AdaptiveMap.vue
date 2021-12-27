@@ -692,11 +692,6 @@ export default {
     if (this.track && this.me) {
       this.trackViews = true
 
-      this.$api.bandit.shown({
-        uid: 'browsepage',
-        variant: 'oldskool'
-      })
-
       // eslint-disable-next-line no-undef
       try {
         window.__insp.push(['tagSession', { browsepage: 'oldskool' }])
@@ -824,8 +819,8 @@ export default {
         this.trackedView = true
 
         this.$api.bandit.chosen({
-          uid: 'browsepage',
-          variant: 'oldskool'
+          uid: 'messageview',
+          variant: 'community'
         })
       }
     }

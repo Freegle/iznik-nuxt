@@ -62,6 +62,7 @@
             hide-close
             class="botpad"
             record-view
+            @view="recordView"
           />
         </div>
       </b-col>
@@ -173,6 +174,19 @@ export default {
         })
 
         this.message = this.$store.getters['messages/get'](this.id)
+      }
+    }
+  },
+  methods: {
+    recordView() {
+      // TODO Remove after 2022-03-01
+      if (this.trackViews && !this.trackedView) {
+        this.trackedView = true
+
+        this.$api.bandit.chosen({
+          uid: 'messageview',
+          variant: 'single'
+        })
       }
     }
   }
