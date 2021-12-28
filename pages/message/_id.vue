@@ -173,7 +173,9 @@ export default {
         })
 
         this.message = this.$store.getters['messages/get'](this.id)
+      }
 
+      if (process.browser) {
         this.$api.bandit.chosen({
           uid: 'messageview',
           variant: 'single'
