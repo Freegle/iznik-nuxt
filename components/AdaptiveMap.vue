@@ -5,13 +5,14 @@
     </h2>
     <client-only>
       <div v-if="!joinVisible && !loggedIn && closestGroups.length" class="overlapnav w-100">
-        <div class="d-flex justify-content-around w-100">
+        <div class="d-flex justify-content-around w-100 pl-1 pr-1">
           <JoinWithConfirm
             :id="closestGroups[0].id"
             :name="closestGroups[0].namedisplay + ' for email alerts'"
             size="lg"
             variant="white"
-            class="m-1"
+            class="m-1 w-100"
+            :class-name="'m-1 text-truncate w-100'"
           />
         </div>
       </div>
@@ -898,6 +899,6 @@ export default {
   position: fixed;
   top: 2px;
   left: 0px;
-  z-index: 1049;
+  z-index: 1039;
 }
 </style>

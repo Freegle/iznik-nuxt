@@ -3,7 +3,7 @@
     <b-btn
       :size="size"
       :variant="variant"
-      class="m-1"
+      :class="className"
       @click="confirm"
     >
       Join {{ name }}
@@ -34,6 +34,11 @@ export default {
     variant: {
       type: String,
       required: true
+    },
+    className: {
+      type: String,
+      required: false,
+      default: 'm-1'
     }
   },
   data() {
