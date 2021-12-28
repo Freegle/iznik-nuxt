@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!me" class="grid m-0 pl-1 pr-1 pl-sm-0 pr-sm-0 mt-0 mt-lg-5 ml-4 mr-4">
+  <div v-if="!me" class="grid m-0 pl-1 pr-1 pl-sm-0 pr-sm-0 mt-0 mt-lg-5 ml-2 mr-2">
     <client-only>
       <Visible :not="['xs']" class="map justify-content-start flex-column d-flex">
         <VisualiseMap v-if="type === 'Map'" class="shadow flex-grow-1" />
