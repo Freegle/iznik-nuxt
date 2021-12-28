@@ -219,10 +219,40 @@ export default {
     },
     memberof() {
       if (this.allmemberships) {
-        return this.allmemberof
+        return this.sortedMemberOf
       } else {
-        return this.allmemberof.slice(0, MEMBERSHIPS_SHOW)
+        return this.sortedMemberOf.slice(0, MEMBERSHIPS_SHOW)
       }
+    },
+    sortedMemberOf() {
+      const members = this.allmemberof
+
+      return members.sort((a, b) => {
+        const areview =
+          this.amAModOn(a.id) &&
+          a.reviewrequestedat &&
+          (!a.reviewedat ||
+            new Date(a.reviewrequestedat).getTime() >
+              new Date(a.reviewedat).getTime())
+        const breview =
+          this.amAModOn(b.id) &&
+          b.reviewrequestedat &&
+          (!b.reviewedat ||
+            new Date(b.reviewrequestedat).getTime() >
+              new Date(b.reviewedat).getTime())
+        console.log('Compare', a, b, areview, breview)
+
+        if (areview && !breview) {
+          return -1
+        } else if (breview && !areview) {
+          return 1
+        } else {
+          return (
+            new Date(a.reviewrequestedat).getTime() >
+            new Date(b.reviewrequestedat).getTime()
+          )
+        }
+      })
     },
     email() {
       // Depending on which context we're used it, we might or might not have an email returned.
