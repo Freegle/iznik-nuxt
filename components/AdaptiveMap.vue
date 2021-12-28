@@ -4,15 +4,15 @@
       Map of offers and wanteds
     </h2>
     <client-only>
-      <div v-if="!joinVisible && !loggedIn && closestGroups.length" class="overlapnav w-100">
-        <div class="d-flex justify-content-around w-100 pl-1 pr-1">
+      <div v-if="!joinVisible && !loggedIn && showClosest" class="overlapnav w-100">
+        <div class="d-flex justify-content-around pl-1 pr-1 w-100">
           <JoinWithConfirm
             :id="closestGroups[0].id"
             :name="closestGroups[0].namedisplay + ' for email alerts'"
             size="lg"
             variant="white"
-            class="m-1 w-100"
-            :class-name="'m-1 text-truncate w-100'"
+            class="m-1"
+            :class-name="'m-1 text-truncate maxwidth'"
           />
         </div>
       </div>
@@ -48,7 +48,7 @@
       <div v-observe-visibility="mapVisibilityChanged" />
     </client-only>
     <div v-if="mapready" class="rest">
-      <div v-if="closestGroups && closestGroups.length && closestGroups.length < 20" class="mb-1 border p-2 bg-white">
+      <div v-if="showClosest" class="mb-1 border p-2 bg-white">
         <h2 class="sr-only">
           Nearby commmunities
         </h2>
@@ -366,6 +366,13 @@ export default {
     }
   },
   computed: {
+    showClosest() {
+      return (
+        this.closestGroups &&
+        this.closestGroups.length &&
+        this.closestGroups.length < 20
+      )
+    },
     group: function() {
       let ret = null
 
@@ -897,8 +904,12 @@ export default {
 
 .overlapnav {
   position: fixed;
-  top: 2px;
+  top: 0px;
   left: 0px;
   z-index: 1039;
+}
+
+/deep/ .maxwidth {
+  max-width: 100vw;
 }
 </style>
