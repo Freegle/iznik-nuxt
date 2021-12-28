@@ -4,6 +4,19 @@
       Map of offers and wanteds
     </h2>
     <client-only>
+      <div v-if="!joinVisible && !loggedIn && closestGroups.length" class="overlapnav w-100">
+        <div class="d-flex justify-content-around w-100">
+          <JoinWithConfirm
+            :id="closestGroups[0].id"
+            :name="closestGroups[0].namedisplay + ' for email alerts'"
+            size="lg"
+            variant="white"
+            class="m-1"
+          />
+        </div>
+      </div>
+    </client-only>
+    <client-only>
       <PostMap
         v-if="postMapInitialBounds"
         :key="'postmap-' + bump"
@@ -52,6 +65,9 @@
             />
           </div>
         </div>
+        <client-only>
+          <div v-observe-visibility="joinVisibilityChanged" />
+        </client-only>
       </div>
       <div v-if="showGroups" class="bg-white pt-3">
         <div v-if="showRegions">
@@ -310,6 +326,7 @@ export default {
       mapready: process.server,
       mapVisible: true,
       mapMoved: false,
+      joinVisible: false,
       messagesOnMap: [],
       bump: 1,
 
@@ -806,6 +823,9 @@ export default {
     mapVisibilityChanged(visible) {
       this.mapVisible = visible
     },
+    joinVisibilityChanged(visible) {
+      this.joinVisible = visible
+    },
     wantMessage(m) {
       return (
         (this.selectedType === 'All' || this.selectedType === m.type) &&
@@ -872,5 +892,12 @@ export default {
     max-width: 300px;
     text-overflow: ellipsis;
   }
+}
+
+.overlapnav {
+  position: fixed;
+  top: 2px;
+  left: 0px;
+  z-index: 1049;
 }
 </style>

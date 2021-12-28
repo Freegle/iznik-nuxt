@@ -2,7 +2,7 @@
   <div>
     <b-btn
       :size="size"
-      variant="primary"
+      :variant="variant"
       class="m-1"
       @click="confirm"
     >
