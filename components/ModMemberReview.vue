@@ -205,16 +205,6 @@ export default {
         return []
       }
 
-      ms.sort(function(a, b) {
-        if (a.reviewreason && !b.reviewreason) {
-          return -1
-        } else if (b.reviewreason && !a.reviewreason) {
-          return 1
-        } else {
-          return new Date(b.added).getTime() - new Date(a.added).getTime()
-        }
-      })
-
       return ms
     },
     memberof() {
@@ -240,7 +230,6 @@ export default {
           (!b.reviewedat ||
             new Date(b.reviewrequestedat).getTime() >
               new Date(b.reviewedat).getTime())
-        console.log('Compare', a, b, areview, breview)
 
         if (areview && !breview) {
           return -1
