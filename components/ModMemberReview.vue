@@ -236,10 +236,7 @@ export default {
         } else if (breview && !areview) {
           return 1
         } else {
-          return (
-            new Date(a.reviewrequestedat).getTime() >
-            new Date(b.reviewrequestedat).getTime()
-          )
+          return b.added.localeCompare(a.added)
         }
       })
     },
