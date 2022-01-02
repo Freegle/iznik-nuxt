@@ -144,10 +144,7 @@
                   Regular monthly donations are especially helpful.
                 </p>
                 <p>
-                  We also have ads on the site and in emails, including to
-                  <!-- eslint-disable-next-line -->
-                  <ExternalLink href="https://www.lovejunk.com/">LoveJunk</ExternalLink>,
-                  the Waste Removal & Junk Reuse Market.  It doesn't raise as much as you'd think, but it helps
+                  We also have ads on the site and in emails.  It doesn't raise as much as you'd think, but it helps
                   keep us running.
                 </p>
               </b-card-text>

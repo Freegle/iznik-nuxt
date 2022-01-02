@@ -151,9 +151,6 @@
               <b-btn v-if="!rejected && !simple" variant="secondary" title="Share" class="mr-2 mb-1" @click="share">
                 <v-icon class="d-none d-sm-inline" name="share-alt" /> Share
               </b-btn>
-              <b-btn v-if="message.lovejunkhash && message.type === 'Offer' && !rejected && !taken && !received && !withdrawn" variant="secondary" class="mr-2 mb-1" @click="lovejunk">
-                <v-icon class="d-none d-sm-inline" name="truck" /> Paid removal
-              </b-btn>
             </div>
           </b-button>
         </b-card-header>
@@ -224,7 +221,6 @@
     <ShareModal :id="message.id" ref="shareModal" />
     <MessageEditModal ref="editModal" :message="message" />
     <PromiseModal ref="promiseModal" :messages="[ message ]" :selected-message="message.id" :users="replyusers" />
-    <LoveJunkModal v-if="showLoveJunk" ref="lovejunk" :message="message" />
   </div>
 </template>
 <script>
@@ -236,7 +232,6 @@ const MyMessageReply = () => import('./MyMessageReply.vue')
 const ShareModal = () => import('./ShareModal')
 const MessageEditModal = () => import('./MessageEditModal')
 const NoticeMessage = () => import('~/components/NoticeMessage')
-const LoveJunkModal = () => import('~/components/LoveJunkModal')
 
 let ResizeText = null
 
@@ -256,8 +251,7 @@ export default {
     ShareModal,
     MyMessageReply,
     MessageEditModal,
-    NoticeMessage,
-    LoveJunkModal
+    NoticeMessage
   },
 
   props: {
@@ -289,8 +283,7 @@ export default {
     return {
       maxChars: 60,
       expanded: false,
-      hide: false,
-      showLoveJunk: false
+      hide: false
     }
   },
   computed: {
@@ -520,9 +513,6 @@ export default {
         case 'promise':
           this.$refs.promiseModal.show()
           break
-        case 'lovejunk':
-          this.goToLovejunk()
-          break
       }
     }
   },
@@ -601,39 +591,6 @@ export default {
       }
 
       return ret
-    },
-    lovejunk() {
-      this.showLoveJunk = true
-
-      this.waitForRef('lovejunk', () => {
-        this.$refs.lovejunk.show()
-      })
-    },
-    async goToLovejunk() {
-      // Mark the message as visible and go straight there.
-      this.$api.bandit.chosen({
-        uid: 'lovejunk',
-        variant: 'mail'
-      })
-
-      // bookings.lovejunk.com/freegle/[freegleid]
-      await this.$store.dispatch('messages/partnerConsent', {
-        id: this.message.id,
-        partner: 'lovejunk.com'
-      })
-
-      await this.$store.dispatch('messages/fetch', {
-        id: this.message.id,
-        summary: true
-      })
-
-      const message = this.$store.getters['messages/get'](this.message.id)
-
-      window.location =
-        'https://bookings.lovejunk.com/freegle/' +
-        this.message.id +
-        '?signature=' +
-        message.lovejunkhash
     }
   }
 }
