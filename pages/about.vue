@@ -217,12 +217,10 @@
 
 <script>
 import buildHead from '@/mixins/buildHead.js'
-import ExternalLink from '@/components/ExternalLink'
 import ProfileImage from '~/components/ProfileImage'
 
 export default {
   components: {
-    ExternalLink,
     ProfileImage
   },
   mixins: [buildHead],
