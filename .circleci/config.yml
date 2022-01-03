@@ -34,7 +34,7 @@ jobs:
   build-and-publish-apple:
     macos:
       # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
-      xcode: "13.1.0" # 11.3.1 12.4.0 # 13.2.1 requires various nvm use 14.18.1;
+      xcode: "13.2.1" # 11.3.1 12.4.0
     steps:
       - checkout
       - node/install:
@@ -42,9 +42,9 @@ jobs:
           #install-npm: false
           node-version: "14.18.1"
           npm-version: "6.14.10"
-      #- run: nvm list
-      #- run: nvm use 14.18.1
-      - run: npm -v; node -v # 6.14.11 14.15.4 16.13.0
+      - run: nvm list
+      - run: nvm use 14.18.1
+      - run: nvm use 14.18.1; npm -v; node -v # 6.14.11 14.15.4 16.13.0
 
       ################
       #- run:
@@ -82,8 +82,8 @@ jobs:
       - run:
           name: == Install cordova and fix permissions
           command: echo "Install cordova and fix permissions"
-      - run: sudo npm install -g cordova@9.0.0 rimraf
-      - run: npm install
+      - run: nvm use 14.18.1; sudo npm install -g cordova@9.0.0 rimraf
+      - run: nvm use 14.18.1; npm install
 
       # Permissions fixes to let cordova run OK - may not all be needed
       - run: mkdir -p ~/Library/Preferences/insight-nodejs
@@ -97,7 +97,7 @@ jobs:
       - run:
           name: == Make Freegle app debug and release builds and upload to iTunes
           command: echo "Make Freegle app"
-      - run: npm run fdapp
+      - run: nvm use 14.18.1; npm run fdapp
 
       - run: mkdir ../iznik-nuxt-app
       - run: cd ../iznik-nuxt-app; ln -s ../project/mobile/freegle/ios/config.xml config.xml
@@ -108,19 +108,19 @@ jobs:
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/secrets/GoogleService-Info.plist GoogleService-Info.plist
       - run: cd ../iznik-nuxt-app; ln -s ../project/dist www
 
-      - run: cd ../iznik-nuxt-app; cordova platform rm ios
-      - run: cd ../iznik-nuxt-app; cordova platform add ios@6.2.0
+      - run: cd ../iznik-nuxt-app; nvm use 14.18.1; cordova platform rm ios
+      - run: cd ../iznik-nuxt-app; nvm use 14.18.1; cordova platform add ios@6.2.0
 
       # Fix cordova-ios
       - run: cd ../iznik-nuxt-app; sed -i '' "s/PROVISIONING_PROFILE =/PROVISIONING_PROFILE_SPECIFIER =/" platforms/ios/cordova/lib/build.js
 
       # Build debug build
-      - run: cd ../iznik-nuxt-app; cordova build --debug --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="Freegle adhoc 0221" >buildlogdebug.txt
+      - run: cd ../iznik-nuxt-app; nvm use 14.18.1; cordova build --debug --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="Freegle adhoc 0221" >buildlogdebug.txt
       - run: cd ../iznik-nuxt-app; tail -n 5 buildlogdebug.txt
       - run: cd ../iznik-nuxt-app; cp platforms/ios/build/device/Freegle.ipa ../project/releases/Freegle-ios-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
 
       # Build release build and publish
-      - run: cd ../iznik-nuxt-app; cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="Freegle 0421"  >buildlogrelease.txt
+      - run: cd ../iznik-nuxt-app; nvm use 14.18.1; cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="Freegle 0421"  >buildlogrelease.txt
       - run: cd ../iznik-nuxt-app; tail -n 5 buildlogrelease.txt
       - run: cd ../iznik-nuxt-app; cp platforms/ios/build/device/Freegle.ipa ../project/releases/Freegle-ios-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
       - run: cd ../iznik-nuxt-app; xcrun altool --upload-app --type ios --file "platforms/ios/build/device/Freegle.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd" || true
@@ -130,7 +130,7 @@ jobs:
       - run:
           name: == Make ModTools app debug and release builds and upload to iTunes
           command: echo "Make ModTools app"
-      - run: npm run mtapp
+      - run: nvm use 14.18.1; npm run mtapp
       - run: mkdir ../iznik-nuxt-mt
       - run: cd ../iznik-nuxt-mt; ln -s ../project/mobile/modtools/ios/config.xml config.xml
       - run: cd ../iznik-nuxt-mt; ln -s ../project/mobile/modtools/ios/package.json package.json
@@ -139,19 +139,19 @@ jobs:
       - run: cd ../iznik-nuxt-mt; ln -s ../project/mobile/modtools/scripts scripts
       - run: cd ../iznik-nuxt-mt; cp ../project/mobile/secrets/GoogleService-Info.plist GoogleService-Info.plist
       - run: cd ../iznik-nuxt-mt; ln -s ../project/dist www
-      - run: cd ../iznik-nuxt-mt; cordova platform rm ios
-      - run: cd ../iznik-nuxt-mt; cordova platform add ios@6.2.0
+      - run: cd ../iznik-nuxt-mt; nvm use 14.18.1; cordova platform rm ios
+      - run: cd ../iznik-nuxt-mt; nvm use 14.18.1; cordova platform add ios@6.2.0
 
       # Fix cordova-ios
       - run: cd ../iznik-nuxt-mt; sed -i '' "s/PROVISIONING_PROFILE =/PROVISIONING_PROFILE_SPECIFIER =/" platforms/ios/cordova/lib/build.js
 
       # Build debug build
-      - run: cd ../iznik-nuxt-mt; cordova build --debug --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="ModTools adhoc 0221" >buildlogdebug.txt
+      - run: cd ../iznik-nuxt-mt; nvm use 14.18.1; cordova build --debug --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="ModTools adhoc 0221" >buildlogdebug.txt
       - run: cd ../iznik-nuxt-mt; tail -n 5 buildlogdebug.txt
       - run: cd ../iznik-nuxt-mt; cp platforms/ios/build/device/ModTools.ipa ../project/releases/ModTools-ios-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
 
       # Build release build and publish
-      - run: cd ../iznik-nuxt-mt; cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="ModTools 0221"  >buildlogrelease.txt
+      - run: cd ../iznik-nuxt-mt; nvm use 14.18.1; cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="ModTools 0221"  >buildlogrelease.txt
       - run: cd ../iznik-nuxt-mt; tail -n 5 buildlogrelease.txt
       - run: cd ../iznik-nuxt-mt; cp platforms/ios/build/device/ModTools.ipa ../project/releases/ModTools-ios-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
       - run: cd ../iznik-nuxt-mt; xcrun altool --upload-app --type ios --file "platforms/ios/build/device/ModTools.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd" || true
