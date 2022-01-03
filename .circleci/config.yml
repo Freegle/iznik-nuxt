@@ -97,7 +97,7 @@ jobs:
       - run:
           name: == Make Freegle app debug and release builds and upload to iTunes
           command: echo "Make Freegle app"
-      - run: npm run fdapp
+      - run: nvm use 14.18.1; npm run fdapp
 
       - run: mkdir ../iznik-nuxt-app
       - run: cd ../iznik-nuxt-app; ln -s ../project/mobile/freegle/ios/config.xml config.xml
@@ -130,7 +130,7 @@ jobs:
       - run:
           name: == Make ModTools app debug and release builds and upload to iTunes
           command: echo "Make ModTools app"
-      - run: npm run mtapp
+      - run: nvm use 14.18.1; npm run mtapp
       - run: mkdir ../iznik-nuxt-mt
       - run: cd ../iznik-nuxt-mt; ln -s ../project/mobile/modtools/ios/config.xml config.xml
       - run: cd ../iznik-nuxt-mt; ln -s ../project/mobile/modtools/ios/package.json package.json
