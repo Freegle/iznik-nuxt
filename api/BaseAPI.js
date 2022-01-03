@@ -100,9 +100,10 @@ export default class BaseAPI {
 
       if (
         e.message.match(/.*timeout.*/i) ||
-        e.message.match(/.*Axios empty.*/i)
+        e.message.match(/.*Axios empty.*/i) ||
+        e.message.match(/.*Network Error.*/i)
       ) {
-        console.log('Timeout or empty - sleep')
+        console.log('Timeout or empty or network error - sleep')
         await new Promise(resolve => setTimeout(resolve, 2000))
 
         // Timeout.  Try again.  If it fails this time then we will throw another error.

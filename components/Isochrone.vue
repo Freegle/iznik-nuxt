@@ -57,8 +57,8 @@
           <b-input
             v-model="minutes"
             type="range"
-            min="5"
-            max="45"
+            :min="minMinutes"
+            :max="maxMinutes"
             :step="step"
             class="pt-2"
             @change="changeMinutes"
@@ -124,6 +124,8 @@ export default {
   data() {
     return {
       minutes: null,
+      minMinutes: 5,
+      maxMinutes: 45,
       transport: null,
       pc: null,
       nickname: null,
@@ -179,11 +181,11 @@ export default {
   },
   methods: {
     increment() {
-      this.minutes += this.step
+      this.minutes = Math.min(this.minutes + this.step, this.maxMinutes)
       this.changeMinutes(this.minutes)
     },
     decrement() {
-      this.minutes -= this.step
+      this.minutes = Math.max(this.minutes - this.step, this.minMinutes)
       this.changeMinutes(this.minutes)
     },
     changeMinutes(newVal) {
@@ -249,7 +251,7 @@ export default {
     grid-row: 1 / 2;
     grid-column: 1 / 3;
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
   }
 
   .slider {
@@ -268,7 +270,7 @@ export default {
     grid-row: 2 / 3;
     grid-column: 2 / 3;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     margin-left: 1rem;
   }
 

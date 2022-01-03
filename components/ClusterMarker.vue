@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="clusters && clusters.length">
     <div v-for="cluster in clusters" :key="'cluster-' + cluster.id">
       <l-marker
         v-if="cluster.properties"
