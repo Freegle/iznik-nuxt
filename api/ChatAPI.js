@@ -107,4 +107,8 @@ export default class ChatAPI extends BaseAPI {
       replyexpected: value
     })
   }
+
+  typing(chatid) {
+    return this.$post('/chatrooms', { id: chatid, action: 'Typing' })
+  }
 }

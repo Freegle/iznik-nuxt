@@ -312,5 +312,9 @@ export const actions = {
     setTimeout(() => {
       dispatch('fetchLatestChats')
     }, 30000)
+  },
+
+  async typing({ dispatch, commit }, params) {
+    await this.$api.chat.typing(params.chatid)
   }
 }
