@@ -82,7 +82,7 @@ jobs:
       - run:
           name: == Install cordova and fix permissions
           command: echo "Install cordova and fix permissions"
-      - run: sudo nvm use 14.18.1; npm install -g cordova@9.0.0 rimraf
+      - run: nvm use 14.18.1; sudo npm install -g cordova@9.0.0 rimraf
       - run: nvm use 14.18.1; npm install
 
       # Permissions fixes to let cordova run OK - may not all be needed
