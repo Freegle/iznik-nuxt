@@ -34,7 +34,7 @@ jobs:
   build-and-publish-apple:
     macos:
       # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
-      xcode: "12.4.0" # 11.3.1
+      xcode: "13.2.1" # 11.3.1 12.4.0
     steps:
       - checkout
       - node/install:
