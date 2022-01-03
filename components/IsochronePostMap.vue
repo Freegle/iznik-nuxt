@@ -375,7 +375,6 @@ export default {
       }
     },
     primaryMessageList() {
-      console.log('Compute primary')
       if (!this.groupid && this.type === 'All') {
         // No filtering - return them all.
         return this.fetchedPrimaryMessages
@@ -457,6 +456,8 @@ export default {
             [group.bbox.swlat, group.bbox.swlng],
             [group.bbox.nelat, group.bbox.nelng]
           ]).pad(0.1)
+          this.showIsochrones = false
+          this.showInBounds = true
           this.mapObject.flyToBounds(bounds)
         }
       } else {
@@ -675,7 +676,7 @@ export default {
 
         this.everFetched = true
       } else {
-        console.log('Ignore dup primary fetch')
+        console.log('Ignore dup primary fetch', params)
       }
 
       if (!this.destroyed) {

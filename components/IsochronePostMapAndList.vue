@@ -613,10 +613,6 @@ export default {
     // We want to track views of messages for new members.
     if (this.me) {
       this.trackViews = true
-      this.$api.bandit.shown({
-        uid: 'browsepage',
-        variant: 'newskool'
-      })
 
       // eslint-disable-next-line no-undef
       try {
@@ -736,7 +732,9 @@ export default {
       return (
         (this.selectedType === 'All' || this.selectedType === m.type) &&
         (!this.selectedGroup ||
-          parseInt(m.groupid) === parseInt(this.selectedGroup))
+          parseInt(m.groupid) === parseInt(this.selectedGroup)) &&
+        // Make the item filter also work to filter out the successful posts.
+        (this.selectedType === 'All' || !m.successful)
       )
     },
     recordView() {
@@ -744,8 +742,8 @@ export default {
         this.trackedView = true
 
         this.$api.bandit.chosen({
-          uid: 'browsepage',
-          variant: 'newskool'
+          uid: 'messageview',
+          variant: 'isochrone'
         })
       }
     }

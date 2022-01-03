@@ -79,7 +79,7 @@ export default {
     }
   },
   computed: {
-    nonOverlappingMarkers() {
+    points() {
       // Ensure that markers don't exactly overlap.  Simplistic.
       const ret = []
       const latlngs = []
@@ -90,37 +90,29 @@ export default {
       if (this.markers) {
         this.markers.forEach(marker => {
           if (marker.lat || marker.lng) {
-            let key = marker.lat + '|' + marker.lng
+            const key = marker.lat + '|' + marker.lng
+            const already = latlngs[key] ? latlngs[key] : 0
 
-            while (latlngs[key]) {
-              marker.lat = Math.max(nelat, marker.lat + 0.003)
-              marker.lng = Math.max(nelng, marker.lng + 0.003)
-              key = marker.lat + '|' + marker.lng
+            if (already) {
+              marker.lat = Math.max(nelat, marker.lat + (already + 1) * 0.003)
+              marker.lng = Math.max(nelng, marker.lng + (already + 1) * 0.003)
             }
 
-            latlngs[key] = true
+            latlngs[key] = already + 1
+
+            // Add a geoJSON point.
             ret.push({
               id: marker.id,
-              lat: marker.lat,
-              lng: marker.lng
+              type: 'Point',
+              geometry: {
+                coordinates: [marker.lng, marker.lat]
+              }
             })
           }
         })
       }
 
       return ret
-    },
-    points() {
-      // Convert into GeoJSON Points.
-      return this.nonOverlappingMarkers.map(m => {
-        return {
-          id: m.id,
-          type: 'Point',
-          geometry: {
-            coordinates: [m.lng, m.lat]
-          }
-        }
-      })
     },
     index() {
       // Generate the index.  It's immutable, so we need to generate a new index each time the points change.

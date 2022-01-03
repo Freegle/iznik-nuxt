@@ -186,7 +186,7 @@ export default {
     },
     height() {
       return this.chat && this.chat.remember && this.chat.remember.height
-        ? this.chat.remember.height
+        ? Math.min(this.maxheight, this.chat.remember.height)
         : HEIGHT
     },
     right() {
