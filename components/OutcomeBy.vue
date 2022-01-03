@@ -145,9 +145,25 @@ export default {
     availableUsers() {
       // The users available to select are the ones which are not currently selected (unless that's the user for this
       // one.
-      return this.repliers.filter(
+      const ret = this.repliers.filter(
         u => !this.selectedUsers.find(u2 => u2.userid === u.userid)
       )
+
+      const retids = ret.map(r => r.userid)
+
+      // Now add any other users that we have chatted to.
+      const chats = Object.values(this.$store.getters['chats/list'])
+
+      chats.forEach(c => {
+        if (c.chattype === 'User2User' && c.user1 && c.user2) {
+          const otheruser = c.user1.id === this.myid ? c.user2 : c.user1
+          if (!retids[otheruser.id]) {
+            ret.push(otheruser)
+          }
+        }
+      })
+
+      return ret
     },
     moreUsersToSelect() {
       // We show the choose if there are some left and we have not got all users plus someone else.
