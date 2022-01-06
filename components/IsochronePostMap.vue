@@ -19,7 +19,7 @@
         <Postcode @selected="savePostcode" />
       </NoticeMessage>
       <Isochrones />
-      <div class="small">
+      <div class="small mt-1">
         <!-- eslint-disable-next-line-->
         Show posts from <b-btn variant="link" size="sm" class="mb-1 p-0" @click="showPostsFromMyGroups">all my communities</b-btn> instead.
       </div>
@@ -69,13 +69,18 @@
               <l-tile-layer :url="osmtile" :attribution="attribution" />
               <div v-if="showMessages && mapObject">
                 <div v-if="showIsochrones">
-                  <ClusterMarker :markers="primaryMessageList" :map="mapObject" :tag="['post', 'posts']" @click="boundsChange" />
+                  <ClusterMarker
+                    :markers="primaryMessageList"
+                    :map="mapObject"
+                    :tag="['post', 'posts']"
+                    @click="clusterClick"
+                  />
                   <ClusterMarker
                     :markers="secondaryMessageList"
                     :map="mapObject"
                     :tag="['post', 'posts']"
                     css-class="fadedMarker"
-                    @click="boundsChange"
+                    @click="clusterClick"
                   />
                 </div>
                 <ClusterMarker
@@ -83,7 +88,7 @@
                   :markers="primaryMessageList"
                   :map="mapObject"
                   :tag="['post', 'posts']"
-                  @click="boundsChange"
+                  @click="clusterClick"
                 />
                 <l-marker v-if="me && me.settings && me.settings.mylocation" :lat-lng="[me.lat, me.lng]" :icon="homeIcon" @click="goHome">
                   <l-tooltip>
@@ -215,7 +220,10 @@ export default {
       mapboundsChangeCount: 0,
       initialCentre: null,
       showIsochrones: true,
-      showInBounds: false
+      showInBounds: false,
+      searched: false,
+      lastFetchedPrimaryParams: null,
+      lastFetchedSecondaryParams: null
     }
   },
   computed: {
@@ -226,7 +234,9 @@ export default {
         touchZoom: true,
         scrollWheelZoom: false,
         bounceAtZoomLimits: true,
-        gestureHandling: true
+        gestureHandling: true,
+        zoomSnap: 0.25,
+        zoomDelta: 0.25
       }
     },
     mapHidden() {
@@ -365,14 +375,19 @@ export default {
       }
     },
     primaryMessageList() {
-      return this.fetchedPrimaryMessages.filter(m => {
-        if (
-          (!this.groupid || m.groupid === this.groupid) &&
-          (this.type === 'All' || m.type === this.type)
-        ) {
-          return true
-        }
-      })
+      if (!this.groupid && this.type === 'All') {
+        // No filtering - return them all.
+        return this.fetchedPrimaryMessages
+      } else {
+        return this.fetchedPrimaryMessages.filter(m => {
+          if (
+            (!this.groupid || m.groupid === this.groupid) &&
+            (this.type === 'All' || m.type === this.type)
+          ) {
+            return true
+          }
+        })
+      }
     },
     primaryMessageIds() {
       const ret = []
@@ -384,16 +399,29 @@ export default {
       return ret
     },
     secondaryMessageList() {
-      // Return anything relevant we have fetched which is not already in the primary one.
-      return this.fetchedSecondaryMessages.filter(m => {
-        if (
-          !this.primaryMessageIds[m.id] &&
-          (!this.groupid || m.groupid === this.groupid) &&
-          (this.type === 'All' || m.type === this.type)
-        ) {
-          return true
-        }
-      })
+      console.log(
+        'Compute secondary',
+        this.fetchedSecondaryMessages.length,
+        this.primaryMessageIds.length,
+        this.groupid,
+        this.type
+      )
+      if (this.fetchedSecondaryMessages.length > 200) {
+        // So many posts that the precise numbers no longer matter that much.  So return all the ones we have fetched
+        // rather than spend CPU on filtering (which is a significant issue on slow browsers).
+        return this.fetchedSecondaryMessages
+      } else {
+        // Return anything relevant we have fetched which is not already in the primary one.
+        return this.fetchedSecondaryMessages.filter(m => {
+          if (
+            !this.primaryMessageIds[m.id] &&
+            (!this.groupid || m.groupid === this.groupid) &&
+            (this.type === 'All' || m.type === this.type)
+          ) {
+            return true
+          }
+        })
+      }
     }
   },
   watch: {
@@ -428,6 +456,8 @@ export default {
             [group.bbox.swlat, group.bbox.swlng],
             [group.bbox.nelat, group.bbox.nelng]
           ]).pad(0.1)
+          this.showIsochrones = false
+          this.showInBounds = true
           this.mapObject.flyToBounds(bounds)
         }
       } else {
@@ -509,20 +539,19 @@ export default {
             collapsed: false
           })
             .on('markgeocode', function(e) {
-              if (e && e.geocode && e.geocode.bbox) {
-                // Searching unlocks the map
-                self.$store.dispatch('misc/set', {
-                  key: 'postmaparea',
-                  value: null
-                })
+              self.searched = true
 
+              if (e && e.geocode && e.geocode.bbox) {
                 // Empty out the query box so that the dropdown closes.
                 this.setQuery('')
 
                 self.$nextTick(() => {
-                  // Move the map to the location we've found.
-                  self.mapObject.flyToBounds(e.geocode.bbox)
-                  self.$emit('searched')
+                  if (self.$refs.map.mapObject) {
+                    // Move the map to the location we've found.
+                    console.log('Fly to', e.geocode)
+                    self.$refs.map.mapObject.flyToBounds(e.geocode.bbox)
+                    self.$emit('searched')
+                  }
                 })
               }
             })
@@ -535,14 +564,25 @@ export default {
       })
     },
     centreChange(a, b) {
-      if (!this.initialCentre) {
+      console.log('Centre change')
+      if (!this.initialCentre && !this.searched) {
         // We get called once on map load, which doesn't count.
         this.initialCentre = this.mapObject.getCenter().toString()
+        console.log('Initial')
       } else if (this.mapObject.getCenter().toString() !== this.initialCentre) {
         // We are panning, not just zooming.  We want to shift to showing all messages in the map bounds.
+        console.log('Panning')
         this.showInBounds = true
         this.showIsochrones = false
+      } else {
+        console.log('Other')
       }
+    },
+    clusterClick() {
+      // Once we have interacted with the map, switch to showing what's in bounds.
+      console.log('Cluster click')
+      this.showInBounds = true
+      this.showIsochrones = false
     },
     boundsChange() {
       this.mapboundsChangeCount++
@@ -621,11 +661,23 @@ export default {
         }
       }
 
-      const ret = await this.$api.message.fetchMessages(params)
-      this.fetchedPrimaryMessages =
-        ret.ret === 0 && ret.messages ? ret.messages : []
+      const paramstr = JSON.stringify(params)
 
-      this.everFetched = true
+      if (
+        !this.lastFetchedPrimaryParams ||
+        this.lastFetchedPrimaryParams !== paramstr
+      ) {
+        console.log('Fetch primary messages', JSON.stringify(params))
+        this.lastFetchedPrimaryParams = paramstr
+
+        const ret = await this.$api.message.fetchMessages(params)
+        this.fetchedPrimaryMessages =
+          ret.ret === 0 && ret.messages ? ret.messages : []
+
+        this.everFetched = true
+      } else {
+        console.log('Ignore dup primary fetch', params)
+      }
 
       if (!this.destroyed) {
         if (!this.search && this.showIsochrones) {
@@ -651,10 +703,22 @@ export default {
           nelng: bounds.getNorthEast().lng
         }
 
-        const ret = await this.$api.message.fetchMessages(params)
+        const paramstr = JSON.stringify(params)
 
-        this.fetchedSecondaryMessages =
-          ret.ret === 0 && ret.messages ? ret.messages : []
+        if (
+          !this.lastFetchedSecondaryParams ||
+          this.lastFetchedSecondaryParams !== paramstr
+        ) {
+          console.log('Fetch secondary messages', JSON.stringify(params))
+          this.lastFetchedSecondaryParams = paramstr
+
+          const ret = await this.$api.message.fetchMessages(params)
+
+          this.fetchedSecondaryMessages =
+            ret.ret === 0 && ret.messages ? ret.messages : []
+        } else {
+          console.log('Ignore dup secondary fetch', paramstr)
+        }
       }
     },
     onResize(x, y, width, height) {

@@ -18,25 +18,15 @@
     </p>
     <ul>
       <li>
-        If you do, click the link to go to their membership on your group.
+        You can ignore them until they join other groups or something else unusual happens.
       </li>
       <li>
-        From there you can remove them, ban them, send them a message, whatever.
+        You can remove them from a group.
       </li>
       <li>
-        You can add a Mod Note to show other mods what you've decided or done.
-      </li>
-      <li>
-        At some point you may be able to do some of that from here - but not yet.
+        To report them as a spammer, add a note, or other things, click the link to go to their membership on your group.
       </li>
     </ul>
-    <p>
-      Otherwise, click the button to <em>Ignore on</em> your group.  They'll only show up again if something
-      has changed which makes them look unusual again.
-    </p>
-    <p>
-      If you think they are a spammer/scammer, click the <em>Spammer</em> button to report them.
-    </p>
   </NoticeMessage>
   <b-btn v-else variant="link" class="float-right" @click="toggleHelp">
     Help

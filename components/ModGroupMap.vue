@@ -17,15 +17,61 @@
         <b-form-checkbox v-model="shade" class="ml-2 font-weight-bold">
           Shade areas
         </b-form-checkbox>
+        <b-form-checkbox v-model="showDodgy" class="ml-2 font-weight-bold">
+          Areas to Review
+        </b-form-checkbox>
       </div>
+      <b-modal id="mappingChanges" ref="mappingChanges" v-model="showMappingChanges">
+        <p>
+          If you have the "Areas to Review" checkbox ticked, you'll see the red dots for
+          postcodes which might need better mapping.
+        </p>
+        <p class="font-weight-bold text-danger">
+          The red dots indicate where mapping has changed recently.  You can review these to check if it looks OK.
+        </p>
+        <ul>
+          <li>
+            The occasional dot is OK.
+            Clusters of dots in a single area are worth reviewing.
+          </li>
+          <li>
+            The dots might highlight areas where the existing mapping is poor.  Typical problem are places where
+            areas overlap, or where there are gaps between areas.
+          </li>
+          <li>
+            Click on a postcode in this section to centre the map on it, then zoom in if you need to.
+          </li>
+        </ul>
+        <p>
+          You can fix these:
+        </p>
+        <ul>
+          <li>
+            You can adjust area boundaries.
+          </li>
+          <li>
+            You can add new areas.
+          </li>
+          <li>
+            You can delete areas.
+          </li>
+        </ul>
+        <p class="font-weight-bold text-danger">
+          The red dots don't get updated at the moment.  Soon.
+        </p>
+        <p>
+          To help more widely, you can zoom the map out to view the whole UK.  Once you zoom out far enough you'll see the numbers of
+          postcodes which need attention - you can click on those to zoom in.
+        </p>
+      </b-modal>
       <b-row class="m-0">
         <b-col ref="mapcont" cols="12" md="8" lg="9" class="p-0 w-100">
           <l-map
             ref="map"
-            :zoom="groups ? 5 : 13"
+            :zoom="zoom"
             :center="center"
             :style="'width: ' + mapWidth + 'px; height: ' + mapHeight + 'px'"
-            :min-zoom="groups ? 5 : 12"
+            :min-zoom="5"
             :max-zoom="17"
             :options="{ dragging: selectedWKT, touchZoom: true }"
             @update:bounds="boundsChanged"
@@ -42,19 +88,43 @@
             </div>
             <div v-if="groupid">
               <l-feature-group>
-                <ModGroupMapLocation
-                  v-for="l in locationsInBounds"
-                  :key="'location-' + l.id"
-                  :ref="'location-' + l.id"
-                  :location="l"
-                  :selected="selectedObj === l"
-                  :shade="shade"
-                  :labels="labels"
-                  :map="map"
-                  @click="selectLocation(l)"
+                <div v-if="zoom >= 12">
+                  <ModGroupMapLocation
+                    v-for="l in locationsInBounds"
+                    :key="'location-' + l.id"
+                    :ref="'location-' + l.id"
+                    :location="l"
+                    :selected="selectedObj === l"
+                    :shade="shade"
+                    :labels="labels"
+                    :map="map"
+                    @click="selectLocation(l)"
+                  />
+                </div>
+              </l-feature-group>
+            </div>
+            <div v-if="showDodgy">
+              <ClusterMarker v-if="mapObject && zoom < 10" :markers="dodgyInBounds" :map="mapObject" />
+              <l-feature-group v-else>
+                <l-circle-marker
+                  v-if="highlighted"
+                  :key="'highlighted-' + highlighted.id"
+                  :lat-lng="[ highlighted.lat, highlighted.lng ]"
+                  :interactive="false"
+                  :radius="10"
+                  :options="{ color: 'blue'}"
+                />
+                <l-circle-marker
+                  v-for="d in dodgyInBounds"
+                  :key="d.id"
+                  :lat-lng="d"
+                  :radius="1"
+                  :options="{ color: 'red' }"
+                  @click="selected = d"
                 />
               </l-feature-group>
             </div>
+
             <div v-if="groups && zoom > 7">
               <l-circle-marker v-for="g in allgroups" :key="'groupcentre-' + g.id" :lat-lng="[g.lat, g.lng]" :options="{ radius: zoom, color: 'darkgreen', fill: true, fillColor: 'darkgreen', fillOpacity: 1 }" />
             </div>
@@ -100,8 +170,9 @@
             </b-card-header>
             <b-card-body>
               <p>
-                You can see which community and area a postcode will map to. It may take upto an hour after changing a polygon
-                before postcodes will map to it.
+                You can see which community and area a postcode will map to. <b>Postcode changes within an area you
+                  change should take effect immediately, but ones outside the areas may may take several hours
+                  before postcode mapping is updated.</b>
               </p>
               <Postcode :find="false" @selected="postcodeSelect" />
               <div v-if="postcode" class="mt-2">
@@ -126,6 +197,28 @@
               </div>
             </b-card-body>
           </b-card>
+          <b-card v-if="dodgyInBounds.length" no-body style="max-height: 600px; overflow-y: scroll">
+            <b-card-header class="bg-warning d-flex justify-content-between">
+              Mapping Changes
+              <b-btn variant="white" @click="showMappingChanges = true">
+                Details
+              </b-btn>
+            </b-card-header>
+            <b-card-body>
+              <div v-if="dodgyInBounds.length < 200">
+                <ModChangedMapping
+                  v-for="d in dodgyInBounds"
+                  :key="d.id"
+                  :changed="d"
+                  :highlighted="highlighted"
+                  @click="highlightPostcode(d)"
+                />
+              </div>
+              <p v-else>
+                Too many changes to show; zoom in.
+              </p>
+            </b-card-body>
+          </b-card>
         </b-col>
       </b-row>
     </client-only>
@@ -134,9 +227,11 @@
 
 <script>
 import map from '@/mixins/map.js'
+import ModChangedMapping from '@/components/ModChangedMapping'
 import Postcode from './Postcode'
 import SpinButton from './SpinButton'
 import ModGroupMapLocation from './ModGroupMapLocation'
+import ClusterMarker from '~/components/ClusterMarker'
 
 let Wkt = null
 let L = null
@@ -159,7 +254,13 @@ const DPA_BOUNDARY_COLOUR = 'darkblue'
 // const CENTRE_BORDER_COLOUR = 'darkgrey'
 
 export default {
-  components: { ModGroupMapLocation, SpinButton, Postcode },
+  components: {
+    ModChangedMapping,
+    ModGroupMapLocation,
+    SpinButton,
+    Postcode,
+    ClusterMarker
+  },
   mixins: [map],
   props: {
     groups: {
@@ -187,13 +288,19 @@ export default {
       cga: true,
       shade: true,
       labels: true,
+      showDodgy: false,
       selectedName: null,
       selectedWKT: null,
       selectedObj: null,
       selectedId: null,
       postcode: null,
       busy: false,
-      intersects: false
+      intersects: false,
+      mapObject: null,
+      zoom: 12,
+      lastLocationFetch: null,
+      showMappingChanges: false,
+      highlighted: null
     }
   },
   computed: {
@@ -241,12 +348,16 @@ export default {
 
       this.allgroups.forEach(g => {
         if (g.polyofficial) {
-          const wkt = new Wkt.Wkt()
-          wkt.read(g.polyofficial)
-          ret.push({
-            json: wkt.toJson(),
-            group: g
-          })
+          try {
+            const wkt = new Wkt.Wkt()
+            wkt.read(g.polyofficial)
+            ret.push({
+              json: wkt.toJson(),
+              group: g
+            })
+          } catch (e) {
+            console.error('Failed to read WKT', g)
+          }
         }
       })
 
@@ -257,12 +368,16 @@ export default {
 
       this.allgroups.forEach(g => {
         if (g.poly) {
-          const wkt = new Wkt.Wkt()
-          wkt.read(g.poly)
-          ret.push({
-            json: wkt.toJson(),
-            group: g
-          })
+          try {
+            const wkt = new Wkt.Wkt()
+            wkt.read(g.poly)
+            ret.push({
+              json: wkt.toJson(),
+              group: g
+            })
+          } catch (e) {
+            console.error('Failed to read WKT', g)
+          }
         }
       })
 
@@ -306,12 +421,45 @@ export default {
         fillOpacity: this.shade ? FILL_OPACITY : 0,
         color: DPA_BOUNDARY_COLOUR
       }
+    },
+    dodgy() {
+      return Object.values(this.$store.getters['locations/dodgy'])
+    },
+    dodgyInBounds() {
+      return this.dodgy.filter(
+        d => this.bounds && this.bounds.contains([d.lat, d.lng])
+      )
+    }
+  },
+  watch: {
+    async showDodgy(newVal) {
+      this.busy = true
+      const bounds = this.$refs.map.mapObject.getBounds()
+
+      const data = {
+        swlat: bounds.getSouthWest().lat,
+        swlng: bounds.getSouthWest().lng,
+        nelat: bounds.getNorthEast().lat,
+        nelng: bounds.getNorthEast().lng
+      }
+
+      data.dodgy = newVal
+
+      await this.$store.dispatch('locations/fetch', data)
+      this.busy = false
     }
   },
   mounted() {
     // Add the draw toolbar as per https://github.com/vue-leaflet/Vue2Leaflet/issues/331
-    this.$nextTick(() => {
+    this.waitForRef('map', () => {
       const themap = this.$refs.map.mapObject
+      this.mapObject = themap
+
+      if (this.groups) {
+        this.zoom = 5
+      } else {
+        this.zoom = 13
+      }
 
       // Last layer is drawn items.  Seems to be, anyway.  Need to use this so that we can turn on editing for
       // the locations we've already got, as well as any new ones we draw.
@@ -473,7 +621,9 @@ export default {
             const mapobj = this.$refs.map.mapObject
             const obj = wkt.toObject(mapobj.defaults)
             bounds = obj.getBounds()
-            mapobj.fitBounds(bounds)
+            this.$nextTick(() => {
+              mapobj.fitBounds(bounds)
+            })
           } else {
             // Get the locations in this area
             bounds = this.$refs.map.mapObject.getBounds()
@@ -485,33 +635,41 @@ export default {
             swlat: bounds.getSouthWest().lat,
             swlng: bounds.getSouthWest().lng,
             nelat: bounds.getNorthEast().lat,
-            nelng: bounds.getNorthEast().lng
+            nelng: bounds.getNorthEast().lng,
+            dodgy: this.showDodgy,
+            areas: this.zoom >= 12
           }
 
-          await this.$store.dispatch('locations/fetch', data)
+          await this.fetchLocations(data)
 
           this.busy = false
         }
       }
     },
     async boundsChanged() {
-      this.bounds = this.$refs.map.mapObject.getBounds()
-      this.zoom = this.$refs.map.mapObject.getZoom()
-      this.busy = true
+      if (this.$refs.map && this.$refs.map.mapObject) {
+        this.bounds = this.$refs.map.mapObject.getBounds()
+        this.zoom = this.$refs.map.mapObject.getZoom()
+        this.busy = true
 
-      const data = {
-        swlat: this.bounds.getSouthWest().lat,
-        swlng: this.bounds.getSouthWest().lng,
-        nelat: this.bounds.getNorthEast().lat,
-        nelng: this.bounds.getNorthEast().lng
+        const data = {
+          swlat: this.bounds.getSouthWest().lat,
+          swlng: this.bounds.getSouthWest().lng,
+          nelat: this.bounds.getNorthEast().lat,
+          nelng: this.bounds.getNorthEast().lng,
+          dodgy: this.showDodgy,
+          areas: this.zoom >= 12
+        }
+
+        if (this.group) {
+          await this.fetchLocations(data)
+        }
+
+        if (this.$refs.map && this.$refs.map.mapObject) {
+          // Sometimes the map needs a kick to show correctly.
+          this.$refs.map.mapObject.invalidateSize()
+        }
       }
-
-      if (this.group) {
-        await this.$store.dispatch('locations/fetch', data)
-      }
-
-      // Sometimes the map needs a kick to show correctly.
-      this.$refs.map.mapObject.invalidateSize()
 
       this.busy = false
     },
@@ -522,18 +680,21 @@ export default {
         // This is a new area.
         await this.$store.dispatch('locations/add', {
           name: this.selectedName,
-          polygon: this.selectedWKT
+          polygon: this.selectedWKT,
+          remap: false
         })
       } else {
         // This is an existing area
         await this.$store.dispatch('locations/update', {
           id: this.selectedId,
           name: this.selectedName,
-          polygon: this.selectedWKT
+          polygon: this.selectedWKT,
+          remap: false
         })
       }
 
       this.clearSelection()
+      this.lastLocationFetch = null
       this.boundsChanged()
 
       this.busy = false
@@ -543,11 +704,29 @@ export default {
 
       await this.$store.dispatch('locations/delete', {
         id: this.selectedId,
-        groupid: this.groupid
+        groupid: this.groupid,
+        remap: false
       })
 
       this.clearSelection()
+      this.lastLocationFetch = null
       this.busy = false
+    },
+    async fetchLocations(data) {
+      const thisFetch = JSON.stringify(data)
+
+      if (this.lastLocationFetch === thisFetch) {
+        console.log('Already fetching, skip')
+      } else {
+        console.log('Fetch', thisFetch, this.lastLocationFetch)
+        this.lastLocationFetch = thisFetch
+
+        await this.$store.dispatch('locations/fetch', data)
+      }
+    },
+    highlightPostcode(pc) {
+      this.$refs.map.mapObject.flyTo([pc.lat, pc.lng])
+      this.highlighted = pc
     }
   }
 }

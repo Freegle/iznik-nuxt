@@ -157,11 +157,24 @@ export default {
   },
   computed: {
     groups() {
-      const ret = Object.values(this.$store.getters['group/list'])
+      let ret = Object.values(this.$store.getters['group/list'])
       ret.sort((a, b) => {
         return a.nameshort
           .toLowerCase()
           .localeCompare(b.nameshort.toLowerCase())
+      })
+
+      // Autoapproves colouring is a special case where we don't want to colour it if the number of auto-approves
+      // is low, because that is a very quiet group.
+      ret = ret.map(m => {
+        if (m.recentautoapproves) {
+          m.recentautoapprovespercent =
+            m.recentautoapproves > 5
+              ? m.recentautoapprovespercent
+              : -m.recentautoapprovespercent
+        }
+
+        return m
       })
 
       return ret
@@ -233,11 +246,13 @@ export default {
       )
     },
     autoApproves(hotInstance, td, row, column, prop, value, cellProperties) {
-      const auto = parseInt(value)
+      let auto = parseInt(value)
 
       if (auto > 50) {
         td.style.backgroundColor = 'orange'
       }
+
+      auto = Math.abs(auto)
 
       Handsontable.renderers.NumericRenderer.call(
         this,

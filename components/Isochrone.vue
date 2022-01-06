@@ -50,29 +50,36 @@
           </div>
         </label>
         <div class="slider">
-          <span class="mr-2">Near</span>
+          <b-btn variant="white" size="sm" class="mr-2" title="Show nearer posts" @click="decrement">
+            <v-icon name="minus" />
+            <span class="d-none d-md-inline-block">Near</span>
+          </b-btn>
           <b-input
             v-model="minutes"
             type="range"
-            min="5"
-            max="45"
-            step="5"
+            :min="minMinutes"
+            :max="maxMinutes"
+            :step="step"
+            class="pt-2"
             @change="changeMinutes"
           />
-          <span class="ml-2">Far</span>
+          <b-btn variant="white" size="sm" class="ml-2" title="Show further posts" @click="increment">
+            <span class="d-none d-md-inline-block">Far</span>
+            <v-icon name="plus" />
+          </b-btn>
         </div>
         <label class="font-weight-bold travelLabel">
           Travel by:
         </label>
         <div class="travel">
           <b-btn :variant="isochrone.transport === 'Walk' ? 'primary' : 'white'" @click="changeTransport('Walk')">
-            <v-icon name="walking" /> Walk
+            <v-icon name="walking" /><span class="d-none d-md-inline-block">&nbsp;Walk</span>
           </b-btn>
           <b-btn :variant="isochrone.transport === 'Cycle' ? 'primary' : 'white'" @click="changeTransport('Cycle')">
-            <v-icon name="bicycle" /> Cycle
+            <v-icon name="bicycle" /><span class="d-none d-md-inline-block">&nbsp;Cycle</span>
           </b-btn>
           <b-btn :variant="isochrone.transport === 'Drive' ? 'primary' : 'white'" @click="changeTransport('Drive')">
-            <v-icon name="car" /> Drive
+            <v-icon name="car" /><span class="d-none d-md-inline-block">&nbsp;Drive</span>
           </b-btn>
         </div>
       </div>
@@ -117,9 +124,12 @@ export default {
   data() {
     return {
       minutes: null,
+      minMinutes: 5,
+      maxMinutes: 45,
       transport: null,
       pc: null,
-      nickname: null
+      nickname: null,
+      step: 5
     }
   },
   computed: {
@@ -170,6 +180,14 @@ export default {
     }
   },
   methods: {
+    increment() {
+      this.minutes = Math.min(this.minutes + this.step, this.maxMinutes)
+      this.changeMinutes(this.minutes)
+    },
+    decrement() {
+      this.minutes = Math.max(this.minutes - this.step, this.minMinutes)
+      this.changeMinutes(this.minutes)
+    },
     changeMinutes(newVal) {
       if (this.id) {
         this.$store.dispatch('isochrones/edit', {
@@ -227,13 +245,13 @@ export default {
   display: grid;
 
   grid-template-rows: auto auto auto auto;
-  grid-template-colums: auto;
+  grid-template-colums: auto auto;
 
   .sliderLabel {
     grid-row: 1 / 2;
-    grid-column: 1 / 2;
+    grid-column: 1 / 3;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
   }
 
   .slider {
@@ -249,12 +267,11 @@ export default {
   }
 
   .travel {
-    grid-row: 4 / 5;
-    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    grid-column: 2 / 3;
     display: flex;
-    justify-content: space-between;
-    margin-top: 1rem;
-    margin-bottom: 0.25rem;
+    justify-content: flex-end;
+    margin-left: 1rem;
   }
 
   @include media-breakpoint-up(md) {
@@ -287,8 +304,6 @@ export default {
       grid-column: 2 / 3;
       display: flex;
       justify-content: flex-end;
-      margin-top: 0;
-      margin-bottom: 0;
     }
   }
 }

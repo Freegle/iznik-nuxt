@@ -147,7 +147,7 @@
             class="mb-2 mt-2"
             type="submit"
             value="login"
-            :disabled="!emailValid || !password"
+            :disabled="nativeDisabled"
           >
             <span v-if="!signUp">
               Sign in to Freegle
@@ -210,10 +210,10 @@ export default {
       showPassword: false,
       loginType: null,
       initialisedSocialLogin: false,
-      showSocialLoginBlocked: false
+      showSocialLoginBlocked: false,
+      nativeBump: 1
     }
   },
-
   computed: {
     modtools() {
       return this.$store.getters['misc/get']('modtools')
@@ -227,7 +227,6 @@ export default {
         typeof Vue.FB === 'undefined'
       )
     },
-
     googleDisabled() {
       return (
         this.bump &&
@@ -235,27 +234,22 @@ export default {
         (!window || !window.gapi || !window.gapi.client)
       )
     },
-
     yahooDisabled() {
       // Yahoo currently can't be disabled, because it's redirect auth flow rather than load of a JS toolkit.
       return false
     },
-
     socialblocked() {
       const ret =
         this.bump &&
         (this.facebookDisabled || this.googleDisabled || this.yahooDisabled)
       return ret
     },
-
     modalIsForced() {
       return this.$store.getters['auth/forceLogin']
     },
-
     loggedInEver() {
       return this.$store.getters['auth/loggedInEver']
     },
-
     signUp() {
       if (this.forceSignIn) {
         return false
@@ -263,7 +257,6 @@ export default {
         return !this.loggedInEver || this.showSignUp || this.modtools
       }
     },
-
     referToGoogleButton() {
       return (
         this.email &&
@@ -271,13 +264,14 @@ export default {
           this.email.toLowerCase().indexOf('googlemail') !== -1)
       )
     },
-
     referToYahooButton() {
       return this.email && this.email.toLowerCase().indexOf('yahoo') !== -1
     },
-
     forceLogin() {
       return this.$store.getters['auth/forceLogin']
+    },
+    nativeDisabled() {
+      return this.nativeBump && (!this.emailValid || !this.password)
     }
   },
   watch: {
@@ -339,6 +333,9 @@ export default {
       // by the time we open the modal.
       this.bump = Date.now()
       this.bumpTimer = setTimeout(this.bumpIt, 500)
+
+      // And similarly naive signin.  This helps with some password managers which don't trigger events properly.
+      this.nativeBump++
     },
     show() {
       this.pleaseShowModal = true

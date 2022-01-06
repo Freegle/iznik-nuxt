@@ -14,6 +14,9 @@
         </div>
       </b-card-header>
       <b-card-body>
+        <NoticeMessage v-if="message.reviewreason" class="mb-2">
+          This is here because: {{ reviewreason }}
+        </NoticeMessage>
         <NoticeMessage v-if="message.held" class="mb-2">
           <span v-if="me.id === message.held.id">
             You held this {{ timeago(message.held.timestamp) }}.  Other people will see a warning to check with
@@ -175,6 +178,124 @@ export default {
   data: function() {
     return {
       showOriginal: false
+    }
+  },
+  computed: {
+    reviewreason() {
+      let ret = null
+
+      if (this.message && this.message.reviewreason) {
+        switch (this.message.reviewreason) {
+          case 'Last': {
+            ret = 'Earlier message is held for review, so this one is too.'
+            break
+          }
+          case 'Force': {
+            ret = 'Internal system reasons; might be a bug.'
+            break
+          }
+          case 'Fully': {
+            ret = 'This member is set to have all chat messages reviewed.'
+            break
+          }
+          case 'TooMany': {
+            ret =
+              'This member has sent a lot of chat messages recently, which can indicate scammers/spammers.'
+            break
+          }
+          case 'User': {
+            ret = 'Please check the member logs for more info.'
+            break
+          }
+          case 'UnknownMessage': {
+            ret =
+              'This is a reply to a post we cannot find.  Sometimes that is a spammer using old data.'
+            break
+          }
+          case 'Spam': {
+            ret =
+              "This message failed spam checks, but we don't have any more information about why."
+            break
+          }
+          case 'CountryBlocked': {
+            ret = 'It comes from a country we are blocking.'
+            break
+          }
+          case 'IPUsedForDifferentUsers': {
+            ret =
+              'The same IP address has been used for a lot of different users.'
+            break
+          }
+          case 'IPUsedForDifferentGroups': {
+            ret =
+              ' The same IP address has been used for a lot of different groups.'
+            break
+          }
+          case 'SubjectUsedForDifferentGroups': {
+            ret =
+              'The same subject line has been used on a lot of different groups.'
+            break
+          }
+          case 'SpamAssassin': {
+            ret = 'The SpamAssassin filter thinks it might be spam.'
+            break
+          }
+          case 'Greetings spam': {
+            ret = 'It looks like a particular kind of greetings spam.'
+            break
+          }
+          case 'Referenced known spammer': {
+            ret = 'It refers to a known spammer.'
+            break
+          }
+          case 'Known spam keyword': {
+            ret = 'It uses a known spam keyword.'
+            break
+          }
+          case 'URL on DBL': {
+            ret = 'It refers to a suspicious website.'
+            break
+          }
+          case 'BulkVolunteerMail': {
+            ret = 'They have mailed many volunteer@ emails.'
+            break
+          }
+          case 'UsedOurDomain': {
+            ret = 'They have used our web domain in a suspicious way.'
+            break
+          }
+          case 'WorryWord': {
+            ret = 'It uses a known Worry Word.'
+            break
+          }
+          case 'Script': {
+            ret = 'It contains a suspicious <script> tag.'
+            break
+          }
+          case 'Link': {
+            ret = 'It contains a link.'
+            break
+          }
+          case 'Money': {
+            ret = 'It looks like it refers to money.'
+            break
+          }
+          case 'Email': {
+            ret = 'It contains an email address.'
+            break
+          }
+          case 'Language': {
+            ret =
+              'It might not be in English, so needs checking via Google Translate.'
+            break
+          }
+          default: {
+            ret = this.message.reviewreason
+          }
+        }
+      }
+
+      return ret
     }
   },
   methods: {

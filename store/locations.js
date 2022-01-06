@@ -1,7 +1,8 @@
 import Vue from 'vue'
 
 export const state = () => ({
-  list: {}
+  list: {},
+  dodgy: {}
 })
 
 export const mutations = {
@@ -13,6 +14,10 @@ export const mutations = {
         }
       }
     }
+  },
+
+  setDodgy(state, list) {
+    state.dodgy = list
   },
 
   clear(state) {
@@ -31,12 +36,22 @@ export const getters = {
 
   list: state => {
     return state.list
+  },
+
+  dodgy: state => {
+    return state.dodgy
   }
 }
 
 export const actions = {
   async fetch({ commit }, params) {
-    const { locations, location } = await this.$api.location.fetch(params)
+    const { locations, location, dodgy } = await this.$api.location.fetch(
+      params
+    )
+
+    if (dodgy) {
+      commit('setDodgy', dodgy)
+    }
 
     if (locations) {
       commit('clear')

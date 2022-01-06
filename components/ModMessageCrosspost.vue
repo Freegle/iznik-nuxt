@@ -4,6 +4,7 @@
       <em>{{ message.subject }}</em>
       {{ timeago(message.arrival) }} on <em>{{ groupname }}</em>
     </nuxt-link>
+    <span v-if="message.outcome">, now {{ message.outcome }}</span><span v-else>, still open</span>
   </div>
 </template>
 <script>

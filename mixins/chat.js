@@ -29,7 +29,9 @@ export default {
       contactGroup: null,
       urlid: null,
       showSpamModal: false,
-      showMicrovolunteering: false
+      showMicrovolunteering: false,
+      typingTimer: null,
+      typingLastMessage: null
     }
   },
   computed: {
@@ -322,6 +324,12 @@ export default {
   async beforeMount() {
     await this.fetchChat()
   },
+  beforeDestroy() {
+    if (this.typingTimer) {
+      clearTimeout(this.typingTimer)
+      this.typingTimer = null
+    }
+  },
   methods: {
     showInfo() {
       const modtools = this.$store.getters['misc/get']('modtools')
@@ -471,6 +479,30 @@ export default {
           // We've sent a message.  This would be a good time to do some microvolunteering.
           this.showMicrovolunteering = true
         }
+
+        // Start the timer which indicates we may still be typing.
+        this.startTypingTimer()
+      }
+    },
+    startTypingTimer() {
+      // We want to let the server know regularly that we are still typing.  This will bump earlier recent chat
+      // messages so that they don't get send out by email.  This helps with people who don't expect enter to act
+      // as send.
+      this.typingLastMessage = this.sendmessage
+      // console.log('Start typing time')
+      setTimeout(this.stillTyping, 10000)
+    },
+    stillTyping() {
+      // console.log('Are we still typing?')
+      if (this.sendmessage !== this.typingLastMessage) {
+        // We are still typing.
+        // console.log('Indeed we are, start timer')
+        this.$store.dispatch('chats/typing', {
+          chatid: this.id
+        })
+        this.startTypingTimer()
+      } else {
+        // console.log("No, we've stopped")
       }
     },
     notHandover() {

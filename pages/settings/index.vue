@@ -404,7 +404,7 @@
                   Email Alerts
                 </h3>
                 <p>
-                  Mail me replies from other freeglers  about OFFERs and WANTEDs.
+                  Mail me Chat messages from other freeglers  about OFFERs and WANTEDs.
                 </p>
                 <OurToggle
                   v-model="me.settings.notifications.email"
@@ -418,7 +418,7 @@
                 />
                 <hr>
                 <p>
-                  We can email you a copy of your own chat messages sent on the website.
+                  We can email you a copy of your own Chat messages sent on the website.
                 </p>
                 <OurToggle
                   v-model="me.settings.notifications.emailmine"
@@ -677,18 +677,12 @@ export default {
       cacheBust: Date.now(),
       userTimer: null,
       initialEmail: null,
-      autoresposts: true
+      autoreposts: true
     }
   },
   computed: {
     showSupporter() {
       const settings = this.me.settings
-      console.log(
-        'Show supporter?',
-        this.me.settings,
-        'hidesupporter' in settings,
-        !settings.hidesupporter
-      )
       return 'hidesupporter' in settings ? !settings.hidesupporter : true
     },
     relevantallowed: {

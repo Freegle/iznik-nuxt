@@ -31,7 +31,8 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch('messages/fetch', {
-      id: this.id
+      id: this.id,
+      messagehistory: true
     })
   },
   created() {

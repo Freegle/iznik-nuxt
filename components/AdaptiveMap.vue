@@ -4,6 +4,20 @@
       Map of offers and wanteds
     </h2>
     <client-only>
+      <div v-if="!joinVisible && !loggedIn && showClosest" class="overlapnav w-100">
+        <div class="d-flex justify-content-around pl-1 pr-1 w-100">
+          <JoinWithConfirm
+            :id="closestGroups[0].id"
+            :name="closestGroups[0].namedisplay + ' for email alerts'"
+            size="lg"
+            variant="white"
+            class="m-1"
+            :class-name="'m-1 text-truncate maxwidth'"
+          />
+        </div>
+      </div>
+    </client-only>
+    <client-only>
       <PostMap
         v-if="postMapInitialBounds"
         :key="'postmap-' + bump"
@@ -34,7 +48,7 @@
       <div v-observe-visibility="mapVisibilityChanged" />
     </client-only>
     <div v-if="mapready" class="rest">
-      <div v-if="closestGroups && closestGroups.length && closestGroups.length < 20" class="mb-1 border p-2 bg-white">
+      <div v-if="showClosest" class="mb-1 border p-2 bg-white">
         <h2 class="sr-only">
           Nearby commmunities
         </h2>
@@ -52,6 +66,9 @@
             />
           </div>
         </div>
+        <client-only>
+          <div v-observe-visibility="joinVisibilityChanged" />
+        </client-only>
       </div>
       <div v-if="showGroups" class="bg-white pt-3">
         <div v-if="showRegions">
@@ -177,7 +194,6 @@ import Vue from 'vue'
 import VueObserveVisibility from 'vue-observe-visibility'
 import InfiniteLoading from 'vue-infinite-loading'
 import map from '@/mixins/map.js'
-import dayjs from 'dayjs'
 import { MAX_MAP_ZOOM } from '../utils/constants'
 import JoinWithConfirm from '~/components/JoinWithConfirm'
 const AdaptiveMapGroup = () => import('./AdaptiveMapGroup')
@@ -311,6 +327,7 @@ export default {
       mapready: process.server,
       mapVisible: true,
       mapMoved: false,
+      joinVisible: false,
       messagesOnMap: [],
       bump: 1,
 
@@ -349,6 +366,13 @@ export default {
     }
   },
   computed: {
+    showClosest() {
+      return (
+        this.closestGroups &&
+        this.closestGroups.length &&
+        this.closestGroups.length < 20
+      )
+    },
     group: function() {
       let ret = null
 
@@ -691,23 +715,13 @@ export default {
 
     // We want to track views of messages for new members.
     if (this.track && this.me) {
-      const now = dayjs()
-      const daysago = now.diff(dayjs(this.me.added), 'days')
+      this.trackViews = true
 
-      if (daysago < 14) {
-        this.trackViews = true
-
-        this.$api.bandit.shown({
-          uid: 'browsepage',
-          variant: 'oldskool'
-        })
-
-        // eslint-disable-next-line no-undef
-        try {
-          window.__insp.push(['tagSession', { browsepage: 'oldskool' }])
-        } catch (e) {
-          console.log('Failed to tag inspectlet')
-        }
+      // eslint-disable-next-line no-undef
+      try {
+        window.__insp.push(['tagSession', { browsepage: 'oldskool' }])
+      } catch (e) {
+        console.log('Failed to tag inspectlet')
       }
     }
   },
@@ -817,6 +831,9 @@ export default {
     mapVisibilityChanged(visible) {
       this.mapVisible = visible
     },
+    joinVisibilityChanged(visible) {
+      this.joinVisible = visible
+    },
     wantMessage(m) {
       return (
         (this.selectedType === 'All' || this.selectedType === m.type) &&
@@ -830,8 +847,8 @@ export default {
         this.trackedView = true
 
         this.$api.bandit.chosen({
-          uid: 'browsepage',
-          variant: 'oldskool'
+          uid: 'messageview',
+          variant: 'community'
         })
       }
     }
@@ -883,5 +900,16 @@ export default {
     max-width: 300px;
     text-overflow: ellipsis;
   }
+}
+
+.overlapnav {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 1039;
+}
+
+/deep/ .maxwidth {
+  max-width: 100vw;
 }
 </style>

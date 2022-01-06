@@ -75,6 +75,9 @@
               </b-button>
             </b-button-group>
           </div>
+          <NoticeMessage v-if="happiness !== null" class="mt-2">
+            You can use the thumbs up/down buttons above to say how things went with other freeglers.
+          </NoticeMessage>
           <div>
             <label class="mt-4 strong">
               It went well/badly because:
@@ -90,6 +93,9 @@
             </div>
           </div>
         </div>
+        <NoticeMessage v-if="message.availableinitially > 1 && left > 0" variant="warning">
+          There will still be some left.  If you're giving them all away now, please adjust the numbers above.
+        </NoticeMessage>
       </template>
       <template slot="modal-footer">
         <div>
