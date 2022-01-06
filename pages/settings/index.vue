@@ -677,18 +677,12 @@ export default {
       cacheBust: Date.now(),
       userTimer: null,
       initialEmail: null,
-      autoresposts: true
+      autoreposts: true
     }
   },
   computed: {
     showSupporter() {
       const settings = this.me.settings
-      console.log(
-        'Show supporter?',
-        this.me.settings,
-        'hidesupporter' in settings,
-        !settings.hidesupporter
-      )
       return 'hidesupporter' in settings ? !settings.hidesupporter : true
     },
     relevantallowed: {
