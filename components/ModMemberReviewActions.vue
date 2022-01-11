@@ -6,14 +6,14 @@
         <span :class="'small ' + (daysago(membership.added) < 31 ? 'text-danger font-weight-bold' : 'text-muted')">joined {{ timeago(membership.added) }}</span>
         <span v-if="membership.reviewreason" class="text-danger ml-1 mr-1">{{ membership.reviewreason }}</span>
       </div>
-      <div v-if="amAModOn(membership.id) && needsReview" class="d-flex mt-2">
+      <div v-if="amAModOn(membership.id) && needsReview" class="d-flex mt-2 flex-wrap">
         <SpinButton
           name="check"
           spinclass="success"
           variant="primary"
           :handler="ignore"
           label="Ignore"
-          class="mr-2"
+          class="mr-2 mb-1"
         />
         <SpinButton
           name="trash-alt"
@@ -21,9 +21,9 @@
           variant="warning"
           :handler="remove"
           label="Remove"
-          class="mr-2"
+          class="mr-2 mb-1"
         />
-        <b-btn :to="'/modtools/members/approved/search/' + membership.id + '/' + member.userid" variant="secondary">
+        <b-btn :to="'/modtools/members/approved/search/' + membership.id + '/' + member.userid" variant="secondary" class="mb-1">
           Go to membership
         </b-btn>
       </div>
