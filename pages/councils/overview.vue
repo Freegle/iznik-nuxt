@@ -15,7 +15,7 @@
 
           <NoticeMessage variant="info">
             <p class="font-weight-bold">
-              Freegle is the UK's biggest and friendliest free online reuse network with over 2.7 million members.
+              Freegle is the UK's biggest and friendliest free online reuse network with over 3.6 million members.
             </p>
 
             <p>Anyone in the country can get access to a local Freegle community.  It's free to join, free to use, and everything on it is free.</p>
