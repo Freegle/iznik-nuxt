@@ -1,5 +1,10 @@
 <template>
-  <div @click.prevent.stop="handleClick($event)">
+  <div
+    v-long-press="300"
+    @contextmenu.prevent.stop="handleClick($event)"
+    @long-press-start="handleClick($event)"
+  >
+    >
     <vue-simple-context-menu
       ref="vueSimpleContextMenu"
       :element-id="uniqueid"
@@ -140,6 +145,7 @@
 <script>
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 import VueSimpleContextMenu from 'vue-simple-context-menu'
+import LongPress from 'vue-directive-long-press'
 import ChatMessageText from './ChatMessageText'
 import ChatMessageImage from './ChatMessageImage'
 import ChatMessageInterested from './ChatMessageInterested'
@@ -158,6 +164,9 @@ import 'vue-simple-context-menu/dist/vue-simple-context-menu.css'
 // System chat message doesn't seem to be used; ReportedUser is for ModTools only.
 
 export default {
+  directives: {
+    'long-press': LongPress
+  },
   components: {
     ChatMessageWarning,
     ChatMessageDateRead,
