@@ -22,7 +22,7 @@
           </p>
 
           <p>
-            Freegle has over 3.5 million members in a UK-wide network of over 460 communities, each run by
+            Freegle has over 3.6 million members in a UK-wide network of over 460 communities, each run by
             dedicated local volunteers. There are <strong>NUMBER</strong> local members in <strong>YOUR AREA</strong> already – all busy, giving
             away and getting stuff for free.
           </p>
