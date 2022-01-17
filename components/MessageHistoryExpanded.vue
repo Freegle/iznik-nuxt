@@ -15,6 +15,9 @@
             Posted by {{ message.fromuser.displayname }}
           </div>
         </div>
+        <div v-if="message.interacted" class="font-weight-bold" title="You've chatted to this freegler before.">
+          <v-icon name="link" /> Connected before
+        </div>
         <Supporter v-if="message.fromuser.supporter" class="d-inline" />
         <div v-if="message.fromuser && message.fromuser.info && message.fromuser.info.openoffers + message.fromuser.info.openwanteds > 0" @click="showProfileModal">
           <span v-if="message.fromuser.info.openoffers" class="text-success">
