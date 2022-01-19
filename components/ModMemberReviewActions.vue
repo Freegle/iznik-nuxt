@@ -81,7 +81,7 @@ export default {
     async removeConfirmed() {
       await this.$store.dispatch('members/remove', {
         userid: this.member.userid,
-        groupid: this.member.id
+        groupid: this.membership.id
       })
 
       setTimeout(() => {
