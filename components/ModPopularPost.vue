@@ -20,7 +20,7 @@
         FREE! Trending yesterday on {{ group.namedisplay }}.
       </p>
       <p>
-        Hop over to &lt;shortlink goes here&gt; to see what's being given away, or to ask for stuff you'd like.
+        Hop over to &lt;shortlink will be automatically inserted here&gt; to see what's being given away, or to ask for stuff you'd like.
       </p>
       <MessageSummary :id="message.id" :replyable="false" />
     </b-card-body>
