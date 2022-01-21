@@ -13,12 +13,12 @@ export const mutations = {
   },
 
   setList(state, params) {
-    const { list, popularposts } = params
+    const { socialactions, popularposts } = params
     state.list = {}
     state.popularposts = {}
 
-    if (list) {
-      for (const item of list) {
+    if (socialactions) {
+      for (const item of socialactions) {
         Vue.set(state.list, item.id, item)
       }
     }
