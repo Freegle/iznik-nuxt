@@ -3,7 +3,8 @@ import Vue from 'vue'
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
   // storage.
-  list: {}
+  list: {},
+  popularposts: {}
 })
 
 export const mutations = {
@@ -11,18 +12,27 @@ export const mutations = {
     Vue.set(state.list, item.id, item)
   },
 
-  setList(state, list) {
+  setList(state, params) {
+    const { list, popularposts } = params
     state.list = {}
+    state.popularposts = {}
 
     if (list) {
       for (const item of list) {
         Vue.set(state.list, item.id, item)
       }
     }
+
+    if (popularposts) {
+      for (const item of popularposts) {
+        Vue.set(state.popularposts, item.id, item)
+      }
+    }
   },
 
   clearAll(state) {
     state.list = {}
+    state.popularposts = {}
   },
 
   clearOne(state, id) {
@@ -33,18 +43,23 @@ export const mutations = {
 export const getters = {
   list: state => {
     return state.list
+  },
+  popularposts: state => {
+    return state.popularposts
   }
 }
 
 export const actions = {
   async fetch({ commit }, params) {
-    const { socialaction, socialactions } = await this.$api.socialactions.fetch(
-      params
-    )
+    const {
+      socialaction,
+      socialactions,
+      popularposts
+    } = await this.$api.socialactions.fetch(params)
     if (params.id) {
       commit('add', socialaction)
     } else {
-      commit('setList', socialactions)
+      commit('setList', { socialactions, popularposts })
     }
   },
 
@@ -58,5 +73,13 @@ export const actions = {
 
   async hide({ commit, dispatch }, params) {
     await this.$api.socialactions.hide(params.id, params.uid)
+  },
+
+  async sharePopularPost({ commit, dispatch }, params) {
+    await this.$api.socialactions.sharePopularPost(params.groupid, params.msgid)
+  },
+
+  async hidePopularPost({ commit, dispatch }, params) {
+    await this.$api.socialactions.hidePopularPost(params.groupid, params.msgid)
   }
 }

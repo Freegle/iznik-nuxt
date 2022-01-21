@@ -12,4 +12,16 @@ export default class SocialActionsAPI extends BaseAPI {
   hide(id, uid) {
     return this.$post('/socialactions', { id, uid, action: 'Hide' })
   }
+
+  sharePopularPost(groupid, msgid) {
+    return this.$post('/socialactions', { groupid, msgid, action: 'DoPopular' })
+  }
+
+  hidePopularPost(groupid, msgid) {
+    return this.$post('/socialactions', {
+      groupid,
+      msgid,
+      action: 'HidePopular'
+    })
+  }
 }
