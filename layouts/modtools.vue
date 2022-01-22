@@ -73,7 +73,7 @@
           <hr>
           <ModMenuItemLeft link="/modtools/communityevents" name="Events" :count="['pendingevents']" />
           <ModMenuItemLeft link="/modtools/volunteering" name="Volunteering" :count="['pendingvolunteering']" />
-          <ModMenuItemLeft link="/modtools/publicity" name="Publicity" :count="['socialactions']" />
+          <ModMenuItemLeft link="/modtools/publicity" name="Publicity" :count="['socialactions','popularposts']" />
           <ModMenuItemLeft link="/modtools/admins" name="Admins" :count="['pendingadmins']" />
           <ModMenuItemLeft link="/modtools/spammers" name="Spammers" :count="hasPermissionSpamAdmin ? ['spammerpendingadd', 'spammerpendingremove'] : []" />
           <hr>

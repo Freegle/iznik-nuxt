@@ -75,6 +75,9 @@
               </b-button>
             </b-button-group>
           </div>
+          <NoticeMessage v-if="happiness !== null && type === 'Taken'" class="mt-2">
+            You can use the thumbs up/down buttons above to say how things went with other freeglers.
+          </NoticeMessage>
           <div>
             <label class="mt-4 strong">
               It went well/badly because:

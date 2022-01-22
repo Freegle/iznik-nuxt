@@ -1,141 +1,148 @@
 <template>
-  <div @click.prevent.stop="handleClick($event)">
-    <vue-simple-context-menu
-      ref="vueSimpleContextMenu"
-      :element-id="uniqueid"
-      :options="options"
-      @option-clicked="optionClicked"
-    />
-    <div v-if="chatmessage.type === 'Default'">
-      <chat-message-text
-        :chat="chat"
-        :chatmessage="chatmessage"
-        :otheruser="otheruser"
-        :pov="pov"
-        :chatusers="chatusers"
-        :highlight-emails="highlightEmails"
+  <client-only>
+    <div
+      v-long-press="300"
+      @contextmenu.prevent.stop="handleClick($event)"
+      @long-press-start="handleClick($event)"
+    >
+      >
+      <vue-simple-context-menu
+        ref="vueSimpleContextMenu"
+        :element-id="uniqueid"
+        :options="options"
+        @option-clicked="optionClicked"
       />
-    </div>
-    <chat-message-image
-      v-else-if="chatmessage.type === 'Image'"
-      :chat="chat"
-      :chatmessage="chatmessage"
-      :otheruser="otheruser"
-      :pov="pov"
-      :chatusers="chatusers"
-    />
-    <div v-else-if="chatmessage.type === 'Interested'">
-      <chat-message-interested
-        v-if="otheruser"
-        :chat="chat"
-        :chatmessage="chatmessage"
-        :otheruser="otheruser"
-        :pov="pov"
-        :chatusers="chatusers"
-        :highlight-emails="highlightEmails"
-      />
-    </div>
-    <div v-else-if="chatmessage.type === 'Completed' && otheruser">
-      <chat-message-completed
-        v-if="otheruser"
+      <div v-if="chatmessage.type === 'Default'">
+        <chat-message-text
+          :chat="chat"
+          :chatmessage="chatmessage"
+          :otheruser="otheruser"
+          :pov="pov"
+          :chatusers="chatusers"
+          :highlight-emails="highlightEmails"
+        />
+      </div>
+      <chat-message-image
+        v-else-if="chatmessage.type === 'Image'"
         :chat="chat"
         :chatmessage="chatmessage"
         :otheruser="otheruser"
         :pov="pov"
         :chatusers="chatusers"
       />
-    </div>
-    <div v-else-if="chatmessage.type === 'Promised' && otheruser">
-      <chat-message-promised
-        v-if="otheruser"
+      <div v-else-if="chatmessage.type === 'Interested'">
+        <chat-message-interested
+          v-if="otheruser"
+          :chat="chat"
+          :chatmessage="chatmessage"
+          :otheruser="otheruser"
+          :pov="pov"
+          :chatusers="chatusers"
+          :highlight-emails="highlightEmails"
+        />
+      </div>
+      <div v-else-if="chatmessage.type === 'Completed' && otheruser">
+        <chat-message-completed
+          v-if="otheruser"
+          :chat="chat"
+          :chatmessage="chatmessage"
+          :otheruser="otheruser"
+          :pov="pov"
+          :chatusers="chatusers"
+        />
+      </div>
+      <div v-else-if="chatmessage.type === 'Promised' && otheruser">
+        <chat-message-promised
+          v-if="otheruser"
+          :chat="chat"
+          :chatmessage="chatmessage"
+          :otheruser="otheruser"
+          :pov="pov"
+          :chatusers="chatusers"
+        />
+      </div>
+      <div v-else-if="chatmessage.type === 'Reneged' && otheruser">
+        <chat-message-reneged
+          v-if="otheruser"
+          :chat="chat"
+          :chatmessage="chatmessage"
+          :otheruser="otheruser"
+          :pov="pov"
+          :chatusers="chatusers"
+        />
+      </div>
+      <div v-else-if="chatmessage.type === 'Address' && otheruser">
+        <chat-message-address
+          v-if="otheruser"
+          :chat="chat"
+          :chatmessage="chatmessage"
+          :otheruser="otheruser"
+          :pov="pov"
+          :chatusers="chatusers"
+        />
+      </div>
+      <div v-else-if="chatmessage.type === 'Nudge' && otheruser">
+        <chat-message-nudge
+          v-if="otheruser"
+          :chat="chat"
+          :chatmessage="chatmessage"
+          :otheruser="otheruser"
+          :pov="pov"
+          :chatusers="chatusers"
+        />
+      </div>
+      <div v-else-if="chatmessage.type === 'ModMail'">
+        <chat-message-mod-mail
+          :chat="chat"
+          :chatmessage="chatmessage"
+          :otheruser="null"
+          :pov="pov"
+          :chatusers="chatusers"
+        />
+      </div>
+      <div v-else-if="chatmessage.type === 'Schedule' && otheruser">
+        <chat-message-schedule
+          v-if="otheruser"
+          :chat="chat"
+          :chatmessage="chatmessage"
+          :otheruser="otheruser"
+          :pov="pov"
+          :chatusers="chatusers"
+        />
+      </div>
+      <div v-else-if="chatmessage.type === 'ScheduleUpdated' && otheruser">
+        <chat-message-schedule
+          v-if="otheruser"
+          :chat="chat"
+          :chatmessage="chatmessage"
+          :otheruser="otheruser"
+          :pov="pov"
+          :chatusers="chatusers"
+        />
+      </div>
+      <div v-else-if="chatmessage.type === 'ReportedUser'">
+        <chat-message-report
+          :chat="chat"
+          :chatmessage="chatmessage"
+          :otheruser="otheruser"
+          :pov="pov"
+          :chatusers="chatusers"
+        />
+      </div>
+      <div v-else-if="supportOrAdmin">
+        Unknown chat message type {{ chatmessage.type }}
+      </div>
+      <chat-message-warning :chatmessage="chatmessage" />
+      <chat-message-date-read
         :chat="chat"
         :chatmessage="chatmessage"
         :otheruser="otheruser"
+        :last="last"
         :pov="pov"
         :chatusers="chatusers"
       />
     </div>
-    <div v-else-if="chatmessage.type === 'Reneged' && otheruser">
-      <chat-message-reneged
-        v-if="otheruser"
-        :chat="chat"
-        :chatmessage="chatmessage"
-        :otheruser="otheruser"
-        :pov="pov"
-        :chatusers="chatusers"
-      />
-    </div>
-    <div v-else-if="chatmessage.type === 'Address' && otheruser">
-      <chat-message-address
-        v-if="otheruser"
-        :chat="chat"
-        :chatmessage="chatmessage"
-        :otheruser="otheruser"
-        :pov="pov"
-        :chatusers="chatusers"
-      />
-    </div>
-    <div v-else-if="chatmessage.type === 'Nudge' && otheruser">
-      <chat-message-nudge
-        v-if="otheruser"
-        :chat="chat"
-        :chatmessage="chatmessage"
-        :otheruser="otheruser"
-        :pov="pov"
-        :chatusers="chatusers"
-      />
-    </div>
-    <div v-else-if="chatmessage.type === 'ModMail'">
-      <chat-message-mod-mail
-        :chat="chat"
-        :chatmessage="chatmessage"
-        :otheruser="null"
-        :pov="pov"
-        :chatusers="chatusers"
-      />
-    </div>
-    <div v-else-if="chatmessage.type === 'Schedule' && otheruser">
-      <chat-message-schedule
-        v-if="otheruser"
-        :chat="chat"
-        :chatmessage="chatmessage"
-        :otheruser="otheruser"
-        :pov="pov"
-        :chatusers="chatusers"
-      />
-    </div>
-    <div v-else-if="chatmessage.type === 'ScheduleUpdated' && otheruser">
-      <chat-message-schedule
-        v-if="otheruser"
-        :chat="chat"
-        :chatmessage="chatmessage"
-        :otheruser="otheruser"
-        :pov="pov"
-        :chatusers="chatusers"
-      />
-    </div>
-    <div v-else-if="chatmessage.type === 'ReportedUser'">
-      <chat-message-report
-        :chat="chat"
-        :chatmessage="chatmessage"
-        :otheruser="otheruser"
-        :pov="pov"
-        :chatusers="chatusers"
-      />
-    </div>
-    <div v-else-if="supportOrAdmin">
-      Unknown chat message type {{ chatmessage.type }}
-    </div>
-    <chat-message-warning :chatmessage="chatmessage" />
-    <chat-message-date-read
-      :chat="chat"
-      :chatmessage="chatmessage"
-      :otheruser="otheruser"
-      :last="last"
-      :pov="pov"
-      :chatusers="chatusers"
-    />
-  </div>
+  </client-only>
 </template>
 <script>
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
@@ -156,8 +163,16 @@ import ChatMessageWarning from '~/components/ChatMessageWarning'
 import 'vue-simple-context-menu/dist/vue-simple-context-menu.css'
 
 // System chat message doesn't seem to be used; ReportedUser is for ModTools only.
+let LongPress = null
+
+if (process.client) {
+  LongPress = require('vue-directive-long-press')
+}
 
 export default {
+  directives: {
+    'long-press': LongPress
+  },
   components: {
     ChatMessageWarning,
     ChatMessageDateRead,

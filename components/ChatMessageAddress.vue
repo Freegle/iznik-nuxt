@@ -22,13 +22,13 @@
                   <l-map
                     ref="map"
                     :zoom="16"
-                    :center="[chatmessage.address.postcode.lat, chatmessage.address.postcode.lng]"
+                    :center="[chatmessage.address.lat, chatmessage.postcode.lng]"
                     :style="'width: 100%; height: 200px'"
                   >
                     <l-tile-layer :url="osmtile" :attribution="attribution" />
-                    <l-marker :lat-lng="[chatmessage.address.postcode.lat, chatmessage.address.postcode.lng]" :interactive="false" />
+                    <l-marker :lat-lng="[chatmessage.address.lat, chatmessage.address.lng]" :interactive="false" />
                   </l-map>
-                  <ExternalLink :href="'https://maps.google.com/?q=' + chatmessage.address.postcode.lat + ',' + chatmessage.address.postcode.lng + '&z=16'" class="mt-1">
+                  <ExternalLink :href="'https://maps.google.com/?q=' + chatmessage.address.lat + ',' + chatmessage.address.lng + '&z=16'" class="mt-1">
                     View in Google Maps
                   </ExternalLink>
                 </b-col>
@@ -56,13 +56,13 @@
                   <l-map
                     ref="map"
                     :zoom="14"
-                    :center="[chatmessage.address.postcode.lat, chatmessage.address.postcode.lng]"
+                    :center="[chatmessage.address.lat, chatmessage.address.lng]"
                     :style="'width: 100%; height: 200px'"
                   >
                     <l-tile-layer :url="osmtile" :attribution="attribution" />
-                    <l-marker :lat-lng="[chatmessage.address.postcode.lat, chatmessage.address.postcode.lng]" :interactive="false" />
+                    <l-marker :lat-lng="[chatmessage.address.lat, chatmessage.address.lng]" :interactive="false" />
                   </l-map>
-                  <ExternalLink :href="'https://maps.google.com/?q=' + chatmessage.address.postcode.lat + ',' + chatmessage.address.postcode.lng + '&z=16'" class="mt-1">
+                  <ExternalLink :href="'https://maps.google.com/?q=' + chatmessage.address.lat + ',' + chatmessage.address.lng + '&z=16'" class="mt-1">
                     View in Google Maps
                   </ExternalLink>
                 </b-col>

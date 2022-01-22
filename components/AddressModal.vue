@@ -33,6 +33,23 @@
               </b-col>
             </b-row>
             <div v-if="selectedAddress">
+              <b-row class="mb-2">
+                <b-col cols="12" sm="8">
+                  <l-map
+                    v-if="showMap && selectedAddressObject"
+                    ref="map"
+                    :zoom="16"
+                    :center="[selectedAddressObject.lat, selectedAddressObject.lng]"
+                    :style="'width: 100%; height: 200px'"
+                  >
+                    <l-tile-layer :url="osmtile" :attribution="attribution" />
+                    <l-marker :lat-lng="markerLatLng" draggable @update:latLng="updateMarker" />
+                  </l-map>
+                  <p class="mt-2">
+                    <v-icon name="info-circle" /> Drag the marker if it's not in the right place.
+                  </p>
+                </b-col>
+              </b-row>
               <h5>Directions</h5>
               <p>Any instructions about how to find it, or where you'll leave items.</p>
               <b-row>
@@ -40,10 +57,14 @@
                   <b-textarea v-model="instructions" rows="2" max-rows="6" class="mb-1" />
                 </b-col>
                 <b-col cols="12" sm="4">
-                  <b-btn variant="primary" @click="saveInstructions">
-                    <v-icon v-if="instructing" name="sync" class="fa-spin text-success" />
-                    <v-icon v-else name="save" /> Save
-                  </b-btn>
+                  <SpinButton
+                    name="save"
+                    variant="primary"
+                    size="lg"
+                    :handler="saveInstructions"
+                    label="Save"
+                    spinclass="text-white"
+                  />
                 </b-col>
               </b-row>
             </div>
@@ -80,12 +101,12 @@
             </b-row>
           </div>
         </template>
-        <template slot="modal-footer" slot-scope="{ ok, cancel }">
-          <b-button v-if="!choose" variant="white" @click="cancel">
+        <template slot="modal-footer">
+          <b-button v-if="!choose" variant="white" @click="hide">
             Close
           </b-button>
           <div v-else>
-            <b-button variant="white" @click="cancel">
+            <b-button variant="white" @click="hide">
               Cancel
             </b-button>
             <b-button variant="primary" :disabled="!selectedAddress" @click="chooseIt">
@@ -99,13 +120,16 @@
 </template>
 <script>
 import modal from '@/mixins/modal'
+import map from '@/mixins/map'
+import SpinButton from './SpinButton'
 import Postcode from '~/components/Postcode'
 
 export default {
   components: {
-    Postcode
+    Postcode,
+    SpinButton
   },
-  mixins: [modal],
+  mixins: [modal, map],
   props: {
     choose: {
       type: Boolean,
@@ -119,11 +143,11 @@ export default {
       deleting: false,
       adding: false,
       updatedInstructions: null,
-      instructing: false,
       addresses: [],
       postcode: null,
       properties: {},
-      selectedProperty: 0
+      selectedProperty: 0,
+      showMap: false
     }
   },
   computed: {
@@ -172,6 +196,32 @@ export default {
         this.$store.dispatch('address/select', newValue)
       }
     },
+    selectedAddressObject() {
+      return this.selectedAddress ? this.addresses[this.selectedAddress] : null
+    },
+    markerLatLng: {
+      get: function() {
+        if (!this.selectedAddressObject) {
+          return null
+        }
+
+        if (this.selectedAddressObject.lat || this.selectedAddressObject.lng) {
+          return [
+            this.selectedAddressObject.lat,
+            this.selectedAddressObject.lng
+          ]
+        }
+
+        return [
+          this.selectedAddressObject.postcode.lat,
+          this.selectedAddressObject.postcode.lng
+        ]
+      },
+      set: function(newValue) {
+        this.selectedAddressObject.lat = newValue[0]
+        this.selectedAddressObject.lng = newValue[1]
+      }
+    },
     instructions: {
       get: function() {
         let ret = null
@@ -200,9 +250,15 @@ export default {
         this.addresses.length > 0
       ) {
         this.selectedAddress = this.addresses[0].id
+        this.instructions = this.addresses[0].instructions
       } else {
         this.selectedAddress = null
+        this.instructions = null
       }
+
+      setTimeout(() => {
+        this.showMap = true
+      }, 100)
     },
     async show() {
       // Fetch the current addresses before opening the modal.
@@ -238,10 +294,10 @@ export default {
     hide() {
       this.showModal = false
       this.showAdd = false
+      this.showMap = false
     },
     async add() {
       this.adding = true
-      console.log('Add', this.selectedProperty)
 
       const id = await this.$store.dispatch('address/add', {
         pafid: this.selectedProperty,
@@ -275,14 +331,10 @@ export default {
       this.selectedProperty = 0
     },
     async saveInstructions() {
-      this.instructing = true
-
       await this.$store.dispatch('address/update', {
         id: this.selectedAddress,
         instructions: this.updatedInstructions
       })
-
-      this.instructing = false
     },
     addnew() {
       this.showAdd = true
@@ -290,6 +342,14 @@ export default {
     chooseIt() {
       this.$emit('chosen', this.selectedAddress)
       this.hide()
+    },
+    async updateMarker(val) {
+      console.log('Update marker', JSON.stringify(val))
+      await this.$store.dispatch('address/update', {
+        id: this.selectedAddress,
+        lat: val.lat,
+        lng: val.lng
+      })
     }
   }
 }
