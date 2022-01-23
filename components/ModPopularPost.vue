@@ -20,6 +20,9 @@
         FREE! Trending yesterday on {{ group.namedisplay }}.
       </p>
       <p>
+        {{ message.subject }}
+      </p>
+      <p>
         Hop over to &lt;shortlink will be automatically inserted here&gt; to see what else is being given away, or to ask for stuff you'd like.
       </p>
       <MessageSummary :id="message.id" :replyable="false" />
