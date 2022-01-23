@@ -432,8 +432,7 @@
                 />
                 <hr>
                 <p>
-                  We can email you if there's an unread notification on here, or about recent ChitChat posts from nearby
-                  freeglers.
+                  We can email you about ChitChat, and notifications (the bell icon).
                 </p>
                 <OurToggle
                   v-model="notificationmails"

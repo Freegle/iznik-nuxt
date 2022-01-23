@@ -158,7 +158,12 @@ export default {
         if (c.chattype === 'User2User' && c.user1 && c.user2) {
           const otheruser = c.user1.id === this.myid ? c.user2 : c.user1
           if (!retids[otheruser.id]) {
-            ret.push(otheruser)
+            ret.push({
+              userid: otheruser.id,
+              displayname: otheruser.displayname
+            })
+
+            retids[otheruser.id] = true
           }
         }
       })
