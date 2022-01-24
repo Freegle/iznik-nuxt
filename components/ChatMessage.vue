@@ -5,7 +5,6 @@
       @contextmenu.prevent.stop="handleClick($event)"
       @long-press-start="handleClick($event)"
     >
-      >
       <vue-simple-context-menu
         ref="vueSimpleContextMenu"
         :element-id="uniqueid"
