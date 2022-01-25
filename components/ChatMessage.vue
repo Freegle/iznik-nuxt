@@ -2,6 +2,7 @@
   <client-only>
     <div
       v-long-press="300"
+      @mousedown="saveSelected"
       @contextmenu.prevent.stop="handleClick($event)"
       @long-press-start="handleClick($event)"
     >
@@ -230,7 +231,11 @@ export default {
   data() {
     return {
       uniqueid: '',
+      selectedText: null,
       options: [
+        {
+          name: 'Copy to clipboard'
+        },
         {
           name: 'Mark unread'
         }
@@ -244,11 +249,25 @@ export default {
     handleClick(event) {
       this.$refs.vueSimpleContextMenu.showMenu(event)
     },
+    saveSelected() {
+      if (process.client && window.getSelection) {
+        this.selectedText = window.getSelection().toString()
+      }
+    },
     async optionClicked(val) {
-      await this.$store.dispatch('chats/markUnseen', {
-        chatid: this.chat.id,
-        msgid: this.prevmessage
-      })
+      switch (val.option.name) {
+        case 'Copy to clipboard':
+          if (process.client && this.selectedText) {
+            await navigator.clipboard.writeText(this.selectedText)
+          }
+          break
+        case 'Mark unread':
+          await this.$store.dispatch('chats/markUnseen', {
+            chatid: this.chat.id,
+            msgid: this.prevmessage
+          })
+          break
+      }
     }
   }
 }
