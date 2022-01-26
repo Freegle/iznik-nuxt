@@ -234,7 +234,7 @@ export default {
       debug: false,
       todo: 5,
       done: 0,
-      types: ['CheckMessage', 'SearchTerm', 'PhotoRotate'],
+      types: ['CheckMessage', 'PhotoRotate'],
       bump: 1
     }
   },
