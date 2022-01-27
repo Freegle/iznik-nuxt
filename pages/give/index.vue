@@ -89,7 +89,6 @@ export default {
 
     if (this.me) {
       // Get our own posts so that we can spot duplicates.
-      await this.$store.dispatch('messages/clear')
       this.$store.dispatch('messages/fetchMessages', {
         collection: 'AllUser',
         summary: true,
