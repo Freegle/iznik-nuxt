@@ -20,7 +20,7 @@
           </ExternalLink>
         </div>
         <!-- eslint-disable-next-line -->
-        <div v-html="snippet" />
+        <div v-html="snippet" class="forcebreak" />
       </div>
     </div>
   </div>
