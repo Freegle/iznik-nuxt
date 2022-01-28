@@ -22,7 +22,10 @@ export const getters = {
 
 export const actions = {
   async fetch({ commit }, params) {
-    console.log('Fetch donations', params)
     commit('set', await this.$api.donations.fetch(params.groupid))
+  },
+
+  async add({ commit }, params) {
+    await this.$api.donations.add(params.userid, params.amount, params.date)
   }
 }
