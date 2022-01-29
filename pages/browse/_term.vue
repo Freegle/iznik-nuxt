@@ -174,6 +174,7 @@ export default {
               dayjs(this.me.aboutme.timestamp),
               'months'
             )
+
             if (monthsago >= 6) {
               // Old.  Ask them to review it.
               this.showAboutMe = true
