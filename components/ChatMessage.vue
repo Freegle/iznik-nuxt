@@ -258,7 +258,11 @@ export default {
       switch (val.option.name) {
         case 'Copy to clipboard':
           if (process.client && this.selectedText) {
-            await navigator.clipboard.writeText(this.selectedText)
+            if (process.env.IS_APP) {
+              window.cordova.plugins.clipboard.copy(this.selectedText);
+            } else {
+              await navigator.clipboard.writeText(this.selectedText)
+            }
           }
           break
         case 'Mark unread':
