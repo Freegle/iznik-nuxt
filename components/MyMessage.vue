@@ -204,7 +204,7 @@
                   </tbody>
                 </table>
                 <p v-else class="text-muted">
-                  No replies yet. <span v-if="!taken && !received && message.canrepostat">Will auto-repost {{ timeago(message.canrepostat) }}.</span>
+                  No replies yet. <span v-if="willAutoRepost">Will auto-repost {{ timeago(message.canrepostat) }}.</span>
                 </p>
               </b-card-text>
             </b-card-body>
@@ -469,6 +469,17 @@ export default {
       }
 
       return ret
+    },
+    willAutoRepost() {
+      if (this.taken || this.received || !this.message.canrepostat) {
+        return false
+      }
+
+      const d = this.$dayjs(this.message.canrepostat)
+      const now = this.$dayjs()
+      console.log(this.message.canrepostat, d, now)
+
+      return d.isAfter(now)
     }
   },
   watch: {
