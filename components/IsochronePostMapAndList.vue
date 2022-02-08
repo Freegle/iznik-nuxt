@@ -134,8 +134,14 @@
           <div v-observe-visibility="messageVisibilityChanged" />
         </client-only>
         <div v-if="filteredMessages && filteredMessages.length">
-          <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
-            <Message :id="message.id" record-view class="mb-2 mb-sm-3" @view="recordView" />
+          <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" :ref="'messagewrapper-' + message.id" class="p-0">
+            <Message
+              :id="message.id"
+              v-observe-visibility="messageVisible"
+              record-view
+              class="mb-2 mb-sm-3"
+              @view="recordView(message.id)"
+            />
           </div>
         </div>
         <client-only>
@@ -301,6 +307,8 @@ export default {
       bump: 1,
 
       // Infinite message scroll
+      ensureMessageVisible: null,
+      maxMessageVisible: null,
       postsVisible: true,
       busy: false,
       infiniteId: +new Date(),
@@ -399,7 +407,7 @@ export default {
         // Filter out dups by subject (for crossposting).
         //
         // messagesForList is ordered (good) but long (bad).  So we iterate through the messages in the store
-        // (likely not many) and then sort.
+        // (likely not as many) and then sort.
         const messages = this.$store.getters['messages/getAll']
 
         messages.forEach(message => {
@@ -584,12 +592,32 @@ export default {
       })
 
       this.infiniteId++
-      this.$store.dispatch('messages/clear')
     },
     search(newval) {
       if (!newval) {
         // We've cleared the search box, so cancel the search and return the map to normal.
         this.searchOn = null
+      }
+    },
+    filteredMessages(newval) {
+      if (this.ensureMessageVisible) {
+        console.log('Asked to scroll to', this.ensureMessageVisible)
+        this.$nextTick(() => {
+          console.log('Next tick')
+          let ref = this.$refs['messagewrapper-' + this.ensureMessageVisible]
+
+          if (ref) {
+            // Dynamic refs returned as array.
+            ref = Array.isArray(ref) ? ref[0] : ref
+
+            console.log('Ref is', ref)
+            if (ref) {
+              console.log('Ref exists, scroll to it')
+              ref.scrollIntoView(false)
+              this.ensureMessageVisible = null
+            }
+          }
+        })
       }
     }
   },
@@ -620,6 +648,14 @@ export default {
       } catch (e) {
         console.log('Failed to tag inspectlet')
       }
+    }
+
+    // We might have history which tells us to go back to a particular message. This is a common case on mobile -
+    // you view a message, reply, then go back and expect to be where you were in the list.
+    console.log('mounted, history', history.state)
+    if (history && history.state && history.state.msgid) {
+      this.ensureMessageVisible = parseInt(history.state.msgid)
+      console.log('Go to message in list', this.ensureMessageVisible)
     }
   },
   methods: {
@@ -688,6 +724,7 @@ export default {
     },
     messagesChanged(messages) {
       let changed = false
+
       if (!messages || !this.messagesOnMap) {
         changed = true
       } else {
@@ -702,7 +739,6 @@ export default {
       if (changed) {
         this.messagesOnMap = messages
         this.infiniteId++
-        this.$store.dispatch('messages/clear')
       }
     },
     groupsChanged(groupids) {
@@ -745,6 +781,29 @@ export default {
           uid: 'messageview',
           variant: 'isochrone'
         })
+      }
+    },
+    messageVisible(isVisible, entry) {
+      if (isVisible && entry && entry.target.id) {
+        const tid = entry.target.id
+        const p = tid.indexOf('-')
+
+        if (p !== -1) {
+          const id = parseInt(tid.substring(p + 1))
+          const ix = this.messagesForListIds.indexOf(id)
+
+          if (id && (!this.maxMessageVisible || ix > this.maxMessageVisible)) {
+            console.log('Max message visibiel', this.maxMessageVisible)
+            this.maxMessageVisible = ix
+
+            history.replaceState(
+              {
+                msgid: id
+              },
+              null
+            )
+          }
+        }
       }
     }
   }

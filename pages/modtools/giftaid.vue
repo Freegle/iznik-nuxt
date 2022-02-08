@@ -3,8 +3,11 @@
     <ModHelpGiftAid />
     <b-card no-body class="mb-2">
       <b-card-body>
+        <p>
+          You can search for existing Gift Aid details by someone's name or address.
+        </p>
         <b-input-group>
-          <b-input v-model="search" />
+          <b-input v-model="search" placeholder="Search for gift aid record" />
           <b-input-group-append>
             <SpinButton variant="white" name="search" label="Search" :handler="doSearch" />
           </b-input-group-append>
@@ -24,8 +27,23 @@
         </div>
       </b-card-body>
     </b-card>
+
+    <b-card no-body class="mb-2">
+      <b-card-body>
+        <p>
+          You can record a donation which wasn't made via PayPal, e.g. a bank transfer or cheque.  Please use this
+          carefully.  A manual thank you will be requested (not just for larger amounts), a Supporter Badge will be
+          added, and the user will be prompted to complete a Gift Aid form if appropriate.
+        </p>
+        <b-input v-model="userid" type="number" placeholder="User's ID from Support Tools" class="mt-2" />
+        <b-input v-model="amount" type="number" placeholder="Amount e.g. 1.50. No pound sign" class="mt-2" />
+        <b-input v-model="date" type="date" placeholder="Date of donation" class="mt-2" />
+        <SpinButton variant="white" name="save" label="Record external donation" :handler="recordDonation" class="mt-4" />
+      </b-card-body>
+    </b-card>
+
     <ModGiftAid v-for="giftaid in giftaids" :key="'giftaid-' + giftaid.id" :giftaid="giftaid" class="mt-1" />
-    <p v-if="!giftaids.length">
+    <p v-if="!giftaids.length" class="mt-2 font-weight-bold">
       No gift aid to review.
     </p>
   </b-container>
@@ -45,7 +63,10 @@ export default {
     return {
       giftaids: [],
       search: null,
-      results: []
+      results: [],
+      userid: null,
+      amount: null,
+      date: null
     }
   },
   async mounted() {
@@ -74,6 +95,15 @@ export default {
     },
     async doSearch() {
       this.results = await this.$api.giftaid.search(this.search)
+    },
+    recordDonation() {
+      if (this.userid && this.amount > 0 && this.date) {
+        this.$store.dispatch('donations/add', {
+          userid: this.userid,
+          amount: this.amount,
+          date: this.date
+        })
+      }
     }
   }
 }

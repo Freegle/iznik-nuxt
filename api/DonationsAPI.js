@@ -9,4 +9,8 @@ export default class DonationsAPI extends BaseAPI {
       raised: Math.round(parseInt(raised))
     }
   }
+
+  add(userid, amount, date) {
+    return this.$put('/donations', { userid, amount, date })
+  }
 }
