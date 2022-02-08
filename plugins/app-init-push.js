@@ -103,7 +103,7 @@ const cordovaApp = {
         }, function (match) {
           console.log('========== Universal/App-link NOT HANDLED', match)
         }, function (nomatch) {
-          // console.log('========== Universal/App-link', nomatch.$link.path)
+          //console.log('========== Universal/App-link', nomatch.$link.path)
           if (nomatch && nomatch.$link) {
             console.log('linkstate.route', nomatch.$link)
             linkstate.route = nomatch.$link
@@ -434,6 +434,22 @@ export default ({ app, store, $api, $axios }) => { // route
             }, 5000)
 
           }
+          if (linkstate.route.queryString) { // copied from middleware/src.js
+            console.log('=============== linkstate.route.queryString', linkstate.route.queryString)
+            const query = new Proxy(new URLSearchParams(linkstate.route.queryString), {
+              get: (searchParams, prop) => searchParams.get(prop),
+            });
+            if (query.src) {
+              console.log('=============== query.src', query.src)
+              $axios.post(process.env.API + '/src', {
+                src: query.src
+              })
+                .catch(e => {
+                  console.error('SRC log failed', e)
+                })
+            }
+          }
+
         }
       }
     )
