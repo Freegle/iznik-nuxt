@@ -81,10 +81,27 @@
             <l-tile-layer :url="osmtile" :attribution="attribution" />
             <l-control position="topright" />
             <div v-if="cga">
-              <l-geojson v-for="(c, i) in CGAs" :key="'cga-' + i" :geojson="c.json" :options="cgaOptions" @click="selectCGA($event, c.group)" />
+              <l-geojson
+                v-for="(c, i) in CGAs"
+                :key="'cga-' + i"
+                :geojson="c.json"
+                :options="cgaOptions"
+                :z-index-offset="2"
+                @click="selectCGA($event, c.group)"
+              />
             </div>
             <div v-if="dpa">
-              <l-geojson v-for="(d, i) in DPAs" :key="'dpa-' + i" :geojson="d.json" :options="dpaOptions" @click="selectDPA($event, d.group)" />
+              <l-geojson
+                v-for="(d, i) in DPAs"
+                :key="'dpa-' + i"
+                :geojson="d.json"
+                :options="dpaOptions"
+                :z-index-offset="1"
+                @click="selectDPA($event, d.group)"
+              />
+            </div>
+            <div v-if="overlaps && showDodgy && !groupid">
+              <l-geojson v-for="(d, i) in overlappingCGAs" :key="'cgaoverlap-' + i" :geojson="d" :options="cgaOverlapOptions" :z-index-offset="0" />
             </div>
             <div v-if="groupid">
               <l-feature-group>
@@ -103,7 +120,7 @@
                 </div>
               </l-feature-group>
             </div>
-            <div v-if="showDodgy">
+            <div v-if="showDodgy && groupid">
               <ClusterMarker v-if="mapObject && zoom < 10" :markers="dodgyInBounds" :map="mapObject" />
               <l-feature-group v-else>
                 <l-circle-marker
@@ -228,6 +245,7 @@
 <script>
 import map from '@/mixins/map.js'
 import ModChangedMapping from '@/components/ModChangedMapping'
+import * as turf from '@turf/turf'
 import Postcode from './Postcode'
 import SpinButton from './SpinButton'
 import ModGroupMapLocation from './ModGroupMapLocation'
@@ -247,6 +265,7 @@ if (process.browser) {
 
 // const GROUP_FILL_COLOUR = '#EEFFCC'
 const AREA_FILL_COLOUR = 'darkgreen'
+const OVERLAP_COLOUR = 'red'
 const FILL_OPACITY = 0.6
 const CGA_BOUNDARY_COLOUR = 'darkgreen'
 const DPA_BOUNDARY_COLOUR = 'darkblue'
@@ -274,6 +293,11 @@ export default {
       default: null
     },
     caretaker: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    overlaps: {
       type: Boolean,
       required: false,
       default: false
@@ -347,7 +371,7 @@ export default {
       const ret = []
 
       this.allgroups.forEach(g => {
-        if (g.polyofficial) {
+        if (g.onmap && g.polyofficial) {
           try {
             const wkt = new Wkt.Wkt()
             wkt.read(g.polyofficial)
@@ -367,7 +391,7 @@ export default {
       const ret = []
 
       this.allgroups.forEach(g => {
-        if (g.poly) {
+        if (g.onmap && g.poly) {
           try {
             const wkt = new Wkt.Wkt()
             wkt.read(g.poly)
@@ -380,6 +404,40 @@ export default {
           }
         }
       })
+
+      return ret
+    },
+    overlappingCGAs() {
+      const ret = []
+
+      for (let i = 0; i < this.CGAs.length; i++) {
+        for (let j = i + 1; j < this.CGAs.length; j++) {
+          try {
+            const p1 = turf.polygon(this.CGAs[i].json.coordinates)
+            const p2 = turf.polygon(this.CGAs[j].json.coordinates)
+            const intersection = turf.intersect(p1, p2)
+
+            if (intersection) {
+              if (turf.area(intersection) > 500) {
+                console.log(
+                  'Intersection',
+                  i,
+                  j,
+                  intersection,
+                  turf.area(intersection)
+                )
+                ret.push(intersection)
+
+                // Don't return too many for the same polygon.
+                break
+              }
+            }
+          } catch (e) {
+            console.log('Compare ', this.CGAs[i], this.CGAs[j])
+            console.log('Check failed', e)
+          }
+        }
+      }
 
       return ret
     },
@@ -420,6 +478,13 @@ export default {
         fillColor: AREA_FILL_COLOUR,
         fillOpacity: this.shade ? FILL_OPACITY : 0,
         color: DPA_BOUNDARY_COLOUR
+      }
+    },
+    cgaOverlapOptions() {
+      return {
+        fillColor: OVERLAP_COLOUR,
+        fillOpacity: FILL_OPACITY,
+        color: OVERLAP_COLOUR
       }
     },
     dodgy() {

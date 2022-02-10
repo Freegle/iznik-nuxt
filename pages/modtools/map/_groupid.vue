@@ -3,7 +3,7 @@
     <ModHelpMap />
     <div v-if="loaded">
       <ModGroupMap v-if="groupid" :groupid="groupid" />
-      <ModGroupMap v-else :groups="true" :caretaker="caretaker" />
+      <ModGroupMap v-else groups :caretaker="caretaker" overlaps />
     </div>
     <div v-else class="d-flex justify-content-around">
       <b-img-lazy src="~/static/loader.gif" alt="Loading" />
