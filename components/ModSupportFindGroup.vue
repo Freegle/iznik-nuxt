@@ -108,6 +108,24 @@
       <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ group.affiliationconfirmedby }}
       <br>
       <h4 class="mt-2">
+        Centre
+      </h4>
+      <p>
+        Lat/lng of group centre:
+      </p>
+      <div class="d-flex">
+        <b-form-input v-model="group.lat" type="number" class="mr-2" />
+        <b-form-input v-model="group.lng" type="number" class="mr-2" />
+      </div>
+      <p class="mt-2">
+        Additional centre for large groups:
+      </p>
+      <div class="d-flex">
+        <b-form-input v-model="group.altlat" type="number" class="mr-2 flex-shrink-1" />
+        <b-form-input v-model="group.altlng" type="number" class="mr-2 flex-shrink-1" />
+      </div>
+      <SpinButton variant="white" name="save" label="Save Update" :handler="saveCentres" class="mt-2" />
+      <h4 class="mt-2">
         CGA
       </h4>
       <b-textarea v-model="group.cga" rows="4" class="mb-2" />
@@ -307,6 +325,15 @@ export default {
       await this.$store.dispatch('group/update', {
         id: this.groupid,
         poly: this.group.dpa
+      })
+    },
+    async saveCentres() {
+      await this.$store.dispatch('group/update', {
+        id: this.groupid,
+        lat: this.group.lat,
+        lng: this.group.lng,
+        altlat: this.group.altlat,
+        altlng: this.group.altlng
       })
     }
   }
