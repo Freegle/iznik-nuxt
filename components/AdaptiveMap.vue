@@ -640,7 +640,6 @@ export default {
       })
 
       this.infiniteId++
-      this.$store.dispatch('messages/clear')
     },
     search(newval) {
       if (!newval) {
@@ -660,7 +659,6 @@ export default {
       }
 
       this.bump++
-      this.$store.dispatch('messages/clear')
     }
   },
   created() {
@@ -805,7 +803,6 @@ export default {
       if (changed) {
         this.messagesOnMap = messages
         this.infiniteId++
-        this.$store.dispatch('messages/clear')
       }
     },
     groupsChanged(groupids) {

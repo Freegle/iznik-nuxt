@@ -5,7 +5,7 @@ export default {
       searching: null,
       searchlast: null,
       distance: 100,
-      showChats: 5,
+      showChats: 20,
       complete: false,
       bump: Date.now()
     }
@@ -114,6 +114,7 @@ export default {
         ? this.filteredChats.slice(0, this.showChats)
         : []
 
+      console.log('Return visible chats', chats)
       return chats
     }
   },

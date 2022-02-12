@@ -29,7 +29,7 @@
               <span slot="no-results" />
               <span slot="no-more" />
               <div slot="spinner" class="w-100">
-                <div class="col text-center">
+                <div v-if="!chatmessages.length" class="col text-center">
                   <b-img-lazy src="~/static/loader.gif" alt="Loading" />
                 </div>
               </div>

@@ -153,7 +153,6 @@ export default {
     },
     async clearAndLoad() {
       // There's new stuff to do.  Reload.
-      console.log('Clear and load')
       // We don't want to pick up any real chat messages.
       await this.$store.dispatch('chatmessages/clearContext', {
         chatid: REVIEWCHAT
