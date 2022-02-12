@@ -83,7 +83,7 @@ export const actions = {
       sponsors,
       tnkey,
       function(data) {
-        if (data && data.ret === 2) {
+        if (data && data.ret === 10) {
           // Not hosting a group isn't worth logging.
           return false
         } else {
