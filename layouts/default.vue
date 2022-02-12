@@ -74,6 +74,9 @@ export default {
   },
   async mounted() {
     if (process.browser) {
+      // Wait for the store if necessary.
+      await this.$store.restored
+
       // Add class for screen background.
       document.body.classList.add('fd')
 
