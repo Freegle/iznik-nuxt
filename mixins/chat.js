@@ -391,6 +391,7 @@ export default {
             )
 
             if (
+              !newContext ||
               newContext === 'null' ||
               (currentContext !== 'null' &&
                 !newContext.localeCompare(currentContext))

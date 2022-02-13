@@ -208,8 +208,6 @@ export default {
     return {
       context: null,
       everFetched: false,
-      fetchedPrimaryMessages: [],
-      fetchedSecondaryMessages: [],
       mapObject: null,
       manyToShow: 20,
       bump: 1,
@@ -373,6 +371,12 @@ export default {
         fillOpacity: 0.2,
         color: 'darkblue'
       }
+    },
+    fetchedPrimaryMessages() {
+      return this.$store.getters['messages/primaryList']
+    },
+    fetchedSecondaryMessages() {
+      return this.$store.getters['messages/secondaryList']
     },
     primaryMessageList() {
       if (!this.groupid && this.type === 'All') {
@@ -670,9 +674,7 @@ export default {
         console.log('Fetch primary messages', JSON.stringify(params))
         this.lastFetchedPrimaryParams = paramstr
 
-        const ret = await this.$api.message.fetchMessages(params)
-        this.fetchedPrimaryMessages =
-          ret.ret === 0 && ret.messages ? ret.messages : []
+        await this.$store.dispatch('messages/fetchPrimaryMessages', params)
 
         this.everFetched = true
       } else {
@@ -712,10 +714,7 @@ export default {
           console.log('Fetch secondary messages', JSON.stringify(params))
           this.lastFetchedSecondaryParams = paramstr
 
-          const ret = await this.$api.message.fetchMessages(params)
-
-          this.fetchedSecondaryMessages =
-            ret.ret === 0 && ret.messages ? ret.messages : []
+          await this.$store.dispatch('messages/fetchSecondaryMessages', params)
         } else {
           console.log('Ignore dup secondary fetch', paramstr)
         }

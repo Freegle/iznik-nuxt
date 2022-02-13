@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import dayjs from 'dayjs'
 
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
@@ -12,6 +13,7 @@ export const mutations = {
   addRoom(state, item) {
     // This might be a number and therefore not of string type
     item.snippet = item.snippet + ''
+    item.addedToStore = dayjs().toISOString()
 
     Vue.set(state.list, parseInt(item.id), item)
   },
@@ -20,7 +22,6 @@ export const mutations = {
     if (chats) {
       // We might have chats that have been removed.  Look for ids in our store that are not in the list, and remove
       // them.  This is a common case when blocking a user.
-      // TODO STORE How will chat messages get removed?
       const existingIds = Object.keys(state.list).map(a => parseInt(a))
       const newIds = chats.map(a => a.id)
       const removed = existingIds.filter(a => !newIds.includes(a))
@@ -32,6 +33,7 @@ export const mutations = {
         // We might have a copy of the chat in store already.  If so, it may have more info than we have fetched
         // this time, so merge it.
         chat.snippet = chat.snippet + ''
+        chat.addedToStore = dayjs().toISOString()
 
         Vue.set(
           state.list,

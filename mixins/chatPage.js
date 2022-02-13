@@ -114,7 +114,6 @@ export default {
         ? this.filteredChats.slice(0, this.showChats)
         : []
 
-      console.log('Return visible chats', chats)
       return chats
     }
   },

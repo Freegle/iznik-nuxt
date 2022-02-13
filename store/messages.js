@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import cloneDeep from 'lodash.clonedeep'
+import dayjs from 'dayjs'
 
 export const state = () => ({
   // Use array because we need to store them in the order returned by the server.  We can't use Map because it's
@@ -15,12 +16,18 @@ export const state = () => ({
   context: null,
 
   // For spotting when we clear under the feet of an outstanding fetch
-  instance: 1
+  instance: 1,
+
+  // Lists for Browse
+  primaryList: [],
+  secondaryList: []
 })
 
 export const mutations = {
   add(state, item) {
     if (item) {
+      item.addedToStore = dayjs().toISOString()
+
       if (state.index[parseInt(item.id)]) {
         // Overwrite any existing entry.
         const existing = state.list.findIndex(obj => {
@@ -39,6 +46,8 @@ export const mutations = {
   addAll(state, items) {
     if (items) {
       items.forEach(item => {
+        item.addedToStore = dayjs().toISOString()
+
         if (state.index[parseInt(item.id)]) {
           const existing = state.list.findIndex(obj => {
             return parseInt(obj.id) === parseInt(item.id)
@@ -63,6 +72,8 @@ export const mutations = {
   clear(state) {
     state.list = []
     state.index = {}
+    state.primaryList = []
+    state.secondaryList = []
 
     if (state.instance) {
       state.instance++
@@ -75,6 +86,12 @@ export const mutations = {
   },
   setViewed(state, viewed) {
     state.viewed = viewed
+  },
+  setPrimary(state, list) {
+    state.primaryList = list
+  },
+  setSecondary(state, list) {
+    state.secondryList = list
   }
 }
 
@@ -109,7 +126,9 @@ export const getters = {
   getIndex: state => state.index,
   getViewed: state => {
     return state.viewed
-  }
+  },
+  primaryList: state => (state.primaryList ? state.primaryList : []),
+  secondaryList: state => (state.secondaryList ? state.secondaryList : [])
 }
 
 export const actions = {
@@ -526,5 +545,21 @@ export const actions = {
       messagehistory: true
     })
     commit('add', message)
+  },
+
+  async fetchPrimaryMessages({ dispatch, commit }, params) {
+    const ret = await this.$api.message.fetchMessages(params)
+
+    if (ret && ret.ret === 0) {
+      commit('setPrimary', ret.messages)
+    }
+  },
+
+  async fetchSecondaryMessages({ dispatch, commit }, params) {
+    const ret = await this.$api.message.fetchMessages(params)
+
+    if (ret && ret.ret === 0) {
+      commit('setSecondary', ret.messages)
+    }
   }
 }
