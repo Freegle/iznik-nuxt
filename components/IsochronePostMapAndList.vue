@@ -662,6 +662,7 @@ export default {
     loadMore: async function($state) {
       if (!this.busy) {
         this.busy = true
+        const now = this.$dayjs()
 
         try {
           // We work out which messages that are currently on the map are not in our store, and fetch them
@@ -676,7 +677,13 @@ export default {
             if (this.wantMessage(m)) {
               const message = this.$store.getters['messages/get'](m.id)
 
-              if (!message && !this.fetching[m.id] && this.infiniteId) {
+              // We need to fetch if we don't have it, or if it's old.  This is so that we pick up edits.
+              const needFetch =
+                !message ||
+                !message.addedToStore ||
+                now.diff(this.$dayjs(message.addedToStore), 'minute') > 30
+
+              if (needFetch && !this.fetching[m.id] && this.infiniteId) {
                 this.fetching[m.id] = true
 
                 fetching.push(m.id)
@@ -793,7 +800,6 @@ export default {
           const ix = this.messagesForListIds.indexOf(id)
 
           if (id && (!this.maxMessageVisible || ix > this.maxMessageVisible)) {
-            console.log('Max message visibiel', this.maxMessageVisible)
             this.maxMessageVisible = ix
 
             history.replaceState(
