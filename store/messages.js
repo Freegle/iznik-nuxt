@@ -156,24 +156,36 @@ export const actions = {
       }
     }
   },
-
-  async fetch({ commit }, params) {
+  async fetch({ state, commit, rootGetters }, params) {
     // Don't log errors on fetches of individual messages
     const instance = state.instance
     let errorOK = false
 
     try {
-      const { message, groups } = await this.$api.message.fetch(
-        params,
-        data => {
-          errorOK = true
-          return data.ret !== 3
-        }
-      )
+      // We need to fetch:
+      // - for ModTools, so we are always up to date
+      // - if we don't have it
+      // - if it's old, to pick up edits or state changes
+      const modtools = rootGetters['misc/get']('modtools')
+      const now = this.$dayjs()
+      let message = state.index[params.id]
 
-      if (state.instance === instance) {
-        // We might have some extra information to add in for this messages which we obtained earlier when searching.
-        message.matchedon = params.matchedon
+      const needFetch =
+        modtools ||
+        !message ||
+        !message.addedToStore ||
+        now.diff(this.$dayjs(message.addedToStore), 'minute') > 30
+
+      const prom = await this.$api.message.fetch(params, data => {
+        errorOK = true
+        return data.ret !== 3
+      })
+
+      if (needFetch) {
+        // Wait for the fetch to complete
+        const res = await prom
+        message = res.message
+        const groups = res.groups
 
         // Most group info returned on the call we don't care about because it's also in the message.  But whether
         // or not the group is closed matters.
@@ -186,6 +198,20 @@ export const actions = {
           }
         }
 
+        if (state.instance === instance) {
+          // We might have some extra information to add in for this messages which we obtained earlier when searching.
+          message.matchedon = params.matchedon
+        }
+
+        commit('add', message)
+      } else if (
+        state.instance === instance &&
+        message.matchedon !== params.matchon
+      ) {
+        // Use what we have - fetch will update the cache in the background.
+        //
+        // We might have some extra information to add in for this messages which we obtained earlier when searching.
+        message.matchedon = params.matchedon
         commit('add', message)
       }
     } catch (e) {
@@ -194,7 +220,6 @@ export const actions = {
       }
     }
   },
-
   async update({ commit, dispatch }, params) {
     const data = await this.$api.message.update(params)
 
@@ -205,7 +230,6 @@ export const actions = {
 
     return data
   },
-
   async patch({ commit, dispatch, rootGetters }, params) {
     const data = await this.$api.message.save(params)
     const parms = { id: params.id }
@@ -224,7 +248,6 @@ export const actions = {
     await dispatch('fetch', parms)
     return data
   },
-
   async updateChat({ dispatch }, userid) {
     // Find the chat to this user and refetch the messages, so that if we have a chat window open or other data
     // that depends on it, we update that.
@@ -260,7 +283,6 @@ export const actions = {
       )
     }
   },
-
   async promise({ dispatch }, params) {
     await dispatch(
       'update',
@@ -271,7 +293,6 @@ export const actions = {
 
     await dispatch('updateChat', params.userid)
   },
-
   async renege({ dispatch }, params) {
     await dispatch(
       'update',
@@ -282,24 +303,19 @@ export const actions = {
 
     await dispatch('updateChat', params.userid)
   },
-
   clearContext({ commit }) {
     commit('setContext', null)
   },
-
   clear({ commit }) {
     commit('clear')
     commit('setContext', null)
   },
-
   async intend({ dispatch }, params) {
     await this.$api.message.intend(params.id, params.outcome)
   },
-
   async view({ dispatch }, params) {
     await this.$api.message.view(params.id)
   },
-
   async fetchViewed({ commit, rootGetters }) {
     const me = rootGetters['auth/user']
 
@@ -312,7 +328,6 @@ export const actions = {
       commit('setViewed', messages)
     }
   },
-
   async approve({ commit, dispatch }, params) {
     await this.$api.message.approve(
       params.id,
@@ -337,7 +352,6 @@ export const actions = {
       }
     )
   },
-
   async spam({ commit, dispatch }, params) {
     await this.$api.message.spam(params.id, params.groupid)
 
@@ -356,7 +370,6 @@ export const actions = {
       }
     )
   },
-
   async reject({ commit, dispatch }, params) {
     await this.$api.message.reject(
       params.id,
@@ -381,7 +394,6 @@ export const actions = {
       }
     )
   },
-
   async reply({ commit, dispatch }, params) {
     await this.$api.message.reply(
       params.id,
@@ -402,7 +414,6 @@ export const actions = {
       }
     )
   },
-
   async delete({ commit, dispatch }, params) {
     await this.$api.message.delete(
       params.id,
@@ -427,7 +438,6 @@ export const actions = {
       }
     )
   },
-
   async hold({ dispatch, commit }, params) {
     await this.$api.message.hold(params.id)
     const { message } = await this.$api.message.fetch({
@@ -436,7 +446,6 @@ export const actions = {
     })
     commit('add', message)
   },
-
   async release({ dispatch, commit }, params) {
     await this.$api.message.release(params.id)
     const { message } = await this.$api.message.fetch({
@@ -445,7 +454,6 @@ export const actions = {
     })
     commit('add', message)
   },
-
   async approveedits({ dispatch, commit }, params) {
     await this.$api.message.approveEdits(params.id)
 
@@ -464,7 +472,6 @@ export const actions = {
       }
     )
   },
-
   async revertedits({ dispatch, commit }, params) {
     await this.$api.message.revertEdits(params.id)
 
@@ -483,11 +490,9 @@ export const actions = {
       }
     )
   },
-
   async partnerConsent({ dispatch, commit }, params) {
     await this.$api.message.partnerConsent(params.id, params.partner)
   },
-
   async search({ dispatch, commit }, params) {
     const { messages } = await this.$api.message.fetchMessages({
       subaction: 'searchall',
@@ -497,7 +502,6 @@ export const actions = {
     })
     commit('addAll', messages)
   },
-
   async move({ dispatch, commit }, params) {
     await this.$api.message.update({
       id: params.id,
@@ -518,7 +522,6 @@ export const actions = {
       }
     )
   },
-
   async searchMember({ dispatch, commit }, params) {
     const { messages } = await this.$api.message.fetchMessages({
       subaction: 'searchmemb',
@@ -527,7 +530,6 @@ export const actions = {
     })
     commit('addAll', messages)
   },
-
   async addBy({ dispatch, commit }, params) {
     console.log('Add by', params)
     await this.$api.message.addBy(params.id, params.userid, params.count)
@@ -537,7 +539,6 @@ export const actions = {
     })
     commit('add', message)
   },
-
   async removeBy({ dispatch, commit }, params) {
     await this.$api.message.removeBy(params.id, params.userid, params.count)
     const { message } = await this.$api.message.fetch({
@@ -546,7 +547,6 @@ export const actions = {
     })
     commit('add', message)
   },
-
   async fetchPrimaryMessages({ dispatch, commit }, params) {
     const ret = await this.$api.message.fetchMessages(params)
 
@@ -554,7 +554,6 @@ export const actions = {
       commit('setPrimary', ret.messages)
     }
   },
-
   async fetchSecondaryMessages({ dispatch, commit }, params) {
     const ret = await this.$api.message.fetchMessages(params)
 

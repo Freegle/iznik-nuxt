@@ -727,7 +727,6 @@ export default {
     loadMore: async function($state) {
       if (!this.busy) {
         this.busy = true
-        const now = this.$dayjs()
 
         try {
           // We work out which messages that are currently on the map are not in our store, and fetch them
@@ -740,15 +739,7 @@ export default {
             // No point fetching if we don't want to show it.  If those criteria change the watch will clear the
             // store.
             if (this.wantMessage(m)) {
-              const message = this.$store.getters['messages/get'](m.id)
-
-              // We need to fetch if we don't have it, or if it's old.  This is so that we pick up edits.
-              const needFetch =
-                !message ||
-                !message.addedToStore ||
-                now.diff(this.$dayjs(message.addedToStore), 'minute') > 30
-
-              if (needFetch && !this.fetching[m.id] && this.infiniteId) {
+              if (!this.fetching[m.id] && this.infiniteId) {
                 this.fetching[m.id] = true
 
                 fetching.push(m.id)
