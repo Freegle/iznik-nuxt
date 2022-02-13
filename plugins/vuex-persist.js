@@ -51,27 +51,31 @@ export default ({ app, store }) => {
       return true
     },
 
-    restoreState(key, storage) {
+    async restoreState(key, storage) {
       // We used to use localStorage to persist the store.  Migrate if present.
+      let migratedStorage = null
+
       try {
         const old = localStorage.getItem('iznik')
-        const migratedStorage = JSON.parse(old)
 
-        // Clear so that from now on we use the new format.
-        localStorage.removeItem('iznik')
-        return Promise.resolve(migratedStorage)
+        if (old) {
+          migratedStorage = JSON.parse(old)
+
+          // Clear so that from now on we use the new format.
+          localStorage.removeItem('iznik')
+
+          return Promise.resolve(migratedStorage)
+        }
       } catch (e) {
         console.log('Failed to migrate', e)
       }
 
       // If we don't have to migrate, then we can do the same code from vuex-persist, minus the supportCircular
       // option we don't use.
-      return storage
-        .getItem(key)
-        .then(
-          value =>
-            typeof value === 'string' ? JSON.parse(value || '{}') : value || {}
-        )
+      const value = await storage.getItem(key)
+      const ret =
+        typeof value === 'string' ? JSON.parse(value || '{}') : value || {}
+      return ret
     },
 
     reducer: function(origstate) {
