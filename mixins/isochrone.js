@@ -11,7 +11,6 @@ export default {
     isochroneBounds() {
       // We have a problem with getting the bounds using leaflet - it looks like a timing error.  So do it ourselves.
       const isochrones = Object.values(this.$store.getters['isochrones/list'])
-      console.log('Isochrones', isochrones)
       let bounds = null
 
       if (isochrones && isochrones.length) {
@@ -43,8 +42,6 @@ export default {
         }
       }
 
-      console.log('Compute isochroneBounds', bounds)
-
       return bounds
     },
     isochroneBoundsArray() {
@@ -63,7 +60,6 @@ export default {
         ]
       }
 
-      console.log('Compute isochroneBoundsArray', ret)
       return ret
     }
   }
