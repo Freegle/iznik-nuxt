@@ -1,6 +1,6 @@
 <template>
   <div v-if="!simple" class="sidebar__wrapper">
-    <div class="d-flex flex-column justify-content-between">
+    <div class="d-flex flex-column justify-content-between mh-100">
       <div>
         <DonationMonthly v-if="supporter && !donor" class="w-100" variant="sidebar" />
         <VolunteerOpportunitySidebar v-if="showVolunteerOpportunities && false" :class="itemclass" />

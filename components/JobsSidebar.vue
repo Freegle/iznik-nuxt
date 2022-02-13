@@ -112,3 +112,10 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+aside {
+  height: 100%;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+}
+</style>

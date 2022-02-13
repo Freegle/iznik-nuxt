@@ -162,5 +162,6 @@ export default {
   max-height: calc(100vh - 74px);
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-gutter: stable;
 }
 </style>
