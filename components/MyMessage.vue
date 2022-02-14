@@ -290,7 +290,7 @@ export default {
     unseen() {
       // We want all the chats from replies.  We fetch them in myposts, here we only need to
       // get them from the store
-      const chats = Object.values(this.$store.getters['chats/list'])
+      const chats = this.$store.getters['chats/list']
       let unseen = 0
 
       if (this.message && this.message.replies) {
@@ -427,7 +427,7 @@ export default {
     chats() {
       // We want all the chats which reference this message.  We fetch them in myposts, here we only need to
       // get them from the store
-      const chats = Object.values(this.$store.getters['chats/list'])
+      const chats = this.$store.getters['chats/list']
       const ret = []
 
       for (const chat of chats) {

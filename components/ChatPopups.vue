@@ -36,7 +36,7 @@ export default {
       // We want the chats which are currently set to be popups.
       const ret = []
 
-      const chats = Object.values(this.$store.getters['chats/list'])
+      const chats = this.$store.getters['chats/list']
 
       // There will be few popups, so although this involves a scan of all chats, the performance should be ok.
       for (const popup of popups) {

@@ -64,7 +64,38 @@ export const getters = {
   },
 
   list: state => {
-    return state.list
+    // We sort chats by RSVP first, then unread, then last time.
+    const ret = Object.values(state.list)
+
+    ret.sort((a, b) => {
+      let ret = null
+      if (!a.id || !b.id) {
+        console.log('Invalid chats', a, b)
+      }
+
+      const aexpected = a.replyexpected && !a.replyreceived
+      const bexpected = b.replyexpected && !b.replyreceived
+      const aunseen = Math.max(0, a.unseen)
+      const bunseen = Math.max(0, b.unseen)
+
+      if (aexpected !== bexpected) {
+        ret = bexpected - aexpected
+      } else if (aunseen && !bunseen) {
+        ret = -1
+      } else if (bunseen && !aunseen) {
+        ret = 1
+      } else if (a.lastdate && !b.lastdate) {
+        ret = -1
+      } else if (b.lastdate && !a.lastdate) {
+        ret = 1
+      } else {
+        ret = new Date(b.lastdate) - new Date(a.lastdate)
+      }
+
+      return ret
+    })
+
+    return ret
   },
 
   getByUser: state => userid => {
