@@ -753,11 +753,16 @@ export default {
                   })
                 )
 
-                count++
+                const message = this.$store.getters['messages/get'](m.id)
 
-                if (count >= 5) {
-                  // Don't fetch too many at once.
-                  break
+                if (!message) {
+                  // We're currently fetching it.
+                  count++
+
+                  if (count >= 5) {
+                    // Don't fetch too many at once.
+                    break
+                  }
                 }
               }
             }

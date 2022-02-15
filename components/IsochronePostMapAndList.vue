@@ -653,10 +653,8 @@ export default {
 
     // We might have history which tells us to go back to a particular message. This is a common case on mobile -
     // you view a message, reply, then go back and expect to be where you were in the list.
-    console.log('mounted, history', history.state)
     if (history && history.state && history.state.msgid) {
       this.ensureMessageVisible = parseInt(history.state.msgid)
-      console.log('Go to message in list', this.ensureMessageVisible)
     }
   },
   methods: {
@@ -688,11 +686,16 @@ export default {
                   })
                 )
 
-                count++
+                const message = this.$store.getters['messages/get'](m.id)
 
-                if (count >= 5) {
-                  // Don't fetch too many at once.
-                  break
+                if (!message) {
+                  // We're currently fetching it.
+                  count++
+
+                  if (count >= 5) {
+                    // Don't fetch too many at once.
+                    break
+                  }
                 }
               }
             }

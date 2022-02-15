@@ -91,7 +91,7 @@ export const mutations = {
     state.primaryList = list
   },
   setSecondary(state, list) {
-    state.secondryList = list
+    state.secondaryList = list
   }
 }
 
@@ -176,43 +176,49 @@ export const actions = {
         !message.addedToStore ||
         now.diff(this.$dayjs(message.addedToStore), 'minute') > 30
 
-      const prom = await this.$api.message.fetch(params, data => {
-        errorOK = true
-        return data.ret !== 3
-      })
+      let prom = null
 
       if (needFetch) {
-        // Wait for the fetch to complete
-        const res = await prom
-        message = res.message
-        const groups = res.groups
+        console.log('Consider fetch', params.id)
+        prom = this.$api.message.fetch(params, data => {
+          errorOK = true
+          return data.ret !== 3
+        })
 
-        // Most group info returned on the call we don't care about because it's also in the message.  But whether
-        // or not the group is closed matters.
-        if (groups) {
-          for (const gid in groups) {
-            const g = groups[gid]
-            if (g.settings && g.settings.closed) {
-              message.closed = true
+        prom.then(res => {
+          console.log('Fetched', res)
+          message = res.message
+          const groups = res.groups
+
+          // Most group info returned on the call we don't care about because it's also in the message.  But whether
+          // or not the group is closed matters.
+          if (groups) {
+            for (const gid in groups) {
+              const g = groups[gid]
+              if (g.settings && g.settings.closed) {
+                message.closed = true
+              }
             }
           }
-        }
 
-        if (state.instance === instance) {
+          if (state.instance === instance) {
+            // We might have some extra information to add in for this messages which we obtained earlier when searching.
+            message.matchedon = params.matchedon
+          }
+
           // We might have some extra information to add in for this messages which we obtained earlier when searching.
           message.matchedon = params.matchedon
-        }
+          commit('add', message)
+        })
+      } else {
+        console.log('No need to fetch', params.id)
+      }
 
-        commit('add', message)
-      } else if (
-        state.instance === instance &&
-        message.matchedon !== params.matchon
-      ) {
-        // Use what we have - fetch will update the cache in the background.
-        //
-        // We might have some extra information to add in for this messages which we obtained earlier when searching.
-        message.matchedon = params.matchedon
-        commit('add', message)
+      if (modtools || !message) {
+        // We need to wait until the fetch completes.
+        console.log('Wait for fetch')
+        await prom
+        console.log('Waited')
       }
     } catch (e) {
       if (!errorOK) {

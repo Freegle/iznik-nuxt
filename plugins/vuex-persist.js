@@ -83,119 +83,123 @@ export default ({ app, store }) => {
 
       let state = origstate
 
-      const clearPassword = state.user && state.user.password
-      const pruneMessages =
-        state.messages &&
-        state.messages.list &&
-        state.messages.index &&
-        Object.keys(state.messages.index).length > RETAIN_COUNT
-      const pruneChats =
-        state.chatmessages &&
-        state.chatmessages.messages &&
-        state.chatmessages.users &&
-        state.chats &&
-        state.chats.list &&
-        Object.keys(state.chats.list).length > RETAIN_COUNT
-      const pruneUsers =
-        state.user &&
-        state.user.list &&
-        Object.keys(state.user.list).length > RETAIN_COUNT
+      if (!state) {
+        const clearPassword = state.user && state.user.password
+        const pruneMessages =
+          state.messages &&
+          state.messages.list &&
+          state.messages.index &&
+          Object.keys(state.messages.index).length > RETAIN_COUNT
+        const pruneChats =
+          state.chatmessages &&
+          state.chatmessages.messages &&
+          state.chatmessages.users &&
+          state.chats &&
+          state.chats.list &&
+          Object.keys(state.chats.list).length > RETAIN_COUNT
+        const pruneUsers =
+          state.user &&
+          state.user.list &&
+          Object.keys(state.user.list).length > RETAIN_COUNT
 
-      if (state.auth && (!state.auth.user || !state.auth.user.id)) {
-        // We're not logged in. Clear everything - partly as this might be what the user wants, and also to
-        // provide a recovery mechanism if this complex code messes up. Keep the userlist though for anti-spam.
-        state = {
-          auth: {
-            userlist: cloneDeep(state.auth.userlist)
-          }
-        }
-      } else if (clearPassword || pruneMessages || pruneChats || pruneUsers) {
-        // Need to deep clone the input state object to avoid any changes we make when pruning affecting the current
-        // application store rather than (as we want) the saved copy.  Do this for each thing we need to prune,
-        // rather than on the whole thing, as it's expensive.
-        if (clearPassword) {
-          // Ensure we don't store the password.
-          state.user.password = null
-        }
-
-        if (pruneMessages) {
-          // Keep only the most recent messages, to avoid this growing indefinitely.
-          const newmessages = []
-          const newindex = {}
-          state.messages = cloneDeep(origstate.messages)
-
-          state.messages.list.forEach(m => {
-            const arrival =
-              m.groups && m.groups.length ? m.groups[0].arrival : m.arrival
-
-            if (now.diff(dayjs(arrival), 'days') <= 7) {
-              newmessages.push(m)
-              newindex[parseInt(m.id)] = m
-            }
-          })
-
-          state.messages.list = newmessages
-          state.messages.index = newindex
-        }
-
-        if (pruneChats) {
-          state.chats = cloneDeep(origstate.chats)
-          state.chatmessages = cloneDeep(origstate.chatmessages)
-
-          const sortedChats = store.getters['chats/list']
-          const chats = prune(sortedChats)
-
-          // We only want to keep any messages which are referenced from a retained chat.
-          const newcontexts = {}
-          const newmessages = {}
-          const newusers = {}
-
-          for (const id in chats) {
-            const c = chats[id]
-
-            if (state.chatmessages.contexts[c.id]) {
-              // This will keep messages even if they are deleted on the server.  That's ok, though it would be preferable
-              // not to do that.
-              newcontexts[c.id] = state.chatmessages.contexts[c.id]
-            }
-
-            if (state.chatmessages.messages[c.id]) {
-              newmessages[c.id] = state.chatmessages.messages[c.id]
-            }
-
-            if (state.chatmessages.users[c.id]) {
-              newusers[c.id] = state.chatmessages.users[c.id]
+        if (state.auth && (!state.auth.user || !state.auth.user.id)) {
+          // We're not logged in. Clear everything - partly as this might be what the user wants, and also to
+          // provide a recovery mechanism if this complex code messes up. Keep the userlist though for anti-spam.
+          state = {
+            auth: {
+              userlist: cloneDeep(state.auth.userlist)
             }
           }
+        } else if (clearPassword || pruneMessages || pruneChats || pruneUsers) {
+          // Need to deep clone the input state object to avoid any changes we make when pruning affecting the current
+          // application store rather than (as we want) the saved copy.  Do this for each thing we need to prune,
+          // rather than on the whole thing, as it's expensive.
+          if (clearPassword) {
+            // Ensure we don't store the password.
+            state.user.password = null
+          }
 
-          const modtools = store.getters['misc/get']('modtools')
+          if (pruneMessages) {
+            // Keep only the most recent messages, to avoid this growing indefinitely.
+            const newmessages = []
+            const newindex = {}
+            state.messages = cloneDeep(origstate.messages)
 
-          if (modtools) {
-            // We might also have chat messages for review, which we need to ensure are not pruned.
-            for (const chatid in state.chatmessages.messages) {
-              let keep = false
+            state.messages.list.forEach(m => {
+              const arrival =
+                m.groups && m.groups.length ? m.groups[0].arrival : m.arrival
 
-              Object.values(state.chatmessages.messages[chatid]).forEach(cm => {
-                if (cm && cm.reviewrequired) {
-                  keep = true
-                }
-              })
+              if (now.diff(dayjs(arrival), 'days') <= 7) {
+                newmessages.push(m)
+                newindex[parseInt(m.id)] = m
+              }
+            })
 
-              if (keep) {
-                newmessages[chatid] = state.chatmessages.messages[chatid]
+            state.messages.list = newmessages
+            state.messages.index = newindex
+          }
+
+          if (pruneChats) {
+            state.chats = cloneDeep(origstate.chats)
+            state.chatmessages = cloneDeep(origstate.chatmessages)
+
+            const sortedChats = store.getters['chats/list']
+            const chats = prune(sortedChats)
+
+            // We only want to keep any messages which are referenced from a retained chat.
+            const newcontexts = {}
+            const newmessages = {}
+            const newusers = {}
+
+            for (const id in chats) {
+              const c = chats[id]
+
+              if (state.chatmessages.contexts[c.id]) {
+                // This will keep messages even if they are deleted on the server.  That's ok, though it would be preferable
+                // not to do that.
+                newcontexts[c.id] = state.chatmessages.contexts[c.id]
+              }
+
+              if (state.chatmessages.messages[c.id]) {
+                newmessages[c.id] = state.chatmessages.messages[c.id]
+              }
+
+              if (state.chatmessages.users[c.id]) {
+                newusers[c.id] = state.chatmessages.users[c.id]
               }
             }
+
+            const modtools = store.getters['misc/get']('modtools')
+
+            if (modtools) {
+              // We might also have chat messages for review, which we need to ensure are not pruned.
+              for (const chatid in state.chatmessages.messages) {
+                let keep = false
+
+                Object.values(state.chatmessages.messages[chatid]).forEach(
+                  cm => {
+                    if (cm && cm.reviewrequired) {
+                      keep = true
+                    }
+                  }
+                )
+
+                if (keep) {
+                  newmessages[chatid] = state.chatmessages.messages[chatid]
+                }
+              }
+            }
+
+            state.chatmessages.contexts = newcontexts
+            state.chatmessages.messages = newmessages
+            state.chatmessages.users = newusers
           }
 
-          state.chatmessages.contexts = newcontexts
-          state.chatmessages.messages = newmessages
-          state.chatmessages.users = newusers
-        }
-
-        if (pruneUsers) {
-          // Prune the users.
-          state.user = cloneDeep(origstate.user)
-          state.user.list = prune(state.user.list)
+          if (pruneUsers) {
+            // Prune the users.
+            state.user = cloneDeep(origstate.user)
+            state.user.list = prune(state.user.list)
+          }
         }
       }
 
