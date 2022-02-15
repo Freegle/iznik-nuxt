@@ -3,7 +3,7 @@
     <template v-if="message.successful">
       <MessageFreegled :id="id" />
     </template>
-    <template v-if="message.promised">
+    <template v-else-if="message.promised">
       <MessagePromised :id="id" summary />
     </template>
     <div :class="classes" @click="expand">
