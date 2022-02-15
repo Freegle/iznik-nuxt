@@ -173,16 +173,6 @@ export default ({ app, store }) => {
           if (modtools) {
             // We might also have chat messages for review, which we need to ensure are not pruned.
             for (const chatid in state.chatmessages.messages) {
-              console.log(
-                'Check for review',
-                chatid,
-                state.chatmessages.messages
-              )
-              console.log(
-                'Check for review',
-                state.chatmessages.messages[chatid]
-              )
-
               let keep = false
 
               Object.values(state.chatmessages.messages[chatid]).forEach(cm => {
