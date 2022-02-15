@@ -29,6 +29,10 @@ import NoticeMessage from '@/components/NoticeMessage'
 export default {
   components: { NoticeMessage },
   props: {
+    id: {
+      type: Number,
+      required: true
+    },
     toMe: {
       type: Boolean,
       required: false,

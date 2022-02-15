@@ -34,7 +34,7 @@
       <MessageHistoryExpanded :id="id" :message-override="messageOverride" class="mb-1 d-none d-md-block" />
     </div>
     <div class="bg-white mb-3 p-2 p-md-0">
-      <MessagePromised v-if="message.promised && replyable" :to-me="message.promisedtome" class="mb-3 mt-1" />
+      <MessagePromised v-if="message.promised && replyable" :id="message.id" :to-me="message.promisedtome" class="mb-3 mt-1" />
       <MessageTextBody :id="id" :message-override="messageOverride" />
       <MessageReplyInfo :message="message" />
       <client-only>
