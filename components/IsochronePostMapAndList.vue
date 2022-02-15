@@ -424,8 +424,9 @@ export default {
               if (!already && !message.deleted) {
                 message.order = order
 
-                // Pass whether the message has been freegled, which is returned in the summary call.
+                // Pass whether the message has been freegled or promised, which is returned in the summary call.
                 message.successful = !!m.successful
+                message.promised = !!m.promised
 
                 let addIt = true
 
