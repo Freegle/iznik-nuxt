@@ -3,6 +3,9 @@
     <template v-if="message.successful">
       <MessageFreegled :id="id" />
     </template>
+    <template v-if="message.promised">
+      <MessagePromised :id="id" summary />
+    </template>
     <div :class="classes" @click="expand">
       <MessageItemLocation
         :id="id"
@@ -45,6 +48,7 @@ import breakpoints from '@/mixins/breakpoints'
 import MessageTag from '@/components/MessageTag'
 import MessageItemLocation from '~/components/MessageItemLocation'
 import MessageFreegled from '~/components/MessageFreegled'
+import MessagePromised from '~/components/MessagePromised'
 import MessageAttachments from '~/components/MessageAttachments'
 
 const MessageHistory = () => import('~/components/MessageHistory')
@@ -57,6 +61,7 @@ export default {
     MessageDescription,
     MessageItemLocation,
     MessageFreegled,
+    MessagePromised,
     MessageAttachments,
     MessageHistory,
     MessageTag
