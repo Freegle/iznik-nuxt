@@ -32,7 +32,7 @@
       />
       <div v-else-if="chatmessage.type === 'Interested'">
         <chat-message-interested
-          v-if="otheruser"
+          v-if="otheruser || chat.chattype === 'User2Mod'"
           :chat="chat"
           :chatmessage="chatmessage"
           :otheruser="otheruser"
