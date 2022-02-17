@@ -14,7 +14,11 @@ export default {
   methods: {
     async copy() {
       if (process.browser) {
-        await navigator.clipboard.writeText(this.value)
+        if (process.env.IS_APP) {
+          window.cordova.plugins.clipboard.copy(this.selectedText);
+        } else {
+          await navigator.clipboard.writeText(this.value)
+        }
       }
     }
   }

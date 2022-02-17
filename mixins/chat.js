@@ -142,6 +142,7 @@ export default {
     otheruserid() {
       // The user who isn't us.
       let ret = null
+      const modtools = this.$store.getters['misc/get']('modtools')
 
       if (this.chat && this.me) {
         if (this.chat.chattype === 'User2User' && this.chat.user1 && this.me) {
@@ -150,9 +151,9 @@ export default {
               ? this.chat.user2.id
               : this.chat.user1.id
         } else if (
+          modtools &&
           this.chat.chattype === 'User2Mod' &&
-          this.chat.user1 &&
-          this.me.id !== this.chat.user1.id
+          this.chat.user1
         ) {
           // We are a mod.
           ret = this.chat.user1.id

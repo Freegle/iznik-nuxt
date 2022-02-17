@@ -1,17 +1,9 @@
 <template>
   <client-only>
     <div
-      v-long-press="300"
-      @mousedown="saveSelected"
-      @contextmenu.prevent.stop="handleClick($event)"
-      @long-press-start="handleClick($event)"
+      :class="selected ? 'selected' : ''"
+      @click="selectMe"
     >
-      <vue-simple-context-menu
-        ref="vueSimpleContextMenu"
-        :element-id="uniqueid"
-        :options="options"
-        @option-clicked="optionClicked"
-      />
       <div v-if="chatmessage.type === 'Default'">
         <chat-message-text
           :chat="chat"
@@ -32,7 +24,7 @@
       />
       <div v-else-if="chatmessage.type === 'Interested'">
         <chat-message-interested
-          v-if="otheruser"
+          v-if="otheruser || chat.chattype === 'User2Mod'"
           :chat="chat"
           :chatmessage="chatmessage"
           :otheruser="otheruser"
@@ -141,12 +133,16 @@
         :pov="pov"
         :chatusers="chatusers"
       />
+      <div v-if="selected">
+        <b-btn variant="link" @click="markUnseen">
+          Mark unread
+        </b-btn>
+      </div>
     </div>
   </client-only>
 </template>
 <script>
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
-import VueSimpleContextMenu from 'vue-simple-context-menu'
 import ChatMessageText from './ChatMessageText'
 import ChatMessageImage from './ChatMessageImage'
 import ChatMessageInterested from './ChatMessageInterested'
@@ -163,16 +159,7 @@ import ChatMessageWarning from '~/components/ChatMessageWarning'
 import 'vue-simple-context-menu/dist/vue-simple-context-menu.css'
 
 // System chat message doesn't seem to be used; ReportedUser is for ModTools only.
-let LongPress = null
-
-if (process.client) {
-  LongPress = require('vue-directive-long-press')
-}
-
 export default {
-  directives: {
-    'long-press': LongPress
-  },
   components: {
     ChatMessageWarning,
     ChatMessageDateRead,
@@ -186,8 +173,7 @@ export default {
     ChatMessageNudge,
     ChatMessageModMail,
     ChatMessageSchedule,
-    ChatMessageReport,
-    VueSimpleContextMenu
+    ChatMessageReport
   },
   props: {
     chat: {
@@ -231,11 +217,8 @@ export default {
   data() {
     return {
       uniqueid: '',
-      selectedText: null,
+      selected: false,
       options: [
-        {
-          name: 'Copy to clipboard'
-        },
         {
           name: 'Mark unread'
         }
@@ -246,32 +229,18 @@ export default {
     this.uniqueid = await this.$store.dispatch('uniqueid/generate')
   },
   methods: {
-    handleClick(event) {
-      this.$refs.vueSimpleContextMenu.showMenu(event)
-    },
-    saveSelected() {
-      if (process.client && window.getSelection) {
-        this.selectedText = window.getSelection().toString()
+    selectMe() {
+      if (this.chatmessage.userid !== this.myid) {
+        this.selected = true
       }
     },
-    async optionClicked(val) {
-      switch (val.option.name) {
-        case 'Copy to clipboard':
-          if (process.client && this.selectedText) {
-            if (process.env.IS_APP) {
-              window.cordova.plugins.clipboard.copy(this.selectedText);
-            } else {
-              await navigator.clipboard.writeText(this.selectedText)
-            }
-          }
-          break
-        case 'Mark unread':
-          await this.$store.dispatch('chats/markUnseen', {
-            chatid: this.chat.id,
-            msgid: this.prevmessage
-          })
-          break
-      }
+    async markUnseen() {
+      await this.$store.dispatch('chats/markUnseen', {
+        chatid: this.chat.id,
+        msgid: this.prevmessage
+      })
+
+      this.selected = false
     }
   }
 }
@@ -281,6 +250,14 @@ export default {
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins/_breakpoints';
+
+.selected {
+  border: 1px solid $color-blue--bright;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 
 /deep/ .card {
   border-radius: 10px;
@@ -343,9 +320,5 @@ export default {
 /deep/ .highlight {
   color: $color-orange--dark !important;
   background-color: initial;
-}
-
-/deep/ .vue-simple-context-menu {
-  position: fixed !important;
 }
 </style>

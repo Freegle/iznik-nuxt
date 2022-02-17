@@ -15,13 +15,9 @@
     <b-btn v-if="groupid" variant="white" @click="addAComment">
       <v-icon name="tag" /> Add note
     </b-btn>
-    <b-btn v-if="supportOrAdmin" variant="white" @click="purge">
-      <v-icon name="trash-alt" /> Purge
-    </b-btn>
     <ConfirmModal v-if="removeConfirm && groupname" ref="removeConfirm" :title="'Remove ' + displayname + ' from ' + groupname + '?'" @confirm="removeConfirmed" />
     <ConfirmModal v-if="removeConfirm && !groupname" ref="removeConfirm" title="Please select a group first." />
     <ConfirmModal v-if="banConfirm" ref="banConfirm" :title="'Ban ' + displayname + ' from ' + groupname + '?'" @confirm="banConfirmed" />
-    <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + displayname + ' from the system?'" message="<p><strong>This can't be undone.</strong></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
     <ModCommentAddModal v-if="addComment" ref="addComment" :user="user" :groupid="groupid" @added="updateComments" />
     <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="reportUser" :whitelist="whitelist" />
   </div>
@@ -59,7 +55,6 @@ export default {
     return {
       removeConfirm: false,
       banConfirm: false,
-      purgeConfirm: false,
       addComment: false,
       user: null,
       showSpamModal: false,
@@ -131,22 +126,6 @@ export default {
       this.$store.dispatch('members/ban', {
         userid: this.userid,
         groupid: this.groupid
-      })
-    },
-    async purge() {
-      if (!this.user) {
-        await this.fetchUser()
-      }
-
-      this.purgeConfirm = true
-
-      this.waitForRef('purgeConfirm', () => {
-        this.$refs.purgeConfirm.show()
-      })
-    },
-    purgeConfirmed() {
-      this.$store.dispatch('members/purge', {
-        userid: this.userid
       })
     },
     async addAComment() {
