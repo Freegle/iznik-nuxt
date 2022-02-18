@@ -228,7 +228,7 @@ export const actions = {
 
     if (!data.deleted) {
       // Fetch back the updated version.
-      await dispatch('fetch', { id: params.id })
+      await dispatch('fetch', { id: params.id, force: true })
     }
 
     return data
@@ -247,6 +247,8 @@ export const actions = {
     commit('remove', {
       id: params.id
     })
+
+    parms.force = true
 
     await dispatch('fetch', parms)
     return data
@@ -512,7 +514,7 @@ export const actions = {
       action: 'Move'
     })
 
-    await dispatch('fetch', { id: params.id })
+    await dispatch('fetch', { id: params.id, force: true })
 
     dispatch(
       'auth/fetchUser',
