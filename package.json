@@ -39,6 +39,7 @@
     "csv-writer": "^1.6.0",
     "custom-event-polyfill": "^1.0.7",
     "dayjs": "^1.8.19",
+    "deepmerge": "^4.2.2",
     "diff": "^4.0.2",
     "dotenv": "^8.2.0",
     "es-abstract": "^1.18.0-next.1",

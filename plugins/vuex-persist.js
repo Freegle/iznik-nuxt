@@ -3,6 +3,8 @@ import localForage from 'localforage'
 import dayjs from 'dayjs'
 import cloneDeep from 'lodash.clonedeep'
 
+import deepmerge from 'deepmerge'
+
 const RETAIN_COUNT = 100
 const RETAIN_AGE = 7
 
@@ -76,6 +78,15 @@ export default ({ app, store }) => {
       const ret =
         typeof value === 'string' ? JSON.parse(value || '{}') : value || {}
       return ret
+    },
+
+    async saveState(key, state, storage) {
+      try {
+        const newstate = deepmerge({}, state || {}, 'replaceArrays')
+        await storage.setItem(key, newstate)
+      } catch (e) {
+        console.error('Storage save failed with', e)
+      }
     },
 
     reducer: function(origstate) {
