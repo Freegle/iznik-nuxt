@@ -8,7 +8,7 @@ export default {
       // Initial value
       this.$store.dispatch('auth/forceLogin', this.me === null)
 
-      // Set up a watch on the store.  We do this because initially the store hasn't yet been reloaded from local
+      // Set up a watch on the store.  We do this because initially the store may not yet have been reloaded from
       // storage, so we don't know if we're logged in. When it does get loaded, this watch will fire.  So this way
       // we'll end up with the correct value of forceLogin set.
       this.loginRequiredWatch = this.$store.watch(

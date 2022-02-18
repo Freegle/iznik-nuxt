@@ -5,7 +5,6 @@
       <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent" />
     </main>
     <BouncingEmail />
-    <LocalStorageMonitor />
     <div class="navbar-toggle" style="display: none" />
     <div id="serverloader" class="bg-white">
       <b-img src="~/static/loader.gif" alt="Loading..." />
@@ -26,7 +25,6 @@
 
 <script>
 import replyToPost from '@/mixins/replyToPost'
-import LocalStorageMonitor from '~/components/LocalStorageMonitor'
 import BouncingEmail from '~/components/BouncingEmail'
 import MainHeader from '~/components/MainHeader'
 const Breakpoint = () => import('~/components/Breakpoint')
@@ -39,7 +37,6 @@ export default {
     Breakpoint,
     ChatPopups,
     ChatButton,
-    LocalStorageMonitor,
     BouncingEmail,
     ExternalLink,
     MainHeader
@@ -74,6 +71,9 @@ export default {
   },
   async mounted() {
     if (process.browser) {
+      // Wait for the store if necessary.
+      await this.$store.restored
+
       // Add class for screen background.
       document.body.classList.add('fd')
 

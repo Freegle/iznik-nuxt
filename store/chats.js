@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import dayjs from 'dayjs'
 
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
@@ -12,6 +13,7 @@ export const mutations = {
   addRoom(state, item) {
     // This might be a number and therefore not of string type
     item.snippet = item.snippet + ''
+    item.addedToStore = dayjs().toISOString()
 
     Vue.set(state.list, parseInt(item.id), item)
   },
@@ -31,6 +33,7 @@ export const mutations = {
         // We might have a copy of the chat in store already.  If so, it may have more info than we have fetched
         // this time, so merge it.
         chat.snippet = chat.snippet + ''
+        chat.addedToStore = dayjs().toISOString()
 
         Vue.set(
           state.list,
@@ -61,7 +64,38 @@ export const getters = {
   },
 
   list: state => {
-    return state.list
+    // We sort chats by RSVP first, then unread, then last time.
+    const ret = Object.values(state.list)
+
+    ret.sort((a, b) => {
+      let ret = null
+      if (!a.id || !b.id) {
+        console.log('Invalid chats', a, b)
+      }
+
+      const aexpected = a.replyexpected && !a.replyreceived
+      const bexpected = b.replyexpected && !b.replyreceived
+      const aunseen = Math.max(0, a.unseen)
+      const bunseen = Math.max(0, b.unseen)
+
+      if (aexpected !== bexpected) {
+        ret = bexpected - aexpected
+      } else if (aunseen && !bunseen) {
+        ret = -1
+      } else if (bunseen && !aunseen) {
+        ret = 1
+      } else if (a.lastdate && !b.lastdate) {
+        ret = -1
+      } else if (b.lastdate && !a.lastdate) {
+        ret = 1
+      } else {
+        ret = new Date(b.lastdate) - new Date(a.lastdate)
+      }
+
+      return ret
+    })
+
+    return ret
   },
 
   getByUser: state => userid => {

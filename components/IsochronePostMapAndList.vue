@@ -653,10 +653,8 @@ export default {
 
     // We might have history which tells us to go back to a particular message. This is a common case on mobile -
     // you view a message, reply, then go back and expect to be where you were in the list.
-    console.log('mounted, history', history.state)
     if (history && history.state && history.state.msgid) {
       this.ensureMessageVisible = parseInt(history.state.msgid)
-      console.log('Go to message in list', this.ensureMessageVisible)
     }
   },
   methods: {
@@ -675,9 +673,7 @@ export default {
             // No point fetching if we don't want to show it.  If those criteria change the watch will clear the
             // store.
             if (this.wantMessage(m)) {
-              const message = this.$store.getters['messages/get'](m.id)
-
-              if (!message && !this.fetching[m.id] && this.infiniteId) {
+              if (!this.fetching[m.id] && this.infiniteId) {
                 this.fetching[m.id] = true
 
                 fetching.push(m.id)
@@ -690,11 +686,16 @@ export default {
                   })
                 )
 
-                count++
+                const message = this.$store.getters['messages/get'](m.id)
 
-                if (count >= 5) {
-                  // Don't fetch too many at once.
-                  break
+                if (!message) {
+                  // We're currently fetching it.
+                  count++
+
+                  if (count >= 5) {
+                    // Don't fetch too many at once.
+                    break
+                  }
                 }
               }
             }
@@ -794,7 +795,6 @@ export default {
           const ix = this.messagesForListIds.indexOf(id)
 
           if (id && (!this.maxMessageVisible || ix > this.maxMessageVisible)) {
-            console.log('Max message visibiel', this.maxMessageVisible)
             this.maxMessageVisible = ix
 
             history.replaceState(
