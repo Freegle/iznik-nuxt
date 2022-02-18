@@ -273,13 +273,16 @@ export default {
             // Have to get the message back, because as a non-member we couldn't see who sent it, and therefore
             // who to reply to.
             await this.$store.dispatch('messages/fetch', {
-              id: this.id
+              id: this.id,
+              force: true
             })
           }
 
           // Now we can send the reply via chat.
-          await this.replyToPost()
-          this.sent()
+          this.$nextTick(async () => {
+            await this.replyToPost()
+            this.sent()
+          })
         } else {
           // We're not logged in yet.  We need to force a sign in.  Once that completes then either the watch in here
           // or default.vue will spot we have a reply to send and make it happen.

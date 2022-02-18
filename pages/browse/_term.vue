@@ -205,8 +205,18 @@ export default {
     async calculateInitialMapBounds() {
       await this.fetchMe(['me', 'groups'])
 
-      // The initial bounds for the map are determined from the isochrones if possible.
-      await this.$store.dispatch('isochrones/fetch')
+      // The initial bounds for the map are determined from the isochrones if possible.  We might have them cached
+      // in store.
+      const isochrones = Object.values(this.$store.getters['isochrones/list'])
+
+      if (!isochrones || !isochrones.length) {
+        // Not got them - fetch from server.
+        await this.$store.dispatch('isochrones/fetch')
+      } else {
+        // Got them - refresh in the background.
+        this.$store.dispatch('isochrones/fetch')
+      }
+
       console.log('Calc initial isochrones bounds', this.isochroneBoundsArray)
       this.initialBounds = this.isochroneBoundsArray
 

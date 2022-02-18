@@ -341,8 +341,7 @@ export default {
 
     await this.fetchMe(['me', 'groups'])
 
-    // Ensure we have no cached messages for other searches/groups
-    this.$store.dispatch('messages/clear')
+    // TODO STORE How are deleted messages removed?
     this.loadMore().then(async () => {
       // Get the searches afterwards otherwise they load first which looks silly as they're less important.
       this.busy = true

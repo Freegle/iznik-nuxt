@@ -198,7 +198,7 @@ export default {
   methods: {
     async chat(popup) {
       // We might have closed off the chat, in which case it will no longer appear in our list.
-      const chats = Object.values(this.$store.getters['chats/list'])
+      const chats = this.$store.getters['chats/list']
       let found = false
       for (const chat of chats) {
         if (parseInt(chat.id) === parseInt(this.reply.chatid)) {
