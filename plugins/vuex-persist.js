@@ -124,7 +124,11 @@ export default ({ app, store }) => {
     reducer: function(origstate) {
       const now = dayjs()
 
-      let state = origstate
+      // Shallow copy the state.  This is quick, and decouples the object, whereas cloneDeep on the whole thing is
+      // slow.  If we need to manipulate sub-objects then we will cloneDeep them below.
+      //
+      // This means that we can reduce the state for saving purposes without affecting the current in-memory state.
+      let state = Object.assign({}, origstate)
 
       if (state) {
         const clearPassword = state.user && state.user.password
@@ -190,19 +194,24 @@ export default ({ app, store }) => {
           }
 
           if (pruneChats) {
-            state.chats = cloneDeep(origstate.chats)
-            state.chatmessages = cloneDeep(origstate.chatmessages)
-
             const sortedChats = store.getters['chats/list']
             const chats = prune(sortedChats)
+            console.log(
+              'Prune chats',
+              Object.keys(sortedChats).length,
+              Object.keys(chats).length
+            )
 
             // We only want to keep any messages which are referenced from a retained chat.
             const newcontexts = {}
             const newmessages = {}
             const newusers = {}
+            const newchats = {}
 
             for (const id in chats) {
               const c = chats[id]
+
+              newchats[c.id] = c
 
               if (state.chatmessages.contexts[c.id]) {
                 // This will keep messages even if they are deleted on the server.  That's ok, though it would be preferable
@@ -240,6 +249,7 @@ export default ({ app, store }) => {
               }
             }
 
+            state.chats.list = newchats
             state.chatmessages.contexts = newcontexts
             state.chatmessages.messages = newmessages
             state.chatmessages.users = newusers
