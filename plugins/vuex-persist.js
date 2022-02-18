@@ -81,11 +81,43 @@ export default ({ app, store }) => {
     },
 
     async saveState(key, state, storage) {
+      let newstate = deepmerge({}, state || {}, {
+        arrayMerge: (destinationArray, sourceArray, options) => sourceArray
+      })
+
+      const smallerState = {
+        auth: newstate.auth,
+        compose: newstate.compose,
+        reply: newstate.reply,
+        misc: newstate.misc
+      }
+
       try {
-        const newstate = deepmerge({}, state || {}, 'replaceArrays')
+        try {
+          // Check whether we need to prune more aggressively.  This interface is not supported in all browsers.
+          const quota = await navigator.storage.estimate()
+          const length = JSON.stringify(newstate).length
+
+          if (quota && quota.quota - quota.usage < length) {
+            newstate = smallerState
+
+            console.log(
+              'Aggressive prune from',
+              length,
+              JSON.stringify(newstate).length
+            )
+          }
+        } catch (e) {}
+
         await storage.setItem(key, newstate)
       } catch (e) {
         console.error('Storage save failed with', e)
+        try {
+          await storage.setItem(key, smallerState)
+          console.log('...saved smaller')
+        } catch (e) {
+          console.error('Storage save of smaller failed with', e)
+        }
       }
     },
 
@@ -94,7 +126,7 @@ export default ({ app, store }) => {
 
       let state = origstate
 
-      if (!state) {
+      if (state) {
         const clearPassword = state.user && state.user.password
         const pruneMessages =
           state.messages &&
@@ -112,6 +144,10 @@ export default ({ app, store }) => {
           state.user &&
           state.user.list &&
           Object.keys(state.user.list).length > RETAIN_COUNT
+        const pruneGroup =
+          state.group &&
+          state.group.list &&
+          Object.keys(state.group.list).length > RETAIN_COUNT
 
         if (state.auth && (!state.auth.user || !state.auth.user.id)) {
           // We're not logged in. Clear everything - partly as this might be what the user wants, and also to
@@ -140,7 +176,10 @@ export default ({ app, store }) => {
               const arrival =
                 m.groups && m.groups.length ? m.groups[0].arrival : m.arrival
 
-              if (now.diff(dayjs(arrival), 'days') <= 7) {
+              if (
+                now.diff(dayjs(arrival), 'days') <= RETAIN_AGE &&
+                newmessages.length < RETAIN_COUNT
+              ) {
                 newmessages.push(m)
                 newindex[parseInt(m.id)] = m
               }
@@ -210,6 +249,12 @@ export default ({ app, store }) => {
             // Prune the users.
             state.user = cloneDeep(origstate.user)
             state.user.list = prune(state.user.list)
+          }
+
+          if (pruneGroup) {
+            // Prune the groups.
+            state.group = cloneDeep(origstate.group)
+            state.group.list = prune(state.group.list)
           }
         }
       }

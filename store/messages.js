@@ -179,14 +179,12 @@ export const actions = {
       let prom = null
 
       if (needFetch) {
-        console.log('Consider fetch', params.id)
         prom = this.$api.message.fetch(params, data => {
           errorOK = true
           return data.ret !== 3
         })
 
         prom.then(res => {
-          console.log('Fetched', res)
           message = res.message
           const groups = res.groups
 
@@ -216,9 +214,7 @@ export const actions = {
 
       if (modtools || !message) {
         // We need to wait until the fetch completes.
-        console.log('Wait for fetch')
         await prom
-        console.log('Waited')
       }
     } catch (e) {
       if (!errorOK) {
