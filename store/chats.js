@@ -241,6 +241,7 @@ export const actions = {
         // try to find ways around the ban.
         console.log('Swallow exception')
       } else {
+        console.log('Failed to open chat', e)
         throw e
       }
     }

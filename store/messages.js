@@ -174,6 +174,7 @@ export const actions = {
         modtools ||
         !message ||
         !message.addedToStore ||
+        params.force ||
         now.diff(this.$dayjs(message.addedToStore), 'minute') > 30
 
       let prom = null
@@ -212,7 +213,7 @@ export const actions = {
         console.log('No need to fetch', params.id)
       }
 
-      if (modtools || !message) {
+      if (modtools || !message || params.force) {
         // We need to wait until the fetch completes.
         await prom
       }
