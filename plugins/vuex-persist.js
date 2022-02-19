@@ -141,13 +141,25 @@ export default ({ app, store }) => {
         try {
           // Check whether we need to prune more aggressively.  This interface is not supported in all browsers.
           const quota = await navigator.storage.estimate()
-          const length = JSON.stringify(newstate).length
 
-          if (quota && quota.quota - quota.usage < length) {
+          if (quota && quota.quota) {
+            const length = JSON.stringify(newstate).length
+
+            if (quota.usage < length) {
+              newstate = smallerState
+
+              console.log(
+                'Aggressive prune from',
+                length,
+                JSON.stringify(newstate).length
+              )
+            }
+          } else {
+            // If we don't support quota, let's err on the safe side and save the minimal state.
             newstate = smallerState
 
             console.log(
-              'Aggressive prune from',
+              'No quota support 1',
               length,
               JSON.stringify(newstate).length
             )
@@ -157,7 +169,7 @@ export default ({ app, store }) => {
           newstate = smallerState
 
           console.log(
-            'No quota support',
+            'No quota support 2',
             length,
             JSON.stringify(newstate).length
           )
