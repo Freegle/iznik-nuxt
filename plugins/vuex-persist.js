@@ -77,6 +77,51 @@ export default ({ app, store }) => {
       const value = await storage.getItem(key)
       const ret =
         typeof value === 'string' ? JSON.parse(value || '{}') : value || {}
+
+      // Ensure the store is not horribly corrupt.
+      if (!ret.auth) {
+        ret.auth = {
+          forceLogin: false,
+          user: null,
+          userFetched: null,
+          groups: [],
+          loggedInEver: false,
+          userlist: [],
+          work: [],
+          discourse: {},
+          loginType: null
+        }
+      }
+
+      if (!ret.misc) {
+        ret.misc = {
+          time: null
+        }
+      }
+
+      if (!ret.reply) {
+        ret.reply = {
+          replyMsgId: null,
+          replyMessage: null,
+          replyingAt: null
+        }
+      }
+
+      if (!ret.compose) {
+        ret.compose = {
+          email: null,
+          emailAt: null,
+          postcode: null,
+          group: null,
+          messages: {},
+          attachments: {},
+          progress: 1,
+          max: 4,
+          uploading: false,
+          lastSubmitted: 0
+        }
+      }
+
       return ret
     },
 
