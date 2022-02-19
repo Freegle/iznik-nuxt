@@ -209,8 +209,6 @@ export const actions = {
         // We might have some extra information to add in for this messages which we obtained earlier when searching.
         message.matchedon = params.matchedon
         commit('add', message)
-      } else {
-        console.log('No need to fetch', params.id)
       }
 
       if (modtools || !message || params.force) {
