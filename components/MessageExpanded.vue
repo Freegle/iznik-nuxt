@@ -184,6 +184,22 @@ export default {
       return ret
     }
   },
+  mounted() {
+    if (
+      process.browser &&
+      (!this.message ||
+        !this.message.fromuser ||
+        typeof this.message.fromuser !== 'object')
+    ) {
+      // We are on the client and loading a page which we have rendered on the server rather than navigated to on the
+      // client side.  We will therefore have rendered it logged out.  Refetch the message so that we get more info,
+      // which we may do when logged in.
+      this.$store.dispatch('messages/fetch', {
+        id: this.id,
+        force: true
+      })
+    }
+  },
   methods: {
     sent() {
       this.$emit('close')
