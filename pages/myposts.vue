@@ -453,7 +453,20 @@ export default {
       } else if (b.promised && !a.promised) {
         return 1
       } else {
-        return new Date(a.lastdate).getTime() - new Date(b.lastDate).getTime()
+        let adate = null
+        let bdate = null
+        if (a.lastdate && b.lastdate) {
+          adate = a.lastdate
+          bdate = b.lastdate
+        } else if (a.groups && a.groups.length && b.groups && b.groups.length) {
+          adate = a.groups[0].arrival
+          bdate = b.groups[0].arrival
+        } else {
+          adate = a.arrival
+          bdate = b.arrival
+        }
+
+        return new Date(bdate).getTime() - new Date(adate).getTime()
       }
     },
     forceLogin() {
