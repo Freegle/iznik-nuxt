@@ -180,35 +180,35 @@ export const actions = {
       let prom = null
 
       if (needFetch) {
+        errorOK = true
+
         prom = this.$api.message.fetch(params, data => {
-          errorOK = true
           return data.ret !== 3
         })
 
-        prom.then(res => {
-          message = res.message
-          const groups = res.groups
+        const res = await prom
+        message = res.message
+        const groups = res.groups
 
-          // Most group info returned on the call we don't care about because it's also in the message.  But whether
-          // or not the group is closed matters.
-          if (groups) {
-            for (const gid in groups) {
-              const g = groups[gid]
-              if (g.settings && g.settings.closed) {
-                message.closed = true
-              }
+        // Most group info returned on the call we don't care about because it's also in the message.  But whether
+        // or not the group is closed matters.
+        if (groups) {
+          for (const gid in groups) {
+            const g = groups[gid]
+            if (g.settings && g.settings.closed) {
+              message.closed = true
             }
           }
+        }
 
-          if (state.instance === instance) {
-            // We might have some extra information to add in for this messages which we obtained earlier when searching.
-            message.matchedon = params.matchedon
-          }
-
+        if (state.instance === instance) {
           // We might have some extra information to add in for this messages which we obtained earlier when searching.
           message.matchedon = params.matchedon
-          commit('add', message)
-        })
+        }
+
+        // We might have some extra information to add in for this messages which we obtained earlier when searching.
+        message.matchedon = params.matchedon
+        commit('add', message)
       } else {
         console.log('No need to fetch', params.id)
       }
