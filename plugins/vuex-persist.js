@@ -107,16 +107,35 @@ export default ({ app, store }) => {
               JSON.stringify(newstate).length
             )
           }
-        } catch (e) {}
+        } catch (e) {
+          // If we don't support quota, let's err on the safe side and save the minimal state.
+          newstate = smallerState
+
+          console.log(
+            'No quota support',
+            length,
+            JSON.stringify(newstate).length
+          )
+        }
 
         await storage.setItem(key, newstate)
       } catch (e) {
-        console.error('Storage save failed with', e)
+        console.log('Storage save failed with', e)
         try {
           await storage.setItem(key, smallerState)
           console.log('...saved smaller')
         } catch (e) {
-          console.error('Storage save of smaller failed with', e)
+          // This failed too.  Close the connection and retry.; this can help with some errors.
+          console.log('Storage save of smaller failed with', e)
+          storage._dbInfo.db.close()
+
+          // Retry.
+          try {
+            await storage.setItem(key, smallerState)
+            console.log('...saved smaller after retry')
+          } catch (e) {
+            console.error('Failed to save smaller after close and retry', e)
+          }
         }
       }
     },
