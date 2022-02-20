@@ -16,6 +16,8 @@ if (process.client) {
   Sentry = require('@sentry/node')
 }
 
+let giveUp = false
+
 function prune(list) {
   // Prune an object indexed by id on the assumption that the addedToStore field is present, which is maintained
   // by the relevant stores.
@@ -50,6 +52,7 @@ export default ({ app, store }) => {
 
     filter: function(mutation) {
       if (
+        giveUp ||
         mutation.type === 'misc/setTime' ||
         mutation.type === 'chats/fetching' ||
         mutation.type === 'uniqueid/inc'
@@ -135,6 +138,10 @@ export default ({ app, store }) => {
     },
 
     async saveState(key, state, storage) {
+      if (giveUp) {
+        return
+      }
+
       let newstate = deepmerge({}, state || {}, {
         arrayMerge: (destinationArray, sourceArray, options) => sourceArray
       })
@@ -221,6 +228,9 @@ export default ({ app, store }) => {
             Sentry.captureMessage(
               'Failed to save smaller after close and retry ' + e.toString()
             )
+
+            // Don't keep trying, otherwise we generate a lot of Sentry errors.
+            giveUp = true
           }
         }
       }
