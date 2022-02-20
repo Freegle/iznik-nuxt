@@ -139,6 +139,7 @@ export default ({ app, store }) => {
         arrayMerge: (destinationArray, sourceArray, options) => sourceArray
       })
 
+      // This is the minimal state we need to save for functional reasons (e.g. login, compose/reply when logged out).
       const smallerState = {
         auth: newstate.auth,
         compose: newstate.compose,
@@ -146,10 +147,12 @@ export default ({ app, store }) => {
         misc: newstate.misc
       }
 
+      let quota = null
+
       try {
         try {
           // Check whether we need to prune more aggressively.  This interface is not supported in all browsers.
-          const quota = await navigator.storage.estimate()
+          quota = await navigator.storage.estimate()
 
           if (quota && quota.quota) {
             const length = JSON.stringify(newstate).length
@@ -160,7 +163,8 @@ export default ({ app, store }) => {
               console.log(
                 'Aggressive prune from',
                 length,
-                JSON.stringify(newstate).length
+                JSON.stringify(newstate).length,
+                quota
               )
             }
           } else {
@@ -186,13 +190,18 @@ export default ({ app, store }) => {
 
         await storage.setItem(key, newstate)
       } catch (e) {
-        console.log('Storage save failed with', e)
+        console.log('Storage save failed with', e, quota)
         try {
           await storage.setItem(key, smallerState)
           console.log('...saved smaller')
         } catch (e) {
           // This failed too.  Close the connection and retry.; this can help with some errors.
-          console.log('Storage save of smaller failed with', e, storage._dbInfo)
+          console.log(
+            'Storage save of smaller failed with',
+            e,
+            quota,
+            JSON.stringify(smallerState).length
+          )
           if (storage._dbInfo && storage._dbInfo.db) {
             console.log('Close DB')
             storage._dbInfo.db.close()
@@ -203,7 +212,12 @@ export default ({ app, store }) => {
             await storage.setItem(key, smallerState)
             console.log('...saved smaller after retry')
           } catch (e) {
-            console.error('Failed to save smaller after close and retry', e)
+            console.error(
+              'Failed to save smaller after close and retry',
+              e,
+              quota,
+              JSON.stringify(smallerState).length
+            )
             Sentry.captureMessage(
               'Failed to save smaller after close and retry ' + e.toString()
             )
