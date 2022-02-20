@@ -57,7 +57,7 @@ export default ({ app, store }) => {
         return false
       }
 
-      console.log('Mutation', mutation.type)
+      // console.log('Mutation', mutation.type)
 
       return true
     },
