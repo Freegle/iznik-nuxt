@@ -183,8 +183,11 @@ export default ({ app, store }) => {
           console.log('...saved smaller')
         } catch (e) {
           // This failed too.  Close the connection and retry.; this can help with some errors.
-          console.log('Storage save of smaller failed with', e)
-          storage._dbInfo.db.close()
+          console.log('Storage save of smaller failed with', e, storage._dbInfo)
+          if (storage._dbInfo && storage._dbInfo.db) {
+            console.log('Close DB')
+            storage._dbInfo.db.close()
+          }
 
           // Retry.
           try {
