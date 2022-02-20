@@ -8,6 +8,14 @@ import deepmerge from 'deepmerge'
 const RETAIN_COUNT = 100
 const RETAIN_AGE = 7
 
+let Sentry
+
+if (process.client) {
+  Sentry = require('@sentry/browser')
+} else {
+  Sentry = require('@sentry/node')
+}
+
 function prune(list) {
   // Prune an object indexed by id on the assumption that the addedToStore field is present, which is maintained
   // by the relevant stores.
@@ -43,12 +51,13 @@ export default ({ app, store }) => {
     filter: function(mutation) {
       if (
         mutation.type === 'misc/setTime' ||
+        mutation.type === 'chats/fetching' ||
         mutation.type === 'uniqueid/inc'
       ) {
         return false
       }
 
-      // console.log('Mutation', mutation.type)
+      console.log('Mutation', mutation.type)
 
       return true
     },
@@ -195,6 +204,9 @@ export default ({ app, store }) => {
             console.log('...saved smaller after retry')
           } catch (e) {
             console.error('Failed to save smaller after close and retry', e)
+            Sentry.captureMessage(
+              'Failed to save smaller after close and retry ' + e.toString()
+            )
           }
         }
       }
