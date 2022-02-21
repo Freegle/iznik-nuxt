@@ -156,9 +156,35 @@ export const actions = {
       }
     }
   },
-  async fetch({ state, commit, rootGetters }, params) {
-    // Don't log errors on fetches of individual messages
+  processResult({ state, commit }, parms) {
+    const res = parms.res
+    const params = parms.params
+    const message = res.message
+    const groups = res.groups
     const instance = state.instance
+
+    // Most group info returned on the call we don't care about because it's also in the message.  But whether
+    // or not the group is closed matters.
+    if (groups) {
+      for (const gid in groups) {
+        const g = groups[gid]
+        if (g.settings && g.settings.closed) {
+          message.closed = true
+        }
+      }
+    }
+
+    if (state.instance === instance) {
+      // We might have some extra information to add in for this messages which we obtained earlier when searching.
+      message.matchedon = params.matchedon
+    }
+
+    // We might have some extra information to add in for this messages which we obtained earlier when searching.
+    message.matchedon = params.matchedon
+    commit('add', message)
+  },
+  async fetch({ state, dispatch, commit, rootGetters }, params) {
+    // Don't log errors on fetches of individual messages
     let errorOK = false
 
     try {
@@ -168,7 +194,7 @@ export const actions = {
       // - if it's old, to pick up edits or state changes
       const modtools = rootGetters['misc/get']('modtools')
       const now = this.$dayjs()
-      let message = state.index[params.id]
+      const message = state.index[params.id]
 
       const needFetch =
         modtools ||
@@ -185,35 +211,26 @@ export const actions = {
         prom = this.$api.message.fetch(params, data => {
           return data.ret !== 3
         })
-
-        const res = await prom
-        message = res.message
-        const groups = res.groups
-
-        // Most group info returned on the call we don't care about because it's also in the message.  But whether
-        // or not the group is closed matters.
-        if (groups) {
-          for (const gid in groups) {
-            const g = groups[gid]
-            if (g.settings && g.settings.closed) {
-              message.closed = true
-            }
-          }
-        }
-
-        if (state.instance === instance) {
-          // We might have some extra information to add in for this messages which we obtained earlier when searching.
-          message.matchedon = params.matchedon
-        }
-
-        // We might have some extra information to add in for this messages which we obtained earlier when searching.
-        message.matchedon = params.matchedon
-        commit('add', message)
       }
 
       if (modtools || !message || params.force) {
         // We need to wait until the fetch completes.
-        await prom
+        console.log('Wait for fetch')
+        const res = await prom
+        await dispatch('processResult', {
+          params,
+          res
+        })
+        console.log('Completed')
+      } else {
+        console.log('No need to wait')
+        prom.then(res => {
+          console.log('UJpdate in the background')
+          dispatch('processResult', {
+            params,
+            res
+          })
+        })
       }
     } catch (e) {
       if (!errorOK) {
