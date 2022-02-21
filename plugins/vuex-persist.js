@@ -309,13 +309,9 @@ export default ({ app, store }) => {
           }
 
           if (pruneChats) {
+            state.chats = cloneDeep(state.chats)
             const sortedChats = store.getters['chats/list']
             const chats = prune(sortedChats)
-            console.log(
-              'Prune chats',
-              Object.keys(sortedChats).length,
-              Object.keys(chats).length
-            )
 
             // We only want to keep any messages which are referenced from a retained chat.
             const newcontexts = {}
