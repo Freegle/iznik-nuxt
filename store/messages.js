@@ -222,7 +222,7 @@ export const actions = {
           res
         })
         console.log('Completed')
-      } else {
+      } else if (prom) {
         console.log('No need to wait')
         prom.then(res => {
           console.log('UJpdate in the background')
