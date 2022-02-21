@@ -135,11 +135,10 @@ export default {
     this.searchTerm = this.$route.params.term
 
     // We want this to be our next home page.
-    try {
-      localStorage.setItem('Iznik>lasthomepage', 'mygroups')
-    } catch (e) {
-      console.log('Save last route failed', e)
-    }
+    this.$store.dispatch('misc/set', {
+      key: 'lasthomepage',
+      value: 'mygroups'
+    })
 
     this.calculateInitialMapBounds()
     console.log('Initial bounds', this.initialBounds)

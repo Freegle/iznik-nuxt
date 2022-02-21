@@ -133,7 +133,7 @@ export default {
 
       // Logged in homepage - on client side we want to load the last page, for logged in users.
       try {
-        const lastRoute = localStorage.getItem('Iznik>lasthomepage')
+        const lastRoute = this.$store.getters['misc/get']('lasthomepage')
 
         if (lastRoute === 'news') {
           route = '/chitchat'

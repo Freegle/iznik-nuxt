@@ -333,11 +333,10 @@ export default {
     this.newpassword = this.$route.params.newpassword
 
     // We want this to be our next home page.
-    try {
-      localStorage.setItem('Iznik>lasthomepage', 'myposts')
-    } catch (e) {
-      console.error('Save last route failed', e)
-    }
+    this.$store.dispatch('misc/set', {
+      key: 'lasthomepage',
+      value: 'myposts'
+    })
 
     await this.fetchMe(['me', 'groups'])
 
