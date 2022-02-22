@@ -17,6 +17,7 @@ if (process.client) {
 }
 
 let giveUp = false
+let useSmaller = true
 
 function prune(list) {
   // Prune an object indexed by id on the assumption that the addedToStore field is present, which is maintained
@@ -156,51 +157,58 @@ export default ({ app, store }) => {
 
       let quota = null
 
+      // We have a whole series of fallback behaviours:
+      // - try to save using localForage (which will default to IndexedDB)
+      // - try to save smaller state in case it's a quota issue
+      // - force attempt to save to local storage in case IndexedDB is flaky.
+      // - give up and stop saving.
       try {
         try {
           // Check whether we need to prune more aggressively.  This interface is not supported in all browsers.
-          quota = await navigator.storage.estimate()
+          if (!useSmaller) {
+            quota = await navigator.storage.estimate()
 
-          if (quota && quota.quota) {
-            const length = JSON.stringify(newstate).length
+            if (quota && quota.quota) {
+              const length = JSON.stringify(newstate).length
 
-            if (quota.usage < length) {
-              newstate = smallerState
-
+              if (quota.usage < length) {
+                console.log('Quota indicates too full, use smaller')
+                useSmaller = true
+              }
+            } else {
+              // If we don't support quota, let's err on the safe side and save the minimal state.
               console.log(
-                'Aggressive prune from',
-                length,
-                JSON.stringify(newstate).length,
-                quota
+                'Quota call worked but no quota returned, use smaller'
               )
+              useSmaller = true
             }
-          } else {
-            // If we don't support quota, let's err on the safe side and save the minimal state.
-            newstate = smallerState
-
-            console.log(
-              'No quota support 1',
-              length,
-              JSON.stringify(newstate).length
-            )
           }
         } catch (e) {
           // If we don't support quota, let's err on the safe side and save the minimal state.
-          newstate = smallerState
+          console.log('Quota exception, use smaller', e)
+          useSmaller = true
+        }
 
-          console.log(
-            'No quota support 2',
-            length,
-            JSON.stringify(newstate).length
-          )
+        if (useSmaller) {
+          // If we don't support quota, let's err on the safe side and save the minimal state.
+          newstate = smallerState
         }
 
         await storage.setItem(key, newstate)
+
+        // Succeeded
+        return
       } catch (e) {
-        console.log('Storage save failed with', e, quota)
+        console.log('Storage save failed', e, quota)
+
         try {
           await storage.setItem(key, smallerState)
-          console.log('...saved smaller')
+
+          // Use smaller from now on.
+          console.log('Successfully saved smaller, use from now on')
+          Sentry.captureMessage('Successfully saved smaller, use from now on')
+          useSmaller = true
+          return
         } catch (e) {
           // This failed too.  Close the connection and retry.; this can help with some errors.
           console.log(
@@ -209,24 +217,37 @@ export default ({ app, store }) => {
             quota,
             JSON.stringify(smallerState).length
           )
+
           if (storage._dbInfo && storage._dbInfo.db) {
+            // Try closing the DB to force re-establishing.
             console.log('Close DB')
             storage._dbInfo.db.close()
+
+            try {
+              await storage.setItem(key, smallerState)
+              console.log('...saved smaller after close of IndexedDB')
+              Sentry.captureMessage(
+                'Successfully saved after close of IndexedDB.'
+              )
+              return
+            } catch (e) {
+              console.log('Save failed again after close of IndexedDB')
+            }
           }
 
-          // Retry.
           try {
+            // Try switching to local storage to work around issues with some flaky IndexedDB behaviour on some devices.
+            //
+            // If this works we'll stick with local storage for this session.  TODO Make this persist.
+            storage.setDriver(localForage.LOCALSTORAGE)
             await storage.setItem(key, smallerState)
-            console.log('...saved smaller after retry')
-          } catch (e) {
-            console.error(
-              'Failed to save smaller after close and retry',
-              e,
-              quota,
-              JSON.stringify(smallerState).length
-            )
+            console.log('...saved successfully after switch to local storage')
             Sentry.captureMessage(
-              'Failed to save smaller after close and retry ' + e.toString()
+              'Successfully saved after switch to local storage.'
+            )
+          } catch (e) {
+            Sentry.captureMessage(
+              'Failed to save smaller after switch to local storage.'
             )
 
             // Don't keep trying, otherwise we generate a lot of Sentry errors.
