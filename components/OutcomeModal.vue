@@ -273,7 +273,14 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-/deep/ .maxWidth {
-  max-width: calc(100vw - 16px);
+@import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+@include media-breakpoint-down(md) {
+  /deep/ .maxWidth {
+    max-width: calc(100vw - 16px);
+  }
 }
 </style>
