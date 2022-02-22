@@ -258,9 +258,6 @@ export default ({ app, store }) => {
             try {
               await storage.setItem(key, smallerState)
               console.log('...saved smaller after close of IndexedDB')
-              Sentry.captureMessage(
-                'Successfully saved after close of IndexedDB.'
-              )
               return
             } catch (e) {
               console.log('Save failed again after close of IndexedDB')
@@ -274,15 +271,13 @@ export default ({ app, store }) => {
             storage.setDriver(localForage.LOCALSTORAGE)
             await storage.setItem(key, smallerState)
             console.log('...saved successfully after switch to local storage')
-            Sentry.captureMessage(
-              'Successfully saved after switch to local storage.'
-            )
 
             try {
               // Give up on IndexedDB.
               localStorage.setItem('disableIndexedDB', true)
             } catch (e) {}
           } catch (e) {
+            console.log('Save of smaller to local storage failed', e)
             Sentry.captureMessage(
               'Failed to save smaller after switch to local storage.'
             )
