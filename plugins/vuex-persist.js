@@ -160,7 +160,7 @@ export default ({ app, store }) => {
       try {
         if (localStorage.getItem('disableIndexedDB')) {
           // We have given up on IndexedDB.
-          storage.setDriver(localForage.LOCALSTORAGE)
+          await storage.setDriver(localForage.LOCALSTORAGE)
         }
       } catch (e) {}
 
@@ -268,7 +268,7 @@ export default ({ app, store }) => {
             // Try switching to local storage to work around issues with some flaky IndexedDB behaviour on some devices.
             //
             // If this works we'll stick with local storage for this session.
-            storage.setDriver(localForage.LOCALSTORAGE)
+            await storage.setDriver(localForage.LOCALSTORAGE)
             await storage.setItem(key, smallerState)
             console.log('...saved successfully after switch to local storage')
 
