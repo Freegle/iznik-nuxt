@@ -10,14 +10,14 @@ const RETAIN_AGE = 7
 
 let Sentry
 
+let giveUp = false
+let useSmaller = true
+
 if (process.client) {
   Sentry = require('@sentry/browser')
 } else {
   Sentry = require('@sentry/node')
 }
-
-let giveUp = false
-let useSmaller = true
 
 function prune(list) {
   // Prune an object indexed by id on the assumption that the addedToStore field is present, which is maintained
@@ -157,6 +157,20 @@ export default ({ app, store }) => {
         return
       }
 
+      try {
+        if (localStorage.getItem('disableIndexedDB')) {
+          // We have given up on IndexedDB.
+          storage.setDriver(localForage.LOCALSTORAGE)
+        }
+      } catch (e) {}
+
+      try {
+        if (localStorage.getItem('useSmaller')) {
+          // We know that smaller state saves work better
+          useSmaller = true
+        }
+      } catch (e) {}
+
       let newstate = deepmerge({}, state || {}, {
         arrayMerge: (destinationArray, sourceArray, options) => sourceArray
       })
@@ -188,6 +202,13 @@ export default ({ app, store }) => {
               )
               useSmaller = true
             }
+
+            if (useSmaller) {
+              try {
+                // Changed to using smaller - save
+                localStorage.setItem('useSmaller', true)
+              } catch (e) {}
+            }
           }
         } catch (e) {
           // If we don't support quota, let's err on the safe side and save the minimal state.
@@ -215,6 +236,10 @@ export default ({ app, store }) => {
           // Use smaller from now on.
           console.log('Successfully saved smaller, use from now on')
           useSmaller = true
+          try {
+            // Changed to using smaller - save
+            localStorage.setItem('useSmaller', true)
+          } catch (e) {}
           return
         } catch (e) {
           // This failed too.  Close the connection and retry.; this can help with some errors.
@@ -245,13 +270,18 @@ export default ({ app, store }) => {
           try {
             // Try switching to local storage to work around issues with some flaky IndexedDB behaviour on some devices.
             //
-            // If this works we'll stick with local storage for this session.  TODO Make this persist.
+            // If this works we'll stick with local storage for this session.
             storage.setDriver(localForage.LOCALSTORAGE)
             await storage.setItem(key, smallerState)
             console.log('...saved successfully after switch to local storage')
             Sentry.captureMessage(
               'Successfully saved after switch to local storage.'
             )
+
+            try {
+              // Give up on IndexedDB.
+              localStorage.setItem('disableIndexedDB', true)
+            } catch (e) {}
           } catch (e) {
             Sentry.captureMessage(
               'Failed to save smaller after switch to local storage.'
