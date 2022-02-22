@@ -45,6 +45,20 @@ function prune(list) {
   }
 }
 
+function getSmaller(newstate) {
+  // This is the minimal state we need to save for functional reasons (e.g. login, compose/reply when logged out).
+  const smallerState = {
+    auth: cloneDeep(newstate.auth),
+    compose: newstate.compose,
+    reply: newstate.reply,
+    misc: newstate.misc
+  }
+
+  smallerState.groups = []
+
+  return smallerState
+}
+
 export default ({ app, store }) => {
   new VuexPersistence({
     key: 'iznik',
@@ -147,14 +161,6 @@ export default ({ app, store }) => {
         arrayMerge: (destinationArray, sourceArray, options) => sourceArray
       })
 
-      // This is the minimal state we need to save for functional reasons (e.g. login, compose/reply when logged out).
-      const smallerState = {
-        auth: newstate.auth,
-        compose: newstate.compose,
-        reply: newstate.reply,
-        misc: newstate.misc
-      }
-
       let quota = null
 
       // We have a whole series of fallback behaviours:
@@ -191,7 +197,7 @@ export default ({ app, store }) => {
 
         if (useSmaller) {
           // If we don't support quota, let's err on the safe side and save the minimal state.
-          newstate = smallerState
+          newstate = getSmaller(newstate)
         }
 
         await storage.setItem(key, newstate)
@@ -200,6 +206,8 @@ export default ({ app, store }) => {
         return
       } catch (e) {
         console.log('Storage save failed', e, quota)
+
+        const smallerState = getSmaller(newstate)
 
         try {
           await storage.setItem(key, smallerState)
