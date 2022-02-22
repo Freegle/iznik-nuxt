@@ -10,6 +10,11 @@ export const state = () => ({
 })
 
 export const mutations = {
+  clear(state) {
+    state.list = {}
+    state.currentChat = null
+    state.fetching = {}
+  },
   addRoom(state, item) {
     // This might be a number and therefore not of string type
     item.snippet = item.snippet + ''
@@ -351,5 +356,9 @@ export const actions = {
 
   async typing({ dispatch, commit }, params) {
     await this.$api.chat.typing(params.chatid)
+  },
+
+  clear({ commit }) {
+    commit('clear')
   }
 }
