@@ -214,7 +214,6 @@ export default ({ app, store }) => {
 
           // Use smaller from now on.
           console.log('Successfully saved smaller, use from now on')
-          Sentry.captureMessage('Successfully saved smaller, use from now on')
           useSmaller = true
           return
         } catch (e) {
