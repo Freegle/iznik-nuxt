@@ -13,7 +13,7 @@ let Sentry
 let giveUp = false
 let useSmaller = false
 
-export default ({ app, store }) => {
+export default async ({ app, store }) => {
   function prune(list) {
     // Prune an object indexed by id on the assumption that the addedToStore field is present, which is maintained
     // by the relevant stores.
@@ -55,9 +55,9 @@ export default ({ app, store }) => {
   }
 
   if (process.client) {
-    // Check if we have local storage available.  Some browsers don't, in which case creating the vuex-persist instance
-    // would just result in Sentry errors.
     try {
+      // Check if we have local storage available.  Some browsers don't, in which case creating the vuex-persist instance
+      // would just result in Sentry errors.
       localStorage.setItem('izniktest', true)
 
       Sentry = require('@sentry/browser')
@@ -65,7 +65,14 @@ export default ({ app, store }) => {
       try {
         if (localStorage.getItem('useSmaller')) {
           // We know that smaller state saves work better
+          console.log('Smaller state previously chosen for store')
           useSmaller = true
+        }
+
+        if (localStorage.getItem('disableIndexedDB')) {
+          // We have given up on IndexedDB.
+          console.log('IndexedDB previously disabled, so use local storage')
+          await localForage.setDriver(localForage.LOCALSTORAGE)
         }
       } catch (e) {}
 
@@ -165,13 +172,6 @@ export default ({ app, store }) => {
           if (giveUp) {
             return
           }
-
-          try {
-            if (localStorage.getItem('disableIndexedDB')) {
-              // We have given up on IndexedDB.
-              await storage.setDriver(localForage.LOCALSTORAGE)
-            }
-          } catch (e) {}
 
           let newstate = deepmerge({}, state || {}, {
             arrayMerge: (destinationArray, sourceArray, options) => sourceArray
