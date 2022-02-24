@@ -215,7 +215,14 @@ export const actions = {
 
       if (modtools || !message || params.force) {
         // We need to wait until the fetch completes.
-        console.log('Wait for fetch')
+        console.log(
+          'Wait for fetch',
+          params.id,
+          // JSON.stringify(Object.keys(state.index)),
+          modtools,
+          !message,
+          params.force
+        )
         const res = await prom
         await dispatch('processResult', {
           params,
