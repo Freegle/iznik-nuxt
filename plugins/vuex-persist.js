@@ -62,6 +62,13 @@ export default ({ app, store }) => {
 
       Sentry = require('@sentry/browser')
 
+      try {
+        if (localStorage.getItem('useSmaller')) {
+          // We know that smaller state saves work better
+          useSmaller = true
+        }
+      } catch (e) {}
+
       new VuexPersistence({
         key: 'iznik',
         storage: localForage,
@@ -163,13 +170,6 @@ export default ({ app, store }) => {
             if (localStorage.getItem('disableIndexedDB')) {
               // We have given up on IndexedDB.
               await storage.setDriver(localForage.LOCALSTORAGE)
-            }
-          } catch (e) {}
-
-          try {
-            if (localStorage.getItem('useSmaller')) {
-              // We know that smaller state saves work better
-              useSmaller = true
             }
           } catch (e) {}
 
