@@ -18,16 +18,18 @@ export default {
     const code = this.$route.query.code
     console.log('Auth code', code)
 
-    if (this.me) {
+    const self = this
+
+    if (self.me) {
       // We are logged in.  Go back to where we want to be.
       console.log('Already logged in')
       if (returnto) {
         // Go where we want to be.  Make sure we remove the code to avoid us trying to log in again.
         console.log('Return to', returnto)
-        this.$router.push(returnto)
+        self.$router.push(returnto)
       } else {
         console.log('Just go home')
-        this.$router.push('/')
+        self.$router.push('/')
       }
     } else if (!code) {
       // Probably they rejected our authorisation.  Just go back to the same page we were at.
@@ -35,7 +37,7 @@ export default {
       window.location = returnto
     } else {
       // We have a code.  Use it on the server to log ion.
-      this.$axios
+      self.$axios
         .post(process.env.API + '/session', {
           yahoocodelogin: code
         })
@@ -45,26 +47,26 @@ export default {
           if (ret.ret === 0) {
             // Set the user to store the persistent token.
             ret.user.persistent = ret.persistent
-            this.$store.dispatch('auth/setUser', ret.user)
+            self.$store.dispatch('auth/setUser', ret.user)
 
             // We are logged in.  Get the logged in user
             console.log('Logged in')
-            await this.fetchMe(['me', 'groups'], true)
+            await self.fetchMe(['me', 'groups'], true)
 
-            this.pleaseLogin = false
+            self.pleaseLogin = false
 
             if (returnto) {
               // Go where we want to be.  Make sure we remove the code to avoid us trying to log in again.
               console.log('Return to', returnto)
-              this.$router.go(returnto)
+              self.$router.go(returnto)
             } else {
               console.log('Just go home')
-              this.$router.push('/')
+              self.$router.push('/')
             }
           } else {
             // Sometimes this fails on the server side.  Force login again.
             console.error('Server login failed', ret)
-            this.$store.dispatch('auth/forceLogin', true)
+            self.$store.dispatch('auth/forceLogin', true)
           }
         })
         .catch(e => {
