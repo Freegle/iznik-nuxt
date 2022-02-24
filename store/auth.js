@@ -351,11 +351,14 @@ export const actions = {
       commit('addRelated', me.id)
       commit('forceLogin', false)
 
-      // Save off our current email from the account for use in post composing, in case we have changed it since
-      // we last used this device.
-      dispatch('compose/setEmail', me.email, {
-        root: true
-      })
+      const email = this.$store.getters['compose/getEmail']
+
+      if (email !== me.email) {
+        // Save off our current email from the account for use in post composing.
+        dispatch('compose/setEmail', me.email, {
+          root: true
+        })
+      }
     }
 
     if (work) {
