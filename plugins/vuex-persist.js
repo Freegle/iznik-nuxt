@@ -374,6 +374,7 @@ export default async ({ app, store }) => {
 
               if (pruneChats) {
                 state.chats = cloneDeep(state.chats)
+                state.chatmessages = cloneDeep(state.chatmessages)
                 const sortedChats = store.getters['chats/list']
                 const chats = prune(sortedChats)
 
