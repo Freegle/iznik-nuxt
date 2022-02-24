@@ -115,11 +115,19 @@ export default async ({ app, store }) => {
             console.log('Failed to migrate', e)
           }
 
-          // If we don't have to migrate, then we can do the same code from vuex-persist, minus the supportCircular
-          // option we don't use.
-          const value = await storage.getItem(key)
-          const ret =
-            typeof value === 'string' ? JSON.parse(value || '{}') : value || {}
+          let ret = {}
+
+          try {
+            // If we don't have to migrate, then we can do the same code from vuex-persist, minus the supportCircular
+            // option we don't use.
+            const value = await storage.getItem(key)
+            ret =
+              typeof value === 'string'
+                ? JSON.parse(value || '{}')
+                : value || {}
+          } catch (e) {
+            console.log('Storage getItem failed', e)
+          }
 
           // Ensure the store is not horribly corrupt.
           if (!ret.auth) {
@@ -451,7 +459,11 @@ export default async ({ app, store }) => {
 
       // Ensure that the store has been loaded before we render the page.
       app.router.beforeEach(async (to, from, next) => {
-        await store.restored
+        try {
+          await store.restored
+        } catch (e) {
+          console.log('Store restore await failed', e)
+        }
         next()
       })
     } catch (e) {

@@ -71,8 +71,12 @@ export default {
   },
   async mounted() {
     if (process.browser) {
-      // Wait for the store if necessary.
-      await this.$store.restored
+      try {
+        // Wait for the store if necessary.
+        await this.$store.restored
+      } catch (e) {
+        console.log('Store restore wait failed', e)
+      }
 
       // Add class for screen background.
       document.body.classList.add('fd')
