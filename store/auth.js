@@ -287,7 +287,7 @@ export const actions = {
     }
   },
 
-  async fetchUser({ commit, store, dispatch, state }, params) {
+  async fetchUser({ commit, store, dispatch, rootGetters, state }, params) {
     // We're so vain, we probably think this call is about us.
     // Get the current work so we can compare counts.
     const currentTotal = countWork(state.work)
@@ -351,7 +351,7 @@ export const actions = {
       commit('addRelated', me.id)
       commit('forceLogin', false)
 
-      const email = this.$store.getters['compose/getEmail']
+      const email = rootGetters['compose/getEmail']
 
       if (email !== me.email) {
         // Save off our current email from the account for use in post composing.
