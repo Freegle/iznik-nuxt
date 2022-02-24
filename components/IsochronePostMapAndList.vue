@@ -144,7 +144,7 @@
             />
           </div>
         </div>
-        <client-only>
+        <client-only v-if="doInfiniteScroll">
           <infinite-loading
             v-if="initialBounds"
             :identifier="infiniteId"
@@ -314,8 +314,8 @@ export default {
       infiniteId: +new Date(),
       distance: 1000,
       messagesInOwnGroups: [],
-      fetching: [],
       fetched: [],
+      doInfiniteScroll: process.server,
 
       // Filters
       selectedType: 'All',
@@ -656,6 +656,21 @@ export default {
     if (history && history.state && history.state.msgid) {
       this.ensureMessageVisible = parseInt(history.state.msgid)
     }
+
+    const messages = this.$store.getters['messages/getAll']
+
+    if (messages.length) {
+      // We have some messages in store.  We may manage to render enough to fill the screen from these.  If we
+      // start the infinite scroll now, we'll start fetching messages we may not need to fetch.  But we can't
+      // find an event driven way of working this out (nextTick and requestIdleCallback don't cut it) so we start a
+      // timer.  We could probably work this out if we had a bigger brain, but this will do.
+      setTimeout(() => {
+        this.doInfiniteScroll = true
+      }, 5000)
+    } else {
+      // We have no messages to show so we should start the scroll now, which will trigger fetching some.
+      this.doInfiniteScroll = true
+    }
   },
   methods: {
     loadMore: async function($state) {
@@ -663,21 +678,18 @@ export default {
         this.busy = true
 
         try {
-          // We work out which messages that are currently on the map are not in our store, and fetch them
-          // in descending date order.  We limit to avoid flooding the server.
+          // We fetch messages in descending date order.  The store handles caching.  We limit to avoid flooding the
+          // server.
           let count = 0
           const promises = []
-          const fetching = []
 
           for (const m of this.messagesForList) {
             // No point fetching if we don't want to show it.  If those criteria change the watch will clear the
             // store.
             if (this.wantMessage(m)) {
-              if (!this.fetching[m.id] && this.infiniteId) {
-                this.fetching[m.id] = true
+              const message = this.$store.getters['messages/get'](m.id)
 
-                fetching.push(m.id)
-
+              if (!message && this.infiniteId) {
                 promises.push(
                   this.$store.dispatch('messages/fetch', {
                     id: m.id,
@@ -686,16 +698,11 @@ export default {
                   })
                 )
 
-                const message = this.$store.getters['messages/get'](m.id)
+                count++
 
-                if (!message) {
-                  // We're currently fetching it.
-                  count++
-
-                  if (count >= 5) {
-                    // Don't fetch too many at once.
-                    break
-                  }
+                if (count >= 5) {
+                  // Don't fetch too many at once.
+                  break
                 }
               }
             }
@@ -704,16 +711,13 @@ export default {
           // Use all-settled as some might fail.
           await allSettled(promises)
 
-          fetching.forEach(id => {
-            this.fetched[id] = true
-            delete this.fetching[id]
-          })
-
-          if (count) {
-            $state.loaded()
-          } else {
-            $state.complete()
-          }
+          setTimeout(() => {
+            if (count) {
+              $state.loaded()
+            } else {
+              $state.complete()
+            }
+          }, 1000)
         } catch (e) {
           console.log('Exception', e)
           $state.complete()

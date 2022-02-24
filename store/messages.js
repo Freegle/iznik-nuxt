@@ -20,13 +20,17 @@ export const state = () => ({
 
   // Lists for Browse
   primaryList: [],
-  secondaryList: []
+  secondaryList: [],
+
+  // Messages we're in the process of fetching
+  fetching: {}
 })
 
 export const mutations = {
   add(state, item) {
     if (item) {
       item.addedToStore = dayjs().toISOString()
+      Vue.delete(state.fetching, parseInt(item.id))
 
       if (state.index[parseInt(item.id)]) {
         // Overwrite any existing entry.
@@ -92,6 +96,9 @@ export const mutations = {
   },
   setSecondary(state, list) {
     state.secondaryList = list
+  },
+  fetching(state, id) {
+    Vue.set(state.fetching, id, true)
   }
 }
 
@@ -100,6 +107,9 @@ export const getters = {
     const ret = state.index[parseInt(id)]
 
     return ret
+  },
+  fetching: state => id => {
+    return Object.prototype.hasOwnProperty.call(state.fetching, parseInt(id))
   },
   getContext: state => {
     let ret = null
@@ -206,7 +216,20 @@ export const actions = {
       let prom = null
 
       if (needFetch) {
+        console.log(
+          'Need to fetch',
+          params.id,
+          modtools,
+          !message,
+          message && !message.addedToStore,
+          params.force,
+          message && message.addedToStore
+            ? now.diff(this.$dayjs(message.addedToStore), 'minute')
+            : ''
+        )
         errorOK = true
+
+        commit('fetching', params.id)
 
         prom = this.$api.message.fetch(params, data => {
           return data.ret !== 3
@@ -228,11 +251,8 @@ export const actions = {
           params,
           res
         })
-        console.log('Completed')
       } else if (prom) {
-        console.log('No need to wait')
         prom.then(res => {
-          console.log('UJpdate in the background')
           dispatch('processResult', {
             params,
             res
@@ -558,7 +578,6 @@ export const actions = {
     commit('addAll', messages)
   },
   async addBy({ dispatch, commit }, params) {
-    console.log('Add by', params)
     await this.$api.message.addBy(params.id, params.userid, params.count)
     const { message } = await this.$api.message.fetch({
       id: params.id,

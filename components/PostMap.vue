@@ -212,7 +212,8 @@ export default {
       lockModal: false,
       unlockModal: false,
       destroyed: false,
-      mapIdle: 0
+      mapIdle: 0,
+      doInfiniteScroll: process.server
     }
   },
   computed: {

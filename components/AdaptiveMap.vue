@@ -337,8 +337,6 @@ export default {
       infiniteId: +new Date(),
       distance: 1000,
       messagesInOwnGroups: [],
-      fetching: [],
-      fetched: [],
 
       // Filters
       selectedType: 'All',
@@ -734,17 +732,14 @@ export default {
           // in descending date order.  We limit to avoid flooding the server.
           let count = 0
           const promises = []
-          const fetching = []
 
           for (const m of this.messagesForList) {
             // No point fetching if we don't want to show it.  If those criteria change the watch will clear the
             // store.
             if (this.wantMessage(m)) {
-              if (!this.fetching[m.id] && this.infiniteId) {
-                this.fetching[m.id] = true
+              const message = this.$store.getters['messages/get'](m.id)
 
-                fetching.push(m.id)
-
+              if (!message && this.infiniteId) {
                 promises.push(
                   this.$store.dispatch('messages/fetch', {
                     id: m.id,
@@ -753,16 +748,11 @@ export default {
                   })
                 )
 
-                const message = this.$store.getters['messages/get'](m.id)
+                count++
 
-                if (!message) {
-                  // We're currently fetching it.
-                  count++
-
-                  if (count >= 5) {
-                    // Don't fetch too many at once.
-                    break
-                  }
+                if (count >= 5) {
+                  // Don't fetch too many at once.
+                  break
                 }
               }
             }
@@ -770,11 +760,6 @@ export default {
 
           // Use all-settled as some might fail.
           await allSettled(promises)
-
-          fetching.forEach(id => {
-            this.fetched[id] = true
-            delete this.fetching[id]
-          })
 
           if (count) {
             $state.loaded()
