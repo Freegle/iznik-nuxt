@@ -111,6 +111,10 @@ export const getters = {
   fetching: state => id => {
     return Object.prototype.hasOwnProperty.call(state.fetching, parseInt(id))
   },
+  fetchingCount: state => {
+    const count = Object.keys(state.fetching).length
+    return count
+  },
   getContext: state => {
     let ret = null
 
@@ -606,5 +610,10 @@ export const actions = {
     if (ret && ret.ret === 0) {
       commit('setSecondary', ret.messages)
     }
+  },
+  removeFromCache({ commit }, params) {
+    commit('remove', {
+      id: params.id
+    })
   }
 }

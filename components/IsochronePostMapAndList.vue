@@ -144,7 +144,7 @@
             />
           </div>
         </div>
-        <client-only v-if="doInfiniteScroll">
+        <client-only>
           <infinite-loading
             v-if="initialBounds"
             :identifier="infiniteId"
@@ -189,7 +189,6 @@ const GroupSelect = () => import('./GroupSelect')
 const NoticeMessage = () => import('./NoticeMessage')
 const Message = () => import('~/components/Message.vue')
 const IsochronePostMap = () => import('~/components/IsochronePostMap')
-const allSettled = require('promise.allsettled')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const JobsTopBar = () => import('~/components/JobsTopBar')
 
@@ -313,9 +312,7 @@ export default {
       busy: false,
       infiniteId: +new Date(),
       distance: 1000,
-      messagesInOwnGroups: [],
-      fetched: [],
-      doInfiniteScroll: process.server,
+      toShow: 0,
 
       // Filters
       selectedType: 'All',
@@ -405,25 +402,22 @@ export default {
         // - Do show completed posts - makes us look good.  But not too many.
         //
         // Filter out dups by subject (for crossposting).
-        //
-        // messagesForList is ordered (good) but long (bad).  So we iterate through the messages in the store
-        // (likely not as many) and then sort.
-        const messages = this.$store.getters['messages/getAll']
+        for (
+          let i = 0;
+          i < this.messagesForList.length && i < this.toShow;
+          i++
+        ) {
+          const m = this.messagesForList[i]
 
-        messages.forEach(message => {
-          const order = this.messagesForListIds.indexOf(parseInt(message.id))
+          if (this.wantMessage(m)) {
+            const message = this.$store.getters['messages/get'](m.id)
 
-          if (order >= 0) {
-            const m = this.messagesForList[order]
-
-            if (this.wantMessage(m)) {
+            if (message) {
               const key = message.fromuser + '|' + message.subject
               const already =
                 key in dups && message.groups[0].groupid !== dups[key]
 
               if (!already && !message.deleted) {
-                message.order = order
-
                 // Pass whether the message has been freegled or promised, which is returned in the summary call.
                 message.successful = !!m.successful
                 message.promised = !!m.promised
@@ -461,11 +455,7 @@ export default {
               }
             }
           }
-        })
-
-        ret.sort((a, b) => {
-          return a.order - b.order
-        })
+        }
       } else {
         // We are searching.  We get the messages from the store.
         const messages = this.$store.getters['messages/getAll']
@@ -602,24 +592,24 @@ export default {
     },
     filteredMessages(newval) {
       if (this.ensureMessageVisible) {
-        console.log('Asked to scroll to', this.ensureMessageVisible)
         this.$nextTick(() => {
-          console.log('Next tick')
           let ref = this.$refs['messagewrapper-' + this.ensureMessageVisible]
 
           if (ref) {
             // Dynamic refs returned as array.
             ref = Array.isArray(ref) ? ref[0] : ref
 
-            console.log('Ref is', ref)
             if (ref) {
-              console.log('Ref exists, scroll to it')
               ref.scrollIntoView(false)
               this.ensureMessageVisible = null
             }
           }
         })
       }
+    },
+    messagesForList() {
+      this.toShow = 0
+      this.infiniteId++
     }
   },
   created() {
@@ -656,76 +646,59 @@ export default {
     if (history && history.state && history.state.msgid) {
       this.ensureMessageVisible = parseInt(history.state.msgid)
     }
-
-    const messages = this.$store.getters['messages/getAll']
-
-    if (messages.length) {
-      // We have some messages in store.  We may manage to render enough to fill the screen from these.  If we
-      // start the infinite scroll now, we'll start fetching messages we may not need to fetch.  But we can't
-      // find an event driven way of working this out (nextTick and requestIdleCallback don't cut it) so we start a
-      // timer.  We could probably work this out if we had a bigger brain, but this will do.
-      setTimeout(() => {
-        this.doInfiniteScroll = true
-      }, 5000)
-    } else {
-      // We have no messages to show so we should start the scroll now, which will trigger fetching some.
-      this.doInfiniteScroll = true
-    }
   },
   methods: {
-    loadMore: async function($state) {
-      if (!this.busy) {
-        this.busy = true
+    // Simple throttle.  When we get more than a certain number of outstanding fetches, wait until they are all
+    // finished.  This stops the infinite scroll going beserk.
+    throttleFetches() {
+      const fetching = this.$store.getters['messages/fetchingCount']
 
-        try {
-          // We fetch messages in descending date order.  The store handles caching.  We limit to avoid flooding the
-          // server.
-          let count = 0
-          const promises = []
+      if (fetching < 5) {
+        return Promise.resolve()
+      } else {
+        return new Promise(resolve => {
+          console.log('Need to throttle fetches', fetching)
+          this.checkThrottle(resolve)
+        })
+      }
+    },
+    checkThrottle(resolve) {
+      const fetching = this.$store.getters['messages/fetchingCount']
 
-          for (const m of this.messagesForList) {
-            // No point fetching if we don't want to show it.  If those criteria change the watch will clear the
-            // store.
-            if (this.wantMessage(m)) {
-              const message = this.$store.getters['messages/get'](m.id)
+      if (fetching === 0) {
+        resolve()
+      } else {
+        setTimeout(this.checkThrottle, 100, resolve)
+      }
+    },
+    async loadMore($state) {
+      await this.throttleFetches()
 
-              if (!message && this.infiniteId) {
-                promises.push(
-                  this.$store.dispatch('messages/fetch', {
-                    id: m.id,
-                    summary: true,
-                    matchedon: m.matchedon ? m.matchedon : null
-                  })
-                )
+      do {
+        this.toShow++
+      } while (
+        this.toShow < this.messagesForList.length &&
+        !this.wantMessage(this.messagesForList[this.toShow])
+      )
 
-                count++
+      if (this.toShow >= this.messagesForList.length) {
+        // We're showing all the messages
+        $state.complete()
+      } else {
+        // We need another message.
+        const m = this.messagesForList[this.toShow]
 
-                if (count >= 5) {
-                  // Don't fetch too many at once.
-                  break
-                }
-              }
-            }
-          }
-
-          // Use all-settled as some might fail.
-          await allSettled(promises)
-
-          setTimeout(() => {
-            if (count) {
-              $state.loaded()
-            } else {
-              $state.complete()
-            }
-          }, 1000)
-        } catch (e) {
-          console.log('Exception', e)
-          $state.complete()
+        if (this.wantMessage(m)) {
+          // We always want to trigger a fetch to the store, because the store will decide whether a cached message
+          // needs refreshing.
+          this.$store.dispatch('messages/fetch', {
+            id: m.id,
+            summary: true,
+            matchedon: m.matchedon ? m.matchedon : null
+          })
         }
 
-        this.busy = false
-      } else {
-        console.log('Ignore scroll request')
+        $state.loaded()
       }
     },
     messagesChanged(messages) {

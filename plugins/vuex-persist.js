@@ -173,6 +173,11 @@ export default async ({ app, store }) => {
             }
           }
 
+          if (ret.messages) {
+            // We can never be fetching when we restore.
+            ret.messages.fetching = {}
+          }
+
           return ret
         },
 
@@ -367,16 +372,29 @@ export default async ({ app, store }) => {
                       ? m.groups[0].arrival
                       : m.arrival
 
-                  if (
-                    now.diff(dayjs(arrival), 'days') <= RETAIN_AGE &&
-                    newmessages.length < RETAIN_COUNT
-                  ) {
+                  if (now.diff(dayjs(arrival), 'days') <= RETAIN_AGE) {
                     newmessages.push(m)
                     newindex[parseInt(m.id)] = m
                   }
                 })
 
-                state.messages.list = newmessages
+                // Sort them so that we can keep the most recent.
+                newmessages.sort((a, b) => {
+                  const aarrival =
+                    a.groups && a.groups.length
+                      ? a.groups[0].arrival
+                      : a.arrival
+                  const barrival =
+                    b.groups && b.groups.length
+                      ? b.groups[0].arrival
+                      : b.arrival
+
+                  return (
+                    new Date(barrival).getTime() - new Date(aarrival).getTime()
+                  )
+                })
+
+                state.messages.list = newmessages.slice(0, RETAIN_COUNT)
                 state.messages.index = newindex
               }
 
