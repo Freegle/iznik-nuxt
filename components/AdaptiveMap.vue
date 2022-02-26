@@ -760,15 +760,13 @@ export default {
         // We need another message.
         const m = this.messagesForList[this.toShow]
 
-        if (this.wantMessage(m)) {
-          // We always want to trigger a fetch to the store, because the store will decide whether a cached message
-          // needs refreshing.
-          this.$store.dispatch('messages/fetch', {
-            id: m.id,
-            summary: true,
-            matchedon: m.matchedon ? m.matchedon : null
-          })
-        }
+        // We always want to trigger a fetch to the store, because the store will decide whether a cached message
+        // needs refreshing.
+        this.$store.dispatch('messages/fetch', {
+          id: m.id,
+          summary: true,
+          matchedon: m.matchedon ? m.matchedon : null
+        })
 
         $state.loaded()
       }
