@@ -50,6 +50,29 @@
           <v-icon name="thumbs-down" />&nbsp;0
         </b-btn>
       </span>
+      <b-modal v-model="showDown" title="Giving a Thumbs Down..." ok-title="Submit" @ok="doSomeoneDown">
+        <p>
+          Please tell us why you're doing this.  Your local volunteers may see what you put, but the other freegler won't.
+        </p>
+        <div class="mt=2">
+          <b-form-group v-slot="{ ariaDescribedby }" label="What went wrong?">
+            <b-form-radio v-model="reason" :aria-describedby="ariaDescribedby" name="reason" value="NoShow">No Show</b-form-radio>
+            <b-form-radio v-model="reason" :aria-describedby="ariaDescribedby" name="reason" value="Punctuality">Was late or early</b-form-radio>
+            <b-form-radio v-model="reason" :aria-describedby="ariaDescribedby" name="reason" value="Ghosted">Stopped replying</b-form-radio>
+            <b-form-radio v-model="reason" :aria-describedby="ariaDescribedby" name="reason" value="Rude">Unpleasant behaviour</b-form-radio>
+            <b-form-radio v-model="reason" :aria-describedby="ariaDescribedby" name="reason" value="Other">Something else</b-form-radio>
+          </b-form-group>
+        </div>
+        <div class="mt-2">
+          <label class="font-weight-bold" for="text">
+            Please give a bit of detail.
+          </label>
+          <b-form-textarea id="text" v-model="text" rows="3" placeholder="Explain what happened here..." />
+        </div>
+        <b-alert variant="danger" :show="showError" class="mt-2">
+          Please select a reason and add some detail.  Thanks.
+        </b-alert>
+      </b-modal>
     </span>
   </client-only>
 </template>
@@ -84,7 +107,11 @@ export default {
   },
   data: function() {
     return {
-      bump: 1
+      bump: 1,
+      showDown: false,
+      reason: null,
+      text: null,
+      showError: false
     }
   },
   computed: {
@@ -137,7 +164,7 @@ export default {
   mounted() {
     // Components can't use asyncData, so we fetch here.  Can't do this for SSR, but that's fine as we don't
     // need to render this pane on the server.
-    if (this.id && (!this.user || !this.user.info)) {
+    if (this.id) {
       // Not in the store yet - fetch.
       this.$store.dispatch('user/fetch', {
         id: this.id,
@@ -146,29 +173,43 @@ export default {
     }
   },
   methods: {
-    async rate(rating) {
+    async rate(rating, reason, text) {
       await this.$store.dispatch('user/rate', {
         id: this.id,
-        rating: rating
+        rating: rating,
+        reason: reason,
+        text: text
       })
 
       this.bump++
     },
-
     async up() {
+      this.showDown = false
       if (this.user.info.ratings.Mine === 'Up') {
         await this.rate(null)
       } else {
         await this.rate('Up')
       }
     },
-
     async down() {
+      this.showDown = false
+
       if (this.user.info.ratings.Mine === 'Down') {
         await this.rate(null)
       } else {
-        await this.rate('Down')
+        this.showDown = true
       }
+    },
+    async doSomeoneDown(e) {
+      this.showError = false
+
+      if (!this.reason || !this.text) {
+        this.showError = true
+      } else {
+        await this.rate('Down', this.reason, this.text)
+      }
+
+      e.preventDefault()
     }
   }
 }
