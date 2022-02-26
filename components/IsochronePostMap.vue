@@ -478,6 +478,8 @@ export default {
         this.showIsochrones = true
         this.showInBounds = false
         this.initialCentre = null
+        this.lastFetchedPrimaryParams = null
+        this.fetchMessages()
       }
     },
     primaryMessageList: {
@@ -664,7 +666,7 @@ export default {
 
         this.everFetched = true
       } else {
-        // console.log('Ignore dup primary fetch', params)
+        console.log('Ignore dup primary fetch', params)
       }
 
       if (!this.destroyed) {
