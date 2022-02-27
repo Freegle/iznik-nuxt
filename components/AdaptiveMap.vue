@@ -202,7 +202,6 @@ const GroupSelect = () => import('./GroupSelect')
 const NoticeMessage = () => import('./NoticeMessage')
 const Message = () => import('~/components/Message.vue')
 const PostMap = () => import('~/components/PostMap')
-const allSettled = require('promise.allsettled')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const JobsTopBar = () => import('~/components/JobsTopBar')
 
@@ -337,8 +336,7 @@ export default {
       infiniteId: +new Date(),
       distance: 1000,
       messagesInOwnGroups: [],
-      fetching: [],
-      fetched: [],
+      toShow: 0,
 
       // Filters
       selectedType: 'All',
@@ -453,27 +451,25 @@ export default {
         // - Do show completed posts - makes us look good.  But not too many.
         //
         // Filter out dups by subject (for crossposting).
-        //
-        // messagesForList is ordered (good) but long (bad).  So we iterate through the messages in the store
-        // (likely not many) and then sort.
-        const messages = this.$store.getters['messages/getAll']
+        for (
+          let i = 0;
+          i < this.messagesForList.length && i < this.toShow;
+          i++
+        ) {
+          const m = this.messagesForList[i]
 
-        messages.forEach(message => {
-          const order = this.messagesForListIds.indexOf(parseInt(message.id))
+          if (this.wantMessage(m)) {
+            const message = this.$store.getters['messages/get'](m.id)
 
-          if (order >= 0) {
-            const m = this.messagesForList[order]
-
-            if (this.wantMessage(m)) {
+            if (message) {
               const key = message.fromuser + '|' + message.subject
               const already =
                 key in dups && message.groups[0].groupid !== dups[key]
 
               if (!already && !message.deleted) {
-                message.order = order
-
-                // Pass whether the message has been freegled, which is returned in the summary call.
+                // Pass whether the message has been freegled or promised, which is returned in the summary call.
                 message.successful = !!m.successful
+                message.promised = !!m.promised
 
                 let addIt = true
 
@@ -508,11 +504,7 @@ export default {
               }
             }
           }
-        })
-
-        ret.sort((a, b) => {
-          return a.order - b.order
-        })
+        }
       } else {
         // We are searching.  We get the messages from the store.
         const messages = this.$store.getters['messages/getAll']
@@ -640,7 +632,6 @@ export default {
       })
 
       this.infiniteId++
-      this.$store.dispatch('messages/clear')
     },
     search(newval) {
       if (!newval) {
@@ -660,7 +651,10 @@ export default {
       }
 
       this.bump++
-      this.$store.dispatch('messages/clear')
+    },
+    messagesForList() {
+      this.toShow = 0
+      this.infiniteId++
     }
   },
   created() {
@@ -726,67 +720,55 @@ export default {
     }
   },
   methods: {
-    loadMore: async function($state) {
-      if (!this.busy) {
-        this.busy = true
+    // Simple throttle.  When we get more than a certain number of outstanding fetches, wait until they are all
+    // finished.  This stops the infinite scroll going beserk.
+    throttleFetches() {
+      const fetching = this.$store.getters['messages/fetchingCount']
 
-        try {
-          // We work out which messages that are currently on the map are not in our store, and fetch them
-          // in descending date order.  We limit to avoid flooding the server.
-          let count = 0
-          const promises = []
-          const fetching = []
-
-          for (const m of this.messagesForList) {
-            // No point fetching if we don't want to show it.  If those criteria change the watch will clear the
-            // store.
-            if (this.wantMessage(m)) {
-              const message = this.$store.getters['messages/get'](m.id)
-
-              if (!message && !this.fetching[m.id] && this.infiniteId) {
-                this.fetching[m.id] = true
-
-                fetching.push(m.id)
-
-                promises.push(
-                  this.$store.dispatch('messages/fetch', {
-                    id: m.id,
-                    summary: true,
-                    matchedon: m.matchedon ? m.matchedon : null
-                  })
-                )
-
-                count++
-
-                if (count >= 5) {
-                  // Don't fetch too many at once.
-                  break
-                }
-              }
-            }
-          }
-
-          // Use all-settled as some might fail.
-          await allSettled(promises)
-
-          fetching.forEach(id => {
-            this.fetched[id] = true
-            delete this.fetching[id]
-          })
-
-          if (count) {
-            $state.loaded()
-          } else {
-            $state.complete()
-          }
-        } catch (e) {
-          console.log('Exception', e)
-          $state.complete()
-        }
-
-        this.busy = false
+      if (fetching < 5) {
+        return Promise.resolve()
       } else {
-        console.log('Ignore scroll request')
+        return new Promise(resolve => {
+          console.log('Need to throttle fetches', fetching)
+          this.checkThrottle(resolve)
+        })
+      }
+    },
+    checkThrottle(resolve) {
+      const fetching = this.$store.getters['messages/fetchingCount']
+
+      if (fetching === 0) {
+        resolve()
+      } else {
+        setTimeout(this.checkThrottle, 100, resolve)
+      }
+    },
+    async loadMore($state) {
+      await this.throttleFetches()
+
+      do {
+        this.toShow++
+      } while (
+        this.toShow < this.messagesForList.length &&
+        !this.wantMessage(this.messagesForList[this.toShow])
+      )
+
+      if (this.toShow > this.messagesForList.length) {
+        // We're showing all the messages
+        $state.complete()
+      } else {
+        // We need another message.
+        const m = this.messagesForList[this.toShow - 1]
+
+        // We always want to trigger a fetch to the store, because the store will decide whether a cached message
+        // needs refreshing.
+        this.$store.dispatch('messages/fetch', {
+          id: m.id,
+          summary: true,
+          matchedon: m.matchedon ? m.matchedon : null
+        })
+
+        $state.loaded()
       }
     },
     messagesChanged(messages) {
@@ -805,7 +787,6 @@ export default {
       if (changed) {
         this.messagesOnMap = messages
         this.infiniteId++
-        this.$store.dispatch('messages/clear')
       }
     },
     groupsChanged(groupids) {

@@ -12,7 +12,7 @@
       servers if you click the share buttons below.
     </p>
     <p>
-      If you don't want to share a particular item, share any others that you do, then click the <em>Hide All</em>
+      If you don't want to share a particular item, share any others that you do, then click the <em>Hide </em> or <em>Hide All</em>
       button.  This will hide it for all mods on this community.
     </p>
     <p>

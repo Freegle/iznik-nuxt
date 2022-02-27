@@ -204,7 +204,7 @@ module.exports = {
     // Some plugins are client-side features
     { src: '~/plugins/visibility.js', ssr: false },
     { src: '~/plugins/error-toasts.js', ssr: false },
-    { src: '~/plugins/vuex-persistedstate', ssr: false },
+    { src: '~/plugins/vuex-persist', ssr: false },
     { src: '~/plugins/vue-awesome.js', ssr: false },
     { src: '~/plugins/vue-read-more', ssr: false },
     { src: '~/plugins/vue-social-sharing', ssr: false },

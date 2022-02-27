@@ -204,7 +204,7 @@
                   </tbody>
                 </table>
                 <p v-else class="text-muted">
-                  No replies yet. <span v-if="!taken && !received && message.canrepostat">Will auto-repost {{ timeago(message.canrepostat) }}.</span>
+                  No replies yet. <span v-if="willAutoRepost">Will auto-repost {{ timeago(message.canrepostat) }}.</span>
                 </p>
               </b-card-text>
             </b-card-body>
@@ -290,7 +290,7 @@ export default {
     unseen() {
       // We want all the chats from replies.  We fetch them in myposts, here we only need to
       // get them from the store
-      const chats = Object.values(this.$store.getters['chats/list'])
+      const chats = this.$store.getters['chats/list']
       let unseen = 0
 
       if (this.message && this.message.replies) {
@@ -427,7 +427,7 @@ export default {
     chats() {
       // We want all the chats which reference this message.  We fetch them in myposts, here we only need to
       // get them from the store
-      const chats = Object.values(this.$store.getters['chats/list'])
+      const chats = this.$store.getters['chats/list']
       const ret = []
 
       for (const chat of chats) {
@@ -469,6 +469,17 @@ export default {
       }
 
       return ret
+    },
+    willAutoRepost() {
+      if (this.taken || this.received || !this.message.canrepostat) {
+        return false
+      }
+
+      const d = this.$dayjs(this.message.canrepostat)
+      const now = this.$dayjs()
+      console.log(this.message.canrepostat, d, now)
+
+      return d.isAfter(now)
     }
   },
   watch: {

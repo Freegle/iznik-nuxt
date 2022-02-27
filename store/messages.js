@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import cloneDeep from 'lodash.clonedeep'
+import dayjs from 'dayjs'
 
 export const state = () => ({
   // Use array because we need to store them in the order returned by the server.  We can't use Map because it's
@@ -15,12 +16,22 @@ export const state = () => ({
   context: null,
 
   // For spotting when we clear under the feet of an outstanding fetch
-  instance: 1
+  instance: 1,
+
+  // Lists for Browse
+  primaryList: [],
+  secondaryList: [],
+
+  // Messages we're in the process of fetching
+  fetching: {}
 })
 
 export const mutations = {
   add(state, item) {
     if (item) {
+      item.addedToStore = dayjs().toISOString()
+      Vue.delete(state.fetching, parseInt(item.id))
+
       if (state.index[parseInt(item.id)]) {
         // Overwrite any existing entry.
         const existing = state.list.findIndex(obj => {
@@ -39,6 +50,8 @@ export const mutations = {
   addAll(state, items) {
     if (items) {
       items.forEach(item => {
+        item.addedToStore = dayjs().toISOString()
+
         if (state.index[parseInt(item.id)]) {
           const existing = state.list.findIndex(obj => {
             return parseInt(obj.id) === parseInt(item.id)
@@ -63,6 +76,8 @@ export const mutations = {
   clear(state) {
     state.list = []
     state.index = {}
+    state.primaryList = []
+    state.secondaryList = []
 
     if (state.instance) {
       state.instance++
@@ -75,6 +90,15 @@ export const mutations = {
   },
   setViewed(state, viewed) {
     state.viewed = viewed
+  },
+  setPrimary(state, list) {
+    state.primaryList = list
+  },
+  setSecondary(state, list) {
+    state.secondaryList = list
+  },
+  fetching(state, id) {
+    Vue.set(state.fetching, id, true)
   }
 }
 
@@ -83,6 +107,13 @@ export const getters = {
     const ret = state.index[parseInt(id)]
 
     return ret
+  },
+  fetching: state => id => {
+    return Object.prototype.hasOwnProperty.call(state.fetching, parseInt(id))
+  },
+  fetchingCount: state => {
+    const count = Object.keys(state.fetching).length
+    return count
   },
   getContext: state => {
     let ret = null
@@ -109,7 +140,9 @@ export const getters = {
   getIndex: state => state.index,
   getViewed: state => {
     return state.viewed
-  }
+  },
+  primaryList: state => (state.primaryList ? state.primaryList : []),
+  secondaryList: state => (state.secondaryList ? state.secondaryList : [])
 }
 
 export const actions = {
@@ -137,37 +170,98 @@ export const actions = {
       }
     }
   },
-
-  async fetch({ commit }, params) {
-    // Don't log errors on fetches of individual messages
+  processResult({ state, commit }, parms) {
+    const res = parms.res
+    const params = parms.params
+    const message = res.message
+    const groups = res.groups
     const instance = state.instance
+
+    // Most group info returned on the call we don't care about because it's also in the message.  But whether
+    // or not the group is closed matters.
+    if (groups) {
+      for (const gid in groups) {
+        const g = groups[gid]
+        if (g.settings && g.settings.closed) {
+          message.closed = true
+        }
+      }
+    }
+
+    if (state.instance === instance) {
+      // We might have some extra information to add in for this messages which we obtained earlier when searching.
+      message.matchedon = params.matchedon
+    }
+
+    // We might have some extra information to add in for this messages which we obtained earlier when searching.
+    message.matchedon = params.matchedon
+    commit('add', message)
+  },
+  async fetch({ state, dispatch, commit, rootGetters }, params) {
+    // Don't log errors on fetches of individual messages
     let errorOK = false
 
     try {
-      const { message, groups } = await this.$api.message.fetch(
-        params,
-        data => {
-          errorOK = true
+      // We need to fetch:
+      // - for ModTools, so we are always up to date
+      // - if we don't have it
+      // - if it's old, to pick up edits or state changes
+      const modtools = rootGetters['misc/get']('modtools')
+      const now = this.$dayjs()
+      const message = state.index[params.id]
+
+      const needFetch =
+        modtools ||
+        !message ||
+        !message.addedToStore ||
+        params.force ||
+        now.diff(this.$dayjs(message.addedToStore), 'minute') > 30
+
+      let prom = null
+
+      if (needFetch) {
+        console.log(
+          'Need to fetch',
+          params.id,
+          modtools,
+          !message,
+          message && !message.addedToStore,
+          params.force,
+          message && message.addedToStore
+            ? now.diff(this.$dayjs(message.addedToStore), 'minute')
+            : ''
+        )
+        errorOK = true
+
+        commit('fetching', params.id)
+
+        prom = this.$api.message.fetch(params, data => {
           return data.ret !== 3
-        }
-      )
+        })
+      }
 
-      if (state.instance === instance) {
-        // We might have some extra information to add in for this messages which we obtained earlier when searching.
-        message.matchedon = params.matchedon
-
-        // Most group info returned on the call we don't care about because it's also in the message.  But whether
-        // or not the group is closed matters.
-        if (groups) {
-          for (const gid in groups) {
-            const g = groups[gid]
-            if (g.settings && g.settings.closed) {
-              message.closed = true
-            }
-          }
-        }
-
-        commit('add', message)
+      if (modtools || !message || params.force) {
+        // We need to wait until the fetch completes.
+        console.log(
+          'Wait for fetch',
+          params.id,
+          // JSON.stringify(Object.keys(state.index)),
+          modtools,
+          !message,
+          params.force
+        )
+        const res = await prom
+        await dispatch('processResult', {
+          params,
+          res
+        })
+      } else if (prom) {
+        prom.then(res => {
+          dispatch('processResult', {
+            params,
+            res
+          })
+        })
       }
     } catch (e) {
       if (!errorOK) {
@@ -175,18 +269,16 @@ export const actions = {
       }
     }
   },
-
   async update({ commit, dispatch }, params) {
     const data = await this.$api.message.update(params)
 
     if (!data.deleted) {
       // Fetch back the updated version.
-      await dispatch('fetch', { id: params.id })
+      await dispatch('fetch', { id: params.id, force: true })
     }
 
     return data
   },
-
   async patch({ commit, dispatch, rootGetters }, params) {
     const data = await this.$api.message.save(params)
     const parms = { id: params.id }
@@ -202,10 +294,11 @@ export const actions = {
       id: params.id
     })
 
+    parms.force = true
+
     await dispatch('fetch', parms)
     return data
   },
-
   async updateChat({ dispatch }, userid) {
     // Find the chat to this user and refetch the messages, so that if we have a chat window open or other data
     // that depends on it, we update that.
@@ -241,7 +334,6 @@ export const actions = {
       )
     }
   },
-
   async promise({ dispatch }, params) {
     await dispatch(
       'update',
@@ -252,7 +344,6 @@ export const actions = {
 
     await dispatch('updateChat', params.userid)
   },
-
   async renege({ dispatch }, params) {
     await dispatch(
       'update',
@@ -263,24 +354,19 @@ export const actions = {
 
     await dispatch('updateChat', params.userid)
   },
-
   clearContext({ commit }) {
     commit('setContext', null)
   },
-
   clear({ commit }) {
     commit('clear')
     commit('setContext', null)
   },
-
   async intend({ dispatch }, params) {
     await this.$api.message.intend(params.id, params.outcome)
   },
-
   async view({ dispatch }, params) {
     await this.$api.message.view(params.id)
   },
-
   async fetchViewed({ commit, rootGetters }) {
     const me = rootGetters['auth/user']
 
@@ -293,7 +379,6 @@ export const actions = {
       commit('setViewed', messages)
     }
   },
-
   async approve({ commit, dispatch }, params) {
     await this.$api.message.approve(
       params.id,
@@ -318,7 +403,6 @@ export const actions = {
       }
     )
   },
-
   async spam({ commit, dispatch }, params) {
     await this.$api.message.spam(params.id, params.groupid)
 
@@ -337,7 +421,6 @@ export const actions = {
       }
     )
   },
-
   async reject({ commit, dispatch }, params) {
     await this.$api.message.reject(
       params.id,
@@ -362,7 +445,6 @@ export const actions = {
       }
     )
   },
-
   async reply({ commit, dispatch }, params) {
     await this.$api.message.reply(
       params.id,
@@ -383,7 +465,6 @@ export const actions = {
       }
     )
   },
-
   async delete({ commit, dispatch }, params) {
     await this.$api.message.delete(
       params.id,
@@ -408,7 +489,6 @@ export const actions = {
       }
     )
   },
-
   async hold({ dispatch, commit }, params) {
     await this.$api.message.hold(params.id)
     const { message } = await this.$api.message.fetch({
@@ -417,7 +497,6 @@ export const actions = {
     })
     commit('add', message)
   },
-
   async release({ dispatch, commit }, params) {
     await this.$api.message.release(params.id)
     const { message } = await this.$api.message.fetch({
@@ -426,7 +505,6 @@ export const actions = {
     })
     commit('add', message)
   },
-
   async approveedits({ dispatch, commit }, params) {
     await this.$api.message.approveEdits(params.id)
 
@@ -445,7 +523,6 @@ export const actions = {
       }
     )
   },
-
   async revertedits({ dispatch, commit }, params) {
     await this.$api.message.revertEdits(params.id)
 
@@ -464,11 +541,9 @@ export const actions = {
       }
     )
   },
-
   async partnerConsent({ dispatch, commit }, params) {
     await this.$api.message.partnerConsent(params.id, params.partner)
   },
-
   async search({ dispatch, commit }, params) {
     const { messages } = await this.$api.message.fetchMessages({
       subaction: 'searchall',
@@ -478,7 +553,6 @@ export const actions = {
     })
     commit('addAll', messages)
   },
-
   async move({ dispatch, commit }, params) {
     await this.$api.message.update({
       id: params.id,
@@ -486,7 +560,7 @@ export const actions = {
       action: 'Move'
     })
 
-    await dispatch('fetch', { id: params.id })
+    await dispatch('fetch', { id: params.id, force: true })
 
     dispatch(
       'auth/fetchUser',
@@ -499,7 +573,6 @@ export const actions = {
       }
     )
   },
-
   async searchMember({ dispatch, commit }, params) {
     const { messages } = await this.$api.message.fetchMessages({
       subaction: 'searchmemb',
@@ -508,9 +581,7 @@ export const actions = {
     })
     commit('addAll', messages)
   },
-
   async addBy({ dispatch, commit }, params) {
-    console.log('Add by', params)
     await this.$api.message.addBy(params.id, params.userid, params.count)
     const { message } = await this.$api.message.fetch({
       id: params.id,
@@ -518,7 +589,6 @@ export const actions = {
     })
     commit('add', message)
   },
-
   async removeBy({ dispatch, commit }, params) {
     await this.$api.message.removeBy(params.id, params.userid, params.count)
     const { message } = await this.$api.message.fetch({
@@ -526,5 +596,24 @@ export const actions = {
       messagehistory: true
     })
     commit('add', message)
+  },
+  async fetchPrimaryMessages({ dispatch, commit }, params) {
+    const ret = await this.$api.message.fetchMessages(params)
+
+    if (ret && ret.ret === 0) {
+      commit('setPrimary', ret.messages)
+    }
+  },
+  async fetchSecondaryMessages({ dispatch, commit }, params) {
+    const ret = await this.$api.message.fetchMessages(params)
+
+    if (ret && ret.ret === 0) {
+      commit('setSecondary', ret.messages)
+    }
+  },
+  removeFromCache({ commit }, params) {
+    commit('remove', {
+      id: params.id
+    })
   }
 }

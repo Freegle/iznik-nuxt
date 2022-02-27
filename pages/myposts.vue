@@ -333,16 +333,14 @@ export default {
     this.newpassword = this.$route.params.newpassword
 
     // We want this to be our next home page.
-    try {
-      localStorage.setItem('Iznik>lasthomepage', 'myposts')
-    } catch (e) {
-      console.error('Save last route failed', e)
-    }
+    this.$store.dispatch('misc/set', {
+      key: 'lasthomepage',
+      value: 'myposts'
+    })
 
     await this.fetchMe(['me', 'groups'])
 
-    // Ensure we have no cached messages for other searches/groups
-    this.$store.dispatch('messages/clear')
+    // TODO STORE How are deleted messages removed?
     this.loadMore().then(async () => {
       // Get the searches afterwards otherwise they load first which looks silly as they're less important.
       this.busy = true
@@ -454,7 +452,20 @@ export default {
       } else if (b.promised && !a.promised) {
         return 1
       } else {
-        return new Date(a.lastdate).getTime() - new Date(b.lastDate).getTime()
+        let adate = null
+        let bdate = null
+        if (a.lastdate && b.lastdate) {
+          adate = a.lastdate
+          bdate = b.lastdate
+        } else if (a.groups && a.groups.length && b.groups && b.groups.length) {
+          adate = a.groups[0].arrival
+          bdate = b.groups[0].arrival
+        } else {
+          adate = a.arrival
+          bdate = b.arrival
+        }
+
+        return new Date(bdate).getTime() - new Date(adate).getTime()
       }
     },
     forceLogin() {

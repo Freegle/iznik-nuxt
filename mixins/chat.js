@@ -142,6 +142,7 @@ export default {
     otheruserid() {
       // The user who isn't us.
       let ret = null
+      const modtools = this.$store.getters['misc/get']('modtools')
 
       if (this.chat && this.me) {
         if (this.chat.chattype === 'User2User' && this.chat.user1 && this.me) {
@@ -150,9 +151,9 @@ export default {
               ? this.chat.user2.id
               : this.chat.user1.id
         } else if (
+          modtools &&
           this.chat.chattype === 'User2Mod' &&
-          this.chat.user1 &&
-          this.me.id !== this.chat.user1.id
+          this.chat.user1
         ) {
           // We are a mod.
           ret = this.chat.user1.id
@@ -391,6 +392,7 @@ export default {
             )
 
             if (
+              !newContext ||
               newContext === 'null' ||
               (currentContext !== 'null' &&
                 !newContext.localeCompare(currentContext))
@@ -542,7 +544,6 @@ export default {
 
         this.$nextTick(async () => {
           // Get our offers.
-          await this.$store.dispatch('messages/clear')
           await this.$store.dispatch('messages/fetchMessages', {
             fromuser: this.myid,
             types: ['Offer'],
@@ -551,7 +552,9 @@ export default {
             collection: 'AllUser'
           })
 
-          this.ouroffers = this.$store.getters['messages/getAll']
+          this.ouroffers = this.$store.getters['messages/getAll'].filter(
+            m => m.mine
+          )
 
           // Find the last message referenced in this chat, if any.  That's the most likely one you'd want to promise,
           // so it should be the default.
@@ -643,6 +646,8 @@ export default {
           // So we want to fetch existing messages.  If we stop finding new messages then we know we're done.
           // But if we find that we're fetching too many, just bail out and clear the store to let infinite scroll
           // handle it.  This avoids accidentally working back to the start of time.
+          //
+          // TODO STORE Can we do better?
           const initialCount = msgs.length
           let count
 

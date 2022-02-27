@@ -278,6 +278,15 @@
             <span class="text-muted">Unknown log type {{ log.type }} subtype {{ log.subtype }}</span>
           </span>
         </span>
+        <span v-else-if="log.type === 'Chat'">
+          <span v-if="log.subtype === 'Approved'">
+            Approved chat message for
+            <ModLogUser :user="log.user" />
+          </span>
+          <span v-else>
+            <span class="text-muted">Unknown log type {{ log.type }} subtype {{ log.subtype }}</span>
+          </span>
+        </span>
       </b-col>
     </b-row>
     <hr class="d-block d-md-none">

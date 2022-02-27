@@ -190,6 +190,22 @@ export default {
       }
     }
   },
+  mounted() {
+    if (
+      process.browser &&
+      (!this.message ||
+        !this.message.fromuser ||
+        typeof this.message.fromuser !== 'object')
+    ) {
+      // We are on the client and loading a page which we have rendered on the server rather than navigated to on the
+      // client side.  We will therefore have rendered it logged out.  Refetch the message so that we get more info,
+      // which we may do when logged in.
+      this.$store.dispatch('messages/fetch', {
+        id: this.id,
+        force: true
+      })
+    }
+  },
   methods: {
     async registerOrSend() {
       // We've got a reply and an email address.  Maybe the email address is a registered user, maybe it's new.  If
@@ -273,13 +289,16 @@ export default {
             // Have to get the message back, because as a non-member we couldn't see who sent it, and therefore
             // who to reply to.
             await this.$store.dispatch('messages/fetch', {
-              id: this.id
+              id: this.id,
+              force: true
             })
           }
 
           // Now we can send the reply via chat.
-          await this.replyToPost()
-          this.sent()
+          this.$nextTick(async () => {
+            await this.replyToPost()
+            this.sent()
+          })
         } else {
           // We're not logged in yet.  We need to force a sign in.  Once that completes then either the watch in here
           // or default.vue will spot we have a reply to send and make it happen.

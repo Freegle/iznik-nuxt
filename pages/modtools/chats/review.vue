@@ -2,14 +2,6 @@
   <div>
     <client-only>
       <ModHelpChatReview />
-      <GroupSelect
-        v-model="groupid"
-        modonly
-        all
-        active
-        :work="['chatreview', 'chatreviewother']"
-        remember="chatreview"
-      />
       <div :key="bump">
         <div v-for="message in visibleMessages" :key="'messagelist-' + message.id" class="p-0 mt-2">
           <ModChatReview :id="message.chatid" :message="message" />
@@ -40,7 +32,6 @@
 import InfiniteLoading from 'vue-infinite-loading'
 import loginRequired from '@/mixins/loginRequired.js'
 import ModChatReview from '../../../components/ModChatReview'
-import GroupSelect from '../../../components/GroupSelect'
 import ConfirmModal from '../../../components/ConfirmModal'
 import SpinButton from '../../../components/SpinButton'
 import ModHelpChatReview from '~/components/ModHelpChatReview'
@@ -54,7 +45,6 @@ export default {
     ModHelpChatReview,
     SpinButton,
     ConfirmModal,
-    GroupSelect,
     ModChatReview,
     InfiniteLoading
   },
@@ -68,7 +58,6 @@ export default {
       distance: 1000,
       limit: 5,
       show: 0,
-      groupid: null,
       bump: 0,
       showDeleteModal: false
     }
@@ -80,23 +69,12 @@ export default {
       })
     },
     messages() {
-      let ret = this.$store.getters['chatmessages/getMessages'](REVIEWCHAT)
-
-      if (!this.groupid) {
-        ret = ret.filter(m => {
-          return m && this.amActiveModOn(m.group.id)
-        })
-      }
-
-      return ret
+      return this.$store.getters['chatmessages/getMessages'](REVIEWCHAT)
     },
     work() {
       // Count for the type of work we're interested in.
       const work = this.$store.getters['auth/work']
       return work.chatreview
-    },
-    group() {
-      return this.$store.getters['group/get'](this.groupid)
     }
   },
   watch: {
@@ -110,9 +88,6 @@ export default {
           this.clearAndLoad()
         }
       }
-    },
-    groupid(newVal, oldVal) {
-      this.clearAndLoad()
     }
   },
   async mounted() {
@@ -153,7 +128,6 @@ export default {
     },
     async clearAndLoad() {
       // There's new stuff to do.  Reload.
-      console.log('Clear and load')
       // We don't want to pick up any real chat messages.
       await this.$store.dispatch('chatmessages/clearContext', {
         chatid: REVIEWCHAT
@@ -165,8 +139,7 @@ export default {
 
       await this.$store.dispatch('chatmessages/fetch', {
         chatid: REVIEWCHAT,
-        limit: this.limit,
-        groupid: this.groupid
+        limit: this.limit
       })
 
       this.bump++

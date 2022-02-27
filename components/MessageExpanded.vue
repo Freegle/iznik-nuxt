@@ -34,7 +34,7 @@
       <MessageHistoryExpanded :id="id" :message-override="messageOverride" class="mb-1 d-none d-md-block" />
     </div>
     <div class="bg-white mb-3 p-2 p-md-0">
-      <MessagePromised v-if="message.promised && replyable" :to-me="message.promisedtome" class="mb-3 mt-1" />
+      <MessagePromised v-if="message.promised && replyable" :id="message.id" :to-me="message.promisedtome" class="mb-3 mt-1" />
       <MessageTextBody :id="id" :message-override="messageOverride" />
       <MessageReplyInfo :message="message" />
       <client-only>
@@ -182,6 +182,22 @@ export default {
       }
 
       return ret
+    }
+  },
+  mounted() {
+    if (
+      process.browser &&
+      (!this.message ||
+        !this.message.fromuser ||
+        typeof this.message.fromuser !== 'object')
+    ) {
+      // We are on the client and loading a page which we have rendered on the server rather than navigated to on the
+      // client side.  We will therefore have rendered it logged out.  Refetch the message so that we get more info,
+      // which we may do when logged in.
+      this.$store.dispatch('messages/fetch', {
+        id: this.id,
+        force: true
+      })
     }
   },
   methods: {

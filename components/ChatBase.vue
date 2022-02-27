@@ -3,7 +3,7 @@
 </template>
 <script>
 import twem from '~/assets/js/twem'
-import { EMAIL_REGEX } from '~/utils/constants'
+import { EMAIL_REGEX, URL_REGEX } from '~/utils/constants'
 
 export default {
   props: {
@@ -41,13 +41,26 @@ export default {
     }
   },
   computed: {
+    modtools() {
+      return this.$store.getters['misc/get']('modtools')
+    },
     regexEmail() {
       return EMAIL_REGEX
     },
     emessage() {
-      const trim = this.chatmessage.message
+      let trim = this.chatmessage.message
         .replace(/(\r\n|\r|\n){2,}/g, '$1\n')
         .trim()
+
+      if (this.modtools) {
+        // Make links clickable.  We only do this on modtools to avoid members clicking on unsafe links without
+        // more effort.
+        trim = trim.replace(
+          URL_REGEX,
+          match => `<a href="${match}">${match}</a>`
+        )
+      }
+
       return twem.twem(this.$twemoji, trim)
     },
     chatMessageUser() {

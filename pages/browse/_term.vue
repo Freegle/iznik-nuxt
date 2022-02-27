@@ -3,51 +3,32 @@
     <h1 class="sr-only">
       Browse items
     </h1>
-    <b-row class="m-0">
-      <b-col cols="0" lg="3" class="p-0 pr-1">
-        <Visible :at="['lg', 'xl']">
-          <SidebarLeft v-if="showRest" :show-community-events="true" :show-bot-left="true" />
-        </Visible>
-      </b-col>
-      <b-col cols="12" lg="6" class="p-0">
-        <client-only>
+    <client-only>
+      <b-row class="m-0">
+        <b-col cols="0" lg="3" class="p-0 pr-1">
+          <Visible :at="['lg', 'xl']">
+            <SidebarLeft v-if="showRest" :show-community-events="true" :show-bot-left="true" />
+          </Visible>
+        </b-col>
+        <b-col cols="12" lg="6" class="p-0">
           <MicroVolunteering />
-        </client-only>
-        <div v-if="showRest">
-          <GlobalWarning />
-          <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
-          <div class="bg-white d-block d-xl-none">
-            <div class="d-flex justify-content-between flex-wrap">
-              <b-btn to="/give" variant="primary" class="topbutton m-1">
-                <v-icon name="gift" />&nbsp;Give
-              </b-btn>
-              <b-btn to="/find" variant="primary" class="topbutton m-1">
-                <v-icon name="shopping-cart" />&nbsp;Ask
-              </b-btn>
-            </div>
-          </div>
-        </div>
-        <div v-if="initialBounds">
-          <IsochronePostMapAndList
-            v-if="browseView === 'nearby'"
-            :key="'map-' + bump"
-            :initial-bounds="initialBounds"
-            :initial-search="searchTerm"
-            class="mt-2"
-            force-messages
-            group-info
-            jobs
-            :show-many="false"
-            can-hide
-          />
-          <div v-else-if="browseView === 'mygroups'" class="bg-white">
-            <div class="small d-flex justify-content-end">
-              <div>
-                <!-- eslint-disable-next-line-->
-                Show posts from <b-btn variant="link" class="mb-1 p-0" size="sm" @click="showPostsFromNearby">nearby instead</b-btn>.
+          <div v-if="showRest">
+            <GlobalWarning />
+            <ExpectedRepliesWarning v-if="me && me.expectedreplies" :count="me.expectedreplies" :chats="me.expectedchats" />
+            <div class="bg-white d-block d-xl-none">
+              <div class="d-flex justify-content-between flex-wrap">
+                <b-btn to="/give" variant="primary" class="topbutton m-1">
+                  <v-icon name="gift" />&nbsp;Give
+                </b-btn>
+                <b-btn to="/find" variant="primary" class="topbutton m-1">
+                  <v-icon name="shopping-cart" />&nbsp;Ask
+                </b-btn>
               </div>
             </div>
-            <AdaptiveMap
+          </div>
+          <div v-if="initialBounds">
+            <IsochronePostMapAndList
+              v-if="browseView === 'nearby'"
               :key="'map-' + bump"
               :initial-bounds="initialBounds"
               :initial-search="searchTerm"
@@ -57,20 +38,37 @@
               jobs
               :show-many="false"
               can-hide
-              track
             />
+            <div v-else-if="browseView === 'mygroups'" class="bg-white">
+              <div class="small d-flex justify-content-end">
+                <div>
+                  <!-- eslint-disable-next-line-->
+                  Show posts from <b-btn variant="link" class="mb-1 p-0" size="sm" @click="showPostsFromNearby">nearby instead</b-btn>.
+                </div>
+              </div>
+              <AdaptiveMap
+                :key="'map-' + bump"
+                :initial-bounds="initialBounds"
+                :initial-search="searchTerm"
+                class="mt-2"
+                force-messages
+                group-info
+                jobs
+                :show-many="false"
+                can-hide
+                track
+              />
+            </div>
           </div>
-        </div>
-        <client-only>
           <AboutMeModal v-if="showAboutMe" ref="aboutMeModal" :review="reviewAboutMe" />
-        </client-only>
-      </b-col>
-      <b-col cols="0" lg="3" class="p-0 pl-1">
-        <Visible :at="['lg', 'xl']">
-          <sidebar-right v-if="showRest" show-volunteer-opportunities show-job-opportunities />
-        </Visible>
-      </b-col>
-    </b-row>
+        </b-col>
+        <b-col cols="0" lg="3" class="p-0 pl-1">
+          <Visible :at="['lg', 'xl']">
+            <sidebar-right v-if="showRest" show-volunteer-opportunities show-job-opportunities />
+          </Visible>
+        </b-col>
+      </b-row>
+    </client-only>
   </b-container>
 </template>
 
@@ -135,14 +133,10 @@ export default {
     this.searchTerm = this.$route.params.term
 
     // We want this to be our next home page.
-    try {
-      localStorage.setItem('Iznik>lasthomepage', 'mygroups')
-    } catch (e) {
-      console.log('Save last route failed', e)
-    }
-
-    // Ensure we have no cached messages for other searches/groups
-    this.$store.dispatch('messages/clear')
+    this.$store.dispatch('misc/set', {
+      key: 'lasthomepage',
+      value: 'mygroups'
+    })
 
     this.calculateInitialMapBounds()
     console.log('Initial bounds', this.initialBounds)
@@ -177,6 +171,7 @@ export default {
               dayjs(this.me.aboutme.timestamp),
               'months'
             )
+
             if (monthsago >= 6) {
               // Old.  Ask them to review it.
               this.showAboutMe = true
@@ -202,8 +197,18 @@ export default {
     async calculateInitialMapBounds() {
       await this.fetchMe(['me', 'groups'])
 
-      // The initial bounds for the map are determined from the isochrones if possible.
-      await this.$store.dispatch('isochrones/fetch')
+      // The initial bounds for the map are determined from the isochrones if possible.  We might have them cached
+      // in store.
+      const isochrones = Object.values(this.$store.getters['isochrones/list'])
+
+      if (!isochrones || !isochrones.length) {
+        // Not got them - fetch from server.
+        await this.$store.dispatch('isochrones/fetch')
+      } else {
+        // Got them - refresh in the background.
+        this.$store.dispatch('isochrones/fetch')
+      }
+
       console.log('Calc initial isochrones bounds', this.isochroneBoundsArray)
       this.initialBounds = this.isochroneBoundsArray
 

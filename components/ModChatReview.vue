@@ -191,7 +191,7 @@ export default {
             break
           }
           case 'Force': {
-            ret = 'Internal system reasons; might be a bug.'
+            ret = 'Possible spam.'
             break
           }
           case 'Fully': {

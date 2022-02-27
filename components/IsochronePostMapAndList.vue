@@ -134,8 +134,14 @@
           <div v-observe-visibility="messageVisibilityChanged" />
         </client-only>
         <div v-if="filteredMessages && filteredMessages.length">
-          <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
-            <Message :id="message.id" record-view class="mb-2 mb-sm-3" @view="recordView" />
+          <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" :ref="'messagewrapper-' + message.id" class="p-0">
+            <Message
+              :id="message.id"
+              v-observe-visibility="messageVisible"
+              record-view
+              class="mb-2 mb-sm-3"
+              @view="recordView(message.id)"
+            />
           </div>
         </div>
         <client-only>
@@ -183,7 +189,6 @@ const GroupSelect = () => import('./GroupSelect')
 const NoticeMessage = () => import('./NoticeMessage')
 const Message = () => import('~/components/Message.vue')
 const IsochronePostMap = () => import('~/components/IsochronePostMap')
-const allSettled = require('promise.allsettled')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const JobsTopBar = () => import('~/components/JobsTopBar')
 
@@ -301,13 +306,13 @@ export default {
       bump: 1,
 
       // Infinite message scroll
+      ensureMessageVisible: null,
+      maxMessageVisible: null,
       postsVisible: true,
       busy: false,
       infiniteId: +new Date(),
       distance: 1000,
-      messagesInOwnGroups: [],
-      fetching: [],
-      fetched: [],
+      toShow: 0,
 
       // Filters
       selectedType: 'All',
@@ -397,27 +402,25 @@ export default {
         // - Do show completed posts - makes us look good.  But not too many.
         //
         // Filter out dups by subject (for crossposting).
-        //
-        // messagesForList is ordered (good) but long (bad).  So we iterate through the messages in the store
-        // (likely not many) and then sort.
-        const messages = this.$store.getters['messages/getAll']
+        for (
+          let i = 0;
+          i < this.messagesForList.length && i < this.toShow;
+          i++
+        ) {
+          const m = this.messagesForList[i]
 
-        messages.forEach(message => {
-          const order = this.messagesForListIds.indexOf(parseInt(message.id))
+          if (this.wantMessage(m)) {
+            const message = this.$store.getters['messages/get'](m.id)
 
-          if (order >= 0) {
-            const m = this.messagesForList[order]
-
-            if (this.wantMessage(m)) {
+            if (message) {
               const key = message.fromuser + '|' + message.subject
               const already =
                 key in dups && message.groups[0].groupid !== dups[key]
 
               if (!already && !message.deleted) {
-                message.order = order
-
-                // Pass whether the message has been freegled, which is returned in the summary call.
+                // Pass whether the message has been freegled or promised, which is returned in the summary call.
                 message.successful = !!m.successful
+                message.promised = !!m.promised
 
                 let addIt = true
 
@@ -452,11 +455,7 @@ export default {
               }
             }
           }
-        })
-
-        ret.sort((a, b) => {
-          return a.order - b.order
-        })
+        }
       } else {
         // We are searching.  We get the messages from the store.
         const messages = this.$store.getters['messages/getAll']
@@ -584,13 +583,33 @@ export default {
       })
 
       this.infiniteId++
-      this.$store.dispatch('messages/clear')
     },
     search(newval) {
       if (!newval) {
         // We've cleared the search box, so cancel the search and return the map to normal.
         this.searchOn = null
       }
+    },
+    filteredMessages(newval) {
+      if (this.ensureMessageVisible) {
+        this.$nextTick(() => {
+          let ref = this.$refs['messagewrapper-' + this.ensureMessageVisible]
+
+          if (ref) {
+            // Dynamic refs returned as array.
+            ref = Array.isArray(ref) ? ref[0] : ref
+
+            if (ref) {
+              ref.scrollIntoView(false)
+              this.ensureMessageVisible = null
+            }
+          }
+        })
+      }
+    },
+    messagesForList() {
+      this.toShow = 0
+      this.infiniteId++
     }
   },
   created() {
@@ -621,73 +640,68 @@ export default {
         console.log('Failed to tag inspectlet')
       }
     }
+
+    // We might have history which tells us to go back to a particular message. This is a common case on mobile -
+    // you view a message, reply, then go back and expect to be where you were in the list.
+    if (history && history.state && history.state.msgid) {
+      this.ensureMessageVisible = parseInt(history.state.msgid)
+    }
   },
   methods: {
-    loadMore: async function($state) {
-      if (!this.busy) {
-        this.busy = true
+    // Simple throttle.  When we get more than a certain number of outstanding fetches, wait until they are all
+    // finished.  This stops the infinite scroll going beserk.
+    throttleFetches() {
+      const fetching = this.$store.getters['messages/fetchingCount']
 
-        try {
-          // We work out which messages that are currently on the map are not in our store, and fetch them
-          // in descending date order.  We limit to avoid flooding the server.
-          let count = 0
-          const promises = []
-          const fetching = []
-
-          for (const m of this.messagesForList) {
-            // No point fetching if we don't want to show it.  If those criteria change the watch will clear the
-            // store.
-            if (this.wantMessage(m)) {
-              const message = this.$store.getters['messages/get'](m.id)
-
-              if (!message && !this.fetching[m.id] && this.infiniteId) {
-                this.fetching[m.id] = true
-
-                fetching.push(m.id)
-
-                promises.push(
-                  this.$store.dispatch('messages/fetch', {
-                    id: m.id,
-                    summary: true,
-                    matchedon: m.matchedon ? m.matchedon : null
-                  })
-                )
-
-                count++
-
-                if (count >= 5) {
-                  // Don't fetch too many at once.
-                  break
-                }
-              }
-            }
-          }
-
-          // Use all-settled as some might fail.
-          await allSettled(promises)
-
-          fetching.forEach(id => {
-            this.fetched[id] = true
-            delete this.fetching[id]
-          })
-
-          if (count) {
-            $state.loaded()
-          } else {
-            $state.complete()
-          }
-        } catch (e) {
-          console.log('Exception', e)
-          $state.complete()
-        }
-
-        this.busy = false
+      if (fetching < 5) {
+        return Promise.resolve()
       } else {
-        console.log('Ignore scroll request')
+        return new Promise(resolve => {
+          console.log('Need to throttle fetches', fetching)
+          this.checkThrottle(resolve)
+        })
+      }
+    },
+    checkThrottle(resolve) {
+      const fetching = this.$store.getters['messages/fetchingCount']
+
+      if (fetching === 0) {
+        resolve()
+      } else {
+        setTimeout(this.checkThrottle, 100, resolve)
+      }
+    },
+    async loadMore($state) {
+      await this.throttleFetches()
+
+      do {
+        this.toShow++
+      } while (
+        this.toShow < this.messagesForList.length &&
+        !this.wantMessage(this.messagesForList[this.toShow])
+      )
+
+      if (this.toShow > this.messagesForList.length) {
+        // We're showing all the messages
+        $state.complete()
+      } else {
+        // We need another message.
+        const m = this.messagesForList[this.toShow - 1]
+
+        // We always want to trigger a fetch to the store, because the store will decide whether a cached message
+        // needs refreshing.
+        this.$store.dispatch('messages/fetch', {
+          id: m.id,
+          summary: true,
+          matchedon: m.matchedon ? m.matchedon : null
+        })
+
+        $state.loaded()
       }
     },
     messagesChanged(messages) {
       let changed = false
+
       if (!messages || !this.messagesOnMap) {
         changed = true
       } else {
@@ -702,7 +716,6 @@ export default {
       if (changed) {
         this.messagesOnMap = messages
         this.infiniteId++
-        this.$store.dispatch('messages/clear')
       }
     },
     groupsChanged(groupids) {
@@ -745,6 +758,28 @@ export default {
           uid: 'messageview',
           variant: 'isochrone'
         })
+      }
+    },
+    messageVisible(isVisible, entry) {
+      if (isVisible && entry && entry.target.id) {
+        const tid = entry.target.id
+        const p = tid.indexOf('-')
+
+        if (p !== -1) {
+          const id = parseInt(tid.substring(p + 1))
+          const ix = this.messagesForListIds.indexOf(id)
+
+          if (id && (!this.maxMessageVisible || ix > this.maxMessageVisible)) {
+            this.maxMessageVisible = ix
+
+            history.replaceState(
+              {
+                msgid: id
+              },
+              null
+            )
+          }
+        }
       }
     }
   }

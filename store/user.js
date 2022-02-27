@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import dayjs from 'dayjs'
 
 export const state = () => ({
   // Use object not array otherwise we end up with a huge sparse array which hangs the browser when saving to local
@@ -32,6 +33,7 @@ export const mutations = {
     }
 
     item.hasReneged = hasReneged(item)
+    item.addedToStore = dayjs().toISOString()
 
     if (state.list[item.id]) {
       // When we're fetching from Support Tools we have unusual info in store, and we
@@ -54,6 +56,7 @@ export const mutations = {
     state.list = {}
     for (const item of items) {
       item.hasReneged = hasReneged(item)
+      item.addedToStore = dayjs().toISOString()
 
       Vue.set(state.list, item.id, item)
     }
@@ -133,8 +136,8 @@ export const actions = {
     return ret && ret.id
   },
 
-  async rate({ commit, dispatch }, { id, rating }) {
-    await this.$api.user.rate(id, rating)
+  async rate({ commit, dispatch }, { id, rating, reason, text }) {
+    await this.$api.user.rate(id, rating, reason, text)
 
     // Fetch the user back into the store to update any ratings elsewhere
     await dispatch('fetch', { id, info: true })

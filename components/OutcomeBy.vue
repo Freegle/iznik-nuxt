@@ -152,13 +152,18 @@ export default {
       const retids = ret.map(r => r.userid)
 
       // Now add any other users that we have chatted to.
-      const chats = Object.values(this.$store.getters['chats/list'])
+      const chats = this.$store.getters['chats/list']
 
       chats.forEach(c => {
         if (c.chattype === 'User2User' && c.user1 && c.user2) {
           const otheruser = c.user1.id === this.myid ? c.user2 : c.user1
           if (!retids[otheruser.id]) {
-            ret.push(otheruser)
+            ret.push({
+              userid: otheruser.id,
+              displayname: otheruser.displayname
+            })
+
+            retids[otheruser.id] = true
           }
         }
       })

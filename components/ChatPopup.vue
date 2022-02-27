@@ -65,11 +65,11 @@
                 This person has been reported as a spammer or scammer.  Please do not talk to them and under no circumstances
                 send them any money. Do not arrange anything by courier.
               </p>
-              <div v-if="showNotices && mod && chat && chat.chattype === 'User2Mod' && otheruser">
+              <div v-if="showNotices && mod && chat && chat.chattype === 'User2Mod' && otheruser && otheruser.comments">
                 <span class="float-right mr-2 mt-2 clickme" title="Hide warnings" @click="showNotices = false">
                   <v-icon name="times-circle" scale="1.5" />
                 </span>
-                <ModComments v-if="mod && chat && chat.chattype === 'User2Mod' && otheruser" :user="otheruser" class="mt-1" />
+                <ModComments :user="otheruser" class="mt-1" />
               </div>
               <b-form-textarea
                 v-if="!spammer && enterNewLine"
@@ -95,19 +95,26 @@
                 @focus="markRead"
               />
               <div v-if="!spammer" class="pt-1 pb-1">
-                <b-btn v-b-tooltip.hover.top variant="secondary" title="Promise an item to this person" class="ml-1" @click="promise">
+                <b-btn
+                  v-if="chat && chat.chattype === 'User2User' && otheruser"
+                  v-b-tooltip.hover.top
+                  variant="secondary"
+                  title="Promise an item to this person"
+                  class="ml-1"
+                  @click="promise"
+                >
                   <v-icon name="handshake" />
                 </b-btn>
-                <b-btn v-if="!simple" v-b-tooltip.hover.top variant="secondary" title="Send your address" @click="addressBook">
+                <b-btn v-if="!simple && chat && chat.chattype === 'User2User' && otheruser" v-b-tooltip.hover.top variant="secondary" title="Send your address" @click="addressBook">
                   <v-icon name="address-book" />
                 </b-btn>
                 <b-btn v-b-tooltip.hover.top variant="secondary" title="Info about this freegler" @click="showInfo">
                   <v-icon name="info-circle" />
                 </b-btn>
-                <b-btn v-if="!simple && !tooSoonToNudge" v-b-tooltip.hover.top variant="secondary" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
+                <b-btn v-if="!simple && chat && chat.chattype === 'User2User' && otheruser && !tooSoonToNudge" v-b-tooltip.hover.top variant="secondary" title="Waiting for a reply?  Nudge this freegler." @click="nudge">
                   <v-icon name="bell" />
                 </b-btn>
-                <b-btn v-if="!simple && tooSoonToNudge" v-b-tooltip.hover.top variant="secondary" title="It's too soon to nudge" @click="nudgeTooSoon">
+                <b-btn v-if="!simple && chat && chat.chattype === 'User2User' && otheruser && tooSoonToNudge" v-b-tooltip.hover.top variant="secondary" title="It's too soon to nudge" @click="nudgeTooSoon">
                   <v-icon name="bell" />
                 </b-btn>
 

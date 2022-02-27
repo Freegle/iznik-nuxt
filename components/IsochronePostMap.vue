@@ -208,8 +208,6 @@ export default {
     return {
       context: null,
       everFetched: false,
-      fetchedPrimaryMessages: [],
-      fetchedSecondaryMessages: [],
       mapObject: null,
       manyToShow: 20,
       bump: 1,
@@ -374,6 +372,12 @@ export default {
         color: 'darkblue'
       }
     },
+    fetchedPrimaryMessages() {
+      return this.$store.getters['messages/primaryList']
+    },
+    fetchedSecondaryMessages() {
+      return this.$store.getters['messages/secondaryList']
+    },
     primaryMessageList() {
       if (!this.groupid && this.type === 'All') {
         // No filtering - return them all.
@@ -399,13 +403,6 @@ export default {
       return ret
     },
     secondaryMessageList() {
-      console.log(
-        'Compute secondary',
-        this.fetchedSecondaryMessages.length,
-        this.primaryMessageIds.length,
-        this.groupid,
-        this.type
-      )
       if (this.fetchedSecondaryMessages.length > 200) {
         // So many posts that the precise numbers no longer matter that much.  So return all the ones we have fetched
         // rather than spend CPU on filtering (which is a significant issue on slow browsers).
@@ -476,12 +473,13 @@ export default {
       this.$nextTick(this.fetchISOChrone)
     },
     isochroneBounds(newVal) {
-      console.log('Bounds changed', newVal)
       if (newVal) {
         this.$refs.map.mapObject.fitBounds(newVal)
         this.showIsochrones = true
         this.showInBounds = false
         this.initialCentre = null
+        this.lastFetchedPrimaryParams = null
+        this.fetchMessages()
       }
     },
     primaryMessageList: {
@@ -564,23 +562,17 @@ export default {
       })
     },
     centreChange(a, b) {
-      console.log('Centre change')
       if (!this.initialCentre && !this.searched) {
         // We get called once on map load, which doesn't count.
         this.initialCentre = this.mapObject.getCenter().toString()
-        console.log('Initial')
       } else if (this.mapObject.getCenter().toString() !== this.initialCentre) {
         // We are panning, not just zooming.  We want to shift to showing all messages in the map bounds.
-        console.log('Panning')
         this.showInBounds = true
         this.showIsochrones = false
-      } else {
-        console.log('Other')
       }
     },
     clusterClick() {
       // Once we have interacted with the map, switch to showing what's in bounds.
-      console.log('Cluster click')
       this.showInBounds = true
       this.showIsochrones = false
     },
@@ -667,12 +659,10 @@ export default {
         !this.lastFetchedPrimaryParams ||
         this.lastFetchedPrimaryParams !== paramstr
       ) {
-        console.log('Fetch primary messages', JSON.stringify(params))
+        // console.log('Fetch primary messages', JSON.stringify(params))
         this.lastFetchedPrimaryParams = paramstr
 
-        const ret = await this.$api.message.fetchMessages(params)
-        this.fetchedPrimaryMessages =
-          ret.ret === 0 && ret.messages ? ret.messages : []
+        await this.$store.dispatch('messages/fetchPrimaryMessages', params)
 
         this.everFetched = true
       } else {
@@ -709,15 +699,12 @@ export default {
           !this.lastFetchedSecondaryParams ||
           this.lastFetchedSecondaryParams !== paramstr
         ) {
-          console.log('Fetch secondary messages', JSON.stringify(params))
+          // console.log('Fetch secondary messages', JSON.stringify(params))
           this.lastFetchedSecondaryParams = paramstr
 
-          const ret = await this.$api.message.fetchMessages(params)
-
-          this.fetchedSecondaryMessages =
-            ret.ret === 0 && ret.messages ? ret.messages : []
+          await this.$store.dispatch('messages/fetchSecondaryMessages', params)
         } else {
-          console.log('Ignore dup secondary fetch', paramstr)
+          // console.log('Ignore dup secondary fetch', paramstr)
         }
       }
     },

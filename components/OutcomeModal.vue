@@ -5,7 +5,7 @@
       v-model="showModal"
       size="lg"
       no-stacking
-      title-class="w-100"
+      dialog-class="maxWidth"
     >
       <template slot="modal-title">
         <h3 class="d-flex justify-content-between">
@@ -75,7 +75,7 @@
               </b-button>
             </b-button-group>
           </div>
-          <NoticeMessage v-if="happiness !== null" class="mt-2">
+          <NoticeMessage v-if="happiness !== null && type === 'Taken'" class="mt-2">
             You can use the thumbs up/down buttons above to say how things went with other freeglers.
           </NoticeMessage>
           <div>
@@ -272,3 +272,15 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+@include media-breakpoint-down(md) {
+  /deep/ .maxWidth {
+    max-width: calc(100vw - 16px);
+  }
+}
+</style>

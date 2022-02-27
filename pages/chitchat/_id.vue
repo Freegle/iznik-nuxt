@@ -194,11 +194,10 @@ export default {
 
   mounted() {
     // We want this to be our next home page.
-    try {
-      localStorage.setItem('Iznik>lasthomepage', 'news')
-    } catch (e) {
-      console.error('Save last route failed', e)
-    }
+    this.$store.dispatch('misc/set', {
+      key: 'lasthomepage',
+      value: 'news'
+    })
 
     // Clear the store otherwise existing info may prevent us triggering a fetch via loadMore.
     this.$store.dispatch('newsfeed/clearFeed')
