@@ -681,12 +681,12 @@ export default {
         !this.wantMessage(this.messagesForList[this.toShow])
       )
 
-      if (this.toShow >= this.messagesForList.length) {
+      if (this.toShow > this.messagesForList.length) {
         // We're showing all the messages
         $state.complete()
       } else {
         // We need another message.
-        const m = this.messagesForList[this.toShow]
+        const m = this.messagesForList[this.toShow - 1]
 
         // We always want to trigger a fetch to the store, because the store will decide whether a cached message
         // needs refreshing.
