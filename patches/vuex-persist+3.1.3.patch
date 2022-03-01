@@ -1,16 +1,27 @@
 diff --git a/node_modules/vuex-persist/dist/esm/index.js b/node_modules/vuex-persist/dist/esm/index.js
-index fca7ef5..1becd3c 100644
+index fca7ef5..cd1d3d0 100644
 --- a/node_modules/vuex-persist/dist/esm/index.js
 +++ b/node_modules/vuex-persist/dist/esm/index.js
-@@ -142,7 +142,7 @@ class VuexPersistence {
+@@ -46,7 +46,7 @@ class SimplePromiseQueue {
+     flushQueue() {
+         this._flushing = true;
+         const chain = () => {
+-            const nextTask = this._queue.shift();
++            var nextTask = this._queue.shift();
+             if (nextTask) {
+                 return nextTask.then(chain);
+             }
+@@ -142,8 +142,8 @@ class VuexPersistence {
          this.filter = options.filter || ((mutation) => true);
          this.strictMode = options.strictMode || false;
          this.RESTORE_MUTATION = function RESTORE_MUTATION(state, savedState) {
 -            const mergedState = merge(state, savedState || {}, this.mergeOption);
+-            for (const propertyName of Object.keys(mergedState)) {
 +            var mergedState = merge(state, savedState || {}, this.mergeOption);
-             for (const propertyName of Object.keys(mergedState)) {
++            for (var propertyName of Object.keys(mergedState)) {
                  this._vm.$set(state, propertyName, mergedState[propertyName]);
              }
+         };
 @@ -244,7 +244,7 @@ class VuexPersistence {
               * @param {Store<S>} store
               */
