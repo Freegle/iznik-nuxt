@@ -1,0 +1,13 @@
+diff --git a/node_modules/vuex-persist/dist/esm/index.js b/node_modules/vuex-persist/dist/esm/index.js
+index 471c6dd..c89cbf3 100644
+--- a/node_modules/vuex-persist/dist/esm/index.js
++++ b/node_modules/vuex-persist/dist/esm/index.js
+@@ -142,7 +142,7 @@ class VuexPersistence {
+         this.filter = options.filter || ((mutation) => true);
+         this.strictMode = options.strictMode || false;
+         this.RESTORE_MUTATION = function RESTORE_MUTATION(state, savedState) {
+-            const mergedState = merge(state, savedState || {}, this.mergeOption);
++            var mergedState = merge(state, savedState || {}, this.mergeOption);
+             for (const propertyName of Object.keys(mergedState)) {
+                 this._vm.$set(state, propertyName, mergedState[propertyName]);
+             }
