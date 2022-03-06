@@ -671,34 +671,36 @@ export default {
             } else if (!code) {
               this.socialLoginError = 'Yahoo login failed: '+ret.error
             } else {
+              const self = this
               this.$axios
                 .post(process.env.API + '/session', {
                   yahoocodelogin: code
                 })
-                .then(result => {
+                //.then(result => {
+                .then(async function (result) {
                   const ret = result.data
                   console.log('Yahoologin session login returned', ret)
                   if (ret.ret === 0) {
                     // Set the user to store the persistent token.
                     ret.user.persistent = ret.persistent
-                    this.$store.dispatch('auth/setUser', ret.user)
+                    self.$store.dispatch('auth/setUser', ret.user)
 
                     // We are logged in.  Get the logged in user
                     console.log('Logged in')
-                    this.$store.dispatch('auth/fetchUser')
+                    await self.fetchMe(['me', 'groups'], true)
                     self.pleaseShowModal = false
 
                     if (returnto) {
                       // Go where we want to be.  Make sure we remove the code to avoid us trying to log in again.
                       console.log('Return to', returnto)
-                      this.$router.go(returnto)
+                      self.$router.go(returnto)
                     } else {
                       console.log('Just go home')
-                      this.$router.push('/')
+                      self.$router.push('/')
                     }
                   } else {
                     console.error('Server login failed', ret)
-                    this.socialLoginError = 'Yahoo login failed'
+                    self.socialLoginError = 'Yahoo login failed'
                   }
                 })
             }
