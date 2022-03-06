@@ -472,7 +472,9 @@ export default async ({ app, store }) => {
 
             // We never want to save the messages context as that might result in us fetching from an unexpected
             // place.
-            state.messages.context = null
+            if (state.messages) {
+              state.messages.context = null
+            }
           }
 
           return state
