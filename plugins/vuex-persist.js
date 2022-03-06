@@ -176,6 +176,9 @@ export default async ({ app, store }) => {
           if (ret.messages) {
             // We can never be fetching when we restore.
             ret.messages.fetching = {}
+
+            // Similarly we don't want to restore a context.
+            ret.messages.context = null
           }
 
           return ret
@@ -468,12 +471,6 @@ export default async ({ app, store }) => {
                 state.group = cloneDeep(origstate.group)
                 state.group.list = prune(state.group.list)
               }
-            }
-
-            // We never want to save the messages context as that might result in us fetching from an unexpected
-            // place.
-            if (state.messages && state.messages.context) {
-              // state.messages.context = null
             }
           }
 
