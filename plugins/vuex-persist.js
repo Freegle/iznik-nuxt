@@ -469,6 +469,10 @@ export default async ({ app, store }) => {
                 state.group.list = prune(state.group.list)
               }
             }
+
+            // We never want to save the messages context as that might result in us fetching from an unexpected
+            // place.
+            state.messages.context = null
           }
 
           return state
