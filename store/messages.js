@@ -20,13 +20,17 @@ export const state = () => ({
 
   // Lists for Browse
   primaryList: [],
-  secondaryList: []
+  secondaryList: [],
+
+  // Messages we're in the process of fetching
+  fetching: {}
 })
 
 export const mutations = {
   add(state, item) {
     if (item) {
       item.addedToStore = dayjs().toISOString()
+      Vue.delete(state.fetching, parseInt(item.id))
 
       if (state.index[parseInt(item.id)]) {
         // Overwrite any existing entry.
@@ -92,6 +96,9 @@ export const mutations = {
   },
   setSecondary(state, list) {
     state.secondaryList = list
+  },
+  fetching(state, id) {
+    Vue.set(state.fetching, id, true)
   }
 }
 
@@ -100,6 +107,13 @@ export const getters = {
     const ret = state.index[parseInt(id)]
 
     return ret
+  },
+  fetching: state => id => {
+    return Object.prototype.hasOwnProperty.call(state.fetching, parseInt(id))
+  },
+  fetchingCount: state => {
+    const count = Object.keys(state.fetching).length
+    return count
   },
   getContext: state => {
     let ret = null
@@ -156,9 +170,35 @@ export const actions = {
       }
     }
   },
-  async fetch({ state, commit, rootGetters }, params) {
-    // Don't log errors on fetches of individual messages
+  processResult({ state, commit }, parms) {
+    const res = parms.res
+    const params = parms.params
+    const message = res.message
+    const groups = res.groups
     const instance = state.instance
+
+    // Most group info returned on the call we don't care about because it's also in the message.  But whether
+    // or not the group is closed matters.
+    if (groups) {
+      for (const gid in groups) {
+        const g = groups[gid]
+        if (g.settings && g.settings.closed) {
+          message.closed = true
+        }
+      }
+    }
+
+    if (state.instance === instance) {
+      // We might have some extra information to add in for this messages which we obtained earlier when searching.
+      message.matchedon = params.matchedon
+    }
+
+    // We might have some extra information to add in for this messages which we obtained earlier when searching.
+    message.matchedon = params.matchedon
+    commit('add', message)
+  },
+  async fetch({ state, dispatch, commit, rootGetters }, params) {
+    // Don't log errors on fetches of individual messages
     let errorOK = false
 
     try {
@@ -168,7 +208,7 @@ export const actions = {
       // - if it's old, to pick up edits or state changes
       const modtools = rootGetters['misc/get']('modtools')
       const now = this.$dayjs()
-      let message = state.index[params.id]
+      const message = state.index[params.id]
 
       const needFetch =
         modtools ||
@@ -180,42 +220,48 @@ export const actions = {
       let prom = null
 
       if (needFetch) {
+        console.log(
+          'Need to fetch',
+          params.id,
+          modtools,
+          !message,
+          message && !message.addedToStore,
+          params.force,
+          message && message.addedToStore
+            ? now.diff(this.$dayjs(message.addedToStore), 'minute')
+            : ''
+        )
+        errorOK = true
+
+        commit('fetching', params.id)
+
         prom = this.$api.message.fetch(params, data => {
-          errorOK = true
           return data.ret !== 3
         })
-
-        prom.then(res => {
-          message = res.message
-          const groups = res.groups
-
-          // Most group info returned on the call we don't care about because it's also in the message.  But whether
-          // or not the group is closed matters.
-          if (groups) {
-            for (const gid in groups) {
-              const g = groups[gid]
-              if (g.settings && g.settings.closed) {
-                message.closed = true
-              }
-            }
-          }
-
-          if (state.instance === instance) {
-            // We might have some extra information to add in for this messages which we obtained earlier when searching.
-            message.matchedon = params.matchedon
-          }
-
-          // We might have some extra information to add in for this messages which we obtained earlier when searching.
-          message.matchedon = params.matchedon
-          commit('add', message)
-        })
-      } else {
-        console.log('No need to fetch', params.id)
       }
 
       if (modtools || !message || params.force) {
         // We need to wait until the fetch completes.
-        await prom
+        console.log(
+          'Wait for fetch',
+          params.id,
+          // JSON.stringify(Object.keys(state.index)),
+          modtools,
+          !message,
+          params.force
+        )
+        const res = await prom
+        await dispatch('processResult', {
+          params,
+          res
+        })
+      } else if (prom) {
+        prom.then(res => {
+          dispatch('processResult', {
+            params,
+            res
+          })
+        })
       }
     } catch (e) {
       if (!errorOK) {
@@ -228,7 +274,7 @@ export const actions = {
 
     if (!data.deleted) {
       // Fetch back the updated version.
-      await dispatch('fetch', { id: params.id })
+      await dispatch('fetch', { id: params.id, force: true })
     }
 
     return data
@@ -247,6 +293,8 @@ export const actions = {
     commit('remove', {
       id: params.id
     })
+
+    parms.force = true
 
     await dispatch('fetch', parms)
     return data
@@ -512,7 +560,7 @@ export const actions = {
       action: 'Move'
     })
 
-    await dispatch('fetch', { id: params.id })
+    await dispatch('fetch', { id: params.id, force: true })
 
     dispatch(
       'auth/fetchUser',
@@ -534,7 +582,6 @@ export const actions = {
     commit('addAll', messages)
   },
   async addBy({ dispatch, commit }, params) {
-    console.log('Add by', params)
     await this.$api.message.addBy(params.id, params.userid, params.count)
     const { message } = await this.$api.message.fetch({
       id: params.id,
@@ -563,5 +610,10 @@ export const actions = {
     if (ret && ret.ret === 0) {
       commit('setSecondary', ret.messages)
     }
+  },
+  removeFromCache({ commit }, params) {
+    commit('remove', {
+      id: params.id
+    })
   }
 }

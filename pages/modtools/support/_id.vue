@@ -105,8 +105,10 @@ export default {
       return this.$store.getters['messages/getAll']
     }
   },
-  created() {
+  async created() {
     this.id = this.$route.params.id
+    await this.$store.dispatch('messages/clear')
+    await this.$store.dispatch('chats/clear')
   }
 }
 </script>

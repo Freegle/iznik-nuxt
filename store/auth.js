@@ -307,7 +307,7 @@ export const actions = {
     }
   },
 
-  async fetchUser({ commit, store, dispatch, state }, params) {
+  async fetchUser({ commit, store, dispatch, rootGetters, state }, params) {
     // We're so vain, we probably think this call is about us.
     // Get the current work so we can compare counts.
     const currentTotal = countWork(state.work)
@@ -375,11 +375,14 @@ export const actions = {
 
       await savePushId(this) // Tell server our mobile push notification id, if available // CC
 
-      // Save off our current email from the account for use in post composing, in case we have changed it since
-      // we last used this device.
-      dispatch('compose/setEmail', me.email, {
-        root: true
-      })
+      const email = rootGetters['compose/getEmail']
+
+      if (email !== me.email) {
+        // Save off our current email from the account for use in post composing.
+        dispatch('compose/setEmail', me.email, {
+          root: true
+        })
+      }
     } else if (session) { // Store sessionid for iOS apps // CC
       console.log('AUTH: setSession')
       commit('setSession', session)

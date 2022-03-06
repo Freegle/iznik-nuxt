@@ -69,7 +69,7 @@
                 <span class="float-right mr-2 mt-2 clickme" title="Hide warnings" @click="showNotices = false">
                   <v-icon name="times-circle" scale="1.5" />
                 </span>
-                <ModComments user="otheruser" class="mt-1" />
+                <ModComments :user="otheruser" class="mt-1" />
               </div>
               <b-form-textarea
                 v-if="!spammer && enterNewLine"

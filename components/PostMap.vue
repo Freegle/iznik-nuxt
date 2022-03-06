@@ -212,7 +212,8 @@ export default {
       lockModal: false,
       unlockModal: false,
       destroyed: false,
-      mapIdle: 0
+      mapIdle: 0,
+      doInfiniteScroll: process.server
     }
   },
   computed: {
@@ -519,21 +520,6 @@ export default {
             nelng: nelng,
             groupid: this.groupid
           }
-
-          // See if we have values cached.  We don't need to worry too much about the group and bounds because
-          // it'll sort itself out if it's wrong.  We just want to get something up on the screen rapidly if we can.
-          const cache = this.$store.getters['misc/get']('cache.postmap')
-
-          if (cache) {
-            try {
-              messages = JSON.parse(cache)
-              this.$emit('messages', messages)
-              this.$emit('update:loading', false)
-              console.log('Got cached messages')
-            } catch (e) {
-              console.log('Failed to parse cache, ignore')
-            }
-          }
         } else {
           // We are searching.  Get the list of messages from the server.
           // eslint-disable-next-line no-lonely-if
@@ -618,14 +604,6 @@ export default {
         this.messageLocations = messages
         this.$emit('messages', messages)
         this.$emit('update:loading', false)
-
-        if (!this.search) {
-          // Update cache of messages.
-          this.$store.dispatch('misc/set', {
-            key: 'cache.postmap',
-            value: JSON.stringify(messages)
-          })
-        }
       }
 
       return cloneDeep(messages)

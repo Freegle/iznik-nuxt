@@ -5,7 +5,7 @@
       v-model="showModal"
       size="lg"
       no-stacking
-      title-class="w-100"
+      dialog-class="maxWidth"
     >
       <template slot="modal-title">
         <h3 class="d-flex justify-content-between">
@@ -272,3 +272,15 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+@import 'color-vars';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+
+@include media-breakpoint-down(md) {
+  /deep/ .maxWidth {
+    max-width: calc(100vw - 16px);
+  }
+}
+</style>
