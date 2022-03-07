@@ -362,7 +362,20 @@ export default {
     // the login button.
     this.loginType = this.$store.getters['auth/loginType']
   },
+
+  created() {
+    window.addEventListener('beforeunload', this.beforeWindowUnload)
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('beforeunload', this.beforeWindowUnload)
+  },
+
+
   methods: {
+    beforeWindowUnload(e) { // Needed by app to get vuex-persist to call saveState
+    },
+
     tryLater(native) {
       if (native) {
         this.nativeLoginError = 'Something went wrong; please try later.'
