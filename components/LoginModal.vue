@@ -248,7 +248,11 @@ export default {
     // Use of this.bump means we will recompute when we need to, i.e. when the modal is shown.  This is overriding
     // normal reactivity but that's because the SDKs we use aren't written in Vue.
     facebookDisabled() {
-      if (process.env.IS_APP) return false // CC
+      if (process.env.IS_APP) { // CC
+        // Facebook login doesn't now work on Android
+        const isiOS = this.$store.getters['mobileapp/isiOS']
+        return !isiOS
+      }
       return (
         this.bump &&
         this.showSocialLoginBlocked &&
@@ -281,6 +285,7 @@ export default {
       return false
     },
     socialblocked() {
+      if (process.env.IS_APP) return false // CC
       const ret =
         this.bump &&
         (this.facebookDisabled || this.googleDisabled || this.yahooDisabled)
