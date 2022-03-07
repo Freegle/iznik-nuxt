@@ -33,12 +33,14 @@
         name="share-alt"
         :label="'Share on ' + group.namedisplay"
         :handler="share"
+        class="mt-1 mb-1"
       />
       <SpinButton
         variant="white"
         name="trash-alt"
         :label="'Hide for ' + group.namedisplay"
         :handler="hide"
+        class="mt-1 mb-1"
       />
     </b-card-footer>
   </b-card>
