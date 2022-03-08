@@ -1,11 +1,14 @@
 <template>
-  <div v-if="!simple" class="sidebar__wrapper">
-    <div class="d-flex flex-column justify-content-between mh-100">
-      <div>
-        <DonationMonthly v-if="supporter && !donor" class="w-100" variant="sidebar" />
-        <VolunteerOpportunitySidebar v-if="showVolunteerOpportunities && false" :class="itemclass" />
+  <div>
+    <LoveJunk variant="desktop" />
+    <div v-if="!simple" class="sidebar__wrapper">
+      <div class="d-flex flex-column justify-content-between mh-100">
+        <div>
+          <DonationMonthly v-if="false && supporter && !donor" class="w-100" variant="sidebar" />
+          <VolunteerOpportunitySidebar v-if="showVolunteerOpportunities && false" :class="itemclass" />
+        </div>
+        <JobsSidebar v-if="showJobOpportunities" :class="itemclass" />
       </div>
-      <JobsSidebar v-if="showJobOpportunities" :class="itemclass" />
     </div>
   </div>
 </template>
@@ -13,6 +16,8 @@
 <script>
 import JobsSidebar from './JobsSidebar'
 import DonationMonthly from '~/components/DonationMonthly'
+import LoveJunk from '~/components/LoveJunk'
+
 const VolunteerOpportunitySidebar = () =>
   import('~/components/VolunteerOpportunitySidebar')
 
@@ -20,7 +25,8 @@ export default {
   components: {
     DonationMonthly,
     JobsSidebar,
-    VolunteerOpportunitySidebar
+    VolunteerOpportunitySidebar,
+    LoveJunk
   },
   props: {
     showVolunteerOpportunities: {

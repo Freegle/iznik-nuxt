@@ -156,13 +156,11 @@ export default {
 
         if (!lastask || now - lastask > 90 * 24 * 60 * 60 * 1000) {
           // Not asked too recently.
-          await this.fetchMe(['me', 'aboutme'])
+          await this.fetchMe(['me', 'aboutme'], true)
 
-          const me = this.$store.getters['auth/user']
-
-          if (!me.aboutme || !me.aboutme.text) {
+          if (!this.me.aboutme || !this.me.aboutme.text) {
             // We have not yet provided one.
-            const daysago = dayjs().diff(dayjs(me.added), 'days')
+            const daysago = dayjs().diff(dayjs(this.me.added), 'days')
 
             if (daysago > 7) {
               // Nudge to ask people to to introduce themselves.
@@ -170,7 +168,7 @@ export default {
             }
           } else {
             const monthsago = dayjs().diff(
-              dayjs(me.aboutme.timestamp),
+              dayjs(this.me.aboutme.timestamp),
               'months'
             )
 

@@ -134,8 +134,21 @@
           <div v-observe-visibility="messageVisibilityChanged" />
         </client-only>
         <div v-if="filteredMessages && filteredMessages.length">
+          <Message
+            :id="filteredMessages[0].id"
+            v-observe-visibility="messageVisible"
+            record-view
+            class="mb-2 mb-sm-3"
+            @view="recordView(filteredMessages[0].id)"
+          />
+
+          <Visible :at="['xs', 'sm', 'md']" class="ml-2 mr-2 mb-2">
+            <LoveJunk variant="mobile" />
+          </Visible>
+
           <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" :ref="'messagewrapper-' + message.id" class="p-0">
             <Message
+              v-if="message.id != filteredMessages[0].id"
               :id="message.id"
               v-observe-visibility="messageVisible"
               record-view
@@ -182,6 +195,7 @@ import VueObserveVisibility from 'vue-observe-visibility'
 import InfiniteLoading from 'vue-infinite-loading'
 import map from '@/mixins/map.js'
 import { MAX_MAP_ZOOM } from '../utils/constants'
+import Visible from '../components/Visible'
 import JoinWithConfirm from '~/components/JoinWithConfirm'
 const AdaptiveMapGroup = () => import('./AdaptiveMapGroup')
 const ExternalLink = () => import('./ExternalLink')
@@ -191,6 +205,7 @@ const Message = () => import('~/components/Message.vue')
 const IsochronePostMap = () => import('~/components/IsochronePostMap')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const JobsTopBar = () => import('~/components/JobsTopBar')
+const LoveJunk = () => import('~/components/LoveJunk')
 
 if (process.browser) {
   Vue.use(VueObserveVisibility)
@@ -207,7 +222,9 @@ export default {
     InfiniteLoading,
     Message,
     IsochronePostMap,
-    JobsTopBar
+    JobsTopBar,
+    LoveJunk,
+    Visible
   },
   mixins: [map],
   props: {
