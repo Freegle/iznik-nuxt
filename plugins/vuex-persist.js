@@ -185,6 +185,7 @@ export default async ({ app, store }) => {
         },
 
         async saveState(key, state, storage) {
+          console.log('saveState', key)
           if (giveUp) {
             return
           }
@@ -207,9 +208,11 @@ export default async ({ app, store }) => {
                 quota = await navigator.storage.estimate()
 
                 if (quota && quota.quota) {
+                  console.log('Quota', quota)
                   const length = JSON.stringify(newstate).length
+                  console.log('length', length)
 
-                  if (quota.usage < length) {
+                  if (quota.quota < length) {
                     console.log('Quota indicates too full, use smaller')
                     useSmaller = true
                   }
@@ -240,6 +243,7 @@ export default async ({ app, store }) => {
             }
 
             await storage.setItem(key, newstate)
+            console.log("Stored", JSON.stringify(newstate).length)
 
             // Succeeded
             return
@@ -298,7 +302,7 @@ export default async ({ app, store }) => {
                 } catch (e) {}
               } catch (e) {
                 console.log('Save of smaller to local storage failed', e)
-                Sentry.captureMessage(
+                if (Sentry) Sentry.captureMessage(
                   'Failed to save smaller after switch to local storage.'
                 )
 

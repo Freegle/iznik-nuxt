@@ -281,6 +281,7 @@ function handleNotification(notificationType, data) {
 // Tell server our push notification id
 // Cope if not logged in ie do it later
 export async function savePushId(store) {
+  console.log("savePushId NOW")
   if (acceptedMobilePushId !== pushstate.mobilePushId) {
     const params = {
       notifications: {
@@ -341,7 +342,11 @@ export default ({ app, store, $api, $axios }) => { // route
       mobilePushId => {
         // tell server our push notification id
         if (mobilePushId) {
-          savePushId(store)
+          console.log("WATCH: setTimeout savePushId")
+          setTimeout(() => {
+            savePushId(store)
+          },1000)
+          
         }
         // and remember whether pushAccepted
         store.commit('mobileapp/setpushAccepted', mobilePushId)

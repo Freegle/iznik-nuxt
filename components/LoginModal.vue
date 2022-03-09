@@ -355,6 +355,7 @@ export default {
     }
   },
   beforeDestroy() {
+    //window.removeEventListener('beforeunload', this.beforeWindowUnload) // IS_APP
     if (this.bumpTimer) {
       clearTimeout(this.bumpTimer)
       this.bumpTimer = null
@@ -369,13 +370,8 @@ export default {
   },
 
   created() {
-    window.addEventListener('beforeunload', this.beforeWindowUnload)
+    //window.addEventListener('beforeunload', this.beforeWindowUnload) // IS_APP
   },
-
-  beforeDestroy() {
-    window.removeEventListener('beforeunload', this.beforeWindowUnload)
-  },
-
 
   methods: {
     beforeWindowUnload(e) { // Needed by app to get vuex-persist to call saveState
