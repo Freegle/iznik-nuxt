@@ -6,7 +6,7 @@
     </div>
     <div v-else-if="today" class="pulsate d-flex">
       <!-- eslint-disable-next-line-->
-      <ExternalLink href="https://us02web.zoom.us/j/81013447754?pwd=cVYzeEl5dWx0MEd0TTdOWE9Yd0Z4QT09" class="text-white">ZoomStock Thursdays - join other volunteers for a natter.  Click here at 2pm.</ExternalLink>
+      <ExternalLink href="https://us02web.zoom.us/j/81013447754?pwd=cVYzeEl5dWx0MEd0TTdOWE9Yd0Z4QT09" class="text-white">ZoomStock today - join other volunteers for a natter.  Click here between 2pm and 5pm.</ExternalLink>
     </div>
     <div v-else class="d-flex">
       ZoomStock Tuesdays and Thursdays 1-5pm. Join other volunteers for a natter.  Link will be here.

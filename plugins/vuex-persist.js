@@ -176,6 +176,9 @@ export default async ({ app, store }) => {
           if (ret.messages) {
             // We can never be fetching when we restore.
             ret.messages.fetching = {}
+
+            // Similarly we don't want to restore a context.
+            ret.messages.context = null
           }
 
           return ret

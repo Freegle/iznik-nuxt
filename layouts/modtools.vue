@@ -164,6 +164,13 @@ import { setBadgeCount } from '../plugins/app-init-push' // CC
   async mounted() {
     console.log('MODTOOLS.VUE mounted')
     if (process.browser) {
+      try {
+        // Wait for the store if necessary.
+        await this.$store.restored
+      } catch (e) {
+        console.log('Store restore wait failed', e)
+      }
+
       // Add class for screen background.
       document.body.classList.add('modtools')
 
