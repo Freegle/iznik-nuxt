@@ -209,7 +209,7 @@ export default async ({ app, store }) => {
                 if (quota && quota.quota) {
                   const length = JSON.stringify(newstate).length
 
-                  if (quota.usage < length) {
+                  if (quota.quota - quota.usage < length) {
                     console.log('Quota indicates too full, use smaller')
                     useSmaller = true
                   }
