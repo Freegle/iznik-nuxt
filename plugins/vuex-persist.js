@@ -63,7 +63,7 @@ export default async ({ app, store }) => {
       Sentry = require('@sentry/browser')
 
       try {
-        if (localStorage.getItem('useSmaller')) {
+        if (localStorage.getItem('useSmaller2')) {
           // We know that smaller state saves work better
           console.log('Smaller state previously chosen for store')
           useSmaller = true
@@ -224,7 +224,7 @@ export default async ({ app, store }) => {
                 if (useSmaller) {
                   try {
                     // Changed to using smaller - save
-                    localStorage.setItem('useSmaller', true)
+                    localStorage.setItem('useSmaller2', true)
                   } catch (e) {}
                 }
               }
@@ -256,7 +256,7 @@ export default async ({ app, store }) => {
               useSmaller = true
               try {
                 // Changed to using smaller - save
-                localStorage.setItem('useSmaller', true)
+                localStorage.setItem('useSmaller2', true)
               } catch (e) {}
               return
             } catch (e) {
