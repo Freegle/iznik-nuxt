@@ -12,24 +12,29 @@
             <SpinButton variant="white" name="search" label="Search" :handler="doSearch" />
           </b-input-group-append>
         </b-input-group>
-        <div v-for="result in results" :key="result.id" class="mt-2 d-flex flex-wrap">
-          Gift aid ID&nbsp;<v-icon name="hashtag" class="text-muted mt-1" />{{ result.id }}
-          {{ result.fullname }}&nbsp;
-          (<ExternalLink :href="'mailto:' + result.email" class="text-muted small mt-1 mr-1 ml-1">
-            {{ result.email }}
-          </ExternalLink>)
-          user ID&nbsp;<v-icon name="hashtag" class="text-muted mt-1" />{{ result.userid }}
-          -&nbsp;
-          <span v-if="result.period === 'Since'">
-            Gift Aid consent for all since {{ dateonly(result.timestamp) }}
-          </span>
-          <span v-if="result.period === 'This'">
-            Gift Aid consent for only {{ dateonly(result.timestamp) }}
-          </span>
-          <span v-if="result.period === 'Future'">
-            Gift Aid consent for all future from {{ dateonly(result.timestamp) }}
-          </span>
-          &nbsp;{{ result.homeaddress }}
+        <div v-for="result in results" :key="result.id" class="mt-2">
+          <div class="d-flex flex-wrap">
+            Gift aid ID&nbsp;<v-icon name="hashtag" class="text-muted mt-1" />{{ result.id }}
+            {{ result.fullname }}&nbsp;
+            (<ExternalLink :href="'mailto:' + result.email" class="text-muted small mt-1 mr-1 ml-1">
+              {{ result.email }}
+            </ExternalLink>)
+            user ID&nbsp;<v-icon name="hashtag" class="text-muted mt-1" />{{ result.userid }}
+            -&nbsp;
+            <span v-if="result.period === 'Since'">
+              Gift Aid consent for all since {{ dateonly(result.timestamp) }}
+            </span>
+            <span v-if="result.period === 'This'">
+              Gift Aid consent for only {{ dateonly(result.timestamp) }}
+            </span>
+            <span v-if="result.period === 'Future'">
+              Gift Aid consent for all future from {{ dateonly(result.timestamp) }}
+            </span>
+            &nbsp;{{ result.homeaddress }}
+          </div>
+          <div v-for="d in result.donations" :key="'donation-' + d.id" class="pl-4 small">
+            &bull;&nbsp;&pound;{{ d.GrossAmount }} on {{ dateshort(d.timestamp ) }} <span class="small text-muted">via {{ d.type }}</span>
+          </div>
         </div>
       </b-card-body>
     </b-card>
