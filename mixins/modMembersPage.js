@@ -39,6 +39,9 @@ export default {
 
       return ret
     },
+    ratings() {
+      return this.$store.getters['members/getRatings']
+    },
     members() {
       let members
 

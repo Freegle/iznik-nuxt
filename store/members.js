@@ -9,7 +9,10 @@ export const state = () => ({
   context: null,
 
   // For spotting when we clear under the feet of an outstanding fetch
-  instance: 1
+  instance: 1,
+
+  // Ratings between members
+  ratings: []
 })
 
 export const mutations = {
@@ -33,6 +36,9 @@ export const mutations = {
         state.list[key].comments = item.comments
       }
     })
+  },
+  setRatings(state, ratings) {
+    state.ratings = ratings
   },
   addAll(state, items) {
     items.forEach(item => {
@@ -65,6 +71,7 @@ export const mutations = {
   },
   clear(state) {
     state.list = []
+    state.ratings = []
 
     if (state.instance) {
       state.instance++
@@ -118,7 +125,8 @@ export const getters = {
   },
   getAll: state => {
     return state.list
-  }
+  },
+  getRatings: state => state.ratings
 }
 
 export const actions = {
@@ -135,9 +143,11 @@ export const actions = {
       params.context = state.context
     }
 
-    const { members, context } = await this.$api.memberships.fetchMembers(
-      params
-    )
+    const {
+      members,
+      context,
+      ratings
+    } = await this.$api.memberships.fetchMembers(params)
 
     if (state.instance === instance) {
       for (let i = 0; i < members.length; i++) {
@@ -146,6 +156,7 @@ export const actions = {
       }
 
       commit('addAll', members)
+      commit('setRatings', ratings)
       commit('setContext', context)
     }
   },
@@ -419,6 +430,13 @@ export const actions = {
       groupid: params.groupid,
       happinessid: params.happinessid,
       action: 'HappinessReviewed'
+    })
+  },
+
+  async ratingReviewed({ dispatch, commit, rootGetters }, params) {
+    await this.$api.memberships.happinessReviewed({
+      id: params.id,
+      action: 'RatingReviewed'
     })
   },
 
