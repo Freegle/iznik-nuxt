@@ -293,7 +293,7 @@ export async function savePushId(store) {
     }
     try {
       // Wait for the store if necessary.
-      await this.$store.restored
+      await store.restored
     } catch (e) {
       console.log('Store restore wait failed', e)
     }
