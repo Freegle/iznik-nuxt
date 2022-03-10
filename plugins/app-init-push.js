@@ -281,7 +281,7 @@ function handleNotification(notificationType, data) {
 // Tell server our push notification id
 // Cope if not logged in ie do it later
 export async function savePushId(store) {
-  console.log("savePushId NOW")
+  //console.log("savePushId NOW")
   if (acceptedMobilePushId !== pushstate.mobilePushId) {
     const params = {
       notifications: {
@@ -297,7 +297,7 @@ export async function savePushId(store) {
     } catch (e) {
       console.log('Store restore wait failed', e)
     }
-    console.log("savePushId RESTORED")
+    //console.log("savePushId RESTORED")
     const data = await store.$api.session.save(params)
     if (data.ret === 0) {
       acceptedMobilePushId = pushstate.mobilePushId
@@ -349,12 +349,7 @@ export default ({ app, store, $api, $axios }) => { // route
       mobilePushId => {
         // tell server our push notification id
         if (mobilePushId) {
-          console.log("WATCH: NO setTimeout savePushId")
           savePushId(store)
-          //setTimeout(() => {
-          //  savePushId(store)
-          //},1000)
-          
         }
         // and remember whether pushAccepted
         store.commit('mobileapp/setpushAccepted', mobilePushId)

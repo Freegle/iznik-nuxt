@@ -208,9 +208,7 @@ export default async ({ app, store }) => {
                 quota = await navigator.storage.estimate()
 
                 if (quota && quota.quota) {
-                  console.log('Quota', quota)
                   const length = JSON.stringify(newstate).length
-                  console.log('length', length)
 
                   if (quota.quota < length) {
                     console.log('Quota indicates too full, use smaller')
