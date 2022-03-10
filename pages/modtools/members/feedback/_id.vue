@@ -185,7 +185,7 @@ export default {
 
         this.ratings.forEach(async rating => {
           if (rating.reviewrequired) {
-            await this.$store.dispatch('members/ratingReviewed', {
+            await this.$store.dispatch('user/ratingReviewed', {
               id: rating.id
             })
           }

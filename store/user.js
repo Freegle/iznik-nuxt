@@ -182,5 +182,9 @@ export const actions = {
       params.id2,
       params.reason
     )
+  },
+
+  async ratingReviewed({ dispatch, commit, rootGetters }, params) {
+    await this.$api.user.ratingReviewed(params.id)
   }
 }

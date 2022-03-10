@@ -433,13 +433,6 @@ export const actions = {
     })
   },
 
-  async ratingReviewed({ dispatch, commit, rootGetters }, params) {
-    await this.$api.memberships.happinessReviewed({
-      id: params.id,
-      action: 'RatingReviewed'
-    })
-  },
-
   async add({ commit, dispatch }, params) {
     const ret = await this.$api.memberships.put(params)
     return ret.id

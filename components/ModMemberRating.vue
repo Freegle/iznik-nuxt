@@ -89,7 +89,7 @@ export default {
     visible(val) {
       if (val && this.rating.reviewrequired) {
         // Mark this as reviewed.  They've had a chance to see it.
-        this.$store.dispatch('members/ratingReviewed', {
+        this.$store.dispatch('user/ratingReviewed', {
           id: this.rating.id
         })
       }
