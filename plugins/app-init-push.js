@@ -291,6 +291,13 @@ export async function savePushId(store) {
         }
       }
     }
+    try {
+      // Wait for the store if necessary.
+      await this.$store.restored
+    } catch (e) {
+      console.log('Store restore wait failed', e)
+    }
+    console.log("savePushId RESTORED")
     const data = await store.$api.session.save(params)
     if (data.ret === 0) {
       acceptedMobilePushId = pushstate.mobilePushId
@@ -342,10 +349,11 @@ export default ({ app, store, $api, $axios }) => { // route
       mobilePushId => {
         // tell server our push notification id
         if (mobilePushId) {
-          console.log("WATCH: setTimeout savePushId")
-          setTimeout(() => {
-            savePushId(store)
-          },1000)
+          console.log("WATCH: NO setTimeout savePushId")
+          savePushId(store)
+          //setTimeout(() => {
+          //  savePushId(store)
+          //},1000)
           
         }
         // and remember whether pushAccepted
