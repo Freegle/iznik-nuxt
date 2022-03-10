@@ -185,7 +185,6 @@ export default async ({ app, store }) => {
         },
 
         async saveState(key, state, storage) {
-          console.log('saveState', key)
           if (giveUp) {
             return
           }
@@ -241,7 +240,6 @@ export default async ({ app, store }) => {
             }
 
             await storage.setItem(key, newstate)
-            console.log("Stored", JSON.stringify(newstate).length)
 
             // Succeeded
             return
