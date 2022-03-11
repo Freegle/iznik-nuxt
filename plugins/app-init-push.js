@@ -349,7 +349,9 @@ export default ({ app, store, $api, $axios }) => { // route
       mobilePushId => {
         // tell server our push notification id
         if (mobilePushId) {
-          savePushId(store)
+          setTimeout(() => {
+            savePushId(store)
+          }, 1000)
         }
         // and remember whether pushAccepted
         store.commit('mobileapp/setpushAccepted', mobilePushId)
