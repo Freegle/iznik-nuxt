@@ -6,6 +6,7 @@ export default function({ store, app: { $axios, redirect } }) {
       response.data.status === 'Not logged in'
     ) {
       // We have made an API request and been told we're not logged in.  Clear the auth in the store.
+      console.log('API tells us we are logged out, clear store')
       store.dispatch('auth/setUser', null)
     }
   })
