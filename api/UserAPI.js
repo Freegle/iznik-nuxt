@@ -22,6 +22,13 @@ export default class UserAPI extends BaseAPI {
     })
   }
 
+  ratingReviewed(ratingid) {
+    return this.$post('/user', {
+      ratingid: ratingid,
+      action: 'RatingReviewed'
+    })
+  }
+
   unbounce(id) {
     return this.$post('/user', { id: id, action: 'Unbounce' })
   }

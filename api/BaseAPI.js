@@ -43,6 +43,11 @@ export default class BaseAPI {
   async $request(method, path, config, logError = true) {
     let status = null
     let data = null
+
+    // Wait for the store to be loaded.  This ensures that axios-token doesn't get called before there is a token
+    // in the store to insert.
+    await this.store.restored
+
     let modtools
     if (process.env.IS_APP) {
       modtools = process.env.IS_MTAPP ? true : false

@@ -36,6 +36,8 @@
         </b-card-text>
       </b-card>
 
+      <ModMemberRating v-for="rating in ratings" :key="'rating-' + rating.id" :rating="rating" class="mt-2" />
+
       <div v-for="member in visibleMembers" :key="'memberlist-' + member.id" class="p-0 mt-2">
         <ModMemberHappiness v-if="filterMatch(member)" :id="member.id" />
       </div>
@@ -62,6 +64,7 @@ import createGroupRoute from '@/mixins/createGroupRoute'
 import ScrollToTop from '../../../../components/ScrollToTop'
 import ModHelpFeedback from '../../../../components/ModHelpFeedback'
 import ModMemberHappiness from '~/components/ModMemberHappiness'
+import ModMemberRating from '~/components/ModMemberRating'
 import NoticeMessage from '~/components/NoticeMessage'
 
 export default {
@@ -69,6 +72,7 @@ export default {
     ScrollToTop,
     ModHelpFeedback,
     ModMemberHappiness,
+    ModMemberRating,
     NoticeMessage,
     GChart
   },
@@ -171,11 +175,18 @@ export default {
       this.$nextTick(() => {
         this.members.forEach(async member => {
           if (!member.reviewed) {
-            // Mark this as reviewed.  They've had a chance to see it.
             await this.$store.dispatch('members/happinessReviewed', {
               userid: member.fromuser,
               groupid: member.groupid,
               happinessid: member.id
+            })
+          }
+        })
+
+        this.ratings.forEach(async rating => {
+          if (rating.reviewrequired) {
+            await this.$store.dispatch('user/ratingReviewed', {
+              id: rating.id
             })
           }
         })
