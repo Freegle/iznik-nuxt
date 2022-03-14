@@ -156,7 +156,11 @@ export const actions = {
       }
 
       commit('addAll', members)
-      commit('setRatings', ratings)
+
+      if (ratings && ratings.length) {
+        commit('setRatings', ratings)
+      }
+
       commit('setContext', context)
     }
   },
