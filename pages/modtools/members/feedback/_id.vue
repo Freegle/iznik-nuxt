@@ -36,10 +36,10 @@
         </b-card-text>
       </b-card>
 
-      <ModMemberRating v-for="rating in ratings" :key="'rating-' + rating.id" :rating="rating" class="mt-2" />
 
-      <div v-for="member in visibleMembers" :key="'memberlist-' + member.id" class="p-0 mt-2">
-        <ModMemberHappiness v-if="filterMatch(member)" :id="member.id" />
+      <div v-for="item in visibleItems" :key="'memberlist-' + item.id" class="p-0 mt-2">
+        <ModMemberHappiness v-if="item.type === 'Member' && filterMatch(item.object)" :id="item.object.id" />
+        <ModMemberRating v-if="item.type === 'Rating'" :rating="item.object" class="mt-2" />
       </div>
 
       <NoticeMessage v-if="!members.length && !busy" class="mt-2">
@@ -100,7 +100,59 @@ export default {
           3: { offset: 0.2 }
         }
       },
-      happinessData: []
+      happinessData: [],
+      // Get everything (probably) so that the ratings and feedback are interleaved.
+      limit: 1000
+    }
+  },
+  computed: {
+    uniqueMembers() {
+      const userids = []
+      const ret = []
+
+      this.members.forEach(m => {
+        const id = m.userid ?? m.fromuser
+
+        if (!userids[id]) {
+          userids[id] = true
+          ret.push(m)
+        }
+      })
+
+      return ret
+    },
+    ratings() {
+      return this.$store.getters['members/getRatings']
+    },
+    sortedItems() {
+      const objs = []
+
+      this.uniqueMembers.forEach(m => {
+        objs.push({
+          type: 'Member',
+          object: m,
+          timestamp: m.timestamp,
+          id: 'member-' + m.id
+        })
+      })
+
+      this.ratings.forEach(r => {
+        objs.push({
+          type: 'Rating',
+          object: r,
+          timestamp: r.timestamp,
+          id: 'rating-' + r.id
+        })
+      })
+
+      objs.sort(function(a, b) {
+        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+      })
+
+      return objs
+    },
+    visibleItems() {
+      return this.sortedItems.slice(0, this.toShow)
     }
   },
   watch: {

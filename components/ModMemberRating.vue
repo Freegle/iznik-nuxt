@@ -1,27 +1,27 @@
 <template>
   <div v-b-visible="visible">
     <b-card v-if="rater && ratee" no-body>
-      <b-card-header :header-bg-variant="rating.reviewrequired ? 'warning' : 'default'">
-        <!-- eslint-disable-next-line-->
-        <nuxt-link :to="'/modtools/members/approved/search/' + rating.groupid + '/' + rater.id"><strong>{{ rater.displayname }}</strong> (<v-icon name="hashtag" class="text-muted" scale="0.75" />{{ rater.id }})</nuxt-link>
-        <span class="text-muted">gave a thumbs down to</span>
-        <!-- eslint-disable-next-line-->
-        <nuxt-link :to="'/modtools/members/approved/search/' + rating.groupid + '/' + ratee.id"><strong>{{ ratee.displayname }}</strong> (<v-icon name="hashtag" class="text-muted" scale="0.75" />{{ ratee.id }})</nuxt-link>
+      <b-card-header :header-bg-variant="rating.reviewrequired ? 'warning' : 'default'" class="d-flex justify-content-between flex-wrap">
         <div>
-          {{ timeago(rating.timestamp) }}
-          <span v-if="!rating.reviewrequired">
-            reviewed
-          </span>
-          <span v-else class="text-danger font-weight-bold">
-            new
-          </span>
+          <!-- eslint-disable-next-line-->
+          <nuxt-link :to="'/modtools/members/approved/search/' + rating.groupid + '/' + rater.id"><strong>{{ rater.displayname }}</strong> (<v-icon name="hashtag" class="text-muted" scale="0.75" />{{ rater.id }})</nuxt-link>
+          <span v-if="rating.rating === 'Down'" class="text-danger font-weight-bold">gave a thumbs down to</span>
+          <span v-else-if="rating.rating === 'Up'" class="text-success font-weight-bold">gave a thumbs up to</span>
+          <!-- eslint-disable-next-line-->
+          <nuxt-link :to="'/modtools/members/approved/search/' + rating.groupid + '/' + ratee.id"><strong>{{ ratee.displayname }}</strong> (<v-icon name="hashtag" class="text-muted" scale="0.75" />{{ ratee.id }})</nuxt-link>
+        </div>
+        <div>
+          {{ timeago(rating.timestamp) }},
           <span v-if="groupName">
-            both on {{ groupName }}
+            both members of {{ groupName }}
+          </span>
+          <span v-if="rating.reviewrequired" class="text-danger font-weight-bold">
+            New
           </span>
         </div>
       </b-card-header>
       <b-card-body>
-        <p>
+        <p v-if="rating.text" class="text-danger">
           <strong>{{ rating.reason }}</strong>: &quot;{{ rating.text }}&quot;
         </p>
         <div class="d-flex flex-wrap justify-content-between">
@@ -65,7 +65,7 @@ export default {
 
       if (this.rater) {
         this.rater.memberof.forEach(g => {
-          if ((g.id = this.rating.groupid)) {
+          if (g.id === this.rating.groupid && this.amAModOn(g.id)) {
             ret = g.namedisplay
           }
         })
