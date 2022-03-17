@@ -133,10 +133,14 @@ export default {
     this.searchTerm = this.$route.params.term
 
     // We want this to be our next home page.
-    this.$store.dispatch('misc/set', {
-      key: 'lasthomepage',
-      value: 'mygroups'
-    })
+    const existingHomepage = this.$store.getters['misc/get']('lasthomepage')
+
+    if (existingHomepage !== 'mygroups') {
+      this.$store.dispatch('misc/set', {
+        key: 'lasthomepage',
+        value: 'mygroups'
+      })
+    }
 
     this.calculateInitialMapBounds()
     console.log('Initial bounds', this.initialBounds)

@@ -20,7 +20,6 @@ export const mutations = {
     state.messages = {}
     state.attachments = {}
   },
-
   setEmail(state, email) {
     state.email = email
     state.emailAt = Date.now()

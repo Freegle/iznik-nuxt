@@ -12,6 +12,12 @@ let Sentry
 
 let giveUp = false
 let useSmaller = false
+let savingState = null
+let saveInProgress = false
+let saveInstance = 0
+let lastSave = null
+
+const FUNCTIONAL_PARTS = ['auth', 'compose', 'reply', 'misc']
 
 export default async ({ app, store }) => {
   function prune(list) {
@@ -40,18 +46,17 @@ export default async ({ app, store }) => {
     }
   }
 
-  function getSmaller(newstate) {
+  function getFunctional(newstate) {
     // This is the minimal state we need to save for functional reasons (e.g. login, compose/reply when logged out).
-    const smallerState = {
-      auth: cloneDeep(newstate.auth),
-      compose: newstate.compose,
-      reply: newstate.reply,
-      misc: newstate.misc
-    }
+    const functionalState = {}
 
-    smallerState.groups = []
+    FUNCTIONAL_PARTS.forEach(k => {
+      functionalState[k] = cloneDeep(newstate[k])
+    })
 
-    return smallerState
+    functionalState.groups = []
+
+    return functionalState
   }
 
   if (process.client) {
@@ -82,18 +87,48 @@ export default async ({ app, store }) => {
         asyncStorage: true,
 
         filter: function(mutation) {
+          // console.log('Mutation', mutation.type)
+
+          // Some store changes are very transient and not worth considering.
           if (
             giveUp ||
             mutation.type === 'misc/setTime' ||
             mutation.type === 'chats/fetching' ||
             mutation.type === 'uniqueid/inc'
           ) {
+            // These are not worth persisting.
             return false
           }
 
-          // console.log('Mutation', mutation.type)
+          const p = mutation.type.indexOf('/')
 
-          return true
+          if (p === -1) {
+            // Not sure what this is - so include it
+            return true
+          }
+
+          const type = mutation.type.substring(0, p)
+
+          if (FUNCTIONAL_PARTS.indexOf(type) !== -1) {
+            // These are changes to an area of the store which affects function. We want to include those.
+            console.log('Functional mutation, will save ', mutation.type)
+            return true
+          }
+
+          // Now we're down at the "would be nice" stuff.  We want to throttle that so that we don't kill browser
+          // performance by doing too many saves.  Limit it to 1 per second.
+          const now = new Date().getTime()
+          // console.log('Compare', now, lastSave)
+
+          if (!lastSave || now - lastSave > 1000) {
+            console.log('Long enough since last, will save')
+            return true
+          }
+
+          // We're not going to save this.  But all is not lost - if something happens again, then the data will
+          // get saved at that point.
+          console.log('Too soon since last store save, suppress')
+          return false
         },
 
         async restoreState(key, storage) {
@@ -236,20 +271,44 @@ export default async ({ app, store }) => {
 
             if (useSmaller) {
               // If we don't support quota, let's err on the safe side and save the minimal state.
-              newstate = getSmaller(newstate)
+              newstate = getFunctional(newstate)
             }
 
-            await storage.setItem(key, newstate)
+            savingState = newstate
+
+            if (saveInProgress) {
+              // We are already saving.  Queue this up to save when we've finished. This may overwrite any ones
+              // which came in earlier, which is what we want.
+              saveInstance++
+              console.log('Save in progress, queue for later')
+            } else {
+              let savingNow
+
+              do {
+                // Loop until we have saved the most recent one we have received.
+                saveInProgress = true
+                savingNow = saveInstance
+                await storage.setItem(key, savingState)
+                saveInProgress = false
+                lastSave = new Date().getTime()
+
+                if (savingNow !== saveInstance) {
+                  console.log('...more came in, keep saving')
+                }
+              } while (savingNow !== saveInstance)
+
+              console.log('Save complete')
+            }
 
             // Succeeded
             return
           } catch (e) {
             console.log('Storage save failed', e, quota)
 
-            const smallerState = getSmaller(newstate)
+            const functionalState = getFunctional(newstate)
 
             try {
-              await storage.setItem(key, smallerState)
+              await storage.setItem(key, functionalState)
 
               // Use smaller from now on.
               console.log('Successfully saved smaller, use from now on')
@@ -257,6 +316,8 @@ export default async ({ app, store }) => {
               try {
                 // Changed to using smaller - save
                 localStorage.setItem('useSmaller2', true)
+                saveInProgress = false
+                lastSave = new Date().getTime()
               } catch (e) {}
               return
             } catch (e) {
@@ -265,7 +326,7 @@ export default async ({ app, store }) => {
                 'Storage save of smaller failed with',
                 e,
                 quota,
-                JSON.stringify(smallerState).length
+                JSON.stringify(functionalState).length
               )
 
               if (storage._dbInfo && storage._dbInfo.db) {
@@ -274,8 +335,10 @@ export default async ({ app, store }) => {
                 storage._dbInfo.db.close()
 
                 try {
-                  await storage.setItem(key, smallerState)
+                  await storage.setItem(key, functionalState)
                   console.log('...saved smaller after close of IndexedDB')
+                  saveInProgress = false
+                  lastSave = new Date().getTime()
                   return
                 } catch (e) {
                   console.log('Save failed again after close of IndexedDB')
@@ -288,7 +351,7 @@ export default async ({ app, store }) => {
                 // If this works we'll stick with local storage for this session.
                 storage._dbInfo.db.close()
                 await storage.setDriver(localForage.LOCALSTORAGE)
-                await storage.setItem(key, smallerState)
+                await storage.setItem(key, functionalState)
                 console.log(
                   '...saved successfully after switch to local storage'
                 )
@@ -296,6 +359,8 @@ export default async ({ app, store }) => {
                 try {
                   // Give up on IndexedDB.
                   localStorage.setItem('disableIndexedDB', true)
+                  saveInProgress = false
+                  lastSave = new Date().getTime()
                 } catch (e) {}
               } catch (e) {
                 console.log('Save of smaller to local storage failed', e)
