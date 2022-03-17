@@ -245,7 +245,9 @@
 <script>
 import map from '@/mixins/map.js'
 import ModChangedMapping from '@/components/ModChangedMapping'
-import * as turf from '@turf/turf'
+import turfpolygon from 'turf-polygon'
+import turfintersect from 'turf-intersect'
+import turfarea from 'turf-area'
 import Postcode from './Postcode'
 import SpinButton from './SpinButton'
 import ModGroupMapLocation from './ModGroupMapLocation'
@@ -413,18 +415,18 @@ export default {
       for (let i = 0; i < this.CGAs.length; i++) {
         for (let j = i + 1; j < this.CGAs.length; j++) {
           try {
-            const p1 = turf.polygon(this.CGAs[i].json.coordinates)
-            const p2 = turf.polygon(this.CGAs[j].json.coordinates)
-            const intersection = turf.intersect(p1, p2)
+            const p1 = turfpolygon(this.CGAs[i].json.coordinates)
+            const p2 = turfpolygon(this.CGAs[j].json.coordinates)
+            const intersection = turfintersect(p1, p2)
 
             if (intersection) {
-              if (turf.area(intersection) > 500) {
+              if (turfarea(intersection) > 500) {
                 console.log(
                   'Intersection',
                   i,
                   j,
                   intersection,
-                  turf.area(intersection)
+                  turfarea(intersection)
                 )
                 ret.push(intersection)
 

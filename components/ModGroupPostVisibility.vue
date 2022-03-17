@@ -72,7 +72,7 @@
   </div>
 </template>
 <script>
-import * as turf from '@turf/turf'
+import turfbuffer from 'turf-buffer'
 import SpinButton from '~/components/SpinButton'
 
 const OurToggle = () => import('~/components/OurToggle')
@@ -133,7 +133,7 @@ export default {
         const CGA = this.CGA
 
         if (CGA) {
-          return turf.buffer(CGA, this.scale, { units: 'meters' })
+          return turfbuffer(CGA, this.scale, { units: 'meters' })
         } else {
           return null
         }

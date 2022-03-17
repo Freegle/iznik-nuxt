@@ -750,13 +750,13 @@
 import GroupSelect from './GroupSelect'
 import ModSettingShortlink from './ModSettingShortlink'
 import GroupProfileImage from './GroupProfileImage'
-import OurFilePond from './OurFilePond'
 import ModGroupSetting from './ModGroupSetting'
 import SpinButton from './SpinButton'
 import NoticeMessage from './NoticeMessage'
 import ModSettingsGroupFacebook from './ModSettingsGroupFacebook'
 import ModGroupPostVisibility from './ModGroupPostVisibility'
 const ExternalLink = () => import('~/components/ExternalLink')
+const OurFilePond = () => import('~/components/OurFilePond')
 
 const OurToggle = () => import('~/components/OurToggle')
 

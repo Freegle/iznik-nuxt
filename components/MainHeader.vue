@@ -16,19 +16,19 @@
         <b-navbar-toggle v-if="loggedIn" target="nav_collapse" />
         <b-collapse v-if="loggedIn" id="nav_collapse" ref="nav_collapse" is-nav class="flex-nowrap justify-content-between">
           <b-navbar-nav class="mainnav mainnav--left">
-            <b-nav-item id="menu-option-mygroups" class="text-center small p-0 ml-2" to="/browse" @mousedown="maybeReload('/browse')">
+            <b-nav-item id="menu-option-mygroups" no-prefetch class="text-center small p-0 ml-2" to="/browse" @mousedown="maybeReload('/browse')">
               <v-icon name="eye" scale="2" /><br>
               <span class="nav-item__text">Browse</span>
             </b-nav-item>
-            <b-nav-item id="menu-option-give" class="text-center small p-0" to="/give" @mousedown="maybeReload('/give')">
+            <b-nav-item id="menu-option-give" no-prefetch class="text-center small p-0" to="/give" @mousedown="maybeReload('/give')">
               <v-icon name="gift" scale="2" /><br>
               <span class="nav-item__text">Give</span>
             </b-nav-item>
-            <b-nav-item id="menu-option-find" class="text-center small p-0" to="/find" @mousedown="maybeReload('/find')">
+            <b-nav-item id="menu-option-find" no-prefetch class="text-center small p-0" to="/find" @mousedown="maybeReload('/find')">
               <v-icon name="shopping-cart" scale="2" /><br>
               <span class="nav-item__text">&nbsp;Ask</span>
             </b-nav-item>
-            <b-nav-item id="menu-option-myposts" class="text-center small p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
+            <b-nav-item id="menu-option-myposts" no-prefetch class="text-center small p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
               <div class="position-relative">
                 <v-icon name="home" scale="2" /><br>
                 <b-badge v-if="openPostCount" variant="info" class="mypostsbadge" :title="openPostCount | pluralize('open post', { includeNumber: true })">
@@ -37,7 +37,14 @@
                 <span class="nav-item__text">My Posts</span>
               </div>
             </b-nav-item>
-            <b-nav-item v-if="!simple" id="menu-option-chitchat" class="text-center small p-0" to="/chitchat" @mousedown="maybeReload('/chitchat')">
+            <b-nav-item
+              v-if="!simple"
+              id="menu-option-chitchat"
+              no-prefetch
+              class="text-center small p-0"
+              to="/chitchat"
+              @mousedown="maybeReload('/chitchat')"
+            >
               <div class="position-relative">
                 <v-icon name="coffee" scale="2" /><br>
                 <b-badge v-if="newsCount" variant="info" class="newsbadge" :title="newsCount | pluralize('unread ChitChat post', { includeNumber: true })">
@@ -46,11 +53,25 @@
                 <span class="nav-item__text">ChitChat</span>
               </div>
             </b-nav-item>
-            <b-nav-item v-if="!simple" id="menu-option-communityevents" class="text-center small p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
+            <b-nav-item
+              v-if="!simple"
+              id="menu-option-communityevents"
+              no-prefetch
+              class="text-center small p-0"
+              to="/communityevents"
+              @mousedown="maybeReload('/communityevents')"
+            >
               <v-icon name="calendar-alt" scale="2" /><br>
               <span class="nav-item__text">Events</span>
             </b-nav-item>
-            <b-nav-item v-if="!simple" id="menu-option-volunteering" class="text-center small p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
+            <b-nav-item
+              v-if="!simple"
+              id="menu-option-volunteering"
+              no-prefetch
+              class="text-center small p-0"
+              to="/volunteerings"
+              @mousedown="maybeReload('/volunteerings')"
+            >
               <v-icon name="hands-helping" scale="2" /><br>
               <span class="nav-item__text">Volunteer</span>
             </b-nav-item>
@@ -63,21 +84,28 @@
           <b-navbar-nav class="mainnav mainnav--right">
             <NotificationOptions v-if="loggedIn" :distance="distance" :small-screen="false" :unread-notification-count.sync="unreadNotificationCount" @showAboutMe="showAboutMe" />
             <ChatMenu v-if="loggedIn" id="menu-option-chat" :is-list-item="true" :chat-count.sync="chatCount" />
-            <b-nav-item v-if="!simple" id="menu-option-spread" class="text-center small p-0" to="/promote" @mousedown="maybeReload('/promote')">
+            <b-nav-item
+              v-if="!simple"
+              id="menu-option-spread"
+              no-prefetch
+              class="text-center small p-0"
+              to="/promote"
+              @mousedown="maybeReload('/promote')"
+            >
               <div class="position-relative">
                 <v-icon name="bullhorn" scale="2" /><br>
                 <span class="nav-item__text">Promote</span>
               </div>
             </b-nav-item>
-            <b-nav-item id="menu-option-help" class="text-center small p-0" to="/help" @mousedown="maybeReload('/help')">
+            <b-nav-item id="menu-option-help" no-prefetch class="text-center small p-0" to="/help" @mousedown="maybeReload('/help')">
               <v-icon name="question-circle" scale="2" /><br>
               <span class="nav-item__text">Help</span>
             </b-nav-item>
-            <b-nav-item id="menu-option-settings" class="text-center small p-0" to="/settings" @mousedown="maybeReload('/settings')">
+            <b-nav-item id="menu-option-settings" no-prefetch class="text-center small p-0" to="/settings" @mousedown="maybeReload('/settings')">
               <v-icon name="cog" scale="2" /><br>
               <span class="nav-item__text">Settings</span>
             </b-nav-item>
-            <b-nav-item id="menu-option-logout" class="text-center p-0 small" @click="logOut">
+            <b-nav-item id="menu-option-logout" no-prefetch class="text-center p-0 small" @click="logOut">
               <v-icon name="sign-out-alt" scale="2" /><br>
               <span class="nav-item__text">Logout</span>
             </b-nav-item>
@@ -86,7 +114,7 @@
       </client-only>
       <b-navbar-nav v-if="!loggedIn" class="ml-auto">
         <client-only>
-          <b-nav-item>
+          <b-nav-item no-prefetch>
             <div class="btn btn-white" @click="requestLogin">
               Sign&nbsp;in
             </div>
@@ -121,7 +149,7 @@
 
         <b-navbar-nav>
           <client-only>
-            <b-nav-item v-if="!loggedIn">
+            <b-nav-item v-if="!loggedIn" no-prefetch>
               <div class="btn btn-white" @click="requestLogin">
                 Sign in or Join
               </div>
@@ -137,19 +165,19 @@
       </div>
       <b-collapse v-if="loggedIn" id="nav_collapse_mobile" ref="nav_collapse_mobile" class="w-100 ourBack" is-nav>
         <b-navbar-nav class="ml-auto flex-row flex-wrap small">
-          <b-nav-item class="text-center p-0" to="/browse" @mousedown="maybeReload('/browse')">
+          <b-nav-item no-prefetch class="text-center p-0" to="/browse" @mousedown="maybeReload('/browse')">
             <v-icon name="eye" scale="2" /><br>
             <span class="nav-item__text">Browse</span>
           </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/give" @mousedown="maybeReload('/give')">
+          <b-nav-item no-prefetch class="text-center p-0" to="/give" @mousedown="maybeReload('/give')">
             <v-icon name="gift" scale="2" /><br>
             <span class="nav-item__text">Give</span>
           </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/find" @mousedown="maybeReload('/find')">
+          <b-nav-item no-prefetch class="text-center p-0" to="/find" @mousedown="maybeReload('/find')">
             <v-icon name="shopping-cart" scale="2" /><br>
             <span class="nav-item__text">Ask</span>
           </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
+          <b-nav-item no-prefetch class="text-center p-0" to="/myposts" @mousedown="maybeReload('/myposts')">
             <div class="position-relative">
               <v-icon name="home" scale="2" /><br>
               <b-badge v-if="openPostCount" variant="info" class="mypostsbadge2" :title="openPostCount | pluralize('open post', { includeNumber: true })">
@@ -158,7 +186,7 @@
               <span class="nav-item__text">My Posts</span>
             </div>
           </b-nav-item>
-          <b-nav-item v-if="!simple" class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
+          <b-nav-item v-if="!simple" no-prefetch class="text-center p-0 white" to="/chitchat" @mousedown="maybeReload('/chitchat')">
             <div class="position-relative">
               <v-icon name="coffee" scale="2" /><br>
               <b-badge v-if="newsCount" variant="info" class="newsbadge2" :title="newsCount | pluralize('unread ChitChat post', { includeNumber: true })">
@@ -167,27 +195,27 @@
               <span class="nav-item__text">ChitChat</span>
             </div>
           </b-nav-item>
-          <b-nav-item v-if="!simple" class="text-center p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
+          <b-nav-item v-if="!simple" no-prefetch class="text-center p-0" to="/communityevents" @mousedown="maybeReload('/communityevents')">
             <v-icon name="calendar-alt" scale="2" /><br>
             <span class="nav-item__text">Events</span>
           </b-nav-item>
-          <b-nav-item v-if="!simple" class="text-center p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
+          <b-nav-item v-if="!simple" no-prefetch class="text-center p-0" to="/volunteerings" @mousedown="maybeReload('/volunteerings')">
             <v-icon name="hands-helping" scale="2" /><br>
             <span class="nav-item__text">Volunteer</span>
           </b-nav-item>
-          <b-nav-item v-if="!simple" class="text-center p-0" to="/promote" @mousedown="maybeReload('/promote')">
+          <b-nav-item v-if="!simple" no-prefetch class="text-center p-0" to="/promote" @mousedown="maybeReload('/promote')">
             <v-icon name="bullhorn" scale="2" /><br>
             <span class="nav-item__text">Promote</span>
           </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/help" @mousedown="maybeReload('/help')">
+          <b-nav-item no-prefetch class="text-center p-0" to="/help" @mousedown="maybeReload('/help')">
             <v-icon name="question-circle" scale="2" /><br>
             <span class="nav-item__text">Help</span>
           </b-nav-item>
-          <b-nav-item class="text-center p-0" to="/settings" @mousedown="maybeReload('/settings')">
+          <b-nav-item no-prefetch class="text-center p-0" to="/settings" @mousedown="maybeReload('/settings')">
             <v-icon name="cog" scale="2" /><br>
             <span class="nav-item__text">Settings</span>
           </b-nav-item>
-          <b-nav-item class="text-center p-0" @click="logOut">
+          <b-nav-item no-prefetch class="text-center p-0" @click="logOut">
             <v-icon name="sign-out-alt" scale="2" /><br>
             <span class="nav-item__text">Logout</span>
           </b-nav-item>
@@ -415,7 +443,7 @@ nav .navbar-nav li a.nuxt-link-active {
   max-width: 100%;
 }
 
-/* These classes style the external b-nav-item-dropdown component */
+/* These classes style the external b-nav-item no-prefetch-dropdown component */
 .notiflist ::v-deep .dropdown-menu {
   height: 500px;
   overflow-y: auto;
