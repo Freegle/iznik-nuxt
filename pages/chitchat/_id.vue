@@ -194,10 +194,14 @@ export default {
 
   mounted() {
     // We want this to be our next home page.
-    this.$store.dispatch('misc/set', {
-      key: 'lasthomepage',
-      value: 'news'
-    })
+    const existingHomepage = this.$store.getters['misc/get']('lasthomepage')
+
+    if (existingHomepage !== 'news') {
+      this.$store.dispatch('misc/set', {
+        key: 'lasthomepage',
+        value: 'news'
+      })
+    }
 
     // Clear the store otherwise existing info may prevent us triggering a fetch via loadMore.
     this.$store.dispatch('newsfeed/clearFeed')

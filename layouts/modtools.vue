@@ -201,10 +201,14 @@ import { setBadgeCount } from '../plugins/app-init-push' // CC
       })
     }
     // Ensure we know whether we're FD or MT.
-    this.$store.dispatch('misc/set', {
-      key: 'modtools',
-      value: true
-    })
+    const existingModtools = this.$store.getters['misc/get']('modtools')
+
+    if (!existingModtools) {
+      this.$store.dispatch('misc/set', {
+        key: 'modtools',
+        value: true
+      })
+    }
 
     this.workTimer = setTimeout(this.checkWork, 0)
     this.$store.dispatch('modconfigs/fetch', {

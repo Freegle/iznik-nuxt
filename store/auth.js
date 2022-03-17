@@ -370,14 +370,20 @@ export const actions = {
 
       // Set the user, which will trigger various re-rendering if we were required to be logged in.
       commit('setUser', me, params.components)
-      commit('addRelated', me.id)
-      commit('forceLogin', false)
+
+      if (!state.userlist || state.userlist.indexOf(me.id) === -1) {
+        commit('addRelated', me.id)
+      }
+
+      if (state.forceLogin) {
+        commit('forceLogin', false)
+      }
 
       await savePushId(this) // Tell server our mobile push notification id, if available // CC
 
       const email = rootGetters['compose/getEmail']
 
-      if (email !== me.email) {
+      if (me.email && email !== me.email) {
         // Save off our current email from the account for use in post composing.
         dispatch('compose/setEmail', me.email, {
           root: true

@@ -333,10 +333,14 @@ export default {
     this.newpassword = this.$route.params.newpassword
 
     // We want this to be our next home page.
-    this.$store.dispatch('misc/set', {
-      key: 'lasthomepage',
-      value: 'myposts'
-    })
+    const existingHomepage = this.$store.getters['misc/get']('lasthomepage')
+
+    if (existingHomepage !== 'myposts') {
+      this.$store.dispatch('misc/set', {
+        key: 'lasthomepage',
+        value: 'myposts'
+      })
+    }
 
     await this.fetchMe(['me', 'groups'])
 

@@ -217,19 +217,19 @@
         ref="photoModal"
       />
     </div>
-    <OutcomeModal ref="outcomeModal" :message="message" @outcome="hide = true" />
-    <ShareModal :id="message.id" ref="shareModal" />
-    <MessageEditModal ref="editModal" :message="message" />
-    <PromiseModal ref="promiseModal" :messages="[ message ]" :selected-message="message.id" :users="replyusers" />
+    <OutcomeModal v-if="showOutcomeModal" ref="outcomeModal" :message="message" @outcome="hide = true" />
+    <ShareModal v-if="showShareModal" :id="message.id" ref="shareModal" />
+    <MessageEditModal v-if="showEditModal" ref="editModal" :message="message" />
+    <PromiseModal v-if="showPromiseModal" ref="promiseModal" :messages="[ message ]" :selected-message="message.id" :users="replyusers" />
   </div>
 </template>
 <script>
 import MessagePhotosModal from '@/components/MessagePhotosModal'
 import MyMessagePromisedTo from '@/components/MyMessagePromisedTo'
-import OutcomeModal from './OutcomeModal'
 import PromiseModal from '~/components/PromiseModal'
 const MyMessageReply = () => import('./MyMessageReply.vue')
 const ShareModal = () => import('./ShareModal')
+const OutcomeModal = () => import('./OutcomeModal')
 const MessageEditModal = () => import('./MessageEditModal')
 const NoticeMessage = () => import('~/components/NoticeMessage')
 
@@ -283,7 +283,11 @@ export default {
     return {
       maxChars: 60,
       expanded: false,
-      hide: false
+      hide: false,
+      showOutcomeModal: false,
+      showEditModal: false,
+      showShareModal: false,
+      showPromiseModal: false
     }
   },
   computed: {
@@ -522,7 +526,10 @@ export default {
           this.outcome('Received')
           break
         case 'promise':
-          this.$refs.promiseModal.show()
+          this.showPromiseModal = true
+          this.waitForRef('promiseModal', () => {
+            this.$refs.promiseModal.show()
+          })
           break
       }
     }
@@ -548,7 +555,10 @@ export default {
       return unseen
     },
     outcome(type) {
-      this.$refs.outcomeModal.show(type)
+      this.showOutcomeModal = true
+      this.waitForRef('outcomeModal', () => {
+        this.$refs.outcomeModal.show(type)
+      })
     },
     share() {
       if (process.env.IS_APP) { // CC..
@@ -577,11 +587,16 @@ export default {
 
         window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError)
       } else {
-        this.$refs.shareModal.show()
+        this.waitForRef('shareModal', () => {
+          this.$refs.shareModal.show()
+        })
       }
     },
     edit() {
-      this.$refs.editModal.show()
+      this.showEditModal = true
+      this.waitForRef('outcomeModal', () => {
+        this.$refs.editModal.show()
+      })
     },
     async repost() {
       // Remove any partially composed messages we currently have, because they'll be confusing.
