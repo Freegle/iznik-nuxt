@@ -159,8 +159,15 @@ export default {
       })
     }
   },
-  mounted() {
+  async mounted() {
     if (process.browser) {
+      try {
+        // Wait for the store if necessary.
+        await this.$store.restored
+      } catch (e) {
+        console.log('Store restore wait failed', e)
+      }
+
       // Add class for screen background.
       document.body.classList.add('modtools')
 
@@ -185,10 +192,14 @@ export default {
     }
 
     // Ensure we know whether we're FD or MT.
-    this.$store.dispatch('misc/set', {
-      key: 'modtools',
-      value: true
-    })
+    const existingModtools = this.$store.getters['misc/get']('modtools')
+
+    if (!existingModtools) {
+      this.$store.dispatch('misc/set', {
+        key: 'modtools',
+        value: true
+      })
+    }
 
     this.workTimer = setTimeout(this.checkWork, 0)
     this.$store.dispatch('modconfigs/fetch', {

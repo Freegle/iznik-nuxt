@@ -55,7 +55,7 @@
               >
                 <v-icon name="heart" class="text-danger" />&nbsp;{{ reply.loves }}
               </b-btn>
-              <b-btn v-if="parseInt(me.id) === parseInt(userid)" v-b-modal="'newsEdit-' + replyid" variant="link" size="sm" class="reply__button text-muted ">
+              <b-btn v-if="parseInt(me.id) === parseInt(userid)" variant="link" size="sm" class="reply__button text-muted " @click="showEdit">
                 Edit
               </b-btn>
               <b-btn v-if="parseInt(me.id) === parseInt(userid) || mod" variant="link" size="sm" class="reply__button text-muted" @click="deleteReply">
@@ -185,6 +185,7 @@
       </template>
     </b-modal>
     <b-modal
+      v-if="showEditModal"
       :id="'newsEdit-' + replyid"
       ref="editModal"
       title="Edit your post"
@@ -211,7 +212,7 @@
       </template>
     </b-modal>
     <ProfileModal v-if="infoclick" :id="userid" ref="profilemodal" />
-    <NewsLovesModal :id="replyid" ref="loveModal" />
+    <NewsLovesModal v-if="showLoveModal" :id="replyid" ref="loveModal" />
     <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" :title="'Delete reply from ' + users[userid].displayname" @confirm="deleteConfirm" />
   </div>
 </template>
@@ -286,7 +287,9 @@ export default {
       uploading: false,
       imageid: null,
       imagethumb: null,
-      showDeleteModal: false
+      showDeleteModal: false,
+      showLoveModal: false,
+      showEditModal: false
     }
   },
   computed: {
@@ -485,8 +488,17 @@ export default {
     brokenImage(event) {
       event.target.src = require('~/static/defaultprofile.png')
     },
+    showEdit() {
+      this.showEditModal = true
+      this.waitForRef('editModal', () => {
+        this.$refs.editModal.show()
+      })
+    },
     showLove() {
-      this.$refs.loveModal.show()
+      this.showLoveModal = true
+      this.waitForRef('loveModal', () => {
+        this.$refs.loveModal.show()
+      })
     },
     filterMatch(name, chunk) {
       // Only match at start of string.

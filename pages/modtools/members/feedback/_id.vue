@@ -36,8 +36,10 @@
         </b-card-text>
       </b-card>
 
-      <div v-for="member in visibleMembers" :key="'memberlist-' + member.id" class="p-0 mt-2">
-        <ModMemberHappiness v-if="filterMatch(member)" :id="member.id" />
+
+      <div v-for="item in visibleItems" :key="'memberlist-' + item.id" class="p-0 mt-2">
+        <ModMemberHappiness v-if="item.type === 'Member' && filterMatch(item.object)" :id="item.object.id" />
+        <ModMemberRating v-if="item.type === 'Rating'" :rating="item.object" class="mt-2" />
       </div>
 
       <NoticeMessage v-if="!members.length && !busy" class="mt-2">
@@ -62,6 +64,7 @@ import createGroupRoute from '@/mixins/createGroupRoute'
 import ScrollToTop from '../../../../components/ScrollToTop'
 import ModHelpFeedback from '../../../../components/ModHelpFeedback'
 import ModMemberHappiness from '~/components/ModMemberHappiness'
+import ModMemberRating from '~/components/ModMemberRating'
 import NoticeMessage from '~/components/NoticeMessage'
 
 export default {
@@ -69,6 +72,7 @@ export default {
     ScrollToTop,
     ModHelpFeedback,
     ModMemberHappiness,
+    ModMemberRating,
     NoticeMessage,
     GChart
   },
@@ -96,7 +100,59 @@ export default {
           3: { offset: 0.2 }
         }
       },
-      happinessData: []
+      happinessData: [],
+      // Get everything (probably) so that the ratings and feedback are interleaved.
+      limit: 1000
+    }
+  },
+  computed: {
+    uniqueMembers() {
+      const userids = []
+      const ret = []
+
+      this.members.forEach(m => {
+        const id = m.userid ?? m.fromuser
+
+        if (!userids[id]) {
+          userids[id] = true
+          ret.push(m)
+        }
+      })
+
+      return ret
+    },
+    ratings() {
+      return this.$store.getters['members/getRatings']
+    },
+    sortedItems() {
+      const objs = []
+
+      this.uniqueMembers.forEach(m => {
+        objs.push({
+          type: 'Member',
+          object: m,
+          timestamp: m.timestamp,
+          id: 'member-' + m.id
+        })
+      })
+
+      this.ratings.forEach(r => {
+        objs.push({
+          type: 'Rating',
+          object: r,
+          timestamp: r.timestamp,
+          id: 'rating-' + r.id
+        })
+      })
+
+      objs.sort(function(a, b) {
+        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+      })
+
+      return objs
+    },
+    visibleItems() {
+      return this.sortedItems.slice(0, this.toShow)
     }
   },
   watch: {
@@ -171,11 +227,18 @@ export default {
       this.$nextTick(() => {
         this.members.forEach(async member => {
           if (!member.reviewed) {
-            // Mark this as reviewed.  They've had a chance to see it.
             await this.$store.dispatch('members/happinessReviewed', {
               userid: member.fromuser,
               groupid: member.groupid,
               happinessid: member.id
+            })
+          }
+        })
+
+        this.ratings.forEach(async rating => {
+          if (rating.reviewrequired) {
+            await this.$store.dispatch('user/ratingReviewed', {
+              id: rating.id
             })
           }
         })

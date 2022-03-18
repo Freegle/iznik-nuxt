@@ -143,6 +143,7 @@
       </div>
     </b-card>
     <b-modal
+      v-if="showEditModal"
       :id="'newsEdit-' + newsfeed.id"
       ref="editModal"
       title="Edit your post"
@@ -259,7 +260,8 @@ export default {
       uploading: false,
       imageid: null,
       imagethumb: null,
-      showDeleteModal: false
+      showDeleteModal: false,
+      showEditModal: false
     }
   },
   computed: {
@@ -410,7 +412,10 @@ export default {
       }
     },
     show() {
-      this.$refs.editModal.show()
+      this.showEditModal = true
+      this.waitForRef('editModal', () => {
+        this.$refs.editModal.show()
+      })
     },
     save() {
       this.$store.dispatch('newsfeed/edit', {

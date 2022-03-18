@@ -385,7 +385,8 @@ module.exports = {
     transpile: [
       /^vue2-google-maps($|\/)/,
       'vue-lazy-youtube-video',
-      'vue-draggable-resizable'
+      'vue-draggable-resizable',
+      'vuex-persist'
     ],
 
     extend(config, ctx) {

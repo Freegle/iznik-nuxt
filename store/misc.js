@@ -21,6 +21,7 @@ export const getters = {
 
 export const actions = {
   set({ commit }, params) {
+    console.log('Misc set', params.key, params.value)
     commit('set', params)
   },
 

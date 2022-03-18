@@ -19,7 +19,6 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
   props: {
@@ -119,6 +118,14 @@ export default {
             })
 
             console.log('Sent')
+
+            if (firstmsgid) {
+              // Refresh the message so that our reply will show.
+              this.$store.dispatch('messages/fetch', {
+                id: firstmsgid,
+                force: true
+              })
+            }
 
             this.$emit('sent')
           }

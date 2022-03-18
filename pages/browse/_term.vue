@@ -133,10 +133,14 @@ export default {
     this.searchTerm = this.$route.params.term
 
     // We want this to be our next home page.
-    this.$store.dispatch('misc/set', {
-      key: 'lasthomepage',
-      value: 'mygroups'
-    })
+    const existingHomepage = this.$store.getters['misc/get']('lasthomepage')
+
+    if (existingHomepage !== 'mygroups') {
+      this.$store.dispatch('misc/set', {
+        key: 'lasthomepage',
+        value: 'mygroups'
+      })
+    }
 
     this.calculateInitialMapBounds()
     console.log('Initial bounds', this.initialBounds)
@@ -156,7 +160,7 @@ export default {
 
         if (!lastask || now - lastask > 90 * 24 * 60 * 60 * 1000) {
           // Not asked too recently.
-          await this.fetchMe(['me', 'aboutme'])
+          await this.fetchMe(['me', 'aboutme'], true)
 
           if (!this.me.aboutme || !this.me.aboutme.text) {
             // We have not yet provided one.

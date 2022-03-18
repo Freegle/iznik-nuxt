@@ -63,7 +63,7 @@ export default {
 
       return (
         !this.membership.reviewedat ||
-        new Date(this.membership.reviewrequestedat).getTime() >
+        new Date(this.membership.reviewrequestedat).getTime() >=
           new Date(this.membership.reviewedat).getTime()
       )
     }

@@ -87,10 +87,14 @@ export default {
     }
 
     // Ensure we know whether we're FD or MT.
-    this.$store.dispatch('misc/set', {
-      key: 'modtools',
-      value: false
-    })
+    const existingModtools = this.$store.getters['misc/get']('modtools')
+
+    if (existingModtools) {
+      this.$store.dispatch('misc/set', {
+        key: 'modtools',
+        value: false
+      })
+    }
 
     if (document) {
       // We added a basic loader into the HTML.  This helps if we are loaded on an old browser where our JS bombs

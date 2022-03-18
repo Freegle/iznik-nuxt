@@ -43,6 +43,11 @@ export default class BaseAPI {
   async $request(method, path, config, logError = true) {
     let status = null
     let data = null
+
+    // Wait for the store to be loaded.  This ensures that axios-token doesn't get called before there is a token
+    // in the store to insert.
+    await this.store.restored
+
     const modtools = this.store.getters['misc/get']('modtools')
 
     // Ensure we tell the API whether we are FD or MT.  Doing it here avoids all the calling code needing to know.
