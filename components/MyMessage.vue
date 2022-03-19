@@ -568,7 +568,7 @@ export default {
     },
     edit() {
       this.showEditModal = true
-      this.waitForRef('outcomeModal', () => {
+      this.waitForRef('editModal', () => {
         this.$refs.editModal.show()
       })
     },
