@@ -176,7 +176,6 @@
 
 <script>
 import NewsReportModal from './NewsReportModal'
-import OurFilePond from './OurFilePond'
 import SpinButton from './SpinButton'
 import NewsReplies from '~/components/NewsReplies'
 import twem from '~/assets/js/twem'
@@ -195,6 +194,7 @@ import NewsPreview from '~/components/NewsPreview'
 import ProfileImage from '~/components/ProfileImage'
 
 const ConfirmModal = () => import('~/components/ConfirmModal.vue')
+const OurFilePond = () => import('~/components/OurFilePond')
 
 const AtTa = process.browser
   ? require('vue-at/dist/vue-at-textarea')

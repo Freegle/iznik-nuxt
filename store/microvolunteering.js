@@ -21,6 +21,16 @@ export const mutations = {
     }
   },
 
+  addList(state, list) {
+    state.list = {}
+
+    if (list) {
+      for (const item of list) {
+        Vue.set(state.list, item.id, item)
+      }
+    }
+  },
+
   clear(state) {
     state.list = {}
   },
@@ -48,10 +58,7 @@ export const actions = {
       microvolunteerings
     } = await this.$api.microvolunteering.fetch(params)
 
-    microvolunteerings.forEach(m => {
-      commit('add', m)
-    })
-
+    commit('addList', microvolunteerings)
     return context
   },
 

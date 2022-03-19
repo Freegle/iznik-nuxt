@@ -4,7 +4,9 @@
   </a>
 </template>
 <script>
-import * as turf from '@turf/turf'
+import turfpoint from 'turf-point'
+import turfpolygon from 'turf-polygon'
+import turfbooleanPointInPolygon from '@turf/boolean-point-in-polygon'
 
 export default {
   props: {
@@ -27,11 +29,11 @@ export default {
     show() {
       // We want to show the ad if the user's location is within the area LoveJunk cover.
       if (this.me && (this.me.lat || this.me.lng)) {
-        // const point = turf.point([-0.1281, 51.508])
-        // const point = turf.point([this.me.lng, this.me.lat])
+        // const point = turfpoint([-0.1281, 51.508])
+        // const point = turfpoint([this.me.lng, this.me.lat])
         // Disabled for now
-        const point = turf.point([1, 2])
-        const poly = turf.polygon([
+        const point = turfpoint([1, 2])
+        const poly = turfpolygon([
           [
             [0.5259425158394171, 51.55103377944621],
             [0.4710108752144171, 51.60906438228973],
@@ -85,7 +87,12 @@ export default {
           ]
         ])
 
-        return turf.booleanPointInPolygon(point, poly)
+        console.log(
+          'Check ',
+          turfbooleanPointInPolygon,
+          turfbooleanPointInPolygon(point, poly)
+        )
+        return turfbooleanPointInPolygon(point, poly)
       }
 
       return false
