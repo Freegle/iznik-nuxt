@@ -113,6 +113,14 @@ export default {
   methods: {
     brokenImage(event) {
       event.target.src = require('~/static/defaultprofile.png')
+    },
+    refetch() {
+      // TODO This is a poor way of refreshing this individual message, but there isn't a server call for it.
+      this.$store.dispatch('chatmessages/fetch', {
+        chatid: this.chatmessage.chatid,
+        limit: 100,
+        noContext: true
+      })
     }
   }
 }

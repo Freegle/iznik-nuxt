@@ -107,7 +107,7 @@
       </b-col>
     </b-row>
     <RenegeModal ref="renege" :messages="[ refmsg ]" :selected-message="refmsg.id" :users="[otheruser ]" :selected-user="otheruser.id" />
-    <OutcomeModal ref="outcomeModal" :message="refmsg" :taken-by="takenBy" />
+    <OutcomeModal ref="outcomeModal" :message="refmsg" :taken-by="takenBy" @outcome="refetch" />
   </div>
 </template>
 
@@ -129,7 +129,6 @@ export default {
     PromiseModal
   },
   extends: ChatBase,
-
   computed: {
     tryst() {
       return this.otheruser

@@ -33,7 +33,7 @@
               </div>
             </div>
           </div>
-          <OutcomeModal ref="outcomeModal" :message="refmsg" />
+          <OutcomeModal ref="outcomeModal" :message="refmsg" @outcome="refetch" />
           <PromiseModal ref="promise" :messages="[ refmsg ]" :selected-message="refmsg.id" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
         </div>
       </div>
