@@ -672,6 +672,11 @@ export default {
         .addTo(self.$refs.map.mapObject)
 
       if (this.groupid) {
+        await this.$store.dispatch('group/fetch', {
+          id: this.groupid,
+          polygon: true
+        })
+
         const group = this.$store.getters['group/get'](this.groupid)
 
         if (group) {

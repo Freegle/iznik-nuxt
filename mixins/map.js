@@ -39,7 +39,7 @@ export default {
     },
     center() {
       // Make this dependent on bump so that we can force re-evaluation.
-      let ret = [53.945, -2.5209 + this.bump / 1000]
+      let ret = this.bump !== null ? [53.945, -2.5209] : [53.945, -2.5209]
 
       const bounds = this.$refs.map
         ? this.$refs.map.mapObject.getBounds()
