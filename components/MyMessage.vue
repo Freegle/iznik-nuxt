@@ -158,8 +158,8 @@
           <div v-if="expanded">
             <b-card-body class="p-2">
               <b-card-text>
-                <notice-message v-if="rejected" class="mb-3">
-                  <v-icon name="exclamation-triangle" scale="2" /> This post has been returned to you.
+                <notice-message v-if="rejected" class="mb-3" variant="warning">
+                  <v-icon name="exclamation-triangle" scale="2" /> This post has not been accepted and is not public yet.
                 </notice-message>
                 <div class="d-flex justify-content-between">
                   <div>
