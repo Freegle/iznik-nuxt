@@ -228,20 +228,23 @@ export const actions = {
 
   async openChat({ dispatch, commit }, params) {
     let id = null
+    let logIt = true
 
     try {
       const rsp = await this.$api.chat.openChat(params, function(data) {
         if (data && data.ret === 4) {
           // Don't log errors for banned users.
-          return false
+          logIt = false
         } else {
-          return true
+          logIt = true
         }
+
+        return logIt
       })
 
       id = rsp.id
     } catch (e) {
-      if (e.response && e.response.ret && e.response.ret === 4) {
+      if (!logIt) {
         // Just pretend nothing happened.  This is better than showing the user an error, which will make them
         // try to find ways around the ban.
         console.log('Swallow exception')
