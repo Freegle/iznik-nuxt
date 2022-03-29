@@ -344,7 +344,8 @@ export default {
 
     await this.fetchMe(['me', 'groups'])
 
-    // TODO STORE How are deleted messages removed?
+    this.loadStarted = this.$dayjs()
+
     this.loadMore().then(async () => {
       // Get the searches afterwards otherwise they load first which looks silly as they're less important.
       this.busy = true
@@ -381,10 +382,8 @@ export default {
   methods: {
     async loadMore() {
       if (this.me) {
-        const currentCount = this.messages.length
-
         try {
-          await this.$store.dispatch('messages/fetchMessages', {
+          const fetched = await this.$store.dispatch('messages/fetchMessages', {
             collection: 'AllUser',
             summary: true,
             types: ['Offer', 'Wanted'],
@@ -397,7 +396,7 @@ export default {
 
           this.context = this.$store.getters['messages/getContext']
 
-          if (currentCount !== this.messages.length) {
+          if (fetched && fetched.length) {
             // More to load
             await this.loadMore()
           } else {
@@ -410,6 +409,21 @@ export default {
             }
 
             this.expand = count <= 5
+
+            // Check for any messages which have been deleted.  We look for messages in the cache which have not been
+            // added since we started fetching them.  These must be old messages cached in store but no longer returned
+            // from the server - because they have been deleted.
+            this.messages.forEach(m => {
+              const added = this.$dayjs(
+                m.addedToStore ? m.addedToStore : '2000-01-01'
+              )
+
+              if (added.isBefore(this.loadStarted)) {
+                this.$store.dispatch('messages/removeFromCache', {
+                  id: m.id
+                })
+              }
+            })
           }
         } catch (e) {
           this.busy = false

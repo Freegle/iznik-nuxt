@@ -169,6 +169,8 @@ export const actions = {
         commit('setContext', context)
       }
     }
+
+    return messages
   },
   processResult({ state, commit }, parms) {
     const res = parms.res
