@@ -131,6 +131,7 @@
           </span>
           <span v-else-if="log.subtype === 'Edit'">
             Edited <ModLogMessage :log="log" notext />
+            <ModLogUser v-if="log.user && log.byuser && log.byuser.id !== log.user.id" :user="log.byuser" />
             Details:
             {{ log.text }}
             <span v-if="log.user">
