@@ -7,7 +7,7 @@
             <v-icon :name="icon" scale="2" />
           </b-col>
           <b-col cols="6">
-            <v-icon name="hashtag" scale="0.75" />{{ member.user.id }}
+            <v-icon name="hashtag" scale="0.75" />{{ member.user.id }} {{ member.user.displayname }}
             <span v-if="member.user.email">
               ({{ member.user.email }})
             </span>
