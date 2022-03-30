@@ -63,7 +63,7 @@ export default {
     }
   },
   head() {
-    if (this.invalid) {
+    if (this.invalid || !this.event) {
       return this.buildHead('Community Event #' + this.id)
     } else {
       return this.buildHead(
