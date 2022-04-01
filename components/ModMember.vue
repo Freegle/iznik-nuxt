@@ -112,7 +112,7 @@
             </div>
           </div>
         </div>
-        <div v-if="user && user.id">
+        <div v-if="user && user.id && !isTN">
           <hr>
           <div class="d-flex justify-content-between flex-wrap">
             <OurToggle
@@ -309,6 +309,23 @@ export default {
     },
     user() {
       return this.$store.getters['user/get'](this.member.userid)
+    },
+    isTN() {
+      let ret = false
+      if (this.user) {
+        console.log('USer', this.user)
+        if (this.user.emails) {
+          this.user.emails.forEach(e => {
+            console.log('Check email', e.email)
+            if (e.email && e.email.indexOf('@user.trashnothing.com') !== -1) {
+              console.log('TN user')
+              ret = true
+            }
+          })
+        }
+      }
+
+      return ret
     },
     settings() {
       if (this.user && this.user.settings && this.user.settings) {
