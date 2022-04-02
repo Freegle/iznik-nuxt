@@ -3,22 +3,14 @@
     <b-carousel
       v-if="attachments.length > 1"
       :id="'message-carousel-' + messageId"
-      :interval="interval"
       controls
       indicators
       img-width="100%"
+      :interval="0"
     >
-      <div class="pause clickme mt-4" @click="pause">
-        <div v-if="interval">
-          <v-icon name="pause" title="Pause on this photo" scale="2.5" />
-        </div>
-        <div v-else>
-          <v-icon name="play" title="Resume auto-scrolling" scale="2.5" />
-        </div>
-      </div>
       <b-carousel-slide v-for="(attachment,index) in attachments" :key="'mesagephohoto-' + attachment.id">
         <client-only>
-          <image-zoom click-zoom :regular="attachment.path" :alt="'Message photo ' + index" img-class="d-block img-fluid w-100 messagePhoto" />
+          <image-zoom click-zoom :regular="attachment.path" :alt="'Message photo ' + index" img-class="img-fluid w-100 messagePhoto" close-pos="top-center" />
         </client-only>
       </b-carousel-slide>
     </b-carousel>
@@ -52,34 +44,24 @@ export default {
       type: Array,
       required: true
     }
-  },
-  data: function() {
-    return {
-      interval: 5000
-    }
-  },
-  methods: {
-    pause() {
-      this.interval = this.interval ? 0 : 5000
-    }
   }
 }
 </script>
 <style scoped lang="scss">
-.pause {
-  position: absolute;
-  left: 50%;
-  margin-top: 10px;
-  color: white;
-  z-index: 10000;
-  opacity: 0.5;
-}
-
-.messagePhoto {
-  max-height: calc(100vh - 150px) !important;
-}
-
 /deep/ .carousel-caption {
   position: unset !important;
+}
+
+/deep/ :not(.vh--none) .messagePhoto {
+  max-height: calc(100vh - 150px) !important;
+  object-fit: cover;
+}
+
+/deep/ .carousel-control-prev-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2380808' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
+}
+
+/deep/ .carousel-control-next-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2380808' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
 }
 </style>
