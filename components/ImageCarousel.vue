@@ -8,7 +8,7 @@
       indicators
       img-width="100%"
     >
-      <div class="pause clickme" @click="pause">
+      <div class="pause clickme mt-4" @click="pause">
         <div v-if="interval">
           <v-icon name="pause" title="Pause on this photo" scale="2.5" />
         </div>
@@ -17,13 +17,9 @@
         </div>
       </div>
       <b-carousel-slide v-for="(attachment,index) in attachments" :key="'mesagephohoto-' + attachment.id">
-        <b-img
-          slot="img"
-          center
-          class="d-block img-fluid w-100 messagePhoto"
-          :src="attachment.path"
-          :alt="'Message photo ' + index"
-        />
+        <client-only>
+          <image-zoom click-zoom :regular="attachment.path" :alt="'Message photo ' + index" img-class="d-block img-fluid w-100 messagePhoto" />
+        </client-only>
       </b-carousel-slide>
     </b-carousel>
     <div v-else>
@@ -40,11 +36,13 @@
 <script>
 import { CarouselPlugin } from 'bootstrap-vue'
 import Vue from 'vue'
+const imageZoom = () => import('vue-image-zoomer')
 
 Vue.use(CarouselPlugin)
 
 export default {
   name: 'ImageCarousel',
+  components: { imageZoom },
   props: {
     messageId: {
       type: String,
@@ -75,5 +73,13 @@ export default {
   color: white;
   z-index: 10000;
   opacity: 0.5;
+}
+
+.messagePhoto {
+  max-height: calc(100vh - 150px) !important;
+}
+
+/deep/ .carousel-caption {
+  position: unset !important;
 }
 </style>

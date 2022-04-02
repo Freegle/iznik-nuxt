@@ -636,10 +636,6 @@ img.attachment {
   max-width: 75px !important;
 }
 
-.messagePhoto {
-  max-height: 600px !important;
-}
-
 .photobadge {
   right: 5px;
   position: absolute;
