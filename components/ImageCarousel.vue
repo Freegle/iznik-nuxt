@@ -7,6 +7,7 @@
       indicators
       img-width="100%"
       :interval="0"
+      no-touch
     >
       <b-carousel-slide v-for="(attachment,index) in attachments" :key="'mesagephohoto-' + attachment.id">
         <client-only>
