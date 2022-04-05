@@ -95,7 +95,8 @@ export default {
   async mounted() {
     try {
       await this.$store.dispatch('messages/fetch', {
-        id: this.id
+        id: this.id,
+        force: true
       })
 
       const message = this.$store.getters['messages/get'](this.id)
