@@ -23,16 +23,15 @@ export default {
   computed: {
     src() {
       return this.variant === 'mobile'
-        ? 'lovejunk/mobile.jpg'
-        : 'lovejunk/desktop.jpg'
+        ? '/lovejunk/mobile.jpg'
+        : '/lovejunk/desktop.jpg'
     },
     show() {
       // We want to show the ad if the user's location is within the area LoveJunk cover.
       if (this.me && (this.me.lat || this.me.lng)) {
         // const point = turfpoint([-0.1281, 51.508])
-        // const point = turfpoint([this.me.lng, this.me.lat])
-        // Disabled for now
-        const point = turfpoint([1, 2])
+        const point = turfpoint([this.me.lng, this.me.lat])
+
         const poly = turfpolygon([
           [
             [0.5259425158394171, 51.55103377944621],
