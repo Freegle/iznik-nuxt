@@ -7,6 +7,12 @@
 import turfpoint from 'turf-point'
 import turfpolygon from 'turf-polygon'
 import turfbooleanPointInPolygon from '@turf/boolean-point-in-polygon'
+import VueObserveVisibility from 'vue-observe-visibility'
+import Vue from 'vue'
+
+if (process.browser) {
+  Vue.use(VueObserveVisibility)
+}
 
 export default {
   props: {
