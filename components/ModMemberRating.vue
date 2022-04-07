@@ -1,14 +1,14 @@
 <template>
   <div v-b-visible="visible">
-    <b-card v-if="rater && ratee" no-body>
+    <b-card no-body>
       <b-card-header :header-bg-variant="rating.reviewrequired ? 'warning' : 'default'" class="d-flex justify-content-between flex-wrap">
         <div>
           <!-- eslint-disable-next-line-->
-          <nuxt-link :to="'/modtools/members/approved/search/' + rating.groupid + '/' + rater.id"><strong>{{ rater.displayname }}</strong> (<v-icon name="hashtag" class="text-muted" scale="0.75" />{{ rater.id }})</nuxt-link>
+          <nuxt-link :to="'/modtools/members/approved/search/' + rating.groupid + '/' + rating.rater"><strong>{{ rating.raterdisplayname }}</strong> (<v-icon name="hashtag" class="text-muted" scale="0.75" />{{ rating.ratee }})</nuxt-link>
           <span v-if="rating.rating === 'Down'" class="text-danger font-weight-bold">gave a thumbs down to</span>
           <span v-else-if="rating.rating === 'Up'" class="text-success font-weight-bold">gave a thumbs up to</span>
           <!-- eslint-disable-next-line-->
-          <nuxt-link :to="'/modtools/members/approved/search/' + rating.groupid + '/' + ratee.id"><strong>{{ ratee.displayname }}</strong> (<v-icon name="hashtag" class="text-muted" scale="0.75" />{{ ratee.id }})</nuxt-link>
+          <nuxt-link :to="'/modtools/members/approved/search/' + rating.groupid + '/' + rating.ratee"><strong>{{ rating.rateedisplayname }}</strong> (<v-icon name="hashtag" class="text-muted" scale="0.75" />{{ rating.ratee }})</nuxt-link>
         </div>
         <div>
           {{ timeago(rating.timestamp) }},
@@ -26,15 +26,15 @@
         </p>
         <div class="d-flex flex-wrap justify-content-between">
           <ChatButton
-            :userid="rater.id"
-            :groupid="rater.groupid"
-            :title="'Chat to ' + rater.displayname"
+            :userid="rating.rater"
+            :groupid="rating.groupid"
+            :title="'Chat to ' + rating.raterdisplayname"
             variant="white"
           />
           <ChatButton
-            :userid="ratee.id"
-            :groupid="ratee.groupid"
-            :title="'Chat to ' + ratee.displayname"
+            :userid="rating.ratee"
+            :groupid="rating.groupid"
+            :title="'Chat to ' + rating.rateedisplayname"
             variant="white"
           />
         </div>
@@ -54,12 +54,6 @@ export default {
     }
   },
   computed: {
-    rater() {
-      return this.$store.getters['user/get'](this.rating.rater)
-    },
-    ratee() {
-      return this.$store.getters['user/get'](this.rating.ratee)
-    },
     groupName() {
       let ret = null
 
@@ -73,17 +67,6 @@ export default {
 
       return ret
     }
-  },
-  mounted() {
-    this.$store.dispatch('user/fetch', {
-      id: this.rating.rater,
-      info: true
-    })
-
-    this.$store.dispatch('user/fetch', {
-      id: this.rating.ratee,
-      info: true
-    })
   },
   methods: {
     visible(val) {
