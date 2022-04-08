@@ -326,7 +326,19 @@ export default {
       }
     }
   },
-  async mounted() {
+  watch: {
+    me: {
+      handler(newVal, oldVal) {
+        console.log('ME', oldVal, newVal)
+
+        if (!oldVal && newVal) {
+          this.startUp()
+        }
+      },
+      immediate: true
+    }
+  },
+  mounted() {
     // We might have parameters from just having posted.
     this.justPosted = this.$route.params.justPosted
     this.newuser = this.$route.params.newuser
@@ -342,19 +354,8 @@ export default {
       })
     }
 
-    await this.fetchMe(['me', 'groups'])
-
     this.loadStarted = this.$dayjs()
-
-    this.loadMore().then(async () => {
-      // Get the searches afterwards otherwise they load first which looks silly as they're less important.
-      this.busy = true
-      await this.$store.dispatch('searches/fetchList')
-      this.busy = false
-
-      // Fetch the chats.  We need this so that we can find chats with unread messages which relate to our own posts
-      await this.$store.dispatch('chats/listChats')
-    })
+    this.fetchMe(['me', 'groups'])
 
     // For some reason we can't capture emitted events from the outcome modal so use root as a bus.
     this.$root.$on('outcome', params => {
@@ -380,6 +381,16 @@ export default {
     })
   },
   methods: {
+    async startUp() {
+      await this.loadMore()
+      // Get the searches afterwards otherwise they load first which looks silly as they're less important.
+      this.busy = true
+      await this.$store.dispatch('searches/fetchList')
+      this.busy = false
+
+      // Fetch the chats.  We need this so that we can find chats with unread messages which relate to our own posts
+      await this.$store.dispatch('chats/listChats')
+    },
     async loadMore() {
       if (this.me) {
         try {
