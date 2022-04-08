@@ -379,6 +379,15 @@
               toggle-checked="Yes"
               toggle-unchecked="No"
             />
+            <ModGroupSetting
+              :groupid="groupid"
+              name="settings.widerchatreview"
+              label="Quicker Chat Review?"
+              description="Chat messages between members may get sent for review to check they're ok.  They will always show for you if the recipient is a member of your group.  You can choose whether they are also shown to other Freegle mods who have chosen this setting, in which case they can be approved quickly if they are innocent (but can't be rejected).  Otherwise they'll only show for mods on the group."
+              type="toggle"
+              toggle-checked="All Freegle Mods"
+              toggle-unchecked="Just this group"
+            />
           </b-card-body>
         </b-collapse>
       </b-card>
@@ -750,13 +759,13 @@
 import GroupSelect from './GroupSelect'
 import ModSettingShortlink from './ModSettingShortlink'
 import GroupProfileImage from './GroupProfileImage'
-import OurFilePond from './OurFilePond'
 import ModGroupSetting from './ModGroupSetting'
 import SpinButton from './SpinButton'
 import NoticeMessage from './NoticeMessage'
 import ModSettingsGroupFacebook from './ModSettingsGroupFacebook'
 import ModGroupPostVisibility from './ModGroupPostVisibility'
 const ExternalLink = () => import('~/components/ExternalLink')
+const OurFilePond = () => import('~/components/OurFilePond')
 
 const OurToggle = () => import('~/components/OurToggle')
 

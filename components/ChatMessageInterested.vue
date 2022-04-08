@@ -4,8 +4,10 @@
       <div v-if="chatmessage.userid != myid">
         <ChatMessageSummary v-if="refmsg" :message="refmsg" class="mt-1 mb-2" />
         <div>
-          <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap font-weight-bold">{{ emessage }}</span>
-          <span v-else class="preline forcebreak">{{ emessage }}</span>
+          <!-- eslint-disable-next-line -->
+          <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap font-weight-bold" v-html="emessage" />
+          <!-- eslint-disable-next-line -->
+          <span v-else class="preline forcebreak" v-html="emessage" />
           <b-img v-if="chatmessage.image" fluid :src="chatmessage.image.path" lazy rounded />
         </div>
         <div v-if="!modtools && refmsg && refmsg.type === 'Offer' && (!refmsg.outcomes || !refmsg.outcomes.length)">
@@ -33,7 +35,7 @@
               </div>
             </div>
           </div>
-          <OutcomeModal ref="outcomeModal" :message="refmsg" />
+          <OutcomeModal ref="outcomeModal" :message="refmsg" @outcome="refetch" />
           <PromiseModal ref="promise" :messages="[ refmsg ]" :selected-message="refmsg.id" :users="otheruser ? [ otheruser ] : []" :selected-user="otheruser ? otheruser.id : null" />
         </div>
       </div>

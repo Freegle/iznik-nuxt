@@ -110,9 +110,16 @@ export default {
       return ret
     }
   },
-
-  mounted() {
+  async mounted() {
     // asyncData in the parent has populated the store.
+    //
+    // If we are logged in then we might have restored a client-side store which doesn't include the messages in the
+    // SSR of the page.  Trigger a re-fetch.
+    if (this.me) {
+      await this.$store.dispatch('messages/clear')
+      await this.$store.dispatch('messages/clearContext')
+    }
+
     // We have the group id or name in this.id.  Fetch the group.
     const group = this.$store.getters['group/get'](this.id)
 

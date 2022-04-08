@@ -609,7 +609,9 @@ export default {
       this._updateAfterSend()
     },
     addressBook() {
-      this.$refs.addressModal.show()
+      this.waitForRef('addressModal', () => {
+        this.$refs.addressModal.show()
+      })
     },
     sendAddress(id) {
       this.$store

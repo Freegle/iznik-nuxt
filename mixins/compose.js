@@ -184,8 +184,13 @@ export default {
     }
   },
   methods: {
-    deleteItem() {
-      this.$store.dispatch('compose/clearMessage', {
+    async deleteItem() {
+      await this.$store.dispatch('compose/setAttachmentsForMessage', {
+        id: this.ids[this.ids.length - 1],
+        attachments: []
+      })
+
+      await this.$store.dispatch('compose/clearMessage', {
         id: this.ids[this.ids.length - 1]
       })
     },

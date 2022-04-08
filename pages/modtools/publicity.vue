@@ -2,7 +2,7 @@
   <div>
     <ModHelpPublicity />
     <ModMissingFacebook />
-    <NoticeMessage v-if="!items || !items.length" variant="info" class="mt-2">
+    <NoticeMessage v-if="(!items || !items.length) && (!popularPosts || !popularPosts.length)" variant="info" class="mt-2">
       There are no publicity items to review at the moment.
     </NoticeMessage>
     <div v-for="item in items" :key="'item-' + item.id" class="mt-2">

@@ -219,7 +219,6 @@
 
 <script>
 import NewsLovesModal from './NewsLovesModal'
-import OurFilePond from './OurFilePond'
 import SpinButton from './SpinButton'
 import twem from '~/assets/js/twem'
 
@@ -232,6 +231,7 @@ import ProfileImage from '~/components/ProfileImage'
 const ProfileModal = () => import('~/components/ProfileModal')
 const ConfirmModal = () => import('~/components/ConfirmModal.vue')
 const NewsReplies = () => import('~/components/NewsReplies.vue')
+const OurFilePond = () => import('~/components/OurFilePond')
 
 const AtTa = process.browser
   ? require('vue-at/dist/vue-at-textarea')

@@ -384,6 +384,11 @@ const config = {
   build: {
     // analyze: true,
 
+    // Reduce size of CSS initial load.
+    extractCSS: {
+      ignoreOrder: true
+    },
+
     // When you deploy a new version, old chunk files which hadn't yet been loaded by a client will no longer
     // exist, and may cause errors. Nuxt has some rudimentary handling for this by reloading the whole page.
     // There are some suggestions from Sentry that this doesn't always work, and there is a suggestion that
@@ -439,7 +444,7 @@ const config = {
         maxInitialRequests: Infinity,
         automaticNameDelimiter: '.',
         name: true,
-        minSize: 100000, // Change this to 0 if you're debugging problems and can't see which npm package is at fault.
+        minSize: 0, // Change this to 0 if you're debugging problems and can't see which npm package is at fault.
         maxSize: 100000,
         cacheGroups: {
           vendor: {
@@ -669,7 +674,7 @@ const config = {
   },
 
   router: {
-    middleware: ['src']
+    middleware: ['src'],
   },
 
   sitemap: {

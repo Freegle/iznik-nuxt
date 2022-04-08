@@ -34,7 +34,6 @@ export default {
     // Get the data before we load the map to avoid timing windows.
     if (!this.groupid) {
       // We want to show all groups
-      console.log('List all groups')
       await this.$store.dispatch('group/list', {
         grouptype: 'Freegle'
       })

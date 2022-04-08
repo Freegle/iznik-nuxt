@@ -256,6 +256,8 @@ export default {
         this.instructions = null
       }
 
+      this.updatedInstructions = this.instructions
+
       setTimeout(() => {
         this.showMap = true
       }, 100)

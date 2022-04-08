@@ -96,7 +96,7 @@ export const actions = {
   },
 
   async fetch({ commit, state }, params) {
-    const { chatid, noContext, groupid } = params
+    const { chatid, noContext, groupid, limit } = params
 
     let ctx = null
 
@@ -107,7 +107,7 @@ export const actions = {
     const { chatmessages, chatusers, context } = await this.$api.chat.fetch(
       chatid,
       {
-        limit: 10,
+        limit: limit || 10,
         groupid: groupid,
         context: ctx
       }

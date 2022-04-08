@@ -194,7 +194,7 @@ export default {
 
       if (this.filter === 'Comments') {
         const comment = member.comments
-          ? member.comments.replace(/[\n\r]+/g, '').trim()
+          ? ('' + member.comments).replace(/[\n\r]+/g, '').trim()
           : ''
 
         if (comment.length) {

@@ -789,12 +789,17 @@ export default {
           if (id && (!this.maxMessageVisible || ix > this.maxMessageVisible)) {
             this.maxMessageVisible = ix
 
-            history.replaceState(
-              {
-                msgid: id
-              },
-              null
-            )
+            try {
+              history.replaceState(
+                {
+                  msgid: id
+                },
+                null
+              )
+            } catch (e) {
+              // Some browsers throw exceptions if this is called too frequently.
+              console.log('Ignore replaceState exception', e)
+            }
           }
         }
       }

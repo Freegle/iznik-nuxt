@@ -326,7 +326,19 @@ export default {
       }
     }
   },
-  async mounted() {
+  watch: {
+    me: {
+      handler(newVal, oldVal) {
+        console.log('ME', oldVal, newVal)
+
+        if (!oldVal && newVal) {
+          this.startUp()
+        }
+      },
+      immediate: true
+    }
+  },
+  mounted() {
     // We might have parameters from just having posted.
     this.justPosted = this.$route.params.justPosted
     this.newuser = this.$route.params.newuser
@@ -342,18 +354,8 @@ export default {
       })
     }
 
-    await this.fetchMe(['me', 'groups'])
-
-    // TODO STORE How are deleted messages removed?
-    this.loadMore().then(async () => {
-      // Get the searches afterwards otherwise they load first which looks silly as they're less important.
-      this.busy = true
-      await this.$store.dispatch('searches/fetchList')
-      this.busy = false
-
-      // Fetch the chats.  We need this so that we can find chats with unread messages which relate to our own posts
-      await this.$store.dispatch('chats/listChats')
-    })
+    this.loadStarted = this.$dayjs()
+    this.fetchMe(['me', 'groups'])
 
     // For some reason we can't capture emitted events from the outcome modal so use root as a bus.
     this.$root.$on('outcome', params => {
@@ -379,12 +381,20 @@ export default {
     })
   },
   methods: {
+    async startUp() {
+      await this.loadMore()
+      // Get the searches afterwards otherwise they load first which looks silly as they're less important.
+      this.busy = true
+      await this.$store.dispatch('searches/fetchList')
+      this.busy = false
+
+      // Fetch the chats.  We need this so that we can find chats with unread messages which relate to our own posts
+      await this.$store.dispatch('chats/listChats')
+    },
     async loadMore() {
       if (this.me) {
-        const currentCount = this.messages.length
-
         try {
-          await this.$store.dispatch('messages/fetchMessages', {
+          const fetched = await this.$store.dispatch('messages/fetchMessages', {
             collection: 'AllUser',
             summary: true,
             types: ['Offer', 'Wanted'],
@@ -397,7 +407,7 @@ export default {
 
           this.context = this.$store.getters['messages/getContext']
 
-          if (currentCount !== this.messages.length) {
+          if (fetched && fetched.length) {
             // More to load
             await this.loadMore()
           } else {
@@ -410,6 +420,21 @@ export default {
             }
 
             this.expand = count <= 5
+
+            // Check for any messages which have been deleted.  We look for messages in the cache which have not been
+            // added since we started fetching them.  These must be old messages cached in store but no longer returned
+            // from the server - because they have been deleted.
+            this.messages.forEach(m => {
+              const added = this.$dayjs(
+                m.addedToStore ? m.addedToStore : '2000-01-01'
+              )
+
+              if (added.isBefore(this.loadStarted)) {
+                this.$store.dispatch('messages/removeFromCache', {
+                  id: m.id
+                })
+              }
+            })
           }
         } catch (e) {
           this.busy = false

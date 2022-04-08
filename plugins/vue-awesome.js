@@ -2,123 +2,123 @@ import Vue from 'vue'
 import Icon from 'vue-awesome/components/Icon.js'
 
 // We list the icons we use explicitly because this reduces our bundle size.
-require('vue-awesome/icons/address-book')
-require('vue-awesome/icons/arrow-left')
-require('vue-awesome/icons/arrow-circle-left')
-require('vue-awesome/icons/arrow-circle-right')
-require('vue-awesome/icons/angle-double-left')
-require('vue-awesome/icons/angle-double-right')
-require('vue-awesome/icons/angle-double-down')
-require('vue-awesome/icons/baby-carriage')
-require('vue-awesome/icons/balance-scale-left')
-require('vue-awesome/icons/ban')
-require('vue-awesome/icons/bars')
-require('vue-awesome/icons/bath')
-require('vue-awesome/icons/bed')
-require('vue-awesome/icons/bell')
-require('vue-awesome/icons/binoculars')
-require('vue-awesome/icons/bicycle')
-require('vue-awesome/icons/book-open')
-require('vue-awesome/icons/briefcase')
-require('vue-awesome/icons/bullhorn')
-require('vue-awesome/icons/calculator')
-require('vue-awesome/icons/calendar-alt')
-require('vue-awesome/icons/camera')
-require('vue-awesome/icons/car')
-require('vue-awesome/icons/caret-down')
-require('vue-awesome/icons/caret-up')
-require('vue-awesome/icons/chart-bar')
-require('vue-awesome/icons/check')
-require('vue-awesome/icons/check-circle')
-require('vue-awesome/icons/chevron-circle-right')
-require('vue-awesome/icons/chevron-circle-up')
-require('vue-awesome/icons/chevron-down')
-require('vue-awesome/icons/circle')
-require('vue-awesome/icons/cog')
-require('vue-awesome/icons/copy')
-require('vue-awesome/icons/clock')
-require('vue-awesome/icons/cloud')
-require('vue-awesome/icons/coffee')
-require('vue-awesome/icons/comment')
-require('vue-awesome/icons/comments')
-require('vue-awesome/icons/crown')
-require('vue-awesome/icons/download')
-require('vue-awesome/icons/envelope')
-require('vue-awesome/icons/equals')
-require('vue-awesome/icons/eraser')
-require('vue-awesome/icons/exclamation-triangle')
-require('vue-awesome/icons/eye')
-require('vue-awesome/icons/frown')
-require('vue-awesome/icons/gavel')
-require('vue-awesome/icons/gift')
-require('vue-awesome/icons/globe-europe')
-require('vue-awesome/icons/glass-martini')
-require('vue-awesome/icons/hammer')
-require('vue-awesome/icons/hand-paper')
-require('vue-awesome/icons/hand-holding-heart')
-require('vue-awesome/icons/handshake')
-require('vue-awesome/icons/hands-helping')
-require('vue-awesome/icons/hashtag')
-require('vue-awesome/icons/hat-wizard')
-require('vue-awesome/icons/headphones')
-require('vue-awesome/icons/heart')
-require('vue-awesome/icons/home')
-require('vue-awesome/icons/info-circle')
-require('vue-awesome/icons/laptop')
-require('vue-awesome/icons/leaf')
-require('vue-awesome/icons/link')
-require('vue-awesome/icons/list')
-require('vue-awesome/icons/lock')
-require('vue-awesome/icons/lock-open')
-require('vue-awesome/icons/meh')
-require('vue-awesome/icons/map-marker-alt')
-require('vue-awesome/icons/map-marked-alt')
-require('vue-awesome/icons/mobile-alt')
-require('vue-awesome/icons/minus')
-require('vue-awesome/icons/pause')
-require('vue-awesome/icons/pen')
-require('vue-awesome/icons/play')
-require('vue-awesome/icons/plus')
-require('vue-awesome/icons/print')
-require('vue-awesome/icons/question-circle')
-require('vue-awesome/icons/reply')
-require('vue-awesome/icons/save')
-require('vue-awesome/icons/search')
-require('vue-awesome/icons/share-alt')
-require('vue-awesome/icons/shopping-cart')
-require('vue-awesome/icons/sign-out-alt')
-require('vue-awesome/icons/slash')
-require('vue-awesome/icons/smile')
-require('vue-awesome/icons/sms')
-require('vue-awesome/icons/socks')
-require('vue-awesome/icons/star')
-require('vue-awesome/icons/sync')
-require('vue-awesome/icons/tag')
-require('vue-awesome/icons/tablet-alt')
-require('vue-awesome/icons/th-list')
-require('vue-awesome/icons/thumbs-down')
-require('vue-awesome/icons/thumbs-up')
-require('vue-awesome/icons/times')
-require('vue-awesome/icons/times-circle')
-require('vue-awesome/icons/truck')
-require('vue-awesome/icons/trash-alt')
-require('vue-awesome/icons/tv')
-require('vue-awesome/icons/umbrella')
-require('vue-awesome/icons/user')
-require('vue-awesome/icons/users')
-require('vue-awesome/icons/utensils')
-require('vue-awesome/icons/walking')
-require('vue-awesome/icons/window-maximize')
-require('vue-awesome/icons/window-restore')
+import 'vue-awesome/icons/address-book'
+import 'vue-awesome/icons/arrow-left'
+import 'vue-awesome/icons/arrow-circle-left'
+import 'vue-awesome/icons/arrow-circle-right'
+import 'vue-awesome/icons/angle-double-left'
+import 'vue-awesome/icons/angle-double-right'
+import 'vue-awesome/icons/angle-double-down'
+import 'vue-awesome/icons/baby-carriage'
+import 'vue-awesome/icons/balance-scale-left'
+import 'vue-awesome/icons/ban'
+import 'vue-awesome/icons/bars'
+import 'vue-awesome/icons/bath'
+import 'vue-awesome/icons/bed'
+import 'vue-awesome/icons/bell'
+import 'vue-awesome/icons/binoculars'
+import 'vue-awesome/icons/bicycle'
+import 'vue-awesome/icons/book-open'
+import 'vue-awesome/icons/briefcase'
+import 'vue-awesome/icons/bullhorn'
+import 'vue-awesome/icons/calculator'
+import 'vue-awesome/icons/calendar-alt'
+import 'vue-awesome/icons/camera'
+import 'vue-awesome/icons/car'
+import 'vue-awesome/icons/caret-down'
+import 'vue-awesome/icons/caret-up'
+import 'vue-awesome/icons/chart-bar'
+import 'vue-awesome/icons/check'
+import 'vue-awesome/icons/check-circle'
+import 'vue-awesome/icons/chevron-circle-right'
+import 'vue-awesome/icons/chevron-circle-up'
+import 'vue-awesome/icons/chevron-down'
+import 'vue-awesome/icons/circle'
+import 'vue-awesome/icons/cog'
+import 'vue-awesome/icons/copy'
+import 'vue-awesome/icons/clock'
+import 'vue-awesome/icons/cloud'
+import 'vue-awesome/icons/coffee'
+import 'vue-awesome/icons/comment'
+import 'vue-awesome/icons/comments'
+import 'vue-awesome/icons/crown'
+import 'vue-awesome/icons/download'
+import 'vue-awesome/icons/envelope'
+import 'vue-awesome/icons/equals'
+import 'vue-awesome/icons/eraser'
+import 'vue-awesome/icons/exclamation-triangle'
+import 'vue-awesome/icons/eye'
+import 'vue-awesome/icons/frown'
+import 'vue-awesome/icons/gavel'
+import 'vue-awesome/icons/gift'
+import 'vue-awesome/icons/globe-europe'
+import 'vue-awesome/icons/glass-martini'
+import 'vue-awesome/icons/hammer'
+import 'vue-awesome/icons/hand-paper'
+import 'vue-awesome/icons/hand-holding-heart'
+import 'vue-awesome/icons/handshake'
+import 'vue-awesome/icons/hands-helping'
+import 'vue-awesome/icons/hashtag'
+import 'vue-awesome/icons/hat-wizard'
+import 'vue-awesome/icons/headphones'
+import 'vue-awesome/icons/heart'
+import 'vue-awesome/icons/home'
+import 'vue-awesome/icons/info-circle'
+import 'vue-awesome/icons/laptop'
+import 'vue-awesome/icons/leaf'
+import 'vue-awesome/icons/link'
+import 'vue-awesome/icons/list'
+import 'vue-awesome/icons/lock'
+import 'vue-awesome/icons/lock-open'
+import 'vue-awesome/icons/meh'
+import 'vue-awesome/icons/map-marker-alt'
+import 'vue-awesome/icons/map-marked-alt'
+import 'vue-awesome/icons/mobile-alt'
+import 'vue-awesome/icons/minus'
+import 'vue-awesome/icons/pause'
+import 'vue-awesome/icons/pen'
+import 'vue-awesome/icons/play'
+import 'vue-awesome/icons/plus'
+import 'vue-awesome/icons/print'
+import 'vue-awesome/icons/question-circle'
+import 'vue-awesome/icons/reply'
+import 'vue-awesome/icons/save'
+import 'vue-awesome/icons/search'
+import 'vue-awesome/icons/share-alt'
+import 'vue-awesome/icons/shopping-cart'
+import 'vue-awesome/icons/sign-out-alt'
+import 'vue-awesome/icons/slash'
+import 'vue-awesome/icons/smile'
+import 'vue-awesome/icons/sms'
+import 'vue-awesome/icons/socks'
+import 'vue-awesome/icons/star'
+import 'vue-awesome/icons/sync'
+import 'vue-awesome/icons/tag'
+import 'vue-awesome/icons/tablet-alt'
+import 'vue-awesome/icons/th-list'
+import 'vue-awesome/icons/thumbs-down'
+import 'vue-awesome/icons/thumbs-up'
+import 'vue-awesome/icons/times'
+import 'vue-awesome/icons/times-circle'
+import 'vue-awesome/icons/truck'
+import 'vue-awesome/icons/trash-alt'
+import 'vue-awesome/icons/tv'
+import 'vue-awesome/icons/umbrella'
+import 'vue-awesome/icons/user'
+import 'vue-awesome/icons/users'
+import 'vue-awesome/icons/utensils'
+import 'vue-awesome/icons/walking'
+import 'vue-awesome/icons/window-maximize'
+import 'vue-awesome/icons/window-restore'
 
-require('vue-awesome/icons/brands/discourse')
-require('vue-awesome/icons/brands/facebook')
-require('vue-awesome/icons/brands/google-plus')
-require('vue-awesome/icons/brands/pinterest')
-require('vue-awesome/icons/brands/skype')
-require('vue-awesome/icons/brands/telegram')
-require('vue-awesome/icons/brands/twitter')
-require('vue-awesome/icons/brands/whatsapp')
+import 'vue-awesome/icons/brands/discourse'
+import 'vue-awesome/icons/brands/facebook'
+import 'vue-awesome/icons/brands/google-plus'
+import 'vue-awesome/icons/brands/pinterest'
+import 'vue-awesome/icons/brands/skype'
+import 'vue-awesome/icons/brands/telegram'
+import 'vue-awesome/icons/brands/twitter'
+import 'vue-awesome/icons/brands/whatsapp'
 
 require('vue-awesome/icons/redo')
 

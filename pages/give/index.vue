@@ -31,31 +31,32 @@
           </li>
         </ul>
         <div class="mt-3">
-          <div class="d-block d-md-none">
-            <b-btn
-              variant="primary"
-              :disabled="uploadingPhoto"
-              size="lg"
-              block
-              to="/give/whereami"
-            >
-              Next <v-icon name="angle-double-right" />
-            </b-btn>
+          <div v-if="messageValid">
+            <div class="d-block d-md-none">
+              <b-btn
+                variant="primary"
+                :disabled="uploadingPhoto"
+                size="lg"
+                block
+                to="/give/whereami"
+              >
+                Next <v-icon name="angle-double-right" />
+              </b-btn>
+            </div>
+            <div class="d-none d-md-flex justify-content-end">
+              <b-btn
+                variant="primary"
+                size="lg"
+                :disabled="uploadingPhoto"
+                to="/give/whereami"
+              >
+                Next <v-icon name="angle-double-right" />
+              </b-btn>
+            </div>
           </div>
-          <div class="d-none d-md-flex justify-content-end">
-            <b-btn
-              v-if="messageValid"
-              variant="primary"
-              size="lg"
-              :disabled="uploadingPhoto"
-              to="/give/whereami"
-            >
-              Next <v-icon name="angle-double-right" />
-            </b-btn>
-            <NoticeMessage v-if="!messageValid" variant="info mt-1 mb-1">
-              Please add the item name, and a description or photo (or both).
-            </NoticeMessage>
-          </div>
+          <NoticeMessage v-else variant="info mt-1 mb-1">
+            Please add the item name, and a description or photo (or both).
+          </NoticeMessage>
         </div>
       </b-col>
       <b-col cols="0" md="3" />

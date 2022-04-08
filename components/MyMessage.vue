@@ -158,8 +158,8 @@
           <div v-if="expanded">
             <b-card-body class="p-2">
               <b-card-text>
-                <notice-message v-if="rejected" class="mb-3">
-                  <v-icon name="exclamation-triangle" scale="2" /> This post has been returned to you.
+                <notice-message v-if="rejected" class="mb-3" variant="warning">
+                  <v-icon name="exclamation-triangle" scale="2" /> This post has not been accepted and is not public yet.
                 </notice-message>
                 <div class="d-flex justify-content-between">
                   <div>
@@ -594,7 +594,7 @@ export default {
     },
     edit() {
       this.showEditModal = true
-      this.waitForRef('outcomeModal', () => {
+      this.waitForRef('editModal', () => {
         this.$refs.editModal.show()
       })
     },
@@ -660,10 +660,6 @@ export default {
 img.attachment {
   max-height: 75px !important;
   max-width: 75px !important;
-}
-
-.messagePhoto {
-  max-height: 600px !important;
 }
 
 .photobadge {
