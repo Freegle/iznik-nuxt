@@ -329,8 +329,6 @@ export default {
   watch: {
     me: {
       handler(newVal, oldVal) {
-        console.log('ME', oldVal, newVal)
-
         if (!oldVal && newVal) {
           this.startUp()
         }
@@ -382,7 +380,10 @@ export default {
   },
   methods: {
     async startUp() {
+      // Fetch messages.
+      await this.$store.dispatch('messages/clearContext')
       await this.loadMore()
+
       // Get the searches afterwards otherwise they load first which looks silly as they're less important.
       this.busy = true
       await this.$store.dispatch('searches/fetchList')
