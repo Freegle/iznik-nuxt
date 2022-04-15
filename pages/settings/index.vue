@@ -193,7 +193,7 @@
                       :valid.sync="emailValid"
                       label="Your email address:"
                     />
-                    <b-button variant="white" class="mb-2" :disabled="!emailValid" @click="saveEmail">
+                    <b-button variant="primary" class="mb-2" :disabled="!emailValid" @click="saveEmail">
                       <v-icon v-if="savingEmail" name="sync" class="text-success fa-spin" />
                       <v-icon v-else-if="savedEmail" name="check" class="text-success" />
                       <v-icon v-else name="save" />

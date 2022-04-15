@@ -1,6 +1,6 @@
 import BaseAPI from '@/api/BaseAPI'
 
-export default class ActivityAPI extends BaseAPI {
+export default class IsochroneAPI extends BaseAPI {
   add(params) {
     return this.$put('/isochrone', params)
   }

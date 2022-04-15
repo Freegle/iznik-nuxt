@@ -19,6 +19,10 @@
       </template>
       <template slot="default">
         <NoticeMessage v-if="type === 'Withdrawn'" variant="info">
+          <p>
+            If everything worked out OK, then use <strong>Mark as <span v-if="message.type === 'Offer'">TAKEN</span><span v-else>RECEIVED</span></strong>
+            to let us know.
+          </p>
           <div v-if="message.type === 'Offer'">
             <p>
               Only use <strong>Withdraw</strong> if you didn't manage to pass on this item
@@ -31,10 +35,6 @@
               item.
             </p>
           </div>
-          <p>
-            If everything worked out OK, then use <strong>Mark as <span v-if="message.type === 'Offer'">TAKEN</span><span v-else>RECEIVED</span></strong>
-            to let us know.
-          </p>
         </NoticeMessage>
         <div v-if="type === 'Taken'">
           <OutcomeBy

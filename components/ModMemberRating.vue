@@ -4,7 +4,7 @@
       <b-card-header :header-bg-variant="rating.reviewrequired ? 'warning' : 'default'" class="d-flex justify-content-between flex-wrap">
         <div>
           <!-- eslint-disable-next-line-->
-          <nuxt-link :to="'/modtools/members/approved/search/' + rating.groupid + '/' + rating.rater"><strong>{{ rating.raterdisplayname }}</strong> (<v-icon name="hashtag" class="text-muted" scale="0.75" />{{ rating.ratee }})</nuxt-link>
+          <nuxt-link :to="'/modtools/members/approved/search/' + rating.groupid + '/' + rating.rater"><strong>{{ rating.raterdisplayname }}</strong> (<v-icon name="hashtag" class="text-muted" scale="0.75" />{{ rating.rater }})</nuxt-link>
           <span v-if="rating.rating === 'Down'" class="text-danger font-weight-bold">gave a thumbs down to</span>
           <span v-else-if="rating.rating === 'Up'" class="text-success font-weight-bold">gave a thumbs up to</span>
           <!-- eslint-disable-next-line-->

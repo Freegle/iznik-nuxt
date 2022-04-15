@@ -144,7 +144,7 @@
         :width="170"
         :font-size="14"
         :labels="{checked: 'Local Volunteers', unchecked: 'Caretakers'}"
-        readonly
+        disabled
         class="mr-2"
       />
       <b-img v-if="fetchingVolunteers" src="~/static/loader.gif" alt="Loading" class="d-block" />
