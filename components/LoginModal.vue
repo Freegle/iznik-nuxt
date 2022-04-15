@@ -249,9 +249,10 @@ export default {
     // normal reactivity but that's because the SDKs we use aren't written in Vue.
     facebookDisabled() {
       if (process.env.IS_APP) { // CC
-        // Facebook login doesn't now work on Android
-        const isiOS = this.$store.getters['mobileapp/isiOS']
-        return !isiOS
+        //// Facebook login doesn't now work on Android
+        //const isiOS = this.$store.getters['mobileapp/isiOS']
+        //return !isiOS
+        return false
       }
       return (
         this.bump &&
@@ -798,12 +799,13 @@ export default {
       })(document, 'script', 'google-jssdk')
     },
     installFacebookSDK() {
+      if (process.env.IS_APP) return;
       const VueFB = {}
 
       VueFB.install = function install(Vue, options) {
         Vue.FB = undefined
 
-        window.fbAsyncInit = function() {
+        window.fbAsyncInit = function () {
           window.FB.init(options)
           window.FB.AppEvents.logPageView()
           Vue.FB = window.FB

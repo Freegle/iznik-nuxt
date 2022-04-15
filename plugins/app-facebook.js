@@ -82,6 +82,25 @@ class openFB {
   // @param options - options.scope: The set of Facebook permissions requested
 
   login(callback, options) {
+
+    console.log("TRY FACEBOOK")
+    
+    var fbLoginSuccess = function (userData) {
+      console.log("UserInfo: ", userData)
+      callback(userData)
+      //facebookConnectPlugin.getAccessToken(function (token) {
+      //  console.log("Token: " + token)
+      //});
+    }
+
+    facebookConnectPlugin.login(['public_profile', 'email'], fbLoginSuccess,
+      function (error) {
+        console.error(error)
+        callback({ status: 'unknown', error: error.errorMessage })
+      }
+    )
+    return;
+
     let scope = ''
 
     if (!this.fbAppId) {
