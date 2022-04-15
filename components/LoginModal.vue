@@ -249,10 +249,11 @@ export default {
     // normal reactivity but that's because the SDKs we use aren't written in Vue.
     facebookDisabled() {
       if (process.env.IS_APP) { // CC
-        //// Facebook login doesn't now work on Android
+        //// Facebook login requires separate APP_ID for ModTools app, so just disable for MT:
+        return process.env.IS_MTAPP
+        //Old Oauth login still works on iOS:
         //const isiOS = this.$store.getters['mobileapp/isiOS']
         //return !isiOS
-        return false
       }
       return (
         this.bump &&

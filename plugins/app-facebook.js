@@ -76,7 +76,6 @@ class openFB {
   }
 
   // Login to Facebook using OAuth.
-  // This happens using the In-App Browser: cordova-plugin-inappbrowser
   //
   // @param callback - Callback function to invoke when the login process succeeds
   // @param options - options.scope: The set of Facebook permissions requested
@@ -84,7 +83,7 @@ class openFB {
   login(callback, options) {
 
     console.log("TRY FACEBOOK")
-    
+
     var fbLoginSuccess = function (userData) {
       console.log("UserInfo: ", userData)
       callback(userData)
@@ -99,7 +98,15 @@ class openFB {
         callback({ status: 'unknown', error: error.errorMessage })
       }
     )
-    return;
+  }
+
+  // Login to Facebook using OAuth.
+  // This happens using the In-App Browser: cordova-plugin-inappbrowser
+  //
+  // @param callback - Callback function to invoke when the login process succeeds
+  // @param options - options.scope: The set of Facebook permissions requested
+
+  old_oauth_login(callback, options) {
 
     let scope = ''
 
