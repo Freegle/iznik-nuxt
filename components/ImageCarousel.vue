@@ -16,13 +16,21 @@
       </b-carousel-slide>
     </b-carousel>
     <div v-else>
-      <b-img
-        slot="img"
-        center
-        class="d-block img-fluid w-100 messagePhoto"
-        :src="attachments[0].path"
+      <image-zoom
+        click-zoom
+        :regular="attachments[0].path"
         :alt="'Message photo'"
+        img-class="img-fluid w-100 messagePhoto"
+        close-pos="top-center"
+        class="width"
       />
+      <!--      <b-img-->
+      <!--        slot="img"-->
+      <!--        center-->
+      <!--        class="d-block img-fluid w-100 messagePhoto"-->
+      <!--        :src="attachments[0].path"-->
+      <!--        :alt="'Message photo'"-->
+      <!--      />-->
     </div>
   </div>
 </template>
@@ -56,5 +64,13 @@ export default {
 /deep/ :not(.vh--none) .messagePhoto {
   max-height: calc(100vh - 150px) !important;
   object-fit: cover;
+}
+
+/deep/ .width {
+  width: 100% !important;
+
+  div:not(.vh--message-bottom) {
+    width: 100% !important;
+  }
 }
 </style>
