@@ -120,7 +120,9 @@ export default {
 
       if (message) {
         const groupid =
-          message.id && message.groups ? message.groups[0].groupid : null
+          message.id && message.groups && message.groups.length
+            ? message.groups[0].groupid
+            : null
 
         if (groupid) {
           // Get the group into store if not already present.
