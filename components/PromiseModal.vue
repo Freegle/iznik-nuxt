@@ -104,7 +104,7 @@
         This is an early/late time.  Just saying, in case it's not right.
       </b-alert>
       <p class="mt-2">
-        If you don't want to specify a precise day/time yet, you can still click the <em>Promise</em> button.  And
+        <span v-if="date && !time" class="text-danger font-weight-bold">Please add a time.  </span>If you don't want to specify a precise day/time yet, you can still click the <em>Promise</em> button.  And
         you can come back here later.
       </p>
     </template>
