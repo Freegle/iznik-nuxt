@@ -1,7 +1,15 @@
 <template>
-  <a v-if="show" @click="click">
-    <b-card-img v-observe-visibility="visible" :src="src" fluid class="clickme" />
-  </a>
+  <div>
+    <a v-if="show" @click="click">
+      <b-card-img v-observe-visibility="visible" :src="src" fluid class="clickme" />
+    </a>
+    <div id="adnotice" class="d-flex justify-content-end text-muted small">
+      Advertisement. Why am I seeing this?
+    </div>
+    <b-tooltip target="adnotice">
+      Showing this generates a bit of income for Freegle, which helps us keep going.
+    </b-tooltip>
+  </div>
 </template>
 <script>
 import turfpoint from 'turf-point'
@@ -35,8 +43,8 @@ export default {
     show() {
       // We want to show the ad if the user's location is within the area LoveJunk cover.
       if (this.me && (this.me.lat || this.me.lng)) {
-        // const point = turfpoint([-0.1281, 51.508])
-        const point = turfpoint([this.me.lng, this.me.lat])
+        const point = turfpoint([-0.1281, 51.508])
+        // const point = turfpoint([this.me.lng, this.me.lat])
 
         const poly = turfpolygon([
           [
