@@ -271,45 +271,50 @@ export default {
       return this.$store.getters['group/list']
     },
     groupsInBounds() {
-      // Reference map idle so that we recalc.
-      const groups = this.mapIdle ? this.allGroups : []
-      const bounds = this.mapObject ? this.mapObject.getBounds() : null
       const ret = []
 
-      if (!process.browser && bounds) {
-        // SSR - return all for SEO.
-        for (const ix in groups) {
-          const group = groups[ix]
+      try {
+        // Reference map idle so that we recalc.
+        const groups = this.mapIdle ? this.allGroups : []
+        const bounds = this.mapObject ? this.mapObject.getBounds() : null
 
-          if (
-            group.onmap &&
-            (!this.region ||
-              group.region.trim().toLowerCase() ===
-                this.region.trim().toLowerCase())
-          ) {
-            ret.push(group)
+        if (!process.browser && bounds) {
+          // SSR - return all for SEO.
+          for (const ix in groups) {
+            const group = groups[ix]
+
+            if (
+              group.onmap &&
+              (!this.region ||
+                group.region.trim().toLowerCase() ===
+                  this.region.trim().toLowerCase())
+            ) {
+              ret.push(group)
+            }
           }
-        }
-      } else if (bounds) {
-        for (const ix in groups) {
-          const group = groups[ix]
+        } else if (bounds) {
+          for (const ix in groups) {
+            const group = groups[ix]
 
-          if (group.lat || group.lng) {
-            try {
-              if (
-                group.onmap &&
-                group.publish &&
-                bounds.contains([group.lat, group.lng]) &&
-                (!this.region ||
-                  this.region.toLowerCase() === group.region.toLowerCase())
-              ) {
-                ret.push(group)
+            if (group.lat || group.lng) {
+              try {
+                if (
+                  group.onmap &&
+                  group.publish &&
+                  bounds.contains([group.lat, group.lng]) &&
+                  (!this.region ||
+                    this.region.toLowerCase() === group.region.toLowerCase())
+                ) {
+                  ret.push(group)
+                }
+              } catch (e) {
+                console.log('Problem group', e)
               }
-            } catch (e) {
-              console.log('Problem group', e)
             }
           }
         }
+      } catch (e) {
+        console.log('Groups in bounds exception', e)
       }
 
       const sorted = ret.sort((a, b) => {
