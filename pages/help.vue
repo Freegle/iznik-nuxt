@@ -500,7 +500,8 @@ export default {
       return process.env.IS_APP
     },
     mobileVersion() {
-      return process.env.MOBILE_VERSION
+      return window.device.uuid
+      //return process.env.MOBILE_VERSION
     },
     version() {
       const date = new this.$dayjs(process.env.BUILD_DATE)

@@ -53,6 +53,7 @@ const cordovaApp = {
   onDeviceReady: function(){
     try {
       console.log('cordovaApp: onDeviceReady')
+      console.log('window.device.uuid', window.device.uuid)
 
       /*
       // https://github.com/apache/cordova-android/issues/747
