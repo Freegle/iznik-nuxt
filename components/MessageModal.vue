@@ -99,7 +99,14 @@ export default {
     }
   },
   methods: {
-    show(showImages) {
+    async show(showImages) {
+      // Make sure we have the full message.
+      await this.$store.dispatch('messages/fetch', {
+        id: this.id,
+        summary: false,
+        force: true
+      })
+
       this.showModal = true
       this.modalShown = false
       this.showImages = showImages
