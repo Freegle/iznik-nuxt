@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!simple && location" class="mb-2 jobbox bg-light overflow-hidden forcewrap">
+  <div v-if="!simple && location" class="mb-2 jobbox bg-light overflow-hidden forcewrap" @click="maybeRecord">
     <NoticeMessage v-if="blocked" variant="warning" class="d-none">
       <h2 class="header--size3 d-none d-md-block">
         Please help keep Freegle running
@@ -44,6 +44,13 @@ export default {
     DonationButton
   },
   mixins: [jobs],
+  props: {
+    shownLoveJunk: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
   data: function() {
     return {
       location: null
@@ -56,6 +63,19 @@ export default {
     },
     blocked() {
       return this.$store.getters['jobs/blocked']
+    }
+  },
+  watch: {
+    shownLoveJunk: {
+      handler(newVal) {
+        if (newVal) {
+          this.$api.bandit.shown({
+            uid: 'jobs-love-junk',
+            variant: 'topbar'
+          })
+        }
+      },
+      immediate: true
     }
   },
   mounted() {
@@ -72,6 +92,15 @@ export default {
       }, 1000)
     }
   },
-  methods: {}
+  methods: {
+    async maybeRecord() {
+      if (this.shownLoveJunk) {
+        await this.$api.bandit.chosen({
+          uid: 'jobs-love-junk',
+          variant: 'topbar'
+        })
+      }
+    }
+  }
 }
 </script>

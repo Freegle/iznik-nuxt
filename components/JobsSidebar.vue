@@ -1,5 +1,5 @@
 <template>
-  <aside v-if="location">
+  <aside v-if="location" @click="maybeRecord">
     <NoticeMessage v-if="blocked" variant="warning" class="d-none">
       <h3>Please help keep Freegle running</h3>
       <p>
@@ -59,6 +59,13 @@ export default {
     DonationButton
   },
   mixins: [jobs],
+  props: {
+    shownLoveJunk: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
   data: function() {
     return {
       location: null,
@@ -84,6 +91,19 @@ export default {
       }
     }
   },
+  watch: {
+    shownLoveJunk: {
+      handler(newVal) {
+        if (newVal) {
+          this.$api.bandit.shown({
+            uid: 'jobs-love-junk',
+            variant: 'sidebar'
+          })
+        }
+      },
+      immediate: true
+    }
+  },
   mounted() {
     if (this.myLocation) {
       this.location = this.myLocation.name
@@ -107,6 +127,14 @@ export default {
         $state.loaded()
       } else {
         $state.complete()
+      }
+    },
+    async maybeRecord() {
+      if (this.shownLoveJunk) {
+        await this.$api.bandit.chosen({
+          uid: 'jobs-love-junk',
+          variant: 'sidebar'
+        })
       }
     }
   }

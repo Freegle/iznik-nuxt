@@ -7,7 +7,6 @@ export const getters = {}
 export const actions = {
   async choose({ commit }, params) {
     const ret = await this.$api.bandit.choose(params)
-    console.log('returned', ret)
     return ret.variant ? ret.variant : null
   },
 

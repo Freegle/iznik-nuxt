@@ -1,13 +1,13 @@
 <template>
   <div>
-    <LoveJunk variant="desktop" />
+    <LoveJunk variant="desktop" :shown.sync="shown" />
     <div v-if="!simple" class="sidebar__wrapper">
       <div class="d-flex flex-column justify-content-between mh-100">
         <div>
           <DonationMonthly v-if="false && supporter && !donor" class="w-100" variant="sidebar" />
           <VolunteerOpportunitySidebar v-if="showVolunteerOpportunities && false" :class="itemclass" />
         </div>
-        <JobsSidebar v-if="showJobOpportunities" :class="itemclass" />
+        <JobsSidebar v-if="showJobOpportunities" :class="itemclass" :shown-love-junk="shown" />
       </div>
     </div>
   </div>
@@ -36,6 +36,11 @@ export default {
     showJobOpportunities: {
       type: Boolean,
       required: false
+    }
+  },
+  data: function() {
+    return {
+      shown: false
     }
   },
   computed: {

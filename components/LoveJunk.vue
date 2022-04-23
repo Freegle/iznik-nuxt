@@ -43,8 +43,8 @@ export default {
     show() {
       // We want to show the ad if the user's location is within the area LoveJunk cover.
       if (this.me && (this.me.lat || this.me.lng)) {
-        // const point = turfpoint([-0.1281, 51.508])
-        const point = turfpoint([this.me.lng, this.me.lat])
+        const point = turfpoint([-0.1281, 51.508])
+        // const point = turfpoint([this.me.lng, this.me.lat])
 
         const poly = turfpolygon([
           [
@@ -138,14 +138,16 @@ export default {
         this.shown = true
 
         this.$api.bandit.shown({
-          uid: 'lovejunk',
+          uid: 'lovejunk2',
           variant: this.variant
         })
+
+        this.$emit('update:shown', true)
       }
     },
     async click() {
       await this.$api.bandit.chosen({
-        uid: 'lovejunk',
+        uid: 'lovejunk2',
         variant: this.variant
       })
 
