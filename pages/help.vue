@@ -499,9 +499,54 @@ export default {
     isApp() {
       return process.env.IS_APP
     },
-    mobileVersion() {
-      return window.device.uuid
-      //return process.env.MOBILE_VERSION
+    async mobileVersion() {
+      if( window.device.platform === 'iOS'){
+        var guid = await new Promise( function(resolve,reject){
+          console.log("START")
+          var guid2 = uuidv4();
+          try{
+            //var kc = new Keychain();
+            function setok(){
+              console.log('SET OK:')
+              resolve(guid2)
+            }
+            function setfail(e){
+              console.log("SETFAIL:",e)
+              reject()
+            }
+            function gotok(val){
+              console.log('GOT: ',val)
+              if( val==null){
+                Keychain.set(setok,setfail,"GUID",guid2,false)
+              } else{
+                guid2 = val
+                resolve(guid2)
+              }
+            }
+            function gotfail(e){
+              console.log("GOTFAIL:",e)
+              reject()
+            }
+            Keychain.get(gotok,gotfail,"GUID")
+          } catch( e){
+            console.log("Exception",e.getMessage())
+          }
+
+          function uuidv4() {
+            return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+              (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+              );
+          }
+          //console.log("GUID",guid)
+          //return
+        })
+        console.log("FINAL",guid)
+        return guid
+
+      } else {
+        //return window.device.uuid
+        return process.env.MOBILE_VERSION
+      }
     },
     version() {
       const date = new this.$dayjs(process.env.BUILD_DATE)

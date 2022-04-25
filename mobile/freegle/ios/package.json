@@ -27,9 +27,10 @@
     "phonegap-plugin-push": "^2.3.0"
   },
   "devDependencies": {
+    "cordova-clipboard": "1.3.0",
     "cordova-ios": "^6.2.0",
     "cordova-plugin-inappbrowser": "^5.0.0",
-    "cordova-clipboard": "1.3.0",
+    "cordova-plugin-ios-keychain": "git+https://github.com/ionic-team/cordova-plugin-ios-keychain.git",
     "cordova-plugin-whitelist": "^1.3.4",
     "ionic-plugin-deeplinks": "1.0.24"
   },
@@ -83,7 +84,8 @@
         "FACEBOOK_ANDROID_SDK_VERSION": "11.3.0",
         "FACEBOOK_IOS_SDK_VERSION": "11.1.0",
         "FACEBOOK_BROWSER_SDK_VERSION": "v11.0"
-      }
+      },
+      "cordova-plugin-ios-keychain": {}
     },
     "platforms": [
       "ios"
