@@ -7,7 +7,8 @@ const querystring = require('querystring')
 //export let applatestversion = false
 
 export const mobilestate = {
-  isiOS: false
+  isiOS: false,
+  devicePersistentId: null
 }
 
 export const pushstate = Vue.observable({
@@ -38,7 +39,7 @@ window.iznikroot = decodeURI(window.iznikroot.replace(/%25/g, '%2525'))
 console.log('window.iznikroot ' + window.iznikroot)
 
 const cordovaApp = {
-  initialize: function() {
+  initialize: function () {
     console.log('--------------initapp--------------')
     document.addEventListener(
       'deviceready',
@@ -50,11 +51,11 @@ const cordovaApp = {
   // deviceready Event Handler
   //
   // Bind any cordova events here. Common events are: 'pause', 'resume', etc.
-  onDeviceReady: function(){
+  onDeviceReady: function () {
     try {
       console.log('cordovaApp: onDeviceReady')
-      console.log('window.device.uuid', window.device.uuid)
 
+      this.getDevicePersistentId()
       /*
       // https://github.com/apache/cordova-android/issues/747
       if (window.matchMedia('(prefers-color-scheme)').media !== 'not all') {
@@ -74,7 +75,7 @@ const cordovaApp = {
           webSettings.setForceDark(WebSettings.FORCE_DARK_ON);
         }
       }*/
-      
+
 
       mobilestate.isiOS = window.device.platform === 'iOS'
       pushstate.isiOS = mobilestate.isiOS
@@ -82,7 +83,7 @@ const cordovaApp = {
       // Make window.open work in iOS app
       const prevwindowopener = window.open
       window.open = (url) => {
-        console.log('App window.open',url)
+        console.log('App window.open', url)
         // eslint-disable-next-line no-undef
         cordova.InAppBrowser.open(url, '_system')
       }
@@ -155,7 +156,7 @@ const cordovaApp = {
             sound: true
           }
         })
-        if( !mobilePush){
+        if (!mobilePush) {
           console.log('MOBILE PUSH RETURNED FALSE')
           return
         }
@@ -187,6 +188,48 @@ const cordovaApp = {
 
     } catch (e) {
       console.log('onDeviceReady catch', e)
+    }
+  },
+
+  getDevicePersistentId: async function () {
+    console.log('window.device.uuid', window.device.uuid)
+
+    if (window.device.platform !== 'iOS') {
+      mobilestate.devicePersistentId = window.device.uuid
+      console.log("getDevicePersistentId Android", mobilestate.devicePersistentId)
+      return
+    }
+
+    function uuidv4() {
+      return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      );
+    }
+
+    try {
+      console.log("getDevicePersistentId iOS")
+      var guid = uuidv4();
+      function setok() {
+        console.log('SET OK:', guid)
+        mobilestate.devicePersistentId = guid
+      }
+      function setfail(e) {
+        console.log("SETFAIL:", e)
+      }
+      function gotok(val) {
+        console.log('GOT: ', val)
+        if (val == null) {
+          Keychain.set(setok, setfail, "GUID", guid, false)
+        } else {
+          mobilestate.devicePersistentId = val
+        }
+      }
+      function gotfail(e) {
+        console.log("GOTFAIL:", e)
+      }
+      Keychain.get(gotok, gotfail, "GUID")
+    } catch (e) {
+      console.log("Exception", e.getMessage())
     }
   }
 }
