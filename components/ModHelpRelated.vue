@@ -18,7 +18,7 @@
       If you don't think they're probably the same person, then click <em>Ignore</em>.
     </p>
     <p>
-      If you think they're probably the same person, you can ask them what they want to do.  This will email them
+      If you think they're probably the same person, you can ask them what they want to do.  This will send them
       a mail like this:
     </p>
     <em>
@@ -37,6 +37,9 @@
         Click here to let us know
       </b-btn>
     </em>
+    <p>
+      The email addresses are masked out a bit for privacy.
+    </p>
     <p>
       This takes them to a page where they can merge the accounts and decide which email address they prefer to use,
       or leave the two accounts separate.
