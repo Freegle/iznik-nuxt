@@ -156,7 +156,7 @@ export default {
           this.user.info.ratings.Down +
           ' freegler' +
           (this.user.info.ratings.Down !== 1 ? 's' : '') +
-          '  gave them a thumbs Down.  Click to rate, click again to undo.'
+          '  gave them a thumbs down.  Click to rate, click again to undo.'
         )
       }
     }
