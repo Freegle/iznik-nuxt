@@ -27,7 +27,7 @@ import ClusterIcon from './ClusterIcon'
 
 let L = null
 
-if (process.browser) {
+if (process.client) {
   L = require('leaflet')
 }
 

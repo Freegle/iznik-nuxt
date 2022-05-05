@@ -160,7 +160,7 @@ export default {
     }
   },
   async mounted() {
-    if (process.browser) {
+    if (process.client) {
       try {
         // Wait for the store if necessary.
         await this.$store.restored

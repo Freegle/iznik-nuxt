@@ -18,7 +18,7 @@ import turfbooleanPointInPolygon from '@turf/boolean-point-in-polygon'
 import VueObserveVisibility from 'vue-observe-visibility'
 import Vue from 'vue'
 
-if (process.browser) {
+if (process.client) {
   Vue.use(VueObserveVisibility)
 }
 

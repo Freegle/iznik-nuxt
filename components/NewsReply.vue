@@ -233,9 +233,7 @@ const ConfirmModal = () => import('~/components/ConfirmModal.vue')
 const NewsReplies = () => import('~/components/NewsReplies.vue')
 const OurFilePond = () => import('~/components/OurFilePond')
 
-const AtTa = process.browser
-  ? require('vue-at/dist/vue-at-textarea')
-  : undefined
+const AtTa = process.client ? require('vue-at/dist/vue-at-textarea') : undefined
 
 export default {
   name: 'NewsReply',

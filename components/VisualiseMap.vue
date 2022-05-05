@@ -85,7 +85,7 @@ const VisualiseMessage = () => import('./VisualiseMessage')
 
 let L = null
 
-if (process.browser) {
+if (process.client) {
   L = require('leaflet')
 }
 
@@ -133,7 +133,7 @@ export default {
     mapHeight() {
       let height = 0
 
-      if (process.browser) {
+      if (process.client) {
         height = window.innerHeight - 70
         height = height < 200 ? 200 : height
       }

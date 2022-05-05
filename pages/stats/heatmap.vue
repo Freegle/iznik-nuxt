@@ -46,7 +46,7 @@ import map from '@/mixins/map.js'
 
 let LeafletHeatmap = null
 
-if (process.browser) {
+if (process.client) {
   LeafletHeatmap = () => import('~/components/Vue2LeaftletHeatmap')
 }
 
@@ -68,7 +68,7 @@ export default {
     mapWidth() {
       let height = 0
 
-      if (process.browser) {
+      if (process.client) {
         height = Math.floor(window.innerHeight - 250)
         height = height < 200 ? 200 : height
       }

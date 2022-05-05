@@ -256,7 +256,7 @@ import ClusterMarker from '~/components/ClusterMarker'
 let Wkt = null
 let L = null
 
-if (process.browser) {
+if (process.client) {
   Wkt = require('wicket')
   require('wicket/wicket-leaflet')
   L = require('leaflet')
@@ -331,12 +331,12 @@ export default {
   },
   computed: {
     browser() {
-      return process.browser
+      return process.client
     },
     mapHeight() {
       let height = 0
 
-      if (process.browser) {
+      if (process.client) {
         height = window.innerHeight - 150
       }
 

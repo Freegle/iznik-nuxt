@@ -82,7 +82,7 @@ export default {
     }
   },
   async mounted() {
-    if (process.browser) {
+    if (process.client) {
       await this.fetchMe(['me', 'groups'])
 
       if (this.me) {

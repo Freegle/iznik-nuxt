@@ -94,7 +94,7 @@ export default {
     mapWidth() {
       let height = 0
 
-      if (process.browser) {
+      if (process.client) {
         height = Math.floor(window.innerHeight / 2)
         height = height < 200 ? 200 : height
       }
