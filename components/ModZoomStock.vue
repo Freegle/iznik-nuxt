@@ -1,15 +1,15 @@
 <template>
   <div class="font-weight-bold">
-    <div v-if="today" class="pulsate d-flex">
+    <div v-if="now" class="pulsate d-flex">
       <!-- eslint-disable-next-line-->
-      <ExternalLink href="https://us02web.zoom.us/j/81013447754?pwd=cVYzeEl5dWx0MEd0TTdOWE9Yd0Z4QT09" class="text-white">ZoomStock Thursdays - join other volunteers for a natter.  Click here at 2pm.</ExternalLink>
+      <ExternalLink href="https://us02web.zoom.us/j/81013447754?pwd=cVYzeEl5dWx0MEd0TTdOWE9Yd0Z4QT09" class="text-white">ZoomStock happening now till 5pm! Join other volunteers for a natter - click here.</ExternalLink>
     </div>
-    <div v-else-if="now" class="pulsate d-flex">
+    <div v-else-if="today" class="pulsate d-flex">
       <!-- eslint-disable-next-line-->
-      <ExternalLink href="https://us02web.zoom.us/j/81013447754?pwd=cVYzeEl5dWx0MEd0TTdOWE9Yd0Z4QT09" class="text-white">ZoomStock happening now! Join other volunteers for a natter - click here.</ExternalLink>
+      <ExternalLink href="https://us02web.zoom.us/j/81013447754?pwd=cVYzeEl5dWx0MEd0TTdOWE9Yd0Z4QT09" class="text-white">ZoomStock Thursdays - join other volunteers for a natter.  Link will be here 2pm-5pm.</ExternalLink>
     </div>
     <div v-else class="d-flex">
-      ZoomStock Thursdays @ 2pm, next {{ timeago(fromNow) }}. Join other volunteers for a natter.  Link will be here.
+      ZoomStock Thursdays @ 2pm-5pm, next {{ timeago(fromNow) }}. Join other volunteers for a natter.  Link will be here.
     </div>
   </div>
 </template>
@@ -17,9 +17,8 @@
 import ExternalLink from '@/components/ExternalLink'
 
 const DAY_OF_WEEK = 4
-const HOUR_OF_DAY = 14
-const MINUTE_START = 0
-const MINUTE_END = 40
+const START = '1400'
+const END = '1700'
 
 export default {
   components: { ExternalLink },
@@ -29,6 +28,11 @@ export default {
     }
   },
   computed: {
+    timeNow() {
+      return this.$store.getters['misc/time']
+        ? this.$dayjs().format('HHmm')
+        : ''
+    },
     fromNow() {
       return this.$store.getters['misc/time'] && this.nextOne
         ? this.nextOne
@@ -36,20 +40,14 @@ export default {
     },
     today() {
       const d = this.$dayjs()
-      return (
-        this.$store.getters['misc/time'] &&
-        d.day() === DAY_OF_WEEK &&
-        d.hour() < HOUR_OF_DAY
-      )
+      return d.day() === DAY_OF_WEEK && this.timeNow < START
     },
     now() {
-      const d = this.$dayjs()
+      console.log('Now?', this.timeNow, START, END)
       return (
-        this.$store.getters['misc/time'] &&
-        d.day() === DAY_OF_WEEK &&
-        d.hour() === HOUR_OF_DAY &&
-        d.minute() >= MINUTE_START &&
-        d.minute() <= MINUTE_END
+        this.$dayjs().day() === DAY_OF_WEEK &&
+        this.timeNow >= START &&
+        this.timeNow <= END
       )
     }
   },
