@@ -40,7 +40,18 @@ export const actions = {
       commit('setTeams', teams)
     }
   },
-
+  async remove({ commit, dispatch }, params) {
+    await this.$api.team.remove(params.id, params.userid)
+    await dispatch('fetch', {
+      id: params.id
+    })
+  },
+  async add({ commit, dispatch }, params) {
+    await this.$api.team.add(params.id, params.userid)
+    await dispatch('fetch', {
+      id: params.id
+    })
+  },
   clear({ commit }) {
     commit('clear')
   }
