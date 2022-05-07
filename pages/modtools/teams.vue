@@ -18,8 +18,7 @@
         <h2>{{ team.name }}</h2>
         <b-input-group
           v-if="supportOrAdmin"
-          class="mt-2 mb-2
-"
+          class="mt-2 mb-2"
         >
           <b-input v-model="memberToAdd" type="number" placeholder="Add member by ID" />
           <b-input-group-append>
