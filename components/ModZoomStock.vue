@@ -44,10 +44,9 @@ export default {
     },
     now() {
       return (
-        (this.$dayjs().day() === DAY_OF_WEEK &&
-          this.timeNow >= START &&
-          this.timeNow <= END) ||
-        true
+        this.$dayjs().day() === DAY_OF_WEEK &&
+        this.timeNow >= START &&
+        this.timeNow <= END
       )
     }
   },
