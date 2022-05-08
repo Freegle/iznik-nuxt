@@ -188,7 +188,7 @@
             <b-card-body>
               <p>
                 You can see which community and area a postcode will map to. <b>Postcode changes within an area you
-                  change should take effect immediately, but ones outside the areas may may take several hours
+                  change should take effect immediately, but ones outside the areas may may take overnight
                   before postcode mapping is updated.</b>
               </p>
               <Postcode :find="false" @selected="postcodeSelect" />
