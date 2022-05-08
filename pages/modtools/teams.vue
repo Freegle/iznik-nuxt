@@ -14,8 +14,24 @@
         </b-btn>
       </div>
 
-      <div v-if="team && team.members" class="mt-2">
+      <div v-if="selected && team && team.members" class="mt-2">
         <h2>{{ team.name }}</h2>
+        <b-input-group
+          v-if="supportOrAdmin"
+          class="mt-2 mb-2"
+        >
+          <b-input v-model="memberToAdd" type="number" placeholder="Add member by ID" />
+          <b-input-group-append>
+            <SpinButton
+              variant="primary"
+              name="plus"
+              label="Add"
+              spinclass="text-white"
+              :handler="addMember"
+              :disabled="!memberToAdd"
+            />
+          </b-input-group-append>
+        </b-input-group>
         <NoticeMessage v-if="!team.active" variant="info">
           This team is not active at the moment.
         </NoticeMessage>
@@ -29,7 +45,7 @@
           <!-- eslint-disable-next-line -->
           Contact email: <ExternalLink :href="'mailto:' + team.email">{{ team.email }}</ExternalLink>
         </p>
-        <ModTeamMember v-for="member in team.members" :key="'member-' + member.id" :member="member" />
+        <ModTeamMember v-for="member in team.members" :key="'member-' + member.id" :teamid="team.id" :member="member" />
       </div>
     </client-only>
   </div>
@@ -38,6 +54,7 @@
 <script>
 import ModTeamMember from '../../components/ModTeamMember'
 import NoticeMessage from '../../components/NoticeMessage'
+import SpinButton from '../../components/SpinButton'
 const ExternalLink = () => import('~/components/ExternalLink')
 
 // TODO MT POSTLAUNCH Add/delete team members and teams.
@@ -47,11 +64,13 @@ export default {
   components: {
     NoticeMessage,
     ModTeamMember,
-    ExternalLink
+    ExternalLink,
+    SpinButton
   },
   data: function() {
     return {
-      selected: null
+      selected: null,
+      memberToAdd: null
     }
   },
   computed: {
@@ -67,13 +86,21 @@ export default {
   },
   methods: {
     async selectTeam(team) {
-      console.log('Select team', team)
       await this.$store.dispatch('team/fetch', {
         id: team.id
       })
-      console.log('Fetched team')
 
       this.selected = team.id
+    },
+    async addMember() {
+      if (this.memberToAdd && this.selected) {
+        await this.$store.dispatch('team/add', {
+          id: this.selected,
+          userid: this.memberToAdd
+        })
+
+        this.selected = null
+      }
     }
   }
 }
