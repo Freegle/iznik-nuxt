@@ -464,41 +464,43 @@ export default {
           })
       }
     },
-    async loginFacebook() {
-      this.$store.dispatch('auth/setLoginType', 'Facebook')
-
-      this.nativeLoginError = null
-      this.socialLoginError = null
-      try {
-        let response = null
-        const promise = new Promise(function(resolve) {
-          Vue.FB.login(
-            function(ret) {
-              response = ret
-              resolve()
-            },
-            { scope: 'email' }
-          )
-        })
-
-        await promise
-        if (response.authResponse) {
-          const accessToken = response.authResponse.accessToken
-
-          await this.$store.dispatch('auth/login', {
-            fblogin: 1,
-            fbaccesstoken: accessToken
-          })
-
-          // We are now logged in.
-          self.pleaseShowModal = false
-        } else {
-          this.socialLoginError =
-            'Facebook response is unexpected.  Please try later.'
-        }
-      } catch (e) {
-        this.socialLoginError = 'Facebook login error: ' + e.message
-      }
+    loginFacebook() {
+      this.pleaseShowModal = false
+      this.$router.push('/facebookproblem')
+      // this.$store.dispatch('auth/setLoginType', 'Facebook')
+      //
+      // this.nativeLoginError = null
+      // this.socialLoginError = null
+      // try {
+      //   let response = null
+      //   const promise = new Promise(function(resolve) {
+      //     Vue.FB.login(
+      //       function(ret) {
+      //         response = ret
+      //         resolve()
+      //       },
+      //       { scope: 'email' }
+      //     )
+      //   })
+      //
+      //   await promise
+      //   if (response.authResponse) {
+      //     const accessToken = response.authResponse.accessToken
+      //
+      //     await this.$store.dispatch('auth/login', {
+      //       fblogin: 1,
+      //       fbaccesstoken: accessToken
+      //     })
+      //
+      //     // We are now logged in.
+      //     self.pleaseShowModal = false
+      //   } else {
+      //     this.socialLoginError =
+      //       'Facebook response is unexpected.  Please try later.'
+      //   }
+      // } catch (e) {
+      //   this.socialLoginError = 'Facebook login error: ' + e.message
+      // }
     },
     loginGoogle() {
       this.$store.dispatch('auth/setLoginType', 'Google')
