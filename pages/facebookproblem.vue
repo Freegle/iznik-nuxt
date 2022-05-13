@@ -6,7 +6,7 @@
           There's a problem with Facebook Login at the moment
         </h1>
         <NoticeMessage variant="danger" class="mb-2">
-          Facebook have blocked our use of Facebook Login.  We're working urgently to get it back but.
+          Facebook have blocked our use of Facebook Login.  We're working urgently to get it back.
         </NoticeMessage>
         <p>
           Meanwhile, you can log in by triggering a "lost password" type email, which will give you a link to log in.
@@ -40,7 +40,7 @@
     <b-row class="m-0">
       <b-col cols="12" lg="6" offset-lg="3" class="bg-white">
         <div class="mt-2 mb-2">
-          <p>You can try the Facebook login again here in case it's fixed (or if you're Facebook trying to test it)</p>
+          <p>You can try the Facebook login again here in case it's fixed (or if you're Facebook trying to test it).</p>
           <LoginModal ref="loginModal" :fbworkaround="false" />
           <b-btn variant="primary" @click="requestLogin">
             Try again
