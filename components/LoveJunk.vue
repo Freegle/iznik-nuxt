@@ -177,7 +177,7 @@ export default {
     async click() {
       await this.$api.bandit.chosen({
         uid: this.uid,
-        variant: this.variant
+        variant: this.variant === 'mobile' ? this.mobile : this.desktop
       })
 
       window.open('https://www.lovejunk.com/rubbish-clearance/')
