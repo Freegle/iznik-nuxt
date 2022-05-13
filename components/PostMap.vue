@@ -117,7 +117,7 @@ const ClusterMarker = () => import('./ClusterMarker')
 
 let L = null
 
-if (process.browser) {
+if (process.client) {
   L = require('leaflet')
   require('leaflet-control-geocoder')
   require('leaflet-control-geocoder/dist/Control.Geocoder.css')
@@ -237,7 +237,7 @@ export default {
 
       let height = 0
 
-      if (process.browser) {
+      if (process.client) {
         height = window.innerHeight / this.heightFraction - 70
         height = height < 200 ? 200 : height
       }
@@ -271,45 +271,50 @@ export default {
       return this.$store.getters['group/list']
     },
     groupsInBounds() {
-      // Reference map idle so that we recalc.
-      const groups = this.mapIdle ? this.allGroups : []
-      const bounds = this.mapObject ? this.mapObject.getBounds() : null
       const ret = []
 
-      if (!process.browser && bounds) {
-        // SSR - return all for SEO.
-        for (const ix in groups) {
-          const group = groups[ix]
+      try {
+        // Reference map idle so that we recalc.
+        const groups = this.mapIdle ? this.allGroups : []
+        const bounds = this.mapObject ? this.mapObject.getBounds() : null
 
-          if (
-            group.onmap &&
-            (!this.region ||
-              group.region.trim().toLowerCase() ===
-                this.region.trim().toLowerCase())
-          ) {
-            ret.push(group)
+        if (!process.client && bounds) {
+          // SSR - return all for SEO.
+          for (const ix in groups) {
+            const group = groups[ix]
+
+            if (
+              group.onmap &&
+              (!this.region ||
+                group.region.trim().toLowerCase() ===
+                  this.region.trim().toLowerCase())
+            ) {
+              ret.push(group)
+            }
           }
-        }
-      } else if (bounds) {
-        for (const ix in groups) {
-          const group = groups[ix]
+        } else if (bounds) {
+          for (const ix in groups) {
+            const group = groups[ix]
 
-          if (group.lat || group.lng) {
-            try {
-              if (
-                group.onmap &&
-                group.publish &&
-                bounds.contains([group.lat, group.lng]) &&
-                (!this.region ||
-                  this.region.toLowerCase() === group.region.toLowerCase())
-              ) {
-                ret.push(group)
+            if (group.lat || group.lng) {
+              try {
+                if (
+                  group.onmap &&
+                  group.publish &&
+                  bounds.contains([group.lat, group.lng]) &&
+                  (!this.region ||
+                    this.region.toLowerCase() === group.region.toLowerCase())
+                ) {
+                  ret.push(group)
+                }
+              } catch (e) {
+                console.log('Problem group', e)
               }
-            } catch (e) {
-              console.log('Problem group', e)
             }
           }
         }
+      } catch (e) {
+        console.log('Groups in bounds exception', e)
       }
 
       const sorted = ret.sort((a, b) => {

@@ -3,20 +3,20 @@
     <b-row class="m-0">
       <b-col cols="12" lg="6" offset-lg="3" class="bg-white">
         <h1>
-          Forgotten your password?
+          There's a problem with Facebook Login at the moment
         </h1>
+        <NoticeMessage variant="danger" class="mb-2">
+          Facebook have blocked our use of Facebook Login.  We're working urgently to get it back.
+        </NoticeMessage>
         <p>
-          If you usually log in using Facebook, Google or Yahoo, then you don't use a password - just click those buttons.
-        </p>
-        <p>
-          But if you usually log in with your email address and a password you set up for Freegle, then enter your email
-          address and we'll mail you a link so that you can log in.
+          Meanwhile, you can log in by triggering a "lost password" type email, which will give you a link to log in.
         </p>
         <b-alert v-if="error" variant="danger" show>
           {{ error }}
         </b-alert>
         <b-alert v-if="response" variant="warning" show>
-          We've sent you a link to log in. If you don't see it, please check your spam folder!
+          We've sent you a link to log in. If you don't see it, please check your spam folder! Just click the button which
+          says "Click here to set a new password" and it'll log you in.
         </b-alert>
         <EmailValidator
           ref="email"
@@ -34,12 +34,19 @@
           label="Mail login link"
           class="mb-2"
         />
-        <p>
-          <!-- eslint-disable-next-line -->
-          If you have trouble, you can also contact <ExternalLink href="mailto:support@ilovefreegle.org">support@ilovefreegle.org</ExternalLink>.
-        </p>
       </b-col>
       <b-col cols="0" md="3" />
+    </b-row>
+    <b-row class="m-0">
+      <b-col cols="12" lg="6" offset-lg="3" class="bg-white">
+        <div class="mt-2 mb-2">
+          <p>You can try the Facebook login again here in case it's fixed (or if you're Facebook trying to test it).</p>
+          <LoginModal ref="loginModal" :fbworkaround="false" />
+          <b-btn variant="primary" @click="requestLogin">
+            Try again
+          </b-btn>
+        </div>
+      </b-col>
     </b-row>
   </div>
 </template>
@@ -51,15 +58,17 @@ import loginOptional from '@/mixins/loginOptional.js'
 import validationHelpers from '@/mixins/validationHelpers'
 
 import buildHead from '@/mixins/buildHead.js'
+import NoticeMessage from '../components/NoticeMessage'
 import SpinButton from '../components/SpinButton'
 import EmailValidator from '../components/EmailValidator'
-const ExternalLink = () => import('~/components/ExternalLink')
+import LoginModal from '~/components/LoginModal'
 
 export default {
   components: {
     SpinButton,
     EmailValidator,
-    ExternalLink
+    NoticeMessage,
+    LoginModal
   },
   mixins: [buildHead, validationMixin, validationHelpers, loginOptional],
   data() {
@@ -92,6 +101,9 @@ export default {
       } else {
         this.error = res.data.status
       }
+    },
+    requestLogin() {
+      this.$refs.loginModal.show()
     }
   },
   head() {

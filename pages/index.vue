@@ -88,7 +88,7 @@ export default {
       this.$router.replace('modtools')
       return
     }
-    if (process.browser) {
+    if (process.client) {
       await this.fetchMe(['me', 'groups'])
 
       if (this.me) {

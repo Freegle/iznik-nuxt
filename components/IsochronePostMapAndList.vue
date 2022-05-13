@@ -125,7 +125,7 @@
           </NoticeMessage>
         </div>
         <GroupHeader v-if="group" :group="group" show-join />
-        <JobsTopBar v-if="jobs" class="d-block d-lg-none" />
+        <JobsTopBar v-if="jobs" class="d-block d-lg-none" :shown-love-junk="shownLoveJunk" />
 
         <h2 class="sr-only">
           List of wanteds and offers
@@ -143,7 +143,7 @@
           />
 
           <Visible :at="['xs', 'sm', 'md']" class="ml-2 mr-2 mb-2">
-            <LoveJunk variant="mobile" />
+            <LoveJunk variant="mobile" :shown.sync="shownLoveJunk" />
           </Visible>
 
           <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" :ref="'messagewrapper-' + message.id" class="p-0">
@@ -207,7 +207,7 @@ const GroupHeader = () => import('~/components/GroupHeader.vue')
 const JobsTopBar = () => import('~/components/JobsTopBar')
 const LoveJunk = () => import('~/components/LoveJunk')
 
-if (process.browser) {
+if (process.client) {
   Vue.use(VueObserveVisibility)
 }
 
@@ -353,7 +353,10 @@ export default {
       searchOn: null,
       context: null,
       trackViews: false,
-      trackedView: false
+      trackedView: false,
+
+      // LoveJunk
+      shownLoveJunk: false
     }
   },
   computed: {

@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     openIt(id) {
-      if (process.browser) {
+      if (process.client) {
         window.open(process.env.USER_SITE + '/message/' + id)
       }
     }

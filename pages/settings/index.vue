@@ -404,7 +404,7 @@
                   Email Alerts
                 </h3>
                 <p>
-                  Mail me Chat messages from other freeglers  about OFFERs and WANTEDs.
+                  Mail me Chat messages from other freeglers about my OFFERs and WANTEDs.
                 </p>
                 <OurToggle
                   v-model="me.settings.notifications.email"

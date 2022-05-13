@@ -196,9 +196,7 @@ import ProfileImage from '~/components/ProfileImage'
 const ConfirmModal = () => import('~/components/ConfirmModal.vue')
 const OurFilePond = () => import('~/components/OurFilePond')
 
-const AtTa = process.browser
-  ? require('vue-at/dist/vue-at-textarea')
-  : undefined
+const AtTa = process.client ? require('vue-at/dist/vue-at-textarea') : undefined
 
 const INITIAL_NUMBER_OF_REPLIES_TO_SHOW = 10
 

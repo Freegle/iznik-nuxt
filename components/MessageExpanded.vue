@@ -186,7 +186,7 @@ export default {
   },
   mounted() {
     if (
-      process.browser &&
+      process.client &&
       (!this.message ||
         !this.message.fromuser ||
         typeof this.message.fromuser !== 'object')

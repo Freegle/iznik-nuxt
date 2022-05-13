@@ -235,7 +235,7 @@ const NoticeMessage = () => import('~/components/NoticeMessage')
 
 let ResizeText = null
 
-if (process.browser) {
+if (process.client) {
   ResizeText = require('vue-resize-text')
 }
 

@@ -17,7 +17,7 @@
               append-text=" available"
               class="count pt-1"
               size="md"
-              :min="0"
+              :min="1"
             />
           </div>
         </template>
@@ -177,6 +177,12 @@ export default {
           attids.push(att.id)
         }
 
+        // We change both availablenow and available initially.  Probably the user is correcting a mistake in how
+        // they originally posted.
+        //
+        // Conceivably they are wrongly editing rather than using Mark as TAKEN - but if that's what's happening then
+        // they won't be able to get down as far as 0 available because we have a min value of 1.  That will keep
+        // the post open, and they will hopefully realise their error and use Mark as TAKEN eventually.
         await this.$store.dispatch('messages/patch', {
           id: this.message.id,
           msgtype: this.type,
@@ -184,7 +190,8 @@ export default {
           location: this.postcode.name,
           textbody: this.message.textbody,
           attachments: attids,
-          availablenow: this.message.availablenow
+          availablenow: this.message.availablenow,
+          availableinitially: this.message.availablenow
         })
 
         this.saving = null

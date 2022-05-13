@@ -13,7 +13,7 @@ export default {
   },
   methods: {
     async copy() {
-      if (process.browser) {
+      if (process.client) {
         if (process.env.IS_APP) {
           window.cordova.plugins.clipboard.copy(this.selectedText);
         } else {

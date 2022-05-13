@@ -163,7 +163,7 @@ import { setBadgeCount } from '../plugins/app-init-push' // CC
   },
   async mounted() {
     console.log('MODTOOLS.VUE mounted')
-    if (process.browser) {
+    if (process.client) {
       try {
         // Wait for the store if necessary.
         await this.$store.restored

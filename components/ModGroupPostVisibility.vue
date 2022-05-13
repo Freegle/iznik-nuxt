@@ -79,7 +79,7 @@ const OurToggle = () => import('~/components/OurToggle')
 
 let Wkt = null
 
-if (process.browser) {
+if (process.client) {
   Wkt = require('wicket')
   require('wicket/wicket-leaflet')
 }

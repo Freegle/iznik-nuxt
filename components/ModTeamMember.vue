@@ -14,7 +14,7 @@
       </span>
     </b-col>
     <b-col>
-      <b-btn v-if="admin" size="sm" variant="white">
+      <b-btn v-if="supportOrAdmin" size="sm" variant="white" @click="remove">
         <v-icon name="trash-alt" />
       </b-btn>
     </b-col>
@@ -25,9 +25,22 @@ import ProfileImage from './ProfileImage'
 export default {
   components: { ProfileImage },
   props: {
+    teamid: {
+      type: Number,
+      required: true
+    },
     member: {
       type: Object,
       required: true
+    }
+  },
+  methods: {
+    remove() {
+      console.log('Remove', this.teamid, this.member.id)
+      this.$store.dispatch('team/remove', {
+        id: this.teamid,
+        userid: this.member.id
+      })
     }
   }
 }

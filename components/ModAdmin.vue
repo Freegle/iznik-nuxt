@@ -184,10 +184,10 @@ export default {
         id: this.id
       })
     },
-    save() {
+    async save() {
       this.saving = true
 
-      this.$store.dispatch('admins/edit', {
+      await this.$store.dispatch('admins/edit', {
         id: this.admin.id,
         subject: this.admin.subject,
         text: this.admin.text,
@@ -210,8 +210,10 @@ export default {
         id: this.admin.id
       })
     },
-    approve() {
-      this.$store.dispatch('admins/approve', {
+    async approve() {
+      await this.save()
+
+      await this.$store.dispatch('admins/approve', {
         id: this.admin.id
       })
 

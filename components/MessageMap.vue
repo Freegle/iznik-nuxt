@@ -25,7 +25,7 @@ const CGA_BOUNDARY_COLOUR = 'darkblue'
 let L = null
 let Wkt = null
 
-if (process.browser) {
+if (process.client) {
   Wkt = require('wicket')
   require('wicket/wicket-leaflet')
   L = require('leaflet')
