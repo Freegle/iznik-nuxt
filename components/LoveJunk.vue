@@ -1,14 +1,16 @@
 <template>
-  <div>
-    <a v-if="show" @click="click">
-      <b-card-img v-observe-visibility="visible" :src="src" fluid class="clickme" />
-    </a>
-    <div id="adnotice" class="d-flex justify-content-end text-muted small">
-      Advertisement. Why am I seeing this?
+  <div v-observe-visibility="visible">
+    <div v-if="src">
+      <a v-if="show" @click="click">
+        <b-card-img :src="src" fluid class="clickme" />
+      </a>
+      <div id="adnotice" class="d-flex justify-content-end text-muted small">
+        Advertisement. Why am I seeing this?
+      </div>
+      <b-tooltip target="adnotice">
+        Showing this generates a bit of income for Freegle, which helps us keep going.
+      </b-tooltip>
     </div>
-    <b-tooltip target="adnotice">
-      Showing this generates a bit of income for Freegle, which helps us keep going.
-    </b-tooltip>
   </div>
 </template>
 <script>
@@ -31,20 +33,27 @@ export default {
   },
   data: function() {
     return {
-      shown: false
+      shown: false,
+      desktop: null,
+      mobile: null,
+      uid: 'lovejunk3'
     }
   },
   computed: {
     src() {
-      return this.variant === 'mobile'
-        ? '/lovejunk/mobile.jpg'
-        : '/lovejunk/desktop.jpg'
+      if (this.mobile && this.desktop) {
+        return this.variant === 'mobile'
+          ? '/lovejunk/' + this.mobile
+          : '/lovejunk/' + this.desktop
+      }
+
+      return null
     },
     show() {
       // We want to show the ad if the user's location is within the area LoveJunk cover.
       if (this.me && (this.me.lat || this.me.lng)) {
-        // const point = turfpoint([-0.1281, 51.508])
-        const point = turfpoint([this.me.lng, this.me.lat])
+        const point = turfpoint([-0.1281, 51.508])
+        // const point = turfpoint([this.me.lng, this.me.lat])
 
         const poly = turfpolygon([
           [
@@ -136,11 +145,6 @@ export default {
           ]
         ])
 
-        console.log(
-          'Check ',
-          turfbooleanPointInPolygon,
-          turfbooleanPointInPolygon(point, poly)
-        )
         return turfbooleanPointInPolygon(point, poly)
       }
 
@@ -148,13 +152,23 @@ export default {
     }
   },
   methods: {
-    visible() {
+    async visible() {
       if (!this.shown) {
         this.shown = true
 
+        const ret = await this.$api.bandit.choose({
+          uid: this.uid
+        })
+
+        if (ret.variant) {
+          const p = ret.variant.indexOf('|')
+          this.desktop = ret.variant.substring(0, p)
+          this.mobile = ret.variant.substring(p + 1)
+        }
+
         this.$api.bandit.shown({
-          uid: 'lovejunk2',
-          variant: this.variant
+          uid: this.uid,
+          variant: ret.variant
         })
 
         this.$emit('update:shown', true)
@@ -162,7 +176,7 @@ export default {
     },
     async click() {
       await this.$api.bandit.chosen({
-        uid: 'lovejunk2',
+        uid: this.uid,
         variant: this.variant
       })
 
