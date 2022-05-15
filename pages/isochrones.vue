@@ -36,7 +36,7 @@ import map from '@/mixins/map.js'
 // let L = null
 let Wkt = null
 
-if (process.browser) {
+if (process.client) {
   // L = require('leaflet')
   Wkt = require('wicket')
   // require('leaflet-control-geocoder')

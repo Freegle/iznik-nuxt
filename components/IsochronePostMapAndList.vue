@@ -207,7 +207,7 @@ const GroupHeader = () => import('~/components/GroupHeader.vue')
 const JobsTopBar = () => import('~/components/JobsTopBar')
 const LoveJunk = () => import('~/components/LoveJunk')
 
-if (process.browser) {
+if (process.client) {
   Vue.use(VueObserveVisibility)
 }
 

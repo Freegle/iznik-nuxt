@@ -31,7 +31,7 @@ import map from '@/mixins/map.js'
 
 let L = null
 
-if (process.browser) {
+if (process.client) {
   L = require('leaflet')
   require('leaflet-control-geocoder')
   require('leaflet-control-geocoder/dist/Control.Geocoder.css')

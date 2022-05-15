@@ -14,7 +14,7 @@
     </b-badge>
     <div v-if="visibleApplied && visibleApplied.length">
       <div v-for="m in visibleApplied" :key="'memberapplied-' + m.id + '-' + m.userid + '-' + m.added" class="p-1 mr-1">
-        <strong>Applied {{ m.namedisplay.length > 32 ? (m.namedisplay.substring(0, 32) + '...') : m.namedisplay }}</strong>
+        <strong>Joined {{ m.namedisplay.length > 32 ? (m.namedisplay.substring(0, 32) + '...') : m.namedisplay }}</strong>
         <span :class="'small ' + (daysago(m.added) < 31 ? 'text-danger font-weight-bold' : 'text-muted')">{{ timeago(m.added) }}</span>
       </div>
     </div>

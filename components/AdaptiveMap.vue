@@ -207,7 +207,7 @@ const JobsTopBar = () => import('~/components/JobsTopBar')
 
 let L = null
 
-if (process.browser) {
+if (process.client) {
   Vue.use(VueObserveVisibility)
   L = require('leaflet')
 }

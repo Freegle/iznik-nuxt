@@ -100,7 +100,7 @@
         <SpinButton
           name="save"
           size="lg"
-          variant="success"
+          variant="primary"
           label="Submit Gift Aid Declaration"
           class="mt-4"
           :handler="save"

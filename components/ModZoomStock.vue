@@ -43,7 +43,6 @@ export default {
       return d.day() === DAY_OF_WEEK && this.timeNow < START
     },
     now() {
-      console.log('Now?', this.timeNow, START, END)
       return (
         this.$dayjs().day() === DAY_OF_WEEK &&
         this.timeNow >= START &&
@@ -64,3 +63,11 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+/deep/ a,
+a:visited,
+a:hover,
+a:active {
+  color: inherit;
+}
+</style>

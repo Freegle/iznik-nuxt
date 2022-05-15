@@ -193,6 +193,13 @@ export default {
     NoticeMessage,
     PasswordEntry
   },
+  props: {
+    fbworkaround: {
+      type: Boolean,
+      required: false,
+      default: true
+    }
+  },
   data: function() {
     return {
       bump: Date.now(),
@@ -221,10 +228,15 @@ export default {
     // Use of this.bump means we will recompute when we need to, i.e. when the modal is shown.  This is overriding
     // normal reactivity but that's because the SDKs we use aren't written in Vue.
     facebookDisabled() {
+      console.log(
+        'Evaluate Facebook disabled',
+        this.showSocialLoginBlocked,
+        typeof Vue.FB,
+        this.bump
+      )
       return (
         this.bump &&
-        this.showSocialLoginBlocked &&
-        typeof Vue.FB === 'undefined'
+        (this.showSocialLoginBlocked || typeof Vue.FB === 'undefined')
       )
     },
     googleDisabled() {
@@ -241,6 +253,7 @@ export default {
     socialblocked() {
       const ret =
         this.bump &&
+        this.initialisedSocialLogin &&
         (this.facebookDisabled || this.googleDisabled || this.yahooDisabled)
       return ret
     },
@@ -287,10 +300,6 @@ export default {
           this.installGoogleSDK()
           this.installFacebookSDK()
           this.initialisedSocialLogin = true
-
-          setTimeout(() => {
-            this.showSocialLoginBlocked = true
-          }, 5000)
         }
       }
     },
@@ -465,39 +474,44 @@ export default {
       }
     },
     async loginFacebook() {
-      this.$store.dispatch('auth/setLoginType', 'Facebook')
+      if (this.fbworkaround) {
+        this.pleaseShowModal = false
+        this.$router.push('/facebookproblem')
+      } else {
+        this.$store.dispatch('auth/setLoginType', 'Facebook')
 
-      this.nativeLoginError = null
-      this.socialLoginError = null
-      try {
-        let response = null
-        const promise = new Promise(function(resolve) {
-          Vue.FB.login(
-            function(ret) {
-              response = ret
-              resolve()
-            },
-            { scope: 'email' }
-          )
-        })
-
-        await promise
-        if (response.authResponse) {
-          const accessToken = response.authResponse.accessToken
-
-          await this.$store.dispatch('auth/login', {
-            fblogin: 1,
-            fbaccesstoken: accessToken
+        this.nativeLoginError = null
+        this.socialLoginError = null
+        try {
+          let response = null
+          const promise = new Promise(function(resolve) {
+            Vue.FB.login(
+              function(ret) {
+                response = ret
+                resolve()
+              },
+              { scope: 'email' }
+            )
           })
 
-          // We are now logged in.
-          self.pleaseShowModal = false
-        } else {
-          this.socialLoginError =
-            'Facebook response is unexpected.  Please try later.'
+          await promise
+          if (response.authResponse) {
+            const accessToken = response.authResponse.accessToken
+
+            await this.$store.dispatch('auth/login', {
+              fblogin: 1,
+              fbaccesstoken: accessToken
+            })
+
+            // We are now logged in.
+            self.pleaseShowModal = false
+          } else {
+            this.socialLoginError =
+              'Facebook response is unexpected.  Please try later.'
+          }
+        } catch (e) {
+          this.socialLoginError = 'Facebook login error: ' + e.message
         }
-      } catch (e) {
-        this.socialLoginError = 'Facebook login error: ' + e.message
       }
     },
     loginGoogle() {
@@ -624,51 +638,59 @@ export default {
       })(document, 'script', 'google-jssdk')
     },
     installFacebookSDK() {
-      const VueFB = {}
+      if (typeof Vue.FB === 'undefined') {
+        console.log('Need to install Facebook SDK')
+        const VueFB = {}
 
-      VueFB.install = function install(Vue, options) {
-        Vue.FB = undefined
+        VueFB.install = function install(Vue, options) {
+          Vue.FB = undefined
 
-        window.fbAsyncInit = function() {
-          window.FB.init(options)
-          window.FB.AppEvents.logPageView()
-          Vue.FB = window.FB
+          window.fbAsyncInit = function() {
+            window.FB.init(options)
+            window.FB.AppEvents.logPageView()
+            Vue.FB = window.FB
 
-          // We need to have some special code for IE11 - see https://stackoverflow.com/questions/27176983/dispatchevent-not-working-in-ie11.
-          let event
+            // We need to have some special code for IE11 - see https://stackoverflow.com/questions/27176983/dispatchevent-not-working-in-ie11.
+            let event
 
-          if (typeof Event === 'function') {
-            event = new Event('fb-sdk-ready')
-          } else {
-            event = document.createEvent('Event')
-            event.initEvent('fb-sdk-ready', true, true)
-          }
-        }
-        ;(function(d, s, id) {
-          setTimeout(() => {
-            try {
-              const fjs = d.getElementsByTagName(s)[0]
-              if (d.getElementById(id)) {
-                return
-              }
-
-              const js = d.createElement(s)
-              js.id = id
-              js.src = '//connect.facebook.net/en_US/sdk.js'
-              fjs.parentNode.insertBefore(js, fjs)
-            } catch (e) {
-              console.error('Failed to load Facebook SDK', e)
+            if (typeof Event === 'function') {
+              event = new Event('fb-sdk-ready')
+            } else {
+              event = document.createEvent('Event')
+              event.initEvent('fb-sdk-ready', true, true)
             }
-          }, 1000)
-        })(document, 'script', 'facebook-jssdk')
-      }
+          }
+          ;(function(d, s, id) {
+            setTimeout(() => {
+              try {
+                const fjs = d.getElementsByTagName(s)[0]
+                if (d.getElementById(id)) {
+                  return
+                }
 
-      Vue.use(VueFB, {
-        appId: process.env.FACEBOOK_APPID,
-        autoLogAppEvents: true,
-        xfbml: true,
-        version: 'v4.0'
-      })
+                const js = d.createElement(s)
+                js.id = id
+                js.src = '//connect.facebook.net/en_US/sdk.js'
+                fjs.parentNode.insertBefore(js, fjs)
+              } catch (e) {
+                console.error('Failed to load Facebook SDK', e)
+              }
+            }, 1000)
+          })(document, 'script', 'facebook-jssdk')
+        }
+
+        Vue.use(VueFB, {
+          appId: process.env.FACEBOOK_APPID,
+          autoLogAppEvents: true,
+          xfbml: true,
+          version: 'v4.0'
+        })
+
+        console.log('Installed FB SDK, bump')
+        this.bump++
+      } else {
+        console.log('FB SDK already loaded')
+      }
     }
   }
 }

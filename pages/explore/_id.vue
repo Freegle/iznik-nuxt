@@ -86,7 +86,7 @@ export default {
             collection: 'Approved',
             summary: true,
             types: ['Offer', 'Wanted'],
-            limit: process.browser ? 5 : 20 // During SSR fetch more, for better SEO.  But not too much else it's slow.
+            limit: process.client ? 5 : 20 // During SSR fetch more, for better SEO.  But not too much else it's slow.
           })
         }
       } catch (e) {
