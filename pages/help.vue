@@ -314,8 +314,8 @@
                   </template>
                   <template slot="content">
                     <p>
-                      Freegle originally grew out of Freecycle a decade ago, but we've developed in different ways.
-                      So what are the differences?
+                      Freegle began on 11th September 2009 when it grew out of Freecycle.  We've developed in different ways,
+                      so what are the differences?
                     </p>
                     <ul>
                       <li>
