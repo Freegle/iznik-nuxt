@@ -3,50 +3,67 @@
     <client-only>
       <ScrollToTop />
       <ModHelpFeedback />
-      <div class="d-flex justify-content-between">
-        <GroupSelect v-model="groupid" modonly all remember="membersfeedback" />
-        <b-select v-model="filter">
-          <option value="Comments">
-            With Comments
-          </option>
-          <option value="Happy">
-            Happy
-          </option>
-          <option value="Unhappy">
-            Unhappy
-          </option>
-          <option value="Fine">
-            Fine
-          </option>
-        </b-select>
-        <b-btn variant="white" @click="markAll">
-          Mark all as seen
-        </b-btn>
-      </div>
-      <b-card v-if="happinessData.length" variant="white" class="mt-1">
-        <b-card-text>
-          <p class="text-center">
-            This is what people have said over the last year<span v-if="!groupid"> across all of Freegle</span>.
-          </p>
-          <GChart
-            type="PieChart"
-            :data="happinessData"
-            :options="happinessOptions"
-          />
-        </b-card-text>
-      </b-card>
+      <b-tabs content-class="mt-3" card>
+        <b-tab active>
+          <template v-slot:title>
+            <h4 class="header--size4 ml-2 mr-2">
+              Feedback <span v-if="uniqueMembers.length">({{ uniqueMembers.length }})</span>
+            </h4>
+          </template>
+          <div class="d-flex justify-content-between">
+            <GroupSelect v-model="groupid" modonly all remember="membersfeedback" />
+            <b-select v-model="filter">
+              <option value="Comments">
+                With Comments
+              </option>
+              <option value="Happy">
+                Happy
+              </option>
+              <option value="Unhappy">
+                Unhappy
+              </option>
+              <option value="Fine">
+                Fine
+              </option>
+            </b-select>
+            <b-btn variant="white" @click="markAll">
+              Mark all as seen
+            </b-btn>
+          </div>
+          <b-card v-if="happinessData.length" variant="white" class="mt-1">
+            <b-card-text>
+              <p class="text-center">
+                This is what people have said over the last year<span v-if="!groupid"> across all of Freegle</span>.
+              </p>
+              <GChart
+                type="PieChart"
+                :data="happinessData"
+                :options="happinessOptions"
+              />
+            </b-card-text>
+          </b-card>
 
+          <NoticeMessage v-if="!members.length && !busy" class="mt-2">
+            There are no items to show at the moment.
+          </NoticeMessage>
 
-      <div v-for="item in visibleItems" :key="'memberlist-' + item.id" class="p-0 mt-2">
-        <ModMemberHappiness v-if="item.type === 'Member' && filterMatch(item.object)" :id="item.object.id" />
-        <ModMemberRating v-if="item.type === 'Rating'" :rating="item.object" class="mt-2" />
-      </div>
+          <div v-for="item in visibleItems" :key="'memberlist-' + item.id" class="p-0 mt-2">
+            <ModMemberHappiness v-if="item.type === 'Member' && filterMatch(item.object)" :id="item.object.id" />
+          </div>
+        </b-tab>
+        <b-tab>
+          <template v-slot:title>
+            <h4 class="header--size4 ml-2 mr-2">
+              Thumbs Up/Down <span v-if="ratings.length">({{ ratings.length }})</span>
+            </h4>
+          </template>
 
-      <NoticeMessage v-if="!members.length && !busy" class="mt-2">
-        There are no items to show at the moment.
-      </NoticeMessage>
-
-      <infinite-loading :key="'infinite-' + groupid + '-' + filter" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
+          <div v-for="item in visibleItems" :key="'memberlist-' + item.id" class="p-0 mt-2">
+            <ModMemberRating v-if="item.type === 'Rating'" :rating="item.object" class="mt-2" />
+          </div>
+        </b-tab>
+      </b-tabs>
+      <infinite-loading :key="'infinite-feedback-' + groupid + '-' + filter" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
         <span slot="no-results" />
         <span slot="no-more" />
         <span slot="spinner">
