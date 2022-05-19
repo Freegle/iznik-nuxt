@@ -28,6 +28,7 @@ export const state = () => ({
 export const mutations = {
   add(state, item) {
     item.earliestDate = earliestDate(item.dates)
+    item.earliestDateOfAll = earliestDate(item.dates, true)
     Vue.set(state.list, item.id, item)
   },
 
@@ -35,6 +36,7 @@ export const mutations = {
     if (items) {
       items.forEach(item => {
         item.earliestDate = earliestDate(item.dates)
+        item.earliestDateOfAll = earliestDate(item.dates, true)
         Vue.set(state.list, item.id, item)
       })
     }
@@ -46,6 +48,7 @@ export const mutations = {
     if (list) {
       for (const item of list) {
         item.earliestDate = earliestDate(item.dates)
+        item.earliestDateOfAll = earliestDate(item.dates, true)
         Vue.set(state.list, item.id, item)
       }
     }

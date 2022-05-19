@@ -5,12 +5,17 @@
         <div itemprop="about">
           {{ item.title }}
         </div>
+        <div itemprop="name">
+          {{ item.title }}
+        </div>
         <div itemprop="description">
           {{ item.description }}
         </div>
         <div v-if="item.earliestDate" itemprop="startDate" :datetime="item.earliestDate.start.substring(0, 16)" />
         <div itemprop="location">
-          {{ item.location }}
+          <div itemprop="address">
+            {{ item.location }}
+          </div>
         </div>
       </div>
 
