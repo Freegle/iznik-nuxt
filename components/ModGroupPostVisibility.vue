@@ -4,9 +4,6 @@
       Post visibility
     </label>
     <p>
-      This function isn't live yet, but will be fairly soon.
-    </p>
-    <p>
       On the Browse page, freeglers will see posts that are reasonably close to their own location, based on how long it
       would take them to get there.  They can adjust this setting, and also whether they are travelling on foot,
       by bike, or by car.  They can also add extra locations - for example if they have relatives in different places.
