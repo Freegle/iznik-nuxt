@@ -88,7 +88,7 @@ export default {
         await this.$store.dispatch('user/clear')
 
         await this.$store.dispatch('user/fetch', {
-          search: val,
+          search: encodeURIComponent(val),
           emailhistory: true
         })
 
