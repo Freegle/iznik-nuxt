@@ -168,7 +168,7 @@ export default {
 
         this.$api.bandit.shown({
           uid: this.uid,
-          variant: ret.variant
+          variant: this.variant === 'mobile' ? this.mobile : this.desktop
         })
 
         this.$emit('update:shown', true)
