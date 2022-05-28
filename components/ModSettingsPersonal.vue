@@ -105,6 +105,15 @@
     <b-form-group label="Would you like some cake?">
       <ModCake />
     </b-form-group>
+    <h5 class="mt-3">
+      Unsubscribe
+    </h5>
+    <p>
+      If you want to completely leave ModTools and Freegle and remove all your data, click here.
+    </p>
+    <b-btn variant="primary" to="/unsubscribe">
+      Unsubscribe
+    </b-btn>
   </div>
 </template>
 <script>
