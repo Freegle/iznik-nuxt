@@ -447,13 +447,25 @@ export default {
                 // If we don't find anything at this location we will want to zoom out.
                 self.shownMany = false
 
-                self.$nextTick(() => {
-                  // Move the map to the location we've found.
-                  if (self.mapObject) {
-                    self.mapObject.flyToBounds(e.geocode.bbox)
-                    self.$emit('searched')
-                  }
-                })
+                // For some reason we need to take a copy of the latlng bounds in the event before passing it to
+                // flyToBounds.
+                const flyTo = e.geocode.bbox
+                const newBounds = new L.LatLngBounds(
+                  new L.LatLng(
+                    flyTo.getSouthWest().lat,
+                    flyTo.getSouthWest().lng
+                  ),
+                  new L.LatLng(
+                    flyTo.getNorthEast().lat,
+                    flyTo.getNorthEast().lng
+                  )
+                )
+
+                // Move the map to the location we've found.
+                if (self.mapObject) {
+                  self.mapObject.flyToBounds(newBounds)
+                  self.$emit('searched')
+                }
               }
             })
             .addTo(this.mapObject)

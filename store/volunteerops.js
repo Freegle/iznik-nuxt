@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Moment from 'dayjs'
 
-function earliestDate(dates) {
+function earliestDate(dates, ofall) {
   // Find the earliest date which is in the future.
   const now = Date.now()
   let earliest = null
@@ -9,7 +9,7 @@ function earliestDate(dates) {
 
   for (let i = 0; i < dates.length; i++) {
     const atime = new Date(dates[i].start).getTime()
-    if (atime >= now && (!earliest || atime < earliest)) {
+    if ((ofall || atime >= now) && (!earliest || atime < earliest)) {
       earliest = atime
       earliestDate = dates[i]
     }
@@ -49,6 +49,7 @@ export const state = () => ({
 export const mutations = {
   add(state, item) {
     item.earliestDate = earliestDate(item.dates)
+    item.earliestDateOfAll = earliestDate(item.dates, true)
     Vue.set(state.list, item.id, addStrings(item))
   },
 
@@ -56,6 +57,7 @@ export const mutations = {
     if (items) {
       items.forEach(item => {
         item.earliestDate = earliestDate(item.dates)
+        item.earliestDateOfAll = earliestDate(item.dates, true)
         Vue.set(state.list, item.id, addStrings(item))
       })
     }
@@ -67,6 +69,7 @@ export const mutations = {
     if (list) {
       for (const item of list) {
         item.earliestDate = earliestDate(item.dates)
+        item.earliestDateOfAll = earliestDate(item.dates, true)
         Vue.set(state.list, item.id, item)
       }
     }

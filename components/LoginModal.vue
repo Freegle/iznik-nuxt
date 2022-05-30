@@ -203,13 +203,6 @@ export default {
     NoticeMessage,
     PasswordEntry
   },
-  props: {
-    fbworkaround: {
-      type: Boolean,
-      required: false,
-      default: true
-    }
-  },
   data: function() {
     return {
       bump: Date.now(),
@@ -228,7 +221,8 @@ export default {
       loginType: null,
       initialisedSocialLogin: false,
       showSocialLoginBlocked: false,
-      nativeBump: 1
+      nativeBump: 1,
+      timerElapsed: false
     }
   },
   computed: {
@@ -300,7 +294,8 @@ export default {
       const ret =
         this.bump &&
         this.initialisedSocialLogin &&
-        (this.facebookDisabled || this.googleDisabled || this.yahooDisabled)
+        (this.facebookDisabled || this.googleDisabled || this.yahooDisabled) &&
+        this.timerElapsed
       return ret
     },
     modalIsForced() {
@@ -405,6 +400,11 @@ export default {
       this.pleaseShowModal = true
       this.nativeLoginError = null
       this.socialLoginError = null
+      const self = this
+
+      setTimeout(() => {
+        self.timerElapsed = true
+      }, 3000)
     },
     hide() {
       this.pleaseShowModal = false
@@ -598,8 +598,8 @@ export default {
             fbaccesstoken: accessToken
           })
 
-            // We are now logged in.
-            self.pleaseShowModal = false
+          // We are now logged in.
+          self.pleaseShowModal = false
         } else {
           this.socialLoginError =
             'Facebook response is unexpected.  Please try later.'

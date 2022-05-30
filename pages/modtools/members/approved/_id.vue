@@ -9,7 +9,11 @@
           <b-btn v-if="groupid" variant="white" class="ml-2" @click="addMember">
             <v-icon name="plus" /> Add
           </b-btn>
+          <b-btn v-if="groupid" variant="white" class="ml-2" @click="banMember">
+            <v-icon name="trash-alt" /> Ban
+          </b-btn>
           <ModAddMemberModal v-if="groupid" ref="addmodal" :groupid="groupid" />
+          <ModBanMemberModal v-if="groupid" ref="banmodal" :groupid="groupid" />
           <ModMergeButton class="ml-2" />
           <ModMemberExportButton v-if="groupid" class="ml-2" :groupid="groupid" />
         </div>
@@ -50,6 +54,7 @@ import NoticeMessage from '../../../../components/NoticeMessage'
 import ModMemberSearchbox from '../../../../components/ModMemberSearchbox'
 import ModMemberTypeSelect from '../../../../components/ModMemberTypeSelect'
 import ModAddMemberModal from '../../../../components/ModAddMemberModal'
+import ModBanMemberModal from '../../../../components/ModBanMemberModal'
 import ModMergeButton from '../../../../components/ModMergeButton'
 import ModMemberExportButton from '../../../../components/ModMemberExportButton'
 import ScrollToTop from '../../../../components/ScrollToTop'
@@ -60,6 +65,7 @@ export default {
     ModMemberExportButton,
     ModMergeButton,
     ModAddMemberModal,
+    ModBanMemberModal,
     ModMemberTypeSelect,
     ModMemberSearchbox,
     NoticeMessage,
@@ -117,6 +123,11 @@ export default {
     addMember() {
       this.waitForRef('addmodal', () => {
         this.$refs.addmodal.show()
+      })
+    },
+    banMember() {
+      this.waitForRef('banmodal', () => {
+        this.$refs.banmodal.show()
       })
     }
   }

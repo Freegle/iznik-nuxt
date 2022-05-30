@@ -74,7 +74,7 @@
                   <span v-else-if="variant === 'buttonsmonthly'">
                     please set up a monthly donation
                   </span>
-                  <span v-else-if="variant === 'buttons1510' || variant === 'buttons51025'">
+                  <span v-else-if="variant === 'buttons1510' || variant === 'buttons51025' || variant === 'buttons2510'">
                     please donate
                   </span>
                   <span v-else>
@@ -103,6 +103,11 @@
               </div>
               <div v-else-if="variant === 'buttons1510'" class="d-flex justify-content-between flex-wrap">
                 <donation-button link="paypal1" show="£1" class="mb-1" @clicked="score(1)" />
+                <donation-button link="paypal5" show="£5" class="mb-1" @clicked="score(5)" />
+                <donation-button link="paypal10" show="£10" class="mb-1" @clicked="score(10)" />
+              </div>
+              <div v-else-if="variant === 'buttons2510'" class="d-flex justify-content-between flex-wrap">
+                <donation-button link="paypal2" show="£2" class="mb-1" @clicked="score(2)" />
                 <donation-button link="paypal5" show="£5" class="mb-1" @clicked="score(5)" />
                 <donation-button link="paypal10" show="£10" class="mb-1" @clicked="score(10)" />
               </div>
