@@ -34,26 +34,22 @@ export default {
   data: function() {
     return {
       shown: false,
-      desktop: null,
-      mobile: null,
-      uid: 'lovejunk3'
+      chosen: null,
+      uid: 'lovejunk4'
     }
   },
   computed: {
+    key() {
+      return this.uid + '-' + this.variant
+    },
     src() {
-      if (this.mobile && this.desktop) {
-        return this.variant === 'mobile'
-          ? '/lovejunk/' + this.mobile
-          : '/lovejunk/' + this.desktop
-      }
-
-      return null
+      return '/lovejunk/' + this.chosen
     },
     show() {
       // We want to show the ad if the user's location is within the area LoveJunk cover.
       if (this.me && (this.me.lat || this.me.lng)) {
-        // const point = turfpoint([-0.1281, 51.508])
-        const point = turfpoint([this.me.lng, this.me.lat])
+        const point = turfpoint([-0.1281, 51.508])
+        // const point = turfpoint([this.me.lng, this.me.lat])
 
         const poly = turfpolygon([
           [
@@ -157,27 +153,25 @@ export default {
         this.shown = true
 
         const ret = await this.$api.bandit.choose({
-          uid: this.uid
+          uid: this.key
         })
 
         if (ret.variant) {
-          const p = ret.variant.indexOf('|')
-          this.desktop = ret.variant.substring(0, p)
-          this.mobile = ret.variant.substring(p + 1)
-        }
+          this.chosen = ret.variant
 
-        this.$api.bandit.shown({
-          uid: this.uid,
-          variant: this.variant === 'mobile' ? this.mobile : this.desktop
-        })
+          this.$api.bandit.shown({
+            uid: this.key,
+            variant: ret.variant
+          })
+        }
 
         this.$emit('update:shown', true)
       }
     },
     async click() {
       await this.$api.bandit.chosen({
-        uid: this.uid,
-        variant: this.variant === 'mobile' ? this.mobile : this.desktop
+        uid: this.key,
+        variant: this.chosen
       })
 
       window.open('https://www.lovejunk.com/rubbish-clearance/')
