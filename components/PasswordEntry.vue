@@ -1,6 +1,6 @@
 <template>
   <b-form-group
-    label="Your password:"
+    label="Choose password"
     label-for="password"
     class="font-weight-bold"
   >
@@ -9,7 +9,7 @@
         id="password"
         v-model="password"
         :type="showPassword ? 'text' : 'password'"
-        placeholder="Your password"
+        placeholder="Choose password"
         class="password__input"
         @input="$emit('update:password', $event)"
       />

@@ -209,7 +209,7 @@ export default {
   methods: {
     async registerOrSend() {
       // We've got a reply and an email address.  Maybe the email address is a registered user, maybe it's new.  If
-      // it's a registered user then we want to force them to sign in.
+      // it's a registered user then we want to force them to log in.
       //
       // We attempt to register the user.  If the user already exists, then we'll be told about that as an error.
       console.log('Register or send', this.email)
@@ -300,7 +300,7 @@ export default {
             this.sent()
           })
         } else {
-          // We're not logged in yet.  We need to force a sign in.  Once that completes then either the watch in here
+          // We're not logged in yet.  We need to force a log in.  Once that completes then either the watch in here
           // or default.vue will spot we have a reply to send and make it happen.
           console.log('Force login')
           this.$store.dispatch('auth/forceLogin', true)

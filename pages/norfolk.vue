@@ -26,10 +26,10 @@
         </p>
         <p>
           If you had an account on Norfolk Freegle,
-          you can now use the same details in order to sign in to Freegle.
+          you can now use the same details in order to log in to Freegle.
         </p>
         <b-btn variant="primary" size="lg" to="/chitchat" class="mb-1">
-          Sign in to Freegle
+          Log in to Freegle
         </b-btn>
         <p>
           Any questions?  There is a Help page <nuxt-link to="/help">

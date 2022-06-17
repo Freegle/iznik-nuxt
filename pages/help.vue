@@ -72,7 +72,7 @@
                   <template slot="content">
                     <p>
                       <!-- eslint-disable-next-line-->
-                      If someone has collected your OFFER, then make sure you're logged in (click on <em>Sign in</em> on the top left if you need to), then go to <nuxt-link to="/myposts">My Posts</nuxt-link>, find your post, and click this:
+                      If someone has collected your OFFER, then make sure you're logged in (click on <em>Log in</em> on the top left if you need to), then go to <nuxt-link to="/myposts">My Posts</nuxt-link>, find your post, and click this:
                     </p>
 
                     <b-btn variant="primary">
@@ -421,7 +421,7 @@
           </p>
           <div v-if="!loggedIn" class="mb-1">
             <notice-message>
-              Please sign in using the menu option at the top to contact your community volunteers.
+              Please log in using the menu option at the top to contact your community volunteers.
             </notice-message>
           </div>
           <p>But you can also contact:</p>

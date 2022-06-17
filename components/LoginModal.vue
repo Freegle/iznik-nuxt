@@ -20,26 +20,24 @@
       </h2>
     </template>
     <p v-if="signUp" class="text-center">
-      You'll get emails.  Name, approx. location, and profile picture are public - you can hide your real name and
+      You'll get emails.  Name, approximate location, and profile picture are public - you can hide your real name and
       picture from Settings.  Logging in adds cookies and local
-      storage.  Read <nuxt-link target="_blank" to="/terms">
-        Terms of Use
-      </nuxt-link> and
-      <nuxt-link target="_blank" to="/privacy">
-        Privacy
-      </nuxt-link> for details.  Ok?  Now come on in...
+      <!-- eslint-disable-next-line -->
+      storage.  Read <nuxt-link target="_blank" to="/terms">Terms of Use</nuxt-link> and
+      <!-- eslint-disable-next-line -->
+      <nuxt-link target="_blank" to="/privacy">Privacy</nuxt-link> for details.  Ok?  Now come on in...
     </p>
     <p v-if="modtools" class="text-center">
       <!-- eslint-disable-next-line -->
       Need temporary help moderating?  Mail <ExternalLink href="mailto:mentors@ilovefreegle.org">mentors@ilovefreegle.org</ExternalLink>.
     </p>
     <p v-if="loginType" class="text-center font-weight-bold">
-      You usually sign in using {{ loginType }}.
+      You usually log in using {{ loginType }}.
     </p>
     <div class="d-flex flex-column flex-lg-row justify-content-between p-3">
       <div class="signin__section--social">
         <h3 class="header--size5 pb-3">
-          Continue with your social account
+          Log in with a social account
         </h3>
         <p v-if="signUp" class="font-weight-bold">
           Using one of these buttons is the easiest way to create an account:
@@ -57,7 +55,7 @@
           <span class="p-2 text--medium font-weight-bold">Continue with Yahoo</span>
         </b-btn>
         <notice-message v-if="socialblocked" variant="warning">
-          Social sign in blocked - check your privacy settings, including any ad blockers such as
+          Social log in blocked - check your privacy settings, including any ad blockers such as
           Adblock Plus.
         </notice-message>
         <b-alert v-if="socialLoginError" variant="danger" show>
@@ -74,16 +72,10 @@
       <div class="signin__section--freegle">
         <h3 class="header--size5 pb-0">
           <span v-if="signUp">
-            Create an account on Freegle
+            Register a new Freegle account
           </span>
-          <span v-else>Continue with your Freegle account</span>
+          <span v-else>Log in with your Freegle account</span>
         </h3>
-        <span v-if="signUp" class="text-center font-weight-bold">
-          Already a freegler?
-          <b-btn variant="link" class="font-weight-bold pl-1 py-0 border-0 align-top" @click="clickShowSignIn">
-            Sign In
-          </b-btn>
-        </span>
         <b-form
           id="loginform"
           ref="form"
@@ -96,7 +88,7 @@
           <div v-if="signUp">
             <b-form-group
               id="firstnameGroup"
-              label="Your first name"
+              label="First name"
               label-for="firstname"
               label-class="mb-0"
             >
@@ -111,7 +103,7 @@
             </b-form-group>
             <b-form-group
               id="lastnameGroup"
-              label="Your last name"
+              label="Last name"
               label-for="lastname"
               label-class="mb-0"
             >
@@ -130,13 +122,13 @@
             size="md"
             :email.sync="email"
             :valid.sync="emailValid"
-            label="Your email address:"
+            label="Email address"
           />
           <NoticeMessage v-if="referToGoogleButton">
-            Please use the <em>Continue with Google</em> button to sign in.  That way you don't need to remember a password on this site.
+            Please use the <em>Continue with Google</em> button to log in.  That way you don't need to remember a password on this site.
           </NoticeMessage>
           <NoticeMessage v-if="referToYahooButton">
-            Please use the <em>Continue with Yahoo</em> button to sign in.  That way you don't need to remember a password on this site.
+            Please use the <em>Continue with Yahoo</em> button to log in.  That way you don't need to remember a password on this site.
           </NoticeMessage>
           <PasswordEntry :original-password="password" :password.sync="password" />
           <b-btn
@@ -150,23 +142,27 @@
             :disabled="nativeDisabled"
           >
             <span v-if="!signUp">
-              Sign in to Freegle
+              Log in to Freegle
             </span>
             <span v-else>
-              Sign up to Freegle
+              Register on Freegle
             </span>
           </b-btn>
+          <p v-if="signUp" class="text-center font-weight-bold">
+            <b-btn variant="link" class="font-weight-bold pl-1 py-0 border-0 align-top" @click="clickShowSignIn">
+              Already a freegler? Log in
+            </b-btn>
+          </p>
           <b-alert v-if="nativeLoginError" variant="danger" show>
             Login Failed: {{ nativeLoginError }}
           </b-alert>
-          <div v-if="!signUp" class="text-center">
-            <nuxt-link to="/forgot" @click.native="forgot">
+          <div v-if="!signUp" class="text-center link">
+            <nuxt-link to="/forgot" class="nodecor" @click.native="forgot">
               I forgot my password
             </nuxt-link>
             <p class="mb-0">
-              New freegler?
-              <b-btn variant="link" class="pl-1 pr-0 py-0 border-0 align-top" @click="clickShowSignUp">
-                Sign Up
+              <b-btn variant="link" class="pl-0 pr-0 py-0 border-0 align-top" @click="clickShowSignUp">
+                New freegler? Register
               </b-btn>
             </p>
           </div>
@@ -363,7 +359,7 @@ export default {
       e.preventDefault()
       e.stopPropagation()
 
-      // Probably this is someone who is already a user and is trying to sign in, but has cleared their cache
+      // Probably this is someone who is already a user and is trying to log in, but has cleared their cache
       // (so we've forgotten that they've previously signed in) and hasn't noticed that they need to switch.
       const confused =
         !this.firstname && !this.lastname && this.email && this.password
@@ -426,7 +422,7 @@ export default {
         }
       } else if (this.email && this.password) {
         // Login
-        console.log('Sign in')
+        console.log('Log in')
         this.$store
           .dispatch('auth/login', {
             email: this.email,

@@ -88,7 +88,7 @@ export default {
       // We can fetch all the ones we're a member of.
       await store.dispatch('communityevents/fetch')
     } else {
-      // We should force them to sign in and figure out what they want to do.
+      // We should force them to log in and figure out what they want to do.
       await store.dispatch('auth/forceLogin', true)
     }
 

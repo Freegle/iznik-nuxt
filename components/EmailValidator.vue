@@ -30,7 +30,7 @@
       Did you mean <strong>{{ suggestedDomains[0] }}</strong>?
     </div>
     <div v-if="email && email.indexOf('privaterelay.appleid.com') !== -1" class="text-muted small mb-3">
-      This means you use your Apple ID to sign in.
+      This means you use your Apple ID to log in.
     </div>
   </div>
 </template>

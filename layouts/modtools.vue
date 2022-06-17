@@ -39,7 +39,7 @@
           </b-nav-item>
           <b-nav-item v-if="!loggedIn">
             <b-btn variant="white" @click="requestLogin">
-              Sign in
+              Log in
             </b-btn>
           </b-nav-item>
         </b-navbar-nav>
