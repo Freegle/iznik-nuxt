@@ -101,17 +101,6 @@ export default {
           })
       }
     }
-  },
-  head() {
-    if (this.invalid || !this.volunteering) {
-      return this.buildHead('Volunter Opportunity #' + this.id)
-    } else {
-      return this.buildHead(
-        this.volunteering.title,
-        this.volunteering.description,
-        null
-      )
-    }
   }
 }
 </script>
