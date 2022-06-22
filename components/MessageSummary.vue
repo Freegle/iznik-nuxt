@@ -4,7 +4,7 @@
       <MessageFreegled :id="id" />
     </template>
     <template v-else-if="message.promised">
-      <MessagePromised :id="id" summary class="clickme" @click="expand" />
+      <MessagePromised :id="id" summary class="clickme" :to-me="message.promisedtome" @click="expand" />
     </template>
     <div :class="classes" @click="expand">
       <MessageItemLocation
