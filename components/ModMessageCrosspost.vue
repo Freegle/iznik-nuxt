@@ -1,10 +1,21 @@
 <template>
-  <div class="text-danger small">
-    Crosspost <v-icon name="hashtag" class="text-muted" scale="0.5" />{{ message.id }} <nuxt-link :to="'/modtools/message/' + message.id">
-      <em>{{ message.subject }}</em>
-      {{ timeago(message.arrival) }} on <em>{{ groupname }}</em>
-    </nuxt-link>
-    <span v-if="message.outcome">, now {{ message.outcome }}</span><span v-else>, still open</span>
+  <div class="small">
+    <span class="text-danger ">
+      Crosspost
+      <v-icon name="hashtag" class="text-muted" scale="0.5" />
+      {{ message.id }}
+      <nuxt-link :to="'/modtools/message/' + message.id">
+        <em>{{ message.subject }}</em>
+        {{ timeago(message.arrival) }} on <em>{{ groupname }}</em>
+      </nuxt-link>
+    </span>
+    <span v-if="message.collection != 'Approved'">
+      <span class="text-muted">in</span>
+      <span class="text-danger">
+        {{ message.collection }}
+      </span>
+    </span>
+    <span v-else-if="message.outcome">, now {{ message.outcome }}</span><span v-else class="text-normal">, still open</span>
   </div>
 </template>
 <script>
