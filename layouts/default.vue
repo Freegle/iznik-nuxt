@@ -88,9 +88,11 @@ export default {
       // cause displayed fromNow() values to change, rather than starting a timer for each of them.
       this.updateTime()
 
-      this.waitForRef('paypal', () => {
-        this.$refs.paypal.show()
-      })
+      if (this.$store.getters['auth/user']) {
+        this.waitForRef('paypal', () => {
+          this.$refs.paypal.show()
+        })
+      }
     }
 
     // Ensure we know whether we're FD or MT.
