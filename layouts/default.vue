@@ -19,6 +19,7 @@
         <ChatButton v-if="replyToSend" ref="replyToPostChatButton" :userid="replyToUser" />
       </div>
       <Breakpoint />
+      <PayPalVoteModal ref="paypal" />
     </client-only>
   </div>
 </template>
@@ -31,6 +32,7 @@ const Breakpoint = () => import('~/components/Breakpoint')
 const ChatPopups = () => import('~/components/ChatPopups')
 const ChatButton = () => import('~/components/ChatButton')
 const ExternalLink = () => import('~/components/ExternalLink')
+const PayPalVoteModal = () => import('~/components/PayPalVoteModal')
 
 export default {
   components: {
@@ -39,7 +41,8 @@ export default {
     ChatButton,
     BouncingEmail,
     ExternalLink,
-    MainHeader
+    MainHeader,
+    PayPalVoteModal
   },
   mixins: [replyToPost],
   data: function() {
@@ -84,6 +87,10 @@ export default {
       // Start our timer.  Holding the time in the store allows us to update the time regularly and have reactivity
       // cause displayed fromNow() values to change, rather than starting a timer for each of them.
       this.updateTime()
+
+      this.waitForRef('paypal', () => {
+        this.$refs.paypal.show()
+      })
     }
 
     // Ensure we know whether we're FD or MT.
