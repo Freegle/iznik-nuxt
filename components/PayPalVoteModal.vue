@@ -16,7 +16,7 @@
       <p>
         Our friends at PayPal are running a competition to feature the charities that get the <b>most votes</b> from now
         until <b>30th June</b>. With your help we've done well in similar competitions in previous years, and so we know that this can
-        really make a big difference for us.
+        really make a big difference for us - and help us help more people.
       </p>
       <p>
         <b>Please click here:</b>
