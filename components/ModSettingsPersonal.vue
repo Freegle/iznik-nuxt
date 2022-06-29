@@ -12,6 +12,7 @@
       </b-input-group>
     </b-form-group>
     <b-form-group label="Your email address">
+      <EmailConfirmModal ref="emailconfirm" />
       <b-form-text class="mb-2">
         Anything we mail to you, we'll mail to this email address.
       </b-form-text>
@@ -119,10 +120,11 @@
 <script>
 import SpinButton from './SpinButton'
 import ModCake from '~/components/ModCake'
+import EmailConfirmModal from '~/components/EmailConfirmModal'
 const OurToggle = () => import('~/components/OurToggle')
 
 export default {
-  components: { SpinButton, OurToggle, ModCake },
+  components: { SpinButton, OurToggle, ModCake, EmailConfirmModal },
 
   data: function() {
     return {
