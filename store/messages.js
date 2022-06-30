@@ -206,7 +206,7 @@ export const actions = {
     try {
       // We need to fetch:
       // - for ModTools, so we are always up to date
-      // - if we don't have it
+      // - if we don't have it (at all or fully)
       // - if it's old, to pick up edits or state changes
       const modtools = rootGetters['misc/get']('modtools')
       const now = this.$dayjs()
@@ -216,6 +216,7 @@ export const actions = {
         modtools ||
         !message ||
         !message.addedToStore ||
+        !message.fromuserid ||
         params.force ||
         now.diff(this.$dayjs(message.addedToStore), 'minute') > 30
 

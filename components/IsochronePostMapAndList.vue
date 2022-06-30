@@ -433,7 +433,7 @@ export default {
             const message = this.$store.getters['messages/get'](m.id)
 
             if (message) {
-              const key = message.fromuser + '|' + message.subject
+              const key = message.fromuserid + '|' + message.subject
               const already =
                 key in dups && message.groups[0].groupid !== dups[key]
 
