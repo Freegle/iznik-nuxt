@@ -230,8 +230,8 @@ export default {
   mixins: [buildHead, sectionScroll],
   head() {
     return this.buildHead(
-      'Councils - Banners',
-      'Freegle has artwork for banners that you can print'
+      'Councils - Bulky Waste',
+      'Bulky Waste - making room for reuse'
     )
   }
 }
