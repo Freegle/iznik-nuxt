@@ -17,7 +17,7 @@
         </div>
         <div v-if="!me" class="d-flex justify-content-center mt-4 flex-wrap">
           <b-btn variant="primary" size="lg" @click="forceLogin">
-            Sign in to continue <v-icon name="angle-double-right" />
+            Log in to continue <v-icon name="angle-double-right" />
           </b-btn>
         </div>
         <div v-else>

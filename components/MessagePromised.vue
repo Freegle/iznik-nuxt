@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="$emit('click')">
     <div v-if="summary">
       <b-img-lazy src="~/static/promised.jpg" class="promised__image" />
       <b-tooltip variant="success" :target="'msg-' + id">

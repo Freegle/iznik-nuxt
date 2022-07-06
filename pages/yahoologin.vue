@@ -8,7 +8,7 @@
 <script>
 export default {
   mounted() {
-    // We have been redirected here after an attempt to sign in with Yahoo from LoginModal.  We should have two
+    // We have been redirected here after an attempt to log in with Yahoo from LoginModal.  We should have two
     // url parameters - returnto which we set up, and code which is returned by Yahoo after a successful login
     console.log('Yahoologin mounted')
 

@@ -61,7 +61,7 @@
       <h2 class="header--size5 mb-3">
         If you have questions, you can contact our lovely local volunteers here:
       </h2>
-      <ExternalLink v-if="!me" :href="'mailto:' + modsemail">
+      <ExternalLink v-if="!me" :href="'mailto:' + group.modsemail">
         <span class="btn btn-white mb-3">
           Contact&nbsp;volunteers
         </span>

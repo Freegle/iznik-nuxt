@@ -4,7 +4,6 @@
     v-model="showModal"
     title="Remove a promise"
     size="lg"
-    no-stacking
   >
     <template slot="default">
       <notice-message class="mb-3">

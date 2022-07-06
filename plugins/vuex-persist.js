@@ -555,7 +555,7 @@ export default async ({ app, store }) => {
       })
     } catch (e) {
       // We can't persist the store.  This will cause problems, but it's still possible to use the site if you've
-      // sign in, because cookies will preserve the session and we won't need persistent storage for any of the post/reply
+      // log in, because cookies will preserve the session and we won't need persistent storage for any of the post/reply
       // flows.  So persevere.
       console.log('No storage mechanism to persist store.', e)
     }

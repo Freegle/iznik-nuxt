@@ -29,6 +29,11 @@
           Freegle Focus - Bulky Waste
         </nuxt-link>
       </li>
+      <li>
+        <nuxt-link to="/councils/socialhousing">
+          Freegle Focus - Social Housing
+        </nuxt-link>
+      </li>
     </ul>
 
     <p>

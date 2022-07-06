@@ -128,13 +128,14 @@ export default {
       this.bump++
     },
     $route(to, from) {
-      console.log('Route', to, from)
       // Clear store when we move away to prevent items showing again when we come back on potentially a different tab.
       this.$store.dispatch('spammers/clear')
     }
   },
   mounted() {
     // Start in Pending Add if they have rights to see it.
+    this.$store.dispatch('spammers/clear')
+
     if (this.hasPermissionSpamAdmin) {
       this.tabIndex = 1
     } else {

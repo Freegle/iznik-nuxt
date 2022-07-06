@@ -21,7 +21,7 @@
             </b-btn>
           </ExternalLink>
           <p class="mt-2">
-            <b>Sign in to PayPal, if it asks, and then it should set Freegle as your favourite charity.</b>
+            <b>Log in to PayPal, if it asks, and then it should set Freegle as your favourite charity.</b>
           </p>
           <p>
             Once you <b>see the little red heart</b>, that counts as a vote -

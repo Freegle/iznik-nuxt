@@ -302,7 +302,7 @@ export const actions = {
         components: ['me', 'groups']
       })
     } else {
-      // Sign up failed.
+      // Register failed.
       throw new SignUpError(ret, status)
     }
   },
