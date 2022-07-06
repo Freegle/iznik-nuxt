@@ -188,7 +188,7 @@ jobs:
     executor:
       #name: android/android
       name: android/android-machine # https://circleci.com/docs/2.0/android-machine-image/ 5/8/21:  android 23-30, gradle 6.8.3 npm 7.6.1 node v14.16.0
-    resource_class: large
+    #resource_class: large
     environment:
       # JAVA_HOME: /usr/lib/jvm/java-8-openjdk-amd64
       # ANDROID_HOME: /usr/local/android-sdk-linux
