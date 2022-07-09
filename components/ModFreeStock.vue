@@ -5,7 +5,7 @@
       <strong>12th to 14th August</strong>.  Come and say hi (if only for a day)!  There will be cake.
     </p>
     <p>
-      It's at Hertford Camping and Caravanning C Site 7 - a spacious, quiet one.  We know this location won't work for everyone, but
+      It's at Hertford Camping and Caravanning Club Site 7 - a spacious, quiet one.  We know this location won't work for everyone, but
       no location will.
       We've booked a safari tent as a headquarters - and we can offer sleeping room in this for a few people if you
       need it - please let us know.
