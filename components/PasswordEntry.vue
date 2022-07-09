@@ -11,6 +11,7 @@
         :type="showPassword ? 'text' : 'password'"
         placeholder="Choose password"
         class="password__input"
+        @change="$emit('update:password', $event)"
         @input="$emit('update:password', $event)"
       />
       <span class="password__focus-element" />
