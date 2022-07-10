@@ -123,7 +123,7 @@ export default {
           targetWidth: maxDimension,
           targetHeight: maxDimension,
           //popoverOptions: CameraPopoverOptions,
-          saveToPhotoAlbum: true,
+          //saveToPhotoAlbum: true, // Commented out as causes error in Android 10+
           correctOrientation: true
         }
       )
@@ -133,6 +133,10 @@ export default {
         if (msg === "No Image Selected") { msg = "No photo taken or chosen" }
         if (msg === "Camera cancelled") { msg = "No photo taken or chosen" }
         console.log(msg)
+        document.getElementById('camera-msg').innerHTML = msg
+        setTimeout(function () {
+          document.getElementById('camera-msg').innerHTML = ''
+        }, 3000)
       }, 0)
     },
     cameraSuccess: function (imageData) {
@@ -164,12 +168,12 @@ export default {
       console.log('photoInit') // CC
       if (process.env.IS_APP) {
         if (mobilestate.isiOS) {
-          this.$refs.pond.labelIdle = '<span class="filepond--label-action btn btn-white">Take a photo or Browse</span>'
+          this.$refs.pond.labelIdle = '<div><span class="filepond--label-action btn btn-white">Take a photo or Browse</span></div><div id="camera-msg"></div>'
           if (this.browse) {
             this.$refs.pond.browse()
           }
         } else {
-          this.$refs.pond.labelIdle = '<span class="take-photo btn btn-primary">Take Photo</span> or <span class="btn btn-white">Browse</span>'
+          this.$refs.pond.labelIdle = '<div><span class="take-photo btn btn-primary">Take Photo</span> or <span class="btn btn-white">Browse</span></div><div id="camera-msg"></div>'
           setTimeout(() => { // this.$nextTick didn't work
             const takePhoto = this.$el.querySelector('.take-photo')
             takePhoto.addEventListener('click', e => {
