@@ -11,6 +11,9 @@
       <option value="support">
         support@...
       </option>
+      <option value="councils">
+        councils@...
+      </option>
       <option value="mentors">
         mentors@...
       </option>
