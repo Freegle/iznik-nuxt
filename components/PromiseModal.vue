@@ -18,7 +18,7 @@
         <b-select id="who" v-model="currentlySelected" :options="userOptions" class="mb-2 font-weight-bold" />
       </div>
       <p class="mt-2">
-        If you've organised a date and time for the handover, then please tell us so that we can remind both of you, which makes things go more smoothly.
+        If you've organised both a date and time for the handover, then please tell us so that we can remind both of you, which makes things go more smoothly.
       </p>
       <div class="d-flex justify-content-between flex-wrap">
         <div>
@@ -104,7 +104,7 @@
         This is an early/late time.  Just saying, in case it's not right.
       </b-alert>
       <p class="mt-2">
-        <span v-if="date && !time" class="text-danger font-weight-bold">Please add a time.  </span>If you don't want to specify a precise day/time yet, you can still click the <em>Promise</em> button.  And
+        <span v-if="date && !time" class="text-danger font-weight-bold">Please add a time.  </span>If you don't want to specify a precise day and time yet, you can still click the <em>Promise</em> button.  And
         you can come back here later.
       </p>
     </template>
