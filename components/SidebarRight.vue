@@ -1,6 +1,5 @@
 <template>
   <div>
-    <LoveJunk variant="desktop" :shown.sync="shown" />
     <div v-if="!simple" class="sidebar__wrapper">
       <div class="d-flex flex-column justify-content-between mh-100">
         <div>
@@ -16,7 +15,6 @@
 <script>
 import JobsSidebar from './JobsSidebar'
 import DonationMonthly from '~/components/DonationMonthly'
-import LoveJunk from '~/components/LoveJunk'
 
 const VolunteerOpportunitySidebar = () =>
   import('~/components/VolunteerOpportunitySidebar')
@@ -25,8 +23,7 @@ export default {
   components: {
     DonationMonthly,
     JobsSidebar,
-    VolunteerOpportunitySidebar,
-    LoveJunk
+    VolunteerOpportunitySidebar
   },
   props: {
     showVolunteerOpportunities: {

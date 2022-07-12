@@ -152,39 +152,59 @@
         <client-only>
           <div v-observe-visibility="messageVisibilityChanged" />
         </client-only>
+
         <div v-if="filteredMessages && filteredMessages.length">
-          <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" class="p-0">
-            <Message :id="message.id" record-view class="mb-2 mb-sm-3" @view="recordView" />
-          </div>
-        </div>
-        <client-only>
-          <infinite-loading
-            v-if="initialBounds"
-            :identifier="infiniteId"
-            force-use-infinite-wrapper="body"
-            :distance="distance"
-            @infinite="loadMore"
+          <Message :id="filteredMessages[0].id" record-view class="mb-2 mb-sm-3" @view="recordView" />
+
+          <Visible :at="['xs', 'sm', 'md']" class="ml-2 mr-2 mb-2">
+            <LoveJunk variant="mobile" :shown.sync="shownLoveJunk" />
+          </Visible>
+          <Visible :at="['lg', 'xl']" class="ml-2 mr-2 mb-2">
+            <LoveJunk variant="desktop" :shown.sync="shownLoveJunk" />
+          </Visible>
+
+          <div
+            v-for="message in filteredMessages"
+            :key="'messagelist-' + message.id"
+            class="p-0"
           >
-            <span slot="no-results" />
-            <span slot="no-more" />
-            <span slot="spinner">
-              <b-img-lazy src="~/static/loader.gif" alt="Loading" />
-            </span>
-          </infinite-loading>
-          <NoticeMessage v-if="!busy && !loading && searchOn && !filteredMessages.length">
-            <p>
-              Sorry, we didn't find anything.  Things come and go quickly, though, so you could try later.  Or you could:
-            </p>
-            <div class="d-flex justify-content-start flex-wrap">
-              <b-btn to="/give" variant="primary" class="topbutton m-1">
-                <v-icon name="gift" />&nbsp;Post an OFFER
-              </b-btn>
-              <b-btn to="/find" variant="primary" class="topbutton m-1">
-                <v-icon name="shopping-cart" />&nbsp;Post a WANTED
-              </b-btn>
-            </div>
-          </NoticeMessage>
-        </client-only>
+            <Message
+              v-if="message.id !== filteredMessages[0].id"
+              :id="message.id"
+              record-view
+              class="mb-2 mb-sm-3"
+              @view="recordView"
+            />
+          </div>
+          <client-only>
+            <infinite-loading
+              v-if="initialBounds"
+              :identifier="infiniteId"
+              force-use-infinite-wrapper="body"
+              :distance="distance"
+              @infinite="loadMore"
+            >
+              <span slot="no-results" />
+              <span slot="no-more" />
+              <span slot="spinner">
+                <b-img-lazy src="~/static/loader.gif" alt="Loading" />
+              </span>
+            </infinite-loading>
+            <NoticeMessage v-if="!busy && !loading && searchOn && !filteredMessages.length">
+              <p>
+                Sorry, we didn't find anything.  Things come and go quickly, though, so you could try later.  Or you could:
+              </p>
+              <div class="d-flex justify-content-start flex-wrap">
+                <b-btn to="/give" variant="primary" class="topbutton m-1">
+                  <v-icon name="gift" />&nbsp;Post an OFFER
+                </b-btn>
+                <b-btn to="/find" variant="primary" class="topbutton m-1">
+                  <v-icon name="shopping-cart" />&nbsp;Post a WANTED
+                </b-btn>
+              </div>
+            </NoticeMessage>
+          </client-only>
+        </div>
       </div>
     </div>
   </div>
