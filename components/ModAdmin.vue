@@ -56,6 +56,12 @@
           <p class="topspace">
             If this isn't suitable for your group, then click <em>Delete</em>.
           </p>
+          <p>
+            If you think this ADMIN could be improved, or would like to suggest more, please comment on the
+            Google doc <ExternalLink href="https://docs.google.com/document/d/1e5zyMNwiaAtdxHP7fFkuPy4bLu-VAGmfgJOBClmqHD8/edit">
+              here
+            </ExternalLink>.
+          </p>
         </NoticeMessage>
         <p class="text-muted">
           <span v-if="admin.parentid">
@@ -120,11 +126,12 @@
   </div>
 </template>
 <script>
+import ExternalLink from '@/components/ExternalLink'
 import ConfirmModal from './ConfirmModal'
 import NoticeMessage from './NoticeMessage'
 
 export default {
-  components: { NoticeMessage, ConfirmModal },
+  components: { NoticeMessage, ConfirmModal, ExternalLink },
 
   props: {
     id: {
