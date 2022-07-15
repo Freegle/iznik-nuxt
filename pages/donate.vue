@@ -74,7 +74,7 @@
                 You can donate by cheque.
               </p>
               <p>
-                Please make it payable to Freegle Limited and send to Freegle, 150 Whitecross, Abingdon, Oxon, OX13 6BT.
+                Please make it payable to Freegle Limited and send to Freegle, 64A North Road, Ormesby, Great Yarmouth NR29 3LE.
               </p>
               <p>
                 If you do this, please complete a Gift Aid
