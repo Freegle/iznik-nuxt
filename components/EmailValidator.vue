@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { required, email } from 'vuelidate/lib/validators'
+import { required, email as emailValidation } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
 import validationHelpers from '@/mixins/validationHelpers'
 import ValidatingFormInput from '../components/ValidatingFormInput'
@@ -153,7 +153,7 @@ export default {
   validations: {
     email: {
       required,
-      email: val => email(emailFormatter(val))
+      email: val => emailValidation(emailFormatter(val))
     }
   }
 }
