@@ -4,6 +4,7 @@ node ./node_modules/replace/bin/replace.js 'adview.onlinejs' 'adview.online/js' 
 node ./node_modules/replace/bin/replace.js '"\/icons\/' '"icons/' dist -r --quiet
 
 node ./node_modules/replace/bin/replace.js '\/blurmarker.png' 'blurmarker.png' dist -r --quiet
+node ./node_modules/replace/bin/replace.js '\/bluering.png' 'bluering.png' dist -r --quiet
 node ./node_modules/replace/bin/replace.js '\/mapmarker.gif' 'mapmarker.gif' dist -r --quiet
 node ./node_modules/replace/bin/replace.js '\/en-play-badge.png' 'en-play-badge.png' dist -r --quiet
 node ./node_modules/replace/bin/replace.js '\/app-store-black-sm.png' 'app-store-black-sm.png' dist -r --quiet
