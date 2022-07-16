@@ -122,16 +122,21 @@
       </b-btn>
     </div>
     <client-only>
-      <OurToggle
-        v-model="allowAutoSend"
-        class="mb-1 ml-1 mt-1 float-right"
-        :height="30"
-        :width="150"
-        :font-size="14"
-        :sync="true"
-        :labels="{checked: 'Allow autosend', unchecked: 'Autosend off'}"
-        color="#61AE24"
-      />
+      <div class="mt-1 mb-1 d-flex flex-wrap">
+        <OurToggle
+          v-model="allowAutoSend"
+          :height="30"
+          :width="150"
+          :font-size="14"
+          :sync="true"
+          class="mr-1"
+          :labels="{checked: 'Allow autosend', unchecked: 'Edit first'}"
+          color="#61AE24"
+        />
+        <div class="small text-muted mt-1">
+          Standard messages can be configured to send in a single click.  This toggle temporarily disables that so you can edit first.
+        </div>
+      </div>
       <ModCommentAddModal v-if="addComment" ref="addComment" :user="member" />
     </client-only>
   </div>

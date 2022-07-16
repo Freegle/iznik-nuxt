@@ -50,6 +50,7 @@
 </template>
 <script>
 import ExternalLink from '@/components/ExternalLink'
+
 export default {
   components: { ExternalLink },
   props: {
