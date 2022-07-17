@@ -63,6 +63,9 @@
           Social log in blocked - check your privacy settings, including any ad blockers such as
           Adblock Plus.
         </notice-message>
+        <b-alert v-if="loginWaitMessage" variant="warning" show>
+          {{ loginWaitMessage }}
+        </b-alert>
         <b-alert v-if="socialLoginError" variant="danger" show>
           Login Failed: {{ socialLoginError }}
         </b-alert>
@@ -213,6 +216,7 @@ export default {
       forceSignIn: false,
       nativeLoginError: null,
       socialLoginError: null,
+      loginWaitMessage: null,
       showPassword: false,
       loginType: null,
       initialisedSocialLogin: false,
@@ -328,6 +332,7 @@ export default {
     showModal: {
       immediate: true,
       handler(newVal) {
+        this.loginWaitMessage = null
         this.pleaseShowModal = newVal
 
         if (newVal && !this.initialisedSocialLogin) {
@@ -349,6 +354,7 @@ export default {
     forceLogin: {
       immediate: true,
       handler(newVal) {
+        this.loginWaitMessage = null
         this.showModal = this.pleaseShowModal || newVal
       }
     }
@@ -382,6 +388,7 @@ export default {
       } else {
         this.socialLoginError = 'Something went wrong; please try later.'
       }
+      this.loginWaitMessage = null
     },
     bumpIt() {
       // Force reconsideration of social signin disabled.  Need to do that regularly in case the SDKs haven't loaded
@@ -396,6 +403,7 @@ export default {
       this.pleaseShowModal = true
       this.nativeLoginError = null
       this.socialLoginError = null
+      this.loginWaitMessage = null
       const self = this
 
       setTimeout(() => {
@@ -411,6 +419,7 @@ export default {
       const self = this
       this.nativeLoginError = null
       this.socialLoginError = null
+      this.loginWaitMessage = null
       e.preventDefault()
       e.stopPropagation()
 
@@ -477,6 +486,7 @@ export default {
         }
       } else if (this.email && this.password) {
         // Login
+        this.loginWaitMessage = "Please wait..."
         console.log('Log in')
         this.$store
           .dispatch('auth/login', {
@@ -521,11 +531,13 @@ export default {
             } else {
               throw e // let others bubble up
             }
+            this.loginWaitMessage = null
           })
       }
     },
     async loginApple() {
       this.socialLoginError = null
+      this.loginWaitMessage = null
       try {
         if (process.env.IS_APP) {
           let authResult = { status: 'init' }
@@ -540,6 +552,7 @@ export default {
               }
             })
           })
+          this.loginWaitMessage = "Please wait..."
           if (authResult.identityToken) { // identityToken, user, etc
             await this.$store.dispatch('auth/login', {
               applecredentials: authResult,
@@ -551,11 +564,13 @@ export default {
           } else {
             console.log('NO identityToken')
             this.socialLoginError = 'Apple login fail: no token'
+            this.loginWaitMessage = null
           }
         }
       } catch (e) {
       console.log('CATCH',e)
         this.socialLoginError = 'Apple login error: ' + e.message
+        this.loginWaitMessage = null
       }
     },
     async loginFacebook() {
@@ -563,6 +578,7 @@ export default {
 
       this.nativeLoginError = null
       this.socialLoginError = null
+      this.loginWaitMessage = null
       try {
         let response = null
         const promise = new Promise(function (resolve, reject) { // CC
@@ -599,9 +615,11 @@ export default {
         } else {
           this.socialLoginError =
             'Facebook response is unexpected.  Please try later.'
+          this.loginWaitMessage = null
         }
       } catch (e) {
         this.socialLoginError = 'Facebook login error: ' + e.message
+        this.loginWaitMessage = null
       }
     },
     async loginGoogle() { // CC
@@ -609,6 +627,7 @@ export default {
 
       this.nativeLoginError = null
       this.socialLoginError = null
+      this.loginWaitMessage = null
       if (process.env.IS_APP) { // CC..
         let authResult = { status: 'init' }
         await new Promise(function (resolve) {
@@ -617,6 +636,7 @@ export default {
             resolve()
           })
         })
+        this.loginWaitMessage = "Please wait..."
         if (authResult.code) { // status, code
           await this.$store.dispatch('auth/login', {
             googleauthcode: authResult.code,
@@ -628,6 +648,7 @@ export default {
         }
         else {
           this.socialLoginError = 'Google login error ' + authResult.status
+          this.loginWaitMessage = null
         }
       }
       else {  // ..CC
@@ -649,6 +670,7 @@ export default {
               self.pleaseShowModal = false
             } else if (authResult.error) {
               this.socialLoginError = 'Google login failed: ' + authResult.error
+              this.loginWaitMessage = null
             }
           },
           immediate: false,
@@ -667,10 +689,12 @@ export default {
       // to complete the signin.  This replaces the old flow which stopped working in Jan 2020.
       this.nativeLoginError = null
       this.socialLoginError = null
+      this.loginWaitMessage = null
 
       if (process.env.IS_APP) { // CC
         appYahooLogin(this.$route.fullPath,
           ret => { // arrow so .this. is correct
+            this.loginWaitMessage = "Please wait..."
             console.log('appYahooLogin completed', ret)
             const returnto = ret.returnto
             const code = ret.code
@@ -688,6 +712,7 @@ export default {
               }
             } else if (!code) {
               this.socialLoginError = 'Yahoo login failed: '+ret.error
+              this.loginWaitMessage = null
             } else {
               const self = this
               this.$axios
@@ -719,6 +744,7 @@ export default {
                   } else {
                     console.error('Server login failed', ret)
                     self.socialLoginError = 'Yahoo login failed'
+                    self.loginWaitMessage = null
                   }
                 })
             }
