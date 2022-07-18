@@ -5,24 +5,18 @@
         <b-card-header>
           <h1>
             Freegle Focus: Social Housing
-            <br>
-            <span class="text--small">
-              Freegle - making a house a home.
-            </span>
           </h1>
-        </b-card-header>
-        <b-card-text class="pl-2 pr-2 pt-2">
+          <h4>
+            Freegle - making a house a home.
+          </h4>
           <h4>
             Supporting stable & sustainable tenancies
           </h4>
           <h4>
             Reducing Furniture Poverty
           </h4>
-          <p>
-            Freegle works with local authorities, social housing providers and landlords to help create stable and
-            sustainable social housing tenancies. When Freegle is visible to tenants at key points during their tenancy,
-            councils and their tenants can be helped in a number of ways. Think FREEGLE!
-          </p>
+        </b-card-header>
+        <b-card-text class="pl-2 pr-2 pt-2">
           <p>
             <a href="/councils/SocialHousing.pdf">Download as a PDF</a>
           </p>
@@ -57,15 +51,12 @@
           <p>
             You can freegle items from the comfort of your own home.
             Visit
-            <ExternalLink href="www.ilovefreegle.org">
-              www.ilovefreegle.org
-            </ExternalLink>
-            > to find your local community.
+            <!-- eslint-disable-next-line -->
+            <ExternalLink href="https://www.ilovefreegle.org">www.ilovefreegle.org</ExternalLink>
+            to find your local community.
             You can also download the app:
-            <ExternalLink href="https://www.ilovefreegle.org/mobile">
-              www.ilovefreegle.org/mobile
-            </ExternalLink>
-            >.
+            <!-- eslint-disable-next-line -->
+            <ExternalLink href="https://www.ilovefreegle.org/mobile">www.ilovefreegle.org/mobile</ExternalLink>.
           </p>
           <p>
             Don't throw it away, give it away! If it's free and legal then it can be freegled.
@@ -105,14 +96,11 @@
             To find out more about the software integration project read the article from tech in housing e-zine
             .digitalbark.
           </p>
-          <p>
-            Online dating for stuff: How Freegle saves the planet and alleviates poverty at the click of a button (see
-            p.19)
-            <ExternalLink href="https://www.flipsnack.com/bluebananadtl/digital-bark-7.html">
-              www.flipsnack.com/bluebananadtl/digital-bark-7.html
-            </ExternalLink>
-          </p>
-          <h2>
+          <!-- eslint-disable-next-line -->
+          <ExternalLink href="https://www.flipsnack.com/bluebananadtl/digital-bark-7.html">Online dating for stuff: How Freegle saves the planet and alleviates poverty at the click of a button</ExternalLink>
+          (see
+          p.19)
+          <h2 class="mt-2">
             Bulky Waste & Furniture Poverty
           </h2>
           <p>
