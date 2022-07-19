@@ -9,7 +9,7 @@
       </div>
       <div v-else>
         <p>Groups can have a profile picture and a tagline, which are used in emails and on the site to help give your group a local feel.</p>
-        <p>Please add them from <em>Settings->Group Settings</em>.</p>
+        <p>Please add them from <em>Settings->Community Settings</em>.</p>
         <div v-for="(inv) of missing" :key="'fbmissing-' + inv.group.id">
           <strong>{{ inv.group.namedisplay }}</strong>
         </div>

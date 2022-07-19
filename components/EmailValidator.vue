@@ -36,10 +36,15 @@
 </template>
 
 <script>
-import { required, email } from 'vuelidate/lib/validators'
+import { required, email as emailValidation } from 'vuelidate/lib/validators'
 import { validationMixin } from 'vuelidate'
 import validationHelpers from '@/mixins/validationHelpers'
 import ValidatingFormInput from '../components/ValidatingFormInput'
+
+function emailFormatter(value) {
+  if (!value) return value
+  return value.toLowerCase()
+}
 
 export default {
   components: { ValidatingFormInput },
@@ -146,7 +151,10 @@ export default {
     }
   },
   validations: {
-    email: { required, email }
+    email: {
+      required,
+      email: val => emailValidation(emailFormatter(val))
+    }
   }
 }
 </script>

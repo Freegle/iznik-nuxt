@@ -3,6 +3,7 @@
     <client-only>
       <ScrollToTop />
       <ModCakeModal />
+      <ModAimsModal ref="aims" />
       <ModFreeStock class="mb-2" />
       <NoticeMessage variant="info" class="mb-2 d-block d-md-none">
         <ModZoomStock />
@@ -42,6 +43,7 @@ import modMessagesPage from '@/mixins/modMessagesPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
 import ModZoomStock from '@/components/ModZoomStock'
 import ModFreeStock from '@/components/ModFreeStock'
+import ModAimsModal from '@/components/ModAimsModal'
 import NoticeMessage from '../../../../components/NoticeMessage'
 import GroupSelect from '../../../../components/GroupSelect'
 import ModMessage from '../../../../components/ModMessage'
@@ -58,7 +60,8 @@ export default {
     ModCakeModal,
     ModMessage,
     GroupSelect,
-    NoticeMessage
+    NoticeMessage,
+    ModAimsModal
   },
   layout: 'modtools',
   mixins: [
@@ -107,6 +110,11 @@ export default {
         value: now
       })
     }
+
+    console.log('refs', this.$refs)
+    this.waitForRef('aims', () => {
+      this.$refs.aims.show()
+    })
   },
   methods: {
     async loadAll() {

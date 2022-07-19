@@ -14,10 +14,10 @@
       </div>
       <div v-else>
         <p>
-          Please let us know if you're expecting to talk to <em>{{ user.displayname }}</em> again soon.
+          Please let us know if you want <em>{{ user.displayname }}</em> to reply.
         </p>
         <p v-if="dohide">
-          If you're not, we will hide the chat from your list for now.  You can still find it from My Posts.
+          If not, we will hide the chat from your list for now.  You can still find it from My Posts.
         </p>
       </div>
     </template>
