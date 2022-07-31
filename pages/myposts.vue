@@ -337,6 +337,18 @@ export default {
     }
   },
   mounted() {
+    const lastask = this.$store.getters['misc/get']('lastdonationask')
+    const canask = !lastask || new Date().getTime() - lastask > 60 * 60 * 1000
+
+    if (canask) {
+      this.ask()
+
+      this.$store.dispatch('misc/set', {
+        key: 'lastdonationask',
+        value: new Date().getTime()
+      })
+    }
+
     // We might have parameters from just having posted.
     this.justPosted = this.$route.params.justPosted
     this.newuser = this.$route.params.newuser
@@ -362,18 +374,14 @@ export default {
       if (outcome === 'Taken' || outcome === 'Received') {
         // If someone has set up a regular donation, then we don't ask them to donate again.  Wouldn't be fair to
         // pester them.
-        if (!this.me.donorrecurring) {
-          const lastask = this.$store.getters['misc/get']('lastdonationask')
+        if (!this.me.donorrecurring && canask) {
+          this.donationGroup = groupid
+          this.ask()
 
-          if (!lastask || new Date().getTime() - lastask > 60 * 60 * 1000) {
-            this.donationGroup = groupid
-            this.ask()
-
-            this.$store.dispatch('misc/set', {
-              key: 'lastdonationask',
-              value: new Date().getTime()
-            })
-          }
+          this.$store.dispatch('misc/set', {
+            key: 'lastdonationask',
+            value: new Date().getTime()
+          })
         }
       }
     })

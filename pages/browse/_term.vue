@@ -68,6 +68,7 @@
           </Visible>
         </b-col>
       </b-row>
+      <DonationAskModal ref="askmodal" />
     </client-only>
   </b-container>
 </template>
@@ -90,6 +91,7 @@ const SidebarRight = () => import('~/components/SidebarRight')
 const ExpectedRepliesWarning = () =>
   import('~/components/ExpectedRepliesWarning')
 const MicroVolunteering = () => import('~/components/MicroVolunteering.vue')
+const DonationAskModal = () => import('~/components/DonationAskModal')
 
 export default {
   components: {
@@ -101,7 +103,8 @@ export default {
     SidebarLeft,
     SidebarRight,
     ExpectedRepliesWarning,
-    AboutMeModal
+    AboutMeModal,
+    DonationAskModal
   },
   mixins: [loginRequired, buildHead, map, isochroneMixin],
   data: function() {
@@ -197,7 +200,25 @@ export default {
       }
     }, 5000)
   },
+  mounted() {
+    const lastask = this.$store.getters['misc/get']('lastdonationask')
+    const canask = !lastask || new Date().getTime() - lastask > 60 * 60 * 1000
+
+    if (canask) {
+      this.ask()
+
+      this.$store.dispatch('misc/set', {
+        key: 'lastdonationask',
+        value: new Date().getTime()
+      })
+    }
+  },
   methods: {
+    ask() {
+      this.waitForRef('askmodal', () => {
+        this.$refs.askmodal.show()
+      })
+    },
     async calculateInitialMapBounds() {
       await this.fetchMe(['me', 'groups'])
 

@@ -1,6 +1,41 @@
 <template>
   <div>
     <b-modal
+      v-if="true"
+      id="donationaskemodal"
+      v-model="showModal"
+      title="Double your donation during August!"
+      size="lg"
+      no-stacking
+    >
+      <template slot="default">
+        <p>
+          Freegle is free to use, but not free to run.  We're have hundreds of volunteers, but
+          there are some things that we have to spend money on - like servers, running the website, and
+          talking to councils.
+        </p>
+        <p>
+          During August, PayPal Giving Fund are <strong>doubling donations</strong> to Freegle!  Thanks to
+          everyone who voted for us to make this happen.
+        </p>
+        <donation-button link="paypal1" show="" class="mt-2 mb-2" @clicked="score(1)" />
+        <p>
+          We know not everyone can donate, and that's fine.  And many of you have already donated.  But if you’re
+          able to make a donation, this would be a great time to do it - it’ll go twice as far!  We promise we'll
+          spend it carefully and well.
+        </p>
+        <p>
+          Thanks for freegling!
+        </p>
+      </template>
+      <template slot="modal-footer" slot-scope="{ cancel }">
+        <b-button variant="secondary" @click="cancel">
+          Close
+        </b-button>
+      </template>
+    </b-modal>
+    <b-modal
+      v-else
       id="donationaskemodal"
       v-model="showModal"
       :title="'Please help keep ' + groupname + ' running'"
@@ -142,7 +177,6 @@
     </b-modal>
   </div>
 </template>
-
 <script>
 import modal from '@/mixins/modal'
 import DonationThermometer from './DonationThermometer'
