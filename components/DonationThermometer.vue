@@ -4,7 +4,7 @@
       :key="raised"
       :value="raised"
       :min="0"
-      :max="target"
+      :max="max"
       :options="thermOptions"
       scale="£"
     />
@@ -39,6 +39,14 @@ export default {
     }
   },
   computed: {
+    max() {
+      // If we've raised more than the target, stretch it a bit.
+      if (this.raised > this.target) {
+        return this.raised * 1.1
+      } else {
+        return this.target
+      }
+    },
     target() {
       return this.$store.getters['donations/target']
     },
