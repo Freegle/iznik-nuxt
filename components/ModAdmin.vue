@@ -100,6 +100,30 @@
             rows="15"
           />
         </b-form-group>
+        <b-form-group
+          label="Call To Action text:"
+          label-for="ctatext"
+          label-class="mb-0"
+        >
+          <b-form-input
+            id="ctatext"
+            v-model="admin.ctatext"
+            class="mb-3"
+            placeholder="(Option) Text for a big button"
+          />
+        </b-form-group>
+        <b-form-group
+          label="Call To Action link:"
+          label-for="ctalink"
+          label-class="mb-0"
+        >
+          <b-form-input
+            id="ctalink"
+            v-model="admin.ctalink"
+            class="mb-3"
+            placeholder="(Optional) Link for a big button"
+          />
+        </b-form-group>
       </b-card-body>
       <b-card-footer v-if="expanded && admin.pending">
         <b-btn v-if="!admin.heldby" variant="warning" @click="deleteIt">
