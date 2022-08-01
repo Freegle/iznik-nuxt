@@ -202,7 +202,8 @@ export default {
   },
   mounted() {
     const lastask = this.$store.getters['misc/get']('lastdonationask')
-    const canask = !lastask || new Date().getTime() - lastask > 60 * 60 * 1000
+    const canask =
+      !lastask || new Date().getTime() - lastask > 60 * 60 * 1000 * 24 * 7
 
     if (canask) {
       this.ask()
