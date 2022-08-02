@@ -38,7 +38,7 @@ export default {
   async asyncData({ app, params, store }) {
     let invalid = false
     let groupid = params.groupid
-    const msgid = params.msgid
+    const msgid = parseInt(params.msgid)
 
     const groupids = []
 
