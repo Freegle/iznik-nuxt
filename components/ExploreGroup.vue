@@ -1,5 +1,7 @@
 <template>
   <div>
+    <Message v-if="msgid" :id="msgid" record-view class="mb-2 mt-2" />
+
     <groupHeader v-if="group" :id="group.id" :key="'group-' + (group ? group.id : null)" :group="group" :show-join="true" />
     <div v-else>
       <b-card variant="default">
@@ -31,7 +33,7 @@
     </div>
 
     <div v-for="message in filteredMessages" :key="'message-' + message.id" class="p-0">
-      <Message :id="message.id" record-view />
+      <Message v-if="message.id != msgid" :id="message.id" record-view />
     </div>
 
     <client-only>
@@ -66,6 +68,11 @@ export default {
     id: {
       validator: prop => typeof prop === 'number' || typeof prop === 'string',
       required: true
+    },
+    msgid: {
+      type: Number,
+      required: false,
+      default: null
     }
   },
 
