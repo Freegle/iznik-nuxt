@@ -136,6 +136,7 @@ export default {
 
 .image__icon {
   color: $color-white;
+  fill: $color-white;
 }
 
 .square {

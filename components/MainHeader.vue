@@ -446,6 +446,7 @@ nav .navbar-nav li a.nuxt-link-active {
   a {
     &.nav-link {
       color: $color-white;
+      fill: $color-white;
     }
   }
 }
@@ -500,6 +501,7 @@ svg.fa-icon {
 .toggler:hover {
   background: $color-white !important;
   color: $colour-success !important;
+  fill: $colour-success;
 }
 
 .toggler svg {

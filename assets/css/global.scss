@@ -24,6 +24,7 @@
 .bg-info {
   background-color: $colour-info-bg !important;
   color: $colour-info-fg !important;
+  fill: $colour-info-fg;
 }
 
 .border-info {
@@ -181,6 +182,7 @@ body.modtools {
 
 .text-faded {
   color: $color-gray--faded !important;
+  fill: $color-gray--faded;
 }
 
 .nopara p {
