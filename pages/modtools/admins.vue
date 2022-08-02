@@ -71,6 +71,33 @@
                   }"
                 />
               </b-form-group>
+              <p>
+                You can optionally add a big button into the ADMIN, and specify where it will go.
+              </p>
+              <b-form-group
+                label="Call To Action text:"
+                label-for="ctatext"
+                label-class="mb-0"
+              >
+                <b-form-input
+                  id="ctatext"
+                  v-model="ctatext"
+                  class="mb-3"
+                  placeholder="(Option) Text for a big button"
+                />
+              </b-form-group>
+              <b-form-group
+                label="Call To Action link:"
+                label-for="ctalink"
+                label-class="mb-0"
+              >
+                <b-form-input
+                  id="ctalink"
+                  v-model="ctalink"
+                  class="mb-3"
+                  placeholder="(Optional) Link for a big button"
+                />
+              </b-form-group>
             </validating-form>
             <b-btn class="mt-2 mb-2" size="lg" :variant="groupidcreate < 0 ? 'danger' : 'primary'" :disabled="groupidcreate <= 0 && groupidcreate !== -2" @click="create">
               <v-icon v-if="created" name="check" />
@@ -146,6 +173,8 @@ export default {
       groupidprevious: null,
       subject: null,
       body: null,
+      ctatext: null,
+      ctalink: null,
       creating: false,
       created: false
     }
@@ -216,7 +245,9 @@ export default {
       await this.$api.admins.add({
         groupid: this.groupidcreate > 0 ? this.groupidcreate : null,
         subject: this.subject,
-        text: this.body
+        text: this.body,
+        ctatext: this.ctatext,
+        ctalink: this.ctalink
       })
 
       this.creating = false

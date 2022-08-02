@@ -17,14 +17,13 @@
         <NoticeMessage v-if="message.reviewreason" class="mb-2">
           This is here because: {{ reviewreason }}
         </NoticeMessage>
-        <NoticeMessage v-if="message.held" class="mb-2">
+        <NoticeMessage v-if="message.held" class="mb-2" variant="warning">
           <span v-if="me.id === message.held.id">
-            You held this {{ timeago(message.held.timestamp) }}.  Other people will see a warning to check with
-            you before releasing it.
+            You held this {{ timeago(message.held.timestamp) }}.  Other can't release it or act on it.
           </span>
           <span v-else>
             Held by <strong><ExternalLink :href="'mailto:' + message.held.email">{{ message.held.name }}</ExternalLink></strong>
-            {{ timeago(message.held.timestamp) }}.  Please check with them before releasing it.
+            {{ timeago(message.held.timestamp) }}.  Please check with them if you think it should be released.
           </span>
         </NoticeMessage>
         <div class="rounded bg-white p-2 font-weight-bold border border-warning mb-2">
@@ -70,7 +69,7 @@
             :pov="message.touser.id"
           />
           <b-btn
-            v-if="message.held"
+            v-if="message.held && me.id === message.held.id"
             variant="warning"
             class="mr-2 mb-1"
             @click="release"

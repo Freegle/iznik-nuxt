@@ -6,7 +6,8 @@ export const state = () => ({
   // storage.
   list: {},
   currentChat: null,
-  fetching: {}
+  fetching: {},
+  listing: {}
 })
 
 export const mutations = {
@@ -58,6 +59,14 @@ export const mutations = {
       state.fetching = {}
     } else {
       state.fetching[params.id] = params.item
+    }
+  },
+
+  listing(state, params) {
+    if (!params) {
+      state.listing = {}
+    } else {
+      state.listing[params.id] = params.item
     }
   }
 }
@@ -170,7 +179,20 @@ export const actions = {
       const chatid = parseInt(state.currentChat)
       current = state.list[chatid] ? state.list[chatid] : null
 
-      const chats = await this.$api.chat.listChats(params)
+      const key = JSON.stringify(params)
+
+      if (!state.listing[key]) {
+        commit('listing', {
+          id: key,
+          item: {
+            promise: this.$api.chat.listChats(params)
+          }
+        })
+      }
+
+      const chats = await state.listing[key].promise
+
+      commit('listing', { id: key, item: null })
 
       if (chats) {
         if (current) {
@@ -333,7 +355,7 @@ export const actions = {
 
   async fetchLatestChats({ dispatch, rootGetters }, params) {
     const chatTypes = ['User2User', 'User2Mod']
-    const modOnlyChatTypes = ['Mod2Mod']
+    const modOnlyChatTypes = ['User2Mod', 'Mod2Mod']
     const me = rootGetters['auth/user']
     const modtools = rootGetters['misc/get']('modtools')
 
@@ -343,7 +365,7 @@ export const actions = {
 
       if (newCount !== currentCount) {
         await dispatch('listChats', {
-          chattypes: modtools ? [...chatTypes, ...modOnlyChatTypes] : chatTypes,
+          chattypes: modtools ? modOnlyChatTypes : chatTypes,
           summary: true,
           noerror: true
         })

@@ -120,12 +120,17 @@ export default {
   methods: {
     async listChats(age) {
       const modtools = this.$store.getters['misc/get']('modtools')
-      await this.$store.dispatch('chats/listChats', {
+      const params = {
         chattypes: modtools
           ? ['User2Mod', 'Mod2Mod']
-          : ['User2User', 'User2Mod'],
-        age: age || null
-      })
+          : ['User2User', 'User2Mod']
+      }
+
+      if (age) {
+        params.age = age
+      }
+
+      await this.$store.dispatch('chats/listChats', params)
     },
 
     async markAllRead() {
