@@ -104,7 +104,10 @@
           Donations
         </h3>
         <div v-for="d in user.donations" :key="'donation-' + d.id">
-          &pound;{{ d.GrossAmount }} on {{ dateshort(d.timestamp ) }} <span class="small text-muted">via {{ d.type }}</span>
+          &pound;{{ d.GrossAmount }} on {{ dateshort(d.timestamp ) }} <span class="small text-muted">via {{ d.source }}</span>
+          <span v-if="d.source === 'PayPalGivingFund' || d.source === 'eBay' || d.source === 'Facebook'" class="small text-muted">
+            (Gift Aid claimed by them not us)
+          </span>
         </div>
       </div>
       <h3 class="mt-2">

@@ -33,7 +33,10 @@
             &nbsp;{{ result.homeaddress }}
           </div>
           <div v-for="d in result.donations" :key="'donation-' + d.id" class="pl-4 small">
-            &bull;&nbsp;&pound;{{ d.GrossAmount }} on {{ dateshort(d.timestamp ) }} <span class="small text-muted">via {{ d.type }}</span>
+            &bull;&nbsp;&pound;{{ d.GrossAmount }} on {{ dateshort(d.timestamp ) }} <span class="small text-muted">via {{ d.source }}</span>
+            <span v-if="d.source === 'PayPalGivingFund' || d.source === 'eBay' || d.source === 'Facebook'" class="small text-muted">
+              (Gift Aid claimed by them not us)
+            </span>
           </div>
         </div>
       </b-card-body>
