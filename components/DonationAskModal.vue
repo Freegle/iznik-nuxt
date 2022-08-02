@@ -10,7 +10,7 @@
     >
       <template slot="default">
         <p>
-          Freegle is free to use, but not free to run.  We're have hundreds of volunteers, but
+          Freegle is free to use, but not free to run.  We have hundreds of volunteers, but
           there are some things that we have to spend money on - like servers, running the website, and
           talking to councils.
         </p>
