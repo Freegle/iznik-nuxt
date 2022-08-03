@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Icon from 'vue-awesome/components/Icon.js'
+import Icon from 'vue-awesome/components/Icon.vue'
 
 // We list the icons we use explicitly because this reduces our bundle size.
 import 'vue-awesome/icons/address-book'
