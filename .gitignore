@@ -8,6 +8,21 @@
 /.idea
 /.env
 /static/sw.js
+/.vs
+/Web.Config
+/save
+/fiddling*
+/androidtravis
+/travisios
+/mobile/freegle/android/node_modules/*
+/mobile/freegle/android/package-lock.json
+/mobile/freegle/ios/node_modules/*
+/mobile/freegle/ios/package-lock.json
+/mobile/modtools/android/node_modules/*
+/mobile/modtools/android/package-lock.json
+/mobile/modtools/ios/node_modules/*
+/mobile/modtools/ios/package-lock.json
+/iznik-nuxt.*
 
 # OSx files
 .DS_Store
