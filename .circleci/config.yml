@@ -147,9 +147,9 @@ jobs:
       - run: cd ../iznik-nuxt-mt; sed -i '' "s/PROVISIONING_PROFILE =/PROVISIONING_PROFILE_SPECIFIER =/" platforms/ios/cordova/lib/build.js
 
       # Build debug build
-      - run: cd ../iznik-nuxt-mt; nvm use 14.17.6; cordova build --debug --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="ModTools adhoc 0822" >buildlogdebug.txt
-      - run: cd ../iznik-nuxt-mt; tail -n 5 buildlogdebug.txt
-      - run: cd ../iznik-nuxt-mt; cp platforms/ios/build/device/ModTools.ipa ../project/releases/ModTools-ios-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
+      - run: cd ../iznik-nuxt-mt; nvm use 14.17.6; cordova build --debug --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="ModTools adhoc 0822" >buildlogdebug.txt || true
+      - run: cd ../iznik-nuxt-mt; tail -n 25 buildlogdebug.txt
+      #- run: cd ../iznik-nuxt-mt; cp platforms/ios/build/device/ModTools.ipa ../project/releases/ModTools-ios-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
 
       # Build release build and publish
       - run: cd ../iznik-nuxt-mt; nvm use 14.17.6; cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="ModTools 0822"  >buildlogrelease.txt
