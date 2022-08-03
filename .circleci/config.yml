@@ -121,8 +121,8 @@ jobs:
       - run: cd ../iznik-nuxt-app; cp platforms/ios/build/device/Freegle.ipa ../project/releases/Freegle-ios-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
 
       # Build release build and publish
-      - run: cd ../iznik-nuxt-app; nvm use 14.17.6; cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="Freegle 0822"  >buildlogrelease.txt
-      - run: cd ../iznik-nuxt-app; tail -n 5 buildlogrelease.txt
+      - run: cd ../iznik-nuxt-app; nvm use 14.17.6; cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="Freegle 0822"  >buildlogrelease.txt || true
+      - run: cd ../iznik-nuxt-app; tail -n 50 buildlogrelease.txt
       - run: cd ../iznik-nuxt-app; cp platforms/ios/build/device/Freegle.ipa ../project/releases/Freegle-ios-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
       - run: cd ../iznik-nuxt-app; xcrun altool --upload-app --type ios --file "platforms/ios/build/device/Freegle.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd" || true
 
@@ -149,11 +149,11 @@ jobs:
       # Build debug build
       - run: cd ../iznik-nuxt-mt; nvm use 14.17.6; cordova build --debug --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="ModTools adhoc 0822" >buildlogdebug.txt || true
       - run: cd ../iznik-nuxt-mt; tail -n 50 buildlogdebug.txt
-      #- run: cd ../iznik-nuxt-mt; cp platforms/ios/build/device/ModTools.ipa ../project/releases/ModTools-ios-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
+      - run: cd ../iznik-nuxt-mt; cp platforms/ios/build/device/ModTools.ipa ../project/releases/ModTools-ios-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
 
       # Build release build and publish
-      - run: cd ../iznik-nuxt-mt; nvm use 14.17.6; cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="ModTools 0822"  >buildlogrelease.txt
-      - run: cd ../iznik-nuxt-mt; tail -n 5 buildlogrelease.txt
+      - run: cd ../iznik-nuxt-mt; nvm use 14.17.6; cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="ModTools 0822"  >buildlogrelease.txt || true
+      - run: cd ../iznik-nuxt-mt; tail -n 50 buildlogrelease.txt
       - run: cd ../iznik-nuxt-mt; cp platforms/ios/build/device/ModTools.ipa ../project/releases/ModTools-ios-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
       - run: cd ../iznik-nuxt-mt; xcrun altool --upload-app --type ios --file "platforms/ios/build/device/ModTools.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd" || true
 
