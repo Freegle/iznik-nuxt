@@ -470,6 +470,11 @@ export default {
         // Clear the message now it's sent.
         this.sendmessage = ''
 
+        this.$store.dispatch('misc/set', {
+          key: 'chatdraft',
+          value: null
+        })
+
         await this._updateAfterSend()
 
         if (RSVP) {
