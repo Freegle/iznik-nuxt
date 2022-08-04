@@ -127,6 +127,12 @@ export default {
       await this.$store.dispatch('messages/clearContext')
     }
 
+    if (this.msgid) {
+      await this.$store.dispatch('messages/fetch', {
+        id: this.msgid
+      })
+    }
+
     // We have the group id or name in this.id.  Fetch the group.
     const group = this.$store.getters['group/get'](this.id)
 
