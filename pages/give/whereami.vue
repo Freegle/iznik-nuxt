@@ -1,6 +1,6 @@
 <template>
   <b-row class="m-0">
-    <b-col cols="12" lg="6" offset-lg="3" class="p-0">
+    <b-col cols="12" lg="6" offset-lg="3" class="p-0 fader">
       <GlobalWarning />
       <client-only>
         <WizardProgress :active-stage="2" class="d-none d-md-flex" />
@@ -118,3 +118,10 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+.fader {
+  background-color: rgba(246, 246, 236, 0.6);
+  box-shadow: 0 0 80px 450px rgba(246, 246, 236, 0.6);
+  font-weight: bold;
+}
+</style>
