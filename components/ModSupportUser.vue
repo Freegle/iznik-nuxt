@@ -208,7 +208,7 @@
       <div v-if="otherEmails && otherEmails.length">
         <div v-for="otheremail in otherEmails" :key="'otheremail-' + otheremail.id">
           {{ otheremail.email }}
-          <span class="text-muted" :title="otheremail.toLocaleString()">
+          <span class="text-muted" :title="otheremail.added.toLocaleString()">
             added {{ timeago(otheremail.added) }}
           </span>
         </div>
