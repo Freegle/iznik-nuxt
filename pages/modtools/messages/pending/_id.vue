@@ -4,7 +4,7 @@
       <ScrollToTop />
       <ModCakeModal />
       <ModAimsModal ref="aims" />
-      <ModFreeStock class="mb-2" />
+      <!--      <ModFreeStock class="mb-2" />-->
       <NoticeMessage variant="info" class="mb-2 d-block d-md-none">
         <ModZoomStock />
       </NoticeMessage>
@@ -42,7 +42,7 @@ import loginRequired from '@/mixins/loginRequired'
 import modMessagesPage from '@/mixins/modMessagesPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
 import ModZoomStock from '@/components/ModZoomStock'
-import ModFreeStock from '@/components/ModFreeStock'
+// import ModFreeStock from '@/components/ModFreeStock'
 import ModAimsModal from '@/components/ModAimsModal'
 import NoticeMessage from '../../../../components/NoticeMessage'
 import GroupSelect from '../../../../components/GroupSelect'
@@ -55,7 +55,7 @@ export default {
   components: {
     ModAffiliationConfirmModal,
     ModZoomStock,
-    ModFreeStock,
+    // ModFreeStock,
     ScrollToTop,
     ModCakeModal,
     ModMessage,
