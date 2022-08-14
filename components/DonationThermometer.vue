@@ -42,7 +42,13 @@ export default {
     max() {
       // If we've raised more than the target, stretch it a bit.
       if (this.raised > this.target) {
-        return this.raised * 1.1
+        let max = this.raised * 1.1
+
+        if (max > 500) {
+          max = Math.round((max + 0.5) / 500) * 500
+        }
+
+        return max
       } else {
         return this.target
       }

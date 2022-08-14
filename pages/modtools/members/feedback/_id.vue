@@ -7,7 +7,7 @@
         <b-tab active>
           <template v-slot:title>
             <h4 class="header--size4 ml-2 mr-2">
-              Feedback <span v-if="uniqueMembers.length">({{ uniqueMembers.length }})</span>
+              Feedback <span v-if="members.length">({{ members.length }})</span>
             </h4>
           </template>
           <div class="d-flex justify-content-between">
@@ -123,28 +123,13 @@ export default {
     }
   },
   computed: {
-    uniqueMembers() {
-      const userids = []
-      const ret = []
-
-      this.members.forEach(m => {
-        const id = m.userid ?? m.fromuser
-
-        if (!userids[id]) {
-          userids[id] = true
-          ret.push(m)
-        }
-      })
-
-      return ret
-    },
     ratings() {
       return this.$store.getters['members/getRatings']
     },
     sortedItems() {
       const objs = []
 
-      this.uniqueMembers.forEach(m => {
+      this.members.forEach(m => {
         objs.push({
           type: 'Member',
           object: m,

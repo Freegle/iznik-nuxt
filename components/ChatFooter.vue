@@ -248,6 +248,11 @@ export default {
     MicroVolunteering
   },
   mixins: [chat, chatCollate],
+  data: function() {
+    return {
+      saveTimer: null
+    }
+  },
   computed: {
     noticesToShow() {
       const modtools = this.$store.getters['misc/get']('modtools')
@@ -261,6 +266,37 @@ export default {
           this.otheruser.comments &&
           this.otheruser.comments.length)
       )
+    }
+  },
+  beforeDestroy() {
+    if (this.saveTimer) {
+      clearTimeout(this.saveTimer)
+    }
+  },
+  mounted() {
+    const modtools = this.$store.getters['misc/get']('modtools')
+
+    if (modtools) {
+      const draft = this.$store.getters['misc/get']('chatdraft')
+
+      if (draft.id === this.id) {
+        this.sendmessage = draft.message
+      }
+
+      this.saveTimer = setTimeout(this.saveDraft, 5000)
+    }
+  },
+  methods: {
+    saveDraft() {
+      this.$store.dispatch('misc/set', {
+        key: 'chatdraft',
+        value: {
+          id: this.id,
+          message: this.sendmessage
+        }
+      })
+
+      setTimeout(this.saveDraft, 5000)
     }
   }
 }

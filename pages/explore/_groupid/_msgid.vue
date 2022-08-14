@@ -39,6 +39,7 @@ export default {
     let invalid = false
     let groupid = params.groupid
     const msgid = parseInt(params.msgid)
+    console.log('Feature', msgid)
 
     const groupids = []
 
@@ -72,6 +73,12 @@ export default {
             types: ['Offer', 'Wanted'],
             limit: process.client ? 5 : 20 // During SSR fetch more, for better SEO.  But not too much else it's slow.
           })
+
+          if (this.msgid) {
+            await store.dispatch('messages/fetch', {
+              id: this.msgid
+            })
+          }
         }
       } catch (e) {
         console.error('Invalid group', e)
