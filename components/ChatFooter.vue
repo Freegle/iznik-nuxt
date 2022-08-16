@@ -69,7 +69,7 @@
           placeholder="Type here..."
           rows="3"
           max-rows="8"
-          enterkeyhint="send"
+          enterkeyhint="enter"
           @focus="markRead"
         />
         <b-form-textarea
@@ -78,7 +78,7 @@
           ref="chatarea"
           v-model="sendmessage"
           placeholder="Type here..."
-          enterkeyhint="enter"
+          enterkeyhint="send"
           rows="3"
           max-rows="8"
           autocapitalize="none"
