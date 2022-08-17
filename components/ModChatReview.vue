@@ -203,7 +203,8 @@ export default {
             break
           }
           case 'User': {
-            ret = 'Please check the member logs for more info.'
+            ret =
+              'The member has been flagged for review, so this message has been flagged too.  Please check the member logs for more info.'
             break
           }
           case 'UnknownMessage': {
