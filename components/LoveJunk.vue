@@ -43,7 +43,7 @@ export default {
       return this.uid + '-' + this.variant
     },
     src() {
-      return '/lovejunk/' + this.chosen
+      return 'https://www.ilovefreegle.org/lovejunk/' + this.chosen
     },
     show() {
       // We want to show the ad if the user's location is within the area LoveJunk cover.
