@@ -55,9 +55,4 @@
     </platform>
     <hook src="scripts/before_build.sh" type="before_build" />
     <hook platform="android" src="scripts/remove_permissions.js" type="after_prepare" />
-  <platform name="android">
-    <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application/receiver[@android:name='nl.xservices.plugins.ShareChooserPendingIntent']">
-    <activity android:exported="true" />
-  </edit-config>
-  </platform>
 </widget>
