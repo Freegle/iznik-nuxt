@@ -261,7 +261,8 @@ jobs:
         cp ../project/mobile/freegle/alert.mp3 alert.mp3;
         ln -s ../project/dist www;
         cordova platform rm android;
-        cordova platform add android@10.1.0
+        cordova platform add android@10.1.2;
+        cordova plugin list
       "
 
       - run: echo $ANDROID_HOME
@@ -326,7 +327,8 @@ jobs:
         cp ../project/mobile/modtools/alert.mp3 alert.mp3;
         ln -s ../project/dist www;
         cordova platform rm android;
-        cordova platform add android@10.1.0
+        cordova platform add android@10.1.2;
+        cordova plugin list
       "
 
       - run: echo $ANDROID_HOME
