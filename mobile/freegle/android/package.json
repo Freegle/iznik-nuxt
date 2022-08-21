@@ -27,6 +27,8 @@
     "es6-promise-plugin": "^4.2.2",
     "phonegap-plugin-multidex": "^1.0.0"
   },
+  "comment1": "npm i cordova-plugin-x-socialsharing-android12",
+  "comment2": "cordova plugin add cordova-plugin-x-socialsharing-android12",
   "devDependencies": {
     "@havesource/cordova-plugin-push": "^3.0.1",
     "cordova-android": "10.1.2",

@@ -262,10 +262,10 @@ jobs:
         ln -s ../project/dist www;
         cordova platform rm android;
         npm i cordova-plugin-x-socialsharing-android12;
-        cordova plugin add cordova-plugin-x-socialsharing-android12;
         cordova platform add android@10.1.2;
         cordova plugin list
       "
+        #cordova plugin add cordova-plugin-x-socialsharing-android12;
 
       - run: echo $ANDROID_HOME
       - run: echo $JAVA_HOME
