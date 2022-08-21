@@ -3,7 +3,12 @@
     <b-card-header class="clickme p-1" @click="maybeExpand">
       <b-row>
         <b-col cols="10" sm="4" class="order-1 truncate" :title="user.email">
-          <v-icon name="envelope" />&nbsp;{{ user.email }}
+          <div>
+            <v-icon name="envelope" />&nbsp;{{ user.email }}
+          </div>
+          <div v-if="user.tnuserid" class="text-muted small">
+            TN user id <v-icon name="hashtag" scale="0.6" />{{ user.tnuserid }}
+          </div>
         </b-col>
         <b-col cols="2" sm="1" class="order-2 order-sm-7">
           <span class="d-block d-sm-none float-right">
