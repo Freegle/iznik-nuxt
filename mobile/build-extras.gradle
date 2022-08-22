@@ -1,7 +1,7 @@
 apply plugin: 'com.github.triplet.play'
 
 android {
-    //compileSdkVersion 31
+    compileSdkVersion 31
     play {
     //   track = 'beta' //'alpha','beta' or 'production'
       track.set("beta")
