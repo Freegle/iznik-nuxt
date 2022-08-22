@@ -261,16 +261,13 @@ jobs:
         cp ../project/mobile/freegle/alert.mp3 alert.mp3;
         ln -s ../project/dist www;
         cordova platform rm android;
-        cordova platform add android@10.1.2;
-        cordova plugin list;
-        cat platforms/android/app/src/main/AndroidManifest.xml
+        cordova platform add android@10.1.2
       "
-        #chmod +x scripts/update_sharing_plugin.js;
-        #chmod +x scripts/remove_permissions.js;
-        #cordova plugin rm cordova-plugin-x-socialsharing-android12;
-        #cordova plugin add https://github.com/Takkuz/corodova-plugin-socialsharing-android12
-        #npm i cordova-plugin-x-socialsharing-android12;
-        #cordova plugin add cordova-plugin-x-socialsharing-android12;
+      # Special handling for socialsharing plugin which needs updating:
+      # https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin/pull/1158
+      # done in scripts/update_manifest.js
+      # which needs re-doing after every build by removing and adding platform again
+      # Remove this palaver when plugin fixed.
 
       - run: echo $ANDROID_HOME
       - run: echo $JAVA_HOME
@@ -281,9 +278,7 @@ jobs:
       # Get platform again to fix socialsharing issue again
       - run: "cd ../iznik-nuxt-app; 
         cordova platform rm android;
-        cordova platform add android@10.1.2;
-        cordova plugin list;
-        cat platforms/android/app/src/main/AndroidManifest.xml
+        cordova platform add android@10.1.2
       "
 
       # Build release build
@@ -306,14 +301,14 @@ jobs:
       # previous build:       2.0.0-rc1          used 5.4.1
 
       - run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
-      - run: cd ../iznik-nuxt-app; sed -i "/mavenCentral/amaven { url 'https://plugins.gradle.org/m2/' }" platforms/android/repositories.gradle
-      - run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
+      ##- run: cd ../iznik-nuxt-app; sed -i "/mavenCentral/amaven { url 'https://plugins.gradle.org/m2/' }" platforms/android/repositories.gradle
+      ##- run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
       #- run: cd ../iznik-nuxt-app; cat platforms/android/app/repositories.gradle
       #- run: cd ../iznik-nuxt-app; sed -i "/mavenCentral/amaven { url 'https://plugins.gradle.org/m2/' }" platforms/android/app/repositories.gradle
       #- run: cd ../iznik-nuxt-app; cat platforms/android/app/repositories.gradle
       - run: cd ../iznik-nuxt-app; cat platforms/android/app/build.gradle
-      - run: cd ../iznik-nuxt-app; sed -i "/AGP_VERSION/aclasspath 'com.github.triplet.gradle:play-publisher:2.8.1'" platforms/android/app/build.gradle
-      - run: cd ../iznik-nuxt-app; cat platforms/android/app/build.gradle
+      ##- run: cd ../iznik-nuxt-app; sed -i "/AGP_VERSION/aclasspath 'com.github.triplet.gradle:play-publisher:2.8.1'" platforms/android/app/build.gradle
+      ##- run: cd ../iznik-nuxt-app; cat platforms/android/app/build.gradle
       #- run: cd ../iznik-nuxt-app; cat platforms/android/build.gradle
       #- run: cd ../iznik-nuxt-app; sed -i "/KOTLIN_VERSION/aclasspath 'com.github.triplet.gradle:play-publisher:2.8.1'" platforms/android/build.gradle
       #- run: cd ../iznik-nuxt-app; cat platforms/android/build.gradle
