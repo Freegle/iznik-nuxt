@@ -262,8 +262,9 @@ jobs:
         ln -s ../project/dist www;
         cordova platform rm android;
         cordova plugin list;
-        cordova plugin add https://github.com/Takkuz/corodova-plugin-socialsharing-android12;
+        cordova plugin rm cordova-plugin-x-socialsharing;
         cordova platform add android@10.1.2;
+        cordova plugin add https://github.com/Takkuz/corodova-plugin-socialsharing-android12;
         cordova plugin list
       "
         #cordova plugin rm cordova-plugin-x-socialsharing-android12;
