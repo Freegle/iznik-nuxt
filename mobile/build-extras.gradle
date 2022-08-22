@@ -7,6 +7,7 @@ android {
     //  track.set("beta")
       serviceAccountCredentials = file('api-freegle-google-play-deployment.json')
     //  serviceAccountCredentials.set(file('api-freegle-google-play-deployment.json'))
+      defaultToAppBundles = false
     //  defaultToAppBundles.set(false)
     }
 }
