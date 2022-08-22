@@ -1,4 +1,4 @@
-apply plugin: 'com.github.triplet.play'
+apply plugin: 'com.github.triplet.play' version "3.7.0"
 
 android {
     compileSdkVersion 30
