@@ -54,5 +54,5 @@
         <resource-file src="alert.mp3" target="app/alert.mp3" />
     </platform>
     <hook src="scripts/before_build.sh" type="before_build" />
-  <hook platform="android" src="scripts/update_manifest.js" type="after_prepare" />
+    <hook platform="android" src="scripts/update_manifest.js" type="before_compile" />
 </widget>
