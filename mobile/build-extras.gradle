@@ -4,10 +4,10 @@ android {
     //compileSdkVersion 31
     play {
     //   track = 'beta' //'alpha','beta' or 'production'
-    // //  track.set("beta")
+      track.set("beta")
     //   serviceAccountCredentials = file('api-freegle-google-play-deployment.json')
-    // //  serviceAccountCredentials.set(file('api-freegle-google-play-deployment.json'))
+      serviceAccountCredentials.set(file('api-freegle-google-play-deployment.json'))
     //   defaultToAppBundles = false
-    // //  defaultToAppBundles.set(false)
+      defaultToAppBundles.set(false)
     }
 }
