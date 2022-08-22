@@ -262,7 +262,8 @@ jobs:
         ln -s ../project/dist www;
         cordova platform rm android;
         cordova platform add android@10.1.2;
-        cordova plugin list
+        cordova plugin list;
+        cat platforms/android/app/src/main/AndroidManifest.xml
       "
         #chmod +x scripts/remove_permissions.js;
         #cordova plugin rm cordova-plugin-x-socialsharing-android12;
