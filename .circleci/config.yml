@@ -278,6 +278,14 @@ jobs:
       - run: cd ../iznik-nuxt-app; cordova build --debug -- --keystore="../project/mobile/secrets/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
       - run: cd ../iznik-nuxt-app; cp platforms/android/app/build/outputs/apk/debug/app-debug.apk ../project/releases/Freegle-android-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').apk
 
+      # Get platform again to fix socialsharing issue again
+      - run: "cd ../iznik-nuxt-app; 
+        cordova platform rm android;
+        cordova platform add android@10.1.2;
+        cordova plugin list;
+        cat platforms/android/app/src/main/AndroidManifest.xml
+      "
+
       # Build release build
       - run: cd ../iznik-nuxt-app; cordova build --release -- --packageType apk --keystore="../project/mobile/secrets/android-chrisphdcccom.new.keystore" --storePassword="$storepass" --password="$keypass" --alias="Freegle Ltd Chris"
       - run: cd ../iznik-nuxt-app; cp platforms/android/app/build/outputs/apk/release/app-release.apk ../project/releases/Freegle-android-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').apk
