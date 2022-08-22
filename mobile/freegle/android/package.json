@@ -22,13 +22,15 @@
     "cordova-plugin-inappbrowser": "^5.0.0",
     "cordova-plugin-network-information": "^3.0.0",
     "cordova-plugin-splashscreen": "^6.0.2",
+    "cordova-plugin-x-socialsharing": "^5.6.3",
     "cordova-plugin-zoom-control-2": "^0.4.2",
     "es6-promise-plugin": "^4.2.2",
     "phonegap-plugin-multidex": "^1.0.0"
   },
+  "comment0": "cordova plugin add cordova-plugin-x-socialsharing",
   "comment1": "npm i cordova-plugin-x-socialsharing-android12",
   "comment2": "cordova plugin add cordova-plugin-x-socialsharing-android12",
-  "comment3": "cordova plugin add https://github.com/Takkuz/corodova-plugin-socialsharing-android12",
+  "comment": "Fix up cordova-plugin-x-socialsharing in manifest in scripts/add_sharing_export.js",
   "devDependencies": {
     "@havesource/cordova-plugin-push": "^3.0.1",
     "cordova-android": "10.1.2",
