@@ -265,6 +265,7 @@ jobs:
         cordova plugin list;
         cat platforms/android/app/src/main/AndroidManifest.xml
       "
+        #chmod +x scripts/update_sharing_plugin.js;
         #chmod +x scripts/remove_permissions.js;
         #cordova plugin rm cordova-plugin-x-socialsharing-android12;
         #cordova plugin add https://github.com/Takkuz/corodova-plugin-socialsharing-android12

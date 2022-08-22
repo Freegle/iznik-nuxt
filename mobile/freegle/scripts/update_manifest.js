@@ -16,6 +16,8 @@ var path = require('path');
 var rootdir = "";
 var manifestFile = path.join(rootdir, "platforms/android/app/src/main/AndroidManifest.xml");
 
+console.log("UPDATE MANIFEST")
+
 fs.readFile(manifestFile, "utf8", function (err, data) {
   if (err)
     return console.log(err);
@@ -29,6 +31,7 @@ fs.readFile(manifestFile, "utf8", function (err, data) {
   var toadd = 'android:exported="true" ';
   if (result.indexOf(toadd + addbefore) == -1) {
     result = result.replace(addbefore, toadd + addbefore);
+    console.log("UPDATE SHARE")
   }
 
   fs.writeFile(manifestFile, result, "utf8", function (err) {
