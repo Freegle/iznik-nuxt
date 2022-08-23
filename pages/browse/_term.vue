@@ -157,7 +157,18 @@ export default {
 
       this.showRest = true
 
-      if (this.me) {
+      const lastask = this.$store.getters['misc/get']('lastdonationask')
+      const canask =
+        !lastask || new Date().getTime() - lastask > 60 * 60 * 1000 * 24 * 7
+
+      if (canask) {
+        this.ask()
+
+        this.$store.dispatch('misc/set', {
+          key: 'lastdonationask',
+          value: new Date().getTime()
+        })
+      } else if (this.me) {
         const lastask = this.$store.getters['misc/get']('lastaboutmeask')
         const now = new Date().getTime()
 
@@ -199,20 +210,6 @@ export default {
         }
       }
     }, 5000)
-  },
-  mounted() {
-    const lastask = this.$store.getters['misc/get']('lastdonationask')
-    const canask =
-      !lastask || new Date().getTime() - lastask > 60 * 60 * 1000 * 24 * 7
-
-    if (canask) {
-      this.ask()
-
-      this.$store.dispatch('misc/set', {
-        key: 'lastdonationask',
-        value: new Date().getTime()
-      })
-    }
   },
   methods: {
     ask() {
