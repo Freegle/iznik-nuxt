@@ -299,7 +299,11 @@ jobs:
       #                       2.8.0                     6.5
       #                       ...
       # previous build:       2.0.0-rc1                 used 5.4.1
-      # "AGP_VERSION": "4.2.2",
+      # "AGP_VERSION": "4.2.2", iznik-nuxt-app/platforms/android/cdv-gradle-config.json
+      # https://developer.android.com/reference/tools/gradle-api
+      # http://android-doc.github.io/tools/building/plugin-for-gradle.html
+
+      - run: cat ../iznik-nuxt-app/platforms/android/cdv-gradle-config.json
 
       - run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
       - run: cd ../iznik-nuxt-app; sed -i "/mavenCentral/amaven { url 'https://plugins.gradle.org/m2/' }" platforms/android/repositories.gradle
@@ -361,7 +365,8 @@ jobs:
       - run: cd ../iznik-nuxt-app; sed -i "/mavenCentral/amaven { url 'https://plugins.gradle.org/m2/' }" platforms/android/repositories.gradle
       - run: cd ../iznik-nuxt-app; cat platforms/android/repositories.gradle
       - run: cd ../iznik-nuxt-app; cat platforms/android/build.gradle
-      - run: cd ../iznik-nuxt-app; sed -i "/classpath/aclasspath 'com.github.triplet.gradle:play-publisher:2.8.1'" platforms/android/build.gradle
+      #- run: cd ../iznik-nuxt-app; sed -i "/classpath/aclasspath 'com.github.triplet.gradle:play-publisher:3.5.0'" platforms/android/build.gradle
+      - run: cd ../iznik-nuxt-app; sed -i "/AGP_VERSION/aclasspath 'com.github.triplet.gradle:play-publisher:3.5.0'" platforms/android/app/build.gradle
       - run: cd ../iznik-nuxt-app; cat platforms/android/build.gradle
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/build-extras.gradle platforms/android/app
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/secrets/api-freegle-google-play-deployment.json platforms/android/app
