@@ -35,7 +35,7 @@ export default {
     return {
       shown: false,
       chosen: null,
-      uid: 'lovejunk5'
+      uid: 'lovejunk6'
     }
   },
   computed: {
