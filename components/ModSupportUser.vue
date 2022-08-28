@@ -140,8 +140,13 @@
               <v-icon class="text-muted" name="lock" /> Best guess lat/lng
             </div>
             <div v-if="user.privateposition">
-              {{ Math.round(user.privateposition.lat * 100) / 100 }}, {{ Math.round(user.privateposition.lng * 100) / 100 }}
-              <a :href="'https://www.google.com/maps?q=' + user.privateposition.lat + ',' + user.privateposition.lng" target="_blank" rel="noopener">Show on map</a>
+              <div v-if="user.privateposition.lat || user.privateposition.lng">
+                {{ Math.round(user.privateposition.lat * 100) / 100 }}, {{ Math.round(user.privateposition.lng * 100) / 100 }}
+                <a :href="'https://www.google.com/maps?q=' + user.privateposition.lat + ',' + user.privateposition.lng" target="_blank" rel="noopener">Show on map</a>
+              </div>
+              <div v-else>
+                Not known
+              </div>
             </div>
             <div v-else>
               Not known
