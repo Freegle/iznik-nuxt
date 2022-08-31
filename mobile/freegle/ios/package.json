@@ -77,7 +77,7 @@
       "cordova-plugin-network-information": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-calendar": {
-        "CALENDAR_USAGE_DESCRIPTION": " ",
+        "CALENDAR_USAGE_DESCRIPTION": "To save handover appointments",
         "CONTACTS_USAGE_DESCRIPTION": " "
       },
       "cordova-plugin-statusbar": {},
