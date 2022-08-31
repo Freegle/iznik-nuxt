@@ -3,7 +3,12 @@
     <b-card-header class="clickme p-1" @click="maybeExpand">
       <b-row>
         <b-col cols="10" sm="4" class="order-1 truncate" :title="user.email">
-          <v-icon name="envelope" />&nbsp;{{ user.email }}
+          <div>
+            <v-icon name="envelope" />&nbsp;{{ user.email }}
+          </div>
+          <div v-if="user.tnuserid" class="text-muted small">
+            TN user id <v-icon name="hashtag" scale="0.6" />{{ user.tnuserid }}
+          </div>
         </b-col>
         <b-col cols="2" sm="1" class="order-2 order-sm-7">
           <span class="d-block d-sm-none float-right">
@@ -135,8 +140,13 @@
               <v-icon class="text-muted" name="lock" /> Best guess lat/lng
             </div>
             <div v-if="user.privateposition">
-              {{ Math.round(user.privateposition.lat * 100) / 100 }}, {{ Math.round(user.privateposition.lng * 100) / 100 }}
-              <a :href="'https://www.google.com/maps?q=' + user.privateposition.lat + ',' + user.privateposition.lng" target="_blank" rel="noopener">Show on map</a>
+              <div v-if="user.privateposition.lat || user.privateposition.lng">
+                {{ Math.round(user.privateposition.lat * 100) / 100 }}, {{ Math.round(user.privateposition.lng * 100) / 100 }}
+                <a :href="'https://www.google.com/maps?q=' + user.privateposition.lat + ',' + user.privateposition.lng" target="_blank" rel="noopener">Show on map</a>
+              </div>
+              <div v-else>
+                Not known
+              </div>
             </div>
             <div v-else>
               Not known
