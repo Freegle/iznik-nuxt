@@ -63,9 +63,7 @@ export default {
   },
   computed: {
     donationLink() {
-      // PPGF are doubling donations - direct to PPGF.
-      return 'https://paypal.com/gb/fundraiser/charity/55681'
-      // return 'https://freegle.in/' + (this.link || 'paypal1510')
+      return 'https://freegle.in/' + (this.link || 'paypal1510')
     }
   },
   methods: {
