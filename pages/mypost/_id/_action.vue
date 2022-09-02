@@ -156,14 +156,10 @@ export default {
   },
   methods: {
     ask(groupid) {
-      if (this.$refs.askmodal) {
+      this.waitForRef('askmodal', () => {
         this.$refs.askmodal.show()
-      } else {
-        // This would be a bug.  We've seen it during dev and so we have the if test to prevent client-visible errors.
-        console.error("Don't ask for donation, no ref")
-      }
+      })
     },
-
     setGroup() {
       if (this.message && this.message.groups && this.message.groups.length) {
         this.contactGroup = this.message.groups[0].id
