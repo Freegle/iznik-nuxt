@@ -407,7 +407,7 @@ export default {
 
       // Encode up any emojis.
       if (this.replybox && this.replybox.trim()) {
-        const msg = twem.untwem(this.replybox)
+        const msg = twem.untwem(this.$twemoji, this.replybox)
 
         await this.$store.dispatch('newsfeed/send', {
           message: msg,
