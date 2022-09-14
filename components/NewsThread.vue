@@ -378,7 +378,7 @@ export default {
 
       if (this.threadcomment && this.threadcomment.trim()) {
         // Encode up any emojis.
-        const msg = twem.untwem(this.threadcomment)
+        const msg = twem.untwem(this.$twemoji, this.threadcomment)
         await this.$store.dispatch('newsfeed/send', {
           message: msg,
           replyto: this.replyingTo,

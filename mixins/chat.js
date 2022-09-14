@@ -459,7 +459,7 @@ export default {
           this.chat.chattype === 'User2User'
 
         // Encode up any emojis.
-        msg = twem.untwem(msg)
+        msg = twem.untwem(this.$twemoji, msg)
 
         // Send it
         await this.$store.dispatch('chatmessages/send', {

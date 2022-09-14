@@ -28,7 +28,9 @@ export const mutations = {
     if (chats) {
       // We might have chats that have been removed.  Look for ids in our store that are not in the list, and remove
       // them.  This is a common case when blocking a user.
-      const existingIds = Object.keys(state.list).map(a => parseInt(a))
+      const existingIds = Object.keys(state.list)
+        ? Object.keys(state.list).map(a => parseInt(a))
+        : []
       const newIds = chats.map(a => a.id)
       const removed = existingIds.filter(a => !newIds.includes(a))
       removed.forEach(id => {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-row class="m-0">
-      <b-col cols="12" lg="6" offset-lg="3" class="p-0 fader">
+      <b-col cols="12" lg="8" offset-lg="2" class="p-0 fader">
         <client-only>
           <WizardProgress :active-stage="3" class="d-none d-md-flex" />
         </client-only>

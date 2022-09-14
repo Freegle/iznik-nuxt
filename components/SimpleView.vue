@@ -7,8 +7,10 @@
       :font-size="14"
       :labels="{unchecked: 'Simple Website', checked: 'Full Website'}"
       class="toggle"
+      color="darkgrey"
       @change="change"
     />
+    <!--    Mourning - remove color-->
   </div>
 </template>
 <script>

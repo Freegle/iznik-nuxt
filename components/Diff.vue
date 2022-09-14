@@ -12,11 +12,13 @@ export default {
   props: {
     old: {
       type: String,
-      required: true
+      required: false,
+      default: ''
     },
     new: {
       type: String,
-      required: true
+      required: false,
+      default: ''
     }
   },
   computed: {

@@ -279,7 +279,7 @@ export default {
     if (modtools) {
       const draft = this.$store.getters['misc/get']('chatdraft')
 
-      if (draft.id === this.id) {
+      if (draft?.id === this.id) {
         this.sendmessage = draft.message
       }
 

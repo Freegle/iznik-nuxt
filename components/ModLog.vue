@@ -5,7 +5,8 @@
         {{ datetimeshort(log.timestamp) }}
       </b-col>
       <b-col cols="7" lg="4" class="forcebreak">
-        <ModLogUser v-if="log.user && log.byuser && log.byuser.id !== log.user.id" :user="log.byuser" />
+        <ModLogUser v-if="log.type === 'Group' && log.subtype === 'Joined' && log.user && log.byuser && log.byuser.id !== log.user.id" :user="log.user" />
+        <ModLogUser v-else-if="log.user && log.byuser && log.byuser.id !== log.user.id" :user="log.byuser" />
         <ModLogUser v-else-if="log.byuser" :user="log.byuser" />
         <ModLogUser v-else-if="log.user" :user="log.user" />
         <ModLogUser v-else-if="log.message" :user="log.message.fromuser" />
@@ -15,6 +16,9 @@
           <span v-if="log.subtype === 'Joined'">
             Joined
             <ModLogGroup :log="log" />
+            <span v-if="log.user && log.byuser && log.byuser.id !== log.user.id">
+              (added by <ModLogUser :user="log.byuser" />)
+            </span>
           </span>
           <span v-else-if="log.subtype === 'Applied'">
             Applied to <ModLogGroup :log="log" />

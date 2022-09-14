@@ -71,25 +71,18 @@
 
                 <h2>Our Board</h2>
                 <p>Our volunteers elect a Board.  Here they are:</p>
-                <div v-for="boardmember in board" :key="'board-' + boardmember.id" class="bg-transparent p-0">
-                  <div class="media clickme">
-                    <div class="media-left">
-                      <div class="media-object">
-                        <ProfileImage
-                          v-if="!boardmember.profile.default"
-                          :image="boardmember.profile.turl"
-                          class="mr-2"
-                          size="lg"
-                          :alt-text="'Profile picture for ' + boardmember.displayname"
-                        />
-                      </div>
-                    </div>
-                    <div class="media-body">
-                      <span class="font-weight-bold">{{ boardmember.displayname }}</span>
-                      <p v-if="boardmember.description">
-                        {{ boardmember.description }}
-                      </p>
-                    </div>
+                <div v-for="boardmember in board" :key="'board-' + boardmember.id" class="bg-transparent p-0 pt-2 d-flex">
+                  <ProfileImage
+                    :image="boardmember.profile.default ? null : boardmember.profile.turl"
+                    class="mr-2"
+                    size="lg"
+                    :alt-text="'Profile picture for ' + boardmember.displayname"
+                  />
+                  <div>
+                    <span class="font-weight-bold">{{ boardmember.displayname }}</span>
+                    <p v-if="boardmember.description">
+                      {{ boardmember.description }}
+                    </p>
                   </div>
                 </div>
 
