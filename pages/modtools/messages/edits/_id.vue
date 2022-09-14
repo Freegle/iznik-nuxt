@@ -38,7 +38,8 @@ export default {
   data: function() {
     return {
       collection: 'Edit',
-      workType: 'editreview'
+      workType: 'editreview',
+      limit: 20
     }
   }
 }

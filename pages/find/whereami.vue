@@ -1,7 +1,7 @@
 <template>
   <b-row class="m-0">
-    <b-col cols="0" md="3" />
-    <b-col cols="12" lg="6" class="p-0 fader">
+    <b-col cols="0" md="2" />
+    <b-col cols="12" lg="8" class="p-0 fader">
       <GlobalWarning />
       <client-only>
         <WizardProgress :active-stage="2" class="d-none d-md-flex" />

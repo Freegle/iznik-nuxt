@@ -59,7 +59,10 @@
               <b-img-lazy fluid src="/running.gif" alt="Keep freegle running" />
             </div>
             <div>
-              <p>
+              <p v-if="variant === 'paypal1510minutes'">
+                <strong>£1</strong> keeps Freegle running across the UK for <strong>7 minutes</strong>.  Can you help?
+              </p>
+              <p v-else>
                 <strong>{{ groupname }}</strong> is a charity that's free to use, but not free to run.  This month we're
                 trying to raise <strong>&pound;{{ target }}</strong><span v-if="groupid && !targetMet"> for this community</span><span v-else> across the UK</span>.
               </p>
@@ -102,6 +105,11 @@
                 <donation-button link="paypal1" show="£5/month" monthly monthlyvalue="Supporter5" @clicked="score(20)" />
               </div>
               <div v-else-if="variant === 'buttons1510'" class="d-flex justify-content-between flex-wrap">
+                <donation-button link="paypal1" show="£1" class="mb-1" @clicked="score(1)" />
+                <donation-button link="paypal5" show="£5" class="mb-1" @clicked="score(5)" />
+                <donation-button link="paypal10" show="£10" class="mb-1" @clicked="score(10)" />
+              </div>
+              <div v-else-if="variant === 'paypal1510minutes'" class="d-flex justify-content-between flex-wrap">
                 <donation-button link="paypal1" show="£1" class="mb-1" @clicked="score(1)" />
                 <donation-button link="paypal5" show="£5" class="mb-1" @clicked="score(5)" />
                 <donation-button link="paypal10" show="£10" class="mb-1" @clicked="score(10)" />

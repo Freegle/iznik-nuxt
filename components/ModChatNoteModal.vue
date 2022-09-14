@@ -65,7 +65,7 @@ export default {
     },
     async addit() {
       // Encode up any emojis.
-      const msg = twem.untwem(this.note)
+      const msg = twem.untwem(this.$twemoji, this.note)
 
       // Send it
       await this.$store.dispatch('chatmessages/send', {

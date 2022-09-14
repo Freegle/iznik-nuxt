@@ -309,16 +309,16 @@ export default {
   },
   mounted() {
     setTimeout(async () => {
-      // Look for a custom logo.
-      const res = await this.$axios.get(process.env.API + '/logo')
-
-      if (res.status === 200) {
-        const ret = res.data
-
-        if (ret.ret === 0 && ret.logo) {
-          this.logo = ret.logo.path.replace(/.*logos/, '/logos')
-        }
+    // Look for a custom logo.
+    const res = await this.$axios.get(process.env.API + '/logo')
+    
+    if (res.status === 200) {
+      const ret = res.data
+    
+      if (ret.ret === 0 && ret.logo) {
+        this.logo = ret.logo.path.replace(/.*logos/, '/logos')
       }
+    }
     }, 5000)
 
     this.getCounts()
@@ -369,7 +369,6 @@ export default {
   }
 }
 </script>
-
 <style scoped lang="scss">
 @import 'color-vars';
 @import '~bootstrap/scss/functions';

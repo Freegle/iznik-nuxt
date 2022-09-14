@@ -1,36 +1,44 @@
 const twem = {
   twem: function(twemoji, msg) {
-    if (typeof msg === 'number') {
-      // This can happen if people post just numeric values.
-      msg += ''
-    }
+    try {
+      if (typeof msg === 'number') {
+        // This can happen if people post just numeric values.
+        msg += ''
+      }
 
-    if (typeof msg === 'string') {
-      msg = msg.replace(/\\\\u(.*?)\\\\u/g, function(
-        match,
-        contents,
-        offset,
-        s
-      ) {
-        s = contents.split('-')
+      if (typeof msg === 'string') {
+        msg = msg.replace(/\\\\u(.*?)\\\\u/g, function(
+          match,
+          contents,
+          offset,
+          s
+        ) {
+          s = contents.split('-')
 
-        let ret = ''
+          let ret = ''
 
-        for (const t of s) {
-          ret += twemoji.convert.fromCodePoint(t)
-        }
+          for (const t of s) {
+            ret += twemoji.convert.fromCodePoint(t)
+          }
 
-        return ret
-      })
+          return ret
+        })
+      }
+    } catch (e) {
+      console.log('twem error', e)
     }
 
     return msg
   },
 
   untwem: function(twemoji, msg) {
-    msg = twemoji.replace(msg, function(emoji) {
-      return '\\\\u' + twemoji.convert.toCodePoint(emoji) + '\\\\u'
-    })
+    try {
+      msg = twemoji.replace(msg, function(emoji) {
+        return '\\\\u' + twemoji.convert.toCodePoint(emoji) + '\\\\u'
+      })
+    } catch (e) {
+      console.log('untwem error:', e)
+    }
 
     return msg
   }

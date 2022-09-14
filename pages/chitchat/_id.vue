@@ -353,7 +353,7 @@ export default {
 
       if (msg && msg.trim().length) {
         // Encode up any emojis.
-        msg = twem.untwem(msg)
+        msg = twem.untwem(this.$twemoji, msg)
 
         await this.$store.dispatch('newsfeed/send', {
           message: msg,

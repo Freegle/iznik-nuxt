@@ -3,6 +3,7 @@
     <client-only>
       <ScrollToTop />
       <ModHelpMemberReview />
+      <ModPostcodeTester />
       <div v-for="member in visibleMembers" :key="'memberlist-' + member.id" class="p-0 mt-2">
         <ModMemberReview :member="member" />
       </div>
@@ -28,10 +29,12 @@ import ScrollToTop from '~/components/ScrollToTop'
 import ModHelpMemberReview from '~/components/ModHelpMemberReview'
 import ModMemberReview from '~/components/ModMemberReview'
 import NoticeMessage from '~/components/NoticeMessage'
+import ModPostcodeTester from '~/components/ModPostcodeTester'
 
 export default {
   components: {
     ModHelpMemberReview,
+    ModPostcodeTester,
     ScrollToTop,
     NoticeMessage,
     ModMemberReview
