@@ -250,7 +250,7 @@ export default {
     return {
       distance: 1000,
       // Mourning logo: require(`@/static/icon.png`),
-      logo: '/icon_mourning.png',
+      logo: require(`@/static/icon_mourning.png`),
       unreadNotificationCount: 0,
       chatCount: 0
     }
