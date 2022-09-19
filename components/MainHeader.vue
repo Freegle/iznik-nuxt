@@ -249,8 +249,7 @@ export default {
   data: function() {
     return {
       distance: 1000,
-      // Mourning logo: require(`@/static/icon.png`),
-      logo: require(`@/static/icon_mourning.png`),
+      logo: require(`@/static/icon.png`),
       unreadNotificationCount: 0,
       chatCount: 0
     }
@@ -301,19 +300,18 @@ export default {
     }
   },
   mounted() {
-    // Mourning - re-enable.
-    // setTimeout(async () => {
-    //   // Look for a custom logo.
-    //   const res = await this.$axios.get(process.env.API + '/logo')
-    //
-    //   if (res.status === 200) {
-    //     const ret = res.data
-    //
-    //     if (ret.ret === 0 && ret.logo) {
-    //       this.logo = ret.logo.path.replace(/.*logos/, '/logos')
-    //     }
-    //   }
-    // }, 5000)
+    setTimeout(async () => {
+      // Look for a custom logo.
+      const res = await this.$axios.get(process.env.API + '/logo')
+
+      if (res.status === 200) {
+        const ret = res.data
+
+        if (ret.ret === 0 && ret.logo) {
+          this.logo = ret.logo.path.replace(/.*logos/, '/logos')
+        }
+      }
+    }, 5000)
 
     this.getCounts()
   },
@@ -360,6 +358,7 @@ export default {
   }
 }
 </script>
+
 <style scoped lang="scss">
 @import 'color-vars';
 @import '~bootstrap/scss/functions';
@@ -371,9 +370,7 @@ export default {
 }
 
 .ourBack {
-  //background-color: $color-green-background !important;
-  // Mourning
-  background-color: black !important;
+  background-color: $color-green-background !important;
 }
 
 .mainnav {
