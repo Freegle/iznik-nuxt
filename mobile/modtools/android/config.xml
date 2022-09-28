@@ -47,7 +47,4 @@
     <resource-file src="alert.mp3" target="app/alert.mp3" />
   </platform>
   <hook src="scripts/before_build.sh" type="before_build" />
-  <platform name="android">
-    <resource-file src="google-services.json" target="app/google-services.json" />
-  </platform>
 </widget>
