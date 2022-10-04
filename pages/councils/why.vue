@@ -21,6 +21,7 @@
             <b-img src="/sponsors/LoveEssex.jpg" thumbnail />
             <b-img src="/sponsors/LancasterCityCouncil.jpg" thumbnail />
             <b-img src="/sponsors/NewcastleUnderLyme.jpg" thumbnail />
+            <b-img src="/sponsors/NWP.jpg" thumbnail />
           </div>
           <p class="mt-2">
             A word from one of our partners -
