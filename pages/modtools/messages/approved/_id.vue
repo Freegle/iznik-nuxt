@@ -1,7 +1,7 @@
 <template>
   <div>
     <client-only>
-      <ScrollToTop />
+      <ScrollToTop :prepend="groupName" />
       <div class="d-flex justify-content-between flex-wrap">
         <GroupSelect v-model="groupid" all modonly remember="approved" />
         <ModFindMessagesFromMember @searched="searchedMember" />
@@ -66,6 +66,13 @@ export default {
     }
   },
   computed: {
+    groupName() {
+      if (this.groupid) {
+        return this.$store.getters['group/get'](this.groupid)?.namedisplay
+      }
+
+      return null
+    },
     summary() {
       const ret = this.$store.getters['misc/get'](
         'modtoolsMessagesApprovedSummary'
