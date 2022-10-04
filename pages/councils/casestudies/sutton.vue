@@ -4,214 +4,102 @@
       <b-card no-body variant="success">
         <b-card-header>
           <h1>
-            Essex County Council & Freegle<br>
-            <em>Supporting resilient communities through reuse</em>
+            Freegle Focus Case Study: London Borough of Sutton & Freegle<br>
+            <em>Office furniture - Reuse best practice - Supporting the community</em>
           </h1>
         </b-card-header>
         <b-card-text class="pl-2 pr-2">
-          <div class="bg-success p-2 m-4 large">
-            The partnership between Freegle and Love Essex is a best practice example of how the public
-            sector can meet the not-for-profit, to achieve more with less.
+          <h2>Summary</h2>
+          <p>
+            Ahead of a major office refurbishment project in early 2022, London Borough of Sutton worked with Freegle to successfully re-home over 100 surplus pieces of large office furniture, as well as many smaller items.
+          </p>
+          <p>
+            Individuals, local groups and charities from the local area came forward to claim these useful items direct from the council, at no cost.
+          </p>
+          <p>
+            Read on to find out why this reuse project was initiated, how it was organised, the key successes and lessons learnt.
+          </p>
+          <h2>
+            Climate Emergency: Sutton’s ambitious targets
+          </h2>
+          <p>
+            In 2019 Sutton Council declared a Climate Emergency which was incorporated into the borough's ambitious Environment Strategy 2019 - 2025. The aims include achieving net zero carbon emissions and becoming London’s most sustainable borough.
+          </p>
+          <h2>
+            Office refurbishment creates reuse opportunity
+          </h2>
+          <p>
+            In late 2021, ahead of a major refurbishment project involving one of the council's buildings, London Borough of Sutton contacted Freegle to discuss how the Freegle platform could be used to help re-home a large collection of soon-to-be surplus office furniture and equipment.
+          </p>
+          <p>
+            Officers from Sutton discussed the options together with Freegle central and the local Freegle community volunteer moderator and put together a plan.
+          </p>
+          <h2>
+            An OFFER posted on Freegle
+          </h2>
+          <b-img fluid src="/councils/casestudies/SuttonOFFER.png" />
+          <p>
+            An OFFER posted on Sutton Freegle invited local residents, groups and organisations to visit the council building and pick up items they wished to re-home.
+          </p>
+          <p>
+            Items on offer included desks, meeting room tables, chairs, storage units, cupboards, bookcases and coat stands. Smaller items of office equipment were also available, including in-trays, staplers, hole punches, stationery, folders, monitor stands and foot rests.
+          </p>
+          <p>
+            Initially one 'open day' was arranged, followed by some additional promotion including some internal publicity within the  organisation.  To allow ample time for viewing, selecting and collection of items, two additional open days were held.
+          </p>
+          <p>
+            All items were offered free of charge however Sutton made clear in the OFFER that transportation and removal of items had to be arranged by the individual ‘takers'.
+          </p>
+          <p>
+            Around twenty individuals attended including representatives from a local church, a children’s charity and four of the borough's local schools. Sutton council provided staff on three floors to help and direct visitors.
+          </p>
+          <div class="even">
+            <b-img src="/councils/casestudies/SuttonCabinets.png" thumbnail />
+            <b-img src="/councils/casestudies/SuttonDesks.png" thumbnail />
+            <b-img src="/councils/casestudies/SuttonOfficeChairs.png" thumbnail />
           </div>
-
-          <h2>Encouraging resilient communities</h2>
-
-          <p>
-            The Sustainability and Resilience Team at Essex County Council, otherwise known as 'Love Essex', are a team
-            of ten, working across a range of sustainability projects. These include waste prevention & reuse;
-            environmental awareness and an Interreg-funded project called BLUEPRINT to the Circular Economy.
-          </p>
-
-          <p>
-            Encouraging reuse has long been an integral part of the Love Essex offer. Alongside this, a number of
-            community-led, local Freegle groups began to form in the county after Freegle's launch in 2009. The Love Essex
-            team were quick to see the financial and social benefits of engaging with Freegle further and in 2016 a
-            mutually beneficial partnership between the two was formed.
-          </p>
-
-          <p>
-            Essex County Council acknowledged the value in supporting residents to build more self-reliant communities through the
-            simple act of reuse, an activity which impacts positively on use of resources, saves money and helps to
-            protect the environment, aligning neatly with many of the Love Essex priorities.
-          </p>
-
-          <h2>Love Essex - a move towards reuse</h2>
-          <p>
-            The 'Love Essex' brand and website were launched in September 2018, replacing 'Recycle for Essex'.
-            The county council and the districts worked together to develop a single brand with a consistent
-            message to promote waste reduction, prevention, recycling and reuse.
-          </p>
-
-          <p>
-            The website is now the county's main hub for all things related to household waste & recycling, recycling
-            centres and waste prevention initiatives. Information arrives via the website, a dedicated Facebook page, Twitter, Instagram and a
-            monthly e-newsletter for residents. Over 15, 000 residents are current subscribers to the newsletter and
-            this multi-channel method of communicating with the public has proved to be very effective.
-            Cathryn Wood, Senior Sustainability & Resilience Officer at Essex CC commented:-
-          </p>
-
-          <p>
-            <span class="quote">Our monthly e-newsletter is one of a range of digital communications that we use.
-              Use of social media platforms to reach out to residents has become more important, especially in
-              the current climate, when face-to-face engagement is not possible and many are spending more time
-              in the home. We monitor all our campaigns on a monthly basis using measures such as the
-              'open' and 'click' rates to help inform us as to what works most effectively. This digital
-              trail, means that engagement can be measured and monitored much more effectively than with more
-              traditional communication methods, such as radio ads and print.</span>
-          </p>
-
-          <p>
-            Essex's twelve districts, boroughs and cities use the Love Essex website to share news,
-            ideas and content derived from this central source through their own channels.
-          </p>
-
-          <ImageWithCaption src="/councils/casestudies/essex1.png" text="Promotion of Freegle in the Love Essex e-bulletin Jan 2021" />
-
-          <p>
-            Cathryn continued:-
-          </p>
-          <p>
-            <span class="quote">When planning our media campaigns, an emphasis on reuse and the promotion of Freegle
-              makes perfect sense. Reuse is something that virtually every resident can start doing today, without
-              having to leave home. There are few barriers, the benefits are obvious and Freegle makes the
-              process very easy</span>
-          </p>
-
-          <ImageWithCaption src="/councils/casestudies/essex2.png" text="Love Essex regularly uses Facebook to generate posts promoting Freegle and reuse" />
-
-          <h2>Supporting Freegle</h2>
-
-          <p>
-            There are currently twenty local Freegle groups across Essex, with almost 70,000 members. In the last
-            12 months, 164 tonnes of 'stuff' was reused via the platform, saving an estimated 83.8 tonnes of CO2.
-          </p>
-
-          <p>
-            Cathryn Wood explained why Essex County Council wanted to support Freegle:-
-          </p>
-
-          <p>
-            <span class="quote">
-              Local Freegle groups have been active within the community for several years now and as a local
-              authority we felt compelled to support and encourage them. There are some excellent examples of
-              reuse already happening within the groups. The fact that residents can pass on a range of useful
-              resources such as furniture, clothing or children's toys, means that those in our community who are
-              most in need, get to access such items for no cost. For us, supporting a charity such as Freegle is
-              also a way of en-couraging resilient communities, especially in these difficult times.  But the
-              benefits don't end there. For every tonne of material that is reused, the local authorities reduce
-              collection, processing and disposal costs.
-            </span>
-          </p>
-
-          <p>
-            In 2020, Essex CC partnered with  Freegle using funds from the county's Waste Prevention budget. This funding
-            helped with the platform's hosting and site maintenance costs in addition to covering some
-            of the loss of income that Freegle experienced in 2020, due to a reduction in user donations
-            during the Covid-19 crisis. The county have recently committed to continuing this support in 2021.
-          </p>
-
-          <p>
-            <span class="quote">
-              The local communities with their band of volunteers are completely self sufficient so we don't need to get
-              involved with any of the day to day activity
-            </span> said Cathryn.
-            <span class="quote">
-              However it made total sense for us to offer on-going support to Freegle more centrally. Even with a
-              small investment, Freegle has the capacity to deliver significant, meaningful and measurable results
-              which are of great value to Essex County Council and its residents.
-            </span>
-          </p>
-          <p>
-            Freegle Founder Edward Hibbert commented:-
-          </p>
-          <p>
-            <span class="quote">
-              Support from local authorities is crucial for Freegle. Our local communities are
-              largely self-sustaining but with a small input of funding centrally, an incredible amount can be
-              achieved. As a charity, Freegle is free to use but not free to run and we rely on donations to
-              keep the platform operating. Local authorities have the ability to spread the reuse message far and wide
-              and it is simply fantastic to see Essex County Council consistently demonstrating this in innovative
-              and engaging ways.
-            </span>
-          </p>
-
           <h2>
-            Collection Vehicle Livery
+            Sutton Freegle Quick Facts
           </h2>
-
           <p>
-            In late 2019, an opportunity arose to advertise on collection vehicles in Braintree. As the newly founded
-            Braintree local Freegle group didn't have many users at this time, the team at Love Essex immediately
-            thought that this could be of benefit to Freegle.
+            Founded in 2018, Sutton Freegle has 6,561 current freeglers.
           </p>
-
-          <ImageWithCaption src="/councils/casestudies/essex3.png" text="Freegle Livery on Braintree collection vehicle" />
-
           <p>
-            <span class="quote">
-              We wanted to promote the group in this area to encourage more people to use the platform and
-              increase donations
-            </span> said Cathryn.
-            <span class="quote">
-              The estimated reach of the collection vehicle livery is 65,000 households on a weekly basis.
-            </span>
+            Over the 12 months to September 2022 this community facilitated 156 tonnes of reuse, saved 79.7 tonnes of
+            GHG emissions. The reuse equates to £111,102 worth of financial savings.
           </p>
-
-          <p>
-            Over time, Freegle membership across the county has steadily grown, as the graph below, showing statistics
-            from a two-year period Jan '19 to Dec '20 demonstrates. Tonnage of materials reused has also increased
-            significantly over this time with a clear resurgence of reuse activity after May 2020 when Freegle
-            communities were unable to operate for a short time due to the Covid pandemic.
-          </p>
-
-          <ImageWithCaption src="/councils/casestudies/essex5.png" text="Graphs showing Freegle membership and tonnage reuse over two-year period, Jan 2019 - Dec 2020" />
-
           <h2>
-            In print & media
+            Impacts of Reuse
           </h2>
-
           <p>
-            In addition to the online activity, Freegle artwork and information has been included in magazines,
-            newspaper adverts and on bookmarks sent to libraries. Radio campaigns are also used from time to time.
+            Councillor Barry Lewis, Chair of Environment & Sustainable Transport Committee said:
           </p>
-
-          <ImageWithCaption src="/councils/casestudies/essex4.png" text="Magazine advert highlighting the Basildon Freegle group." />
-
-          <h2>
-            Videos - how to Freegle
-          </h2>
-
-          <p>
-            Love Essex also has a
-            <!-- eslint-disable-next-line-->
-            <ExternalLink href="https://www.youtube.com/channel/UCrPBsEc0i7JK33bk3TwNIRQ/videos">YouTube channel</ExternalLink>
-            hosting a series of excellent video shorts which have also proved to be a highly effective way of
-            communicating with residents. An external film maker and actors were employed to create this
-            professionally edited content. The collection covers a variety of topics and provide another
-            engaging tool for Essex to draw on.
+          <p class="quote">
+            We want Sutton to become London's most sustainable borough and a key part of this is creating a circular
+            economy. I'm therefore delighted that over 200 items of surplus furniture have gone to new homes through
+            Freegle instead of being sent to landfill.
+            This partnership has helped us reduce waste, increase reuse and help to support local people and
+            organisations.
           </p>
           <p>
-            <!-- eslint-disable-next-line-->
-            The process of 'Freegling' was covered in one of Love Essex's videos: <b>Give your unwanted items away on Freegle</b>
-            This video, alongside other messages promoting reuse, was viewed over 126,000 times across @loveessexuk
-            Facebook, Twitter and Instagram pages, with residents engaging with content by liking, commenting and
-            sharing over 9,000 times in just 12 months.
+            Coady Johnston , Project Officer, Policy & Transformation commented:
           </p>
-          <LazyYoutubeVideo src="https://www.youtube.com/embed/_VNUy-AFSsc" />
+          <p class="quote">
+            It was really lovely to give another life to our surplus furniture - redirecting it from landfill. We saw a
+            variety of reuse, from helping people perfect their home offices, to charities and even schools.
 
-          <h2 class="mt-3">
-            Further details
-          </h2>
-
-          <!-- eslint-disable-next-line-->
-          <ExternalLink href="https://www.loveessex.org">www.loveessex.org</ExternalLink><br />
-          <!-- eslint-disable-next-line-->
-          <ExternalLink href="https://www.ilovefreegle.org/stats/authority/117233">Freegle reuse data for Essex</ExternalLink>
+            It was a win-win for the council and the community!
+          </p>
+          <p>
+            Dee - volunteer from Sutton Freegle community added:
+          </p>
+          <p class="quote">
+            I am delighted that the Freegle platform has been able to help Sutton to  reuse these surplus items.
+            I took a chair myself which in the end, was not needed so I swiftly passed it on - through Freegle of
+            course!
+          </p>
         </b-card-text>
       </b-card>
-      <p>
-        <ExternalLink href="www.loveessex.org " />
-      </p>
     </b-col>
     <b-col>
       <CouncilsContent />
@@ -222,12 +110,9 @@
 import buildHead from '@/mixins/buildHead.js'
 import sectionScroll from '@/mixins/sectionScroll.js'
 import CouncilsContent from '~/components/CouncilsContent'
-import ImageWithCaption from '~/components/ImageWithCaption'
-
-const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
-  components: { ImageWithCaption, CouncilsContent, ExternalLink },
+  components: { CouncilsContent },
   mixins: [buildHead, sectionScroll],
   head() {
     return this.buildHead(
@@ -255,5 +140,11 @@ export default {
   &::after {
     content: close-quote;
   }
+}
+
+.even {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
 }
 </style>
