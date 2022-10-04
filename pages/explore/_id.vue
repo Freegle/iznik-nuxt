@@ -77,6 +77,13 @@ export default {
             showmods: true,
             sponsors: true
           })
+        } else if (process.client) {
+          // Refresh, but don't wait.
+          store.dispatch('group/fetch', {
+            id: params.id,
+            showmods: true,
+            sponsors: true
+          })
         }
 
         if (group) {
