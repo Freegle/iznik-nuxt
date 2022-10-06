@@ -9,6 +9,9 @@
           </h1>
         </b-card-header>
         <b-card-text class="pl-2 pr-2">
+          <p>
+            <a href="/councils/Sutton.pdf">Download as a PDF</a>
+          </p>
           <h2>Summary</h2>
           <p>
             Ahead of a major office refurbishment project in early 2022, London Borough of Sutton worked with Freegle to successfully re-home over 100 surplus pieces of large office furniture, as well as many smaller items.
