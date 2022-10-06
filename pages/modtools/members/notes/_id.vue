@@ -53,9 +53,13 @@ export default {
   },
   computed: {
     filteredComments() {
-      return this.comments.filter(
-        c => this.groupid === null || this.groupid === c.groupid
-      )
+      return this.comments.filter(c => {
+        return (
+          this.groupid === null ||
+          this.groupid === c.groupid ||
+          c.byuser?.id === this.myid
+        )
+      })
     },
     visibleComments() {
       return this.filteredComments.slice(0, this.show)
@@ -92,7 +96,6 @@ export default {
           })
 
           this.context = this.$store.getters['comments/getContext']
-          console.log('Context', this.context)
 
           if (currentCount === this.comments.length) {
             this.complete = true

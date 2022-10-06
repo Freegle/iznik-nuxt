@@ -49,7 +49,7 @@ export const getters = {
   sortedList: state => {
     const k = Object.values(state.list)
     return k.sort(function(a, b) {
-      return new Date(a.reviewed).getTime() - new Date(b.reviewed).getTime()
+      return new Date(b.reviewed).getTime() - new Date(a.reviewed).getTime()
     })
   },
 
