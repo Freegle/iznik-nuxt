@@ -5,8 +5,16 @@
         <b-card-header>
           <h1>
             Freegle Focus Case Study: London Borough of Sutton & Freegle<br>
-            <em>Office furniture - Reuse best practice - Supporting the community</em>
           </h1>
+          <h2>
+            <em>Office furniture</em>
+          </h2>
+          <h2>
+            <em>Reuse best practice</em>
+          </h2>
+          <h2>
+            <em>Supporting the community</em>
+          </h2>
         </b-card-header>
         <b-card-text class="pl-2 pr-2">
           <p>
@@ -26,7 +34,10 @@
             Climate Emergency: Sutton’s ambitious targets
           </h2>
           <p>
-            In 2019 Sutton Council declared a Climate Emergency which was incorporated into the borough's ambitious Environment Strategy 2019 - 2025. The aims include achieving net zero carbon emissions and becoming London’s most sustainable borough.
+            In 2019 Sutton Council declared a Climate Emergency which was incorporated into the borough's ambitious
+            <!-- eslint-disable-next-line -->
+            <ExternalLink href="https://www.sutton.gov.uk/documents/20124/454993/Environment_Strategy_2020.pdf">Environment Strategy 2019 - 2025</ExternalLink>.
+            The aims include achieving net zero carbon emissions and becoming London’s most sustainable borough.
           </p>
           <h2>
             Office refurbishment creates reuse opportunity
@@ -42,7 +53,11 @@
           </h2>
           <b-img fluid src="/councils/casestudies/SuttonOFFER.png" />
           <p>
-            An OFFER posted on Sutton Freegle invited local residents, groups and organisations to visit the council building and pick up items they wished to re-home.
+            An OFFER posted on
+            <ExternalLink href="https://www.ilovefreegle.org/explore/SuttonFreegle">
+              Sutton Freegle
+            </ExternalLink>
+            invited local residents, groups and organisations to visit the council building and pick up items they wished to re-home.
           </p>
           <p>
             Items on offer included desks, meeting room tables, chairs, storage units, cupboards, bookcases and coat stands. Smaller items of office equipment were also available, including in-trays, staplers, hole punches, stationery, folders, monitor stands and foot rests.
@@ -113,9 +128,10 @@
 import buildHead from '@/mixins/buildHead.js'
 import sectionScroll from '@/mixins/sectionScroll.js'
 import CouncilsContent from '~/components/CouncilsContent'
+import ExternalLink from '~/components/ExternalLink'
 
 export default {
-  components: { CouncilsContent },
+  components: { CouncilsContent, ExternalLink },
   mixins: [buildHead, sectionScroll],
   head() {
     return this.buildHead(
