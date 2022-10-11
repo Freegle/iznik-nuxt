@@ -39,6 +39,7 @@
             </template>
           </b-tab>
         </b-tabs>
+        <ModMemberSearchbox v-if="tabIndex === 0" v-model="search" :groupid="groupid" spam class="mb-2" />
         <ModMember v-for="spammer in visibleSpammers" :key="'spammer-' + tabIndex + '-' + spammer.id" :member="spammer.user" :sameip="spammer.sameip" class="mb-1" />
         <b-img v-if="busy" src="~/static/loader.gif" alt="Loading" />
         <div v-else-if="!spammers.length">
@@ -56,13 +57,15 @@
 <script>
 import InfiniteLoading from 'vue-infinite-loading'
 import loginRequired from '@/mixins/loginRequired.js'
-import ModHelpSpammers from '../../components/ModHelpSpammers'
-import ModMember from '../../components/ModMember'
+import ModHelpSpammers from '~/components/ModHelpSpammers'
+import ModMember from '~/components/ModMember'
+import ModMemberSearchbox from '~/components/ModMemberSearchbox'
 
 export default {
   components: {
     ModMember,
     ModHelpSpammers,
+    ModMemberSearchbox,
     InfiniteLoading
   },
   mixins: [loginRequired],
@@ -71,7 +74,8 @@ export default {
       tabIndex: 0,
       show: 0,
       busy: false,
-      bump: 0
+      bump: 0,
+      search: null
     }
   },
   computed: {
@@ -132,12 +136,21 @@ export default {
       this.$store.dispatch('spammers/clear')
     }
   },
+  created() {
+    if (this.$route.params.search) {
+      this.search = this.$route.params.search
+    }
+  },
   mounted() {
     // Start in Pending Add if they have rights to see it.
     this.$store.dispatch('spammers/clear')
 
     if (this.hasPermissionSpamAdmin) {
-      this.tabIndex = 1
+      if (this.search) {
+        this.tabIndex = 0
+      } else {
+        this.tabIndex = 1
+      }
     } else {
       this.tabIndex = 0
     }
@@ -158,6 +171,7 @@ export default {
         this.$store
           .dispatch('spammers/fetch', {
             collection: this.collection,
+            search: this.search,
             modtools: true
           })
           .then(() => {
