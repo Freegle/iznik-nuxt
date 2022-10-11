@@ -1,4 +1,4 @@
-// Do mobile app Google login using auth popup handled within app using cordova-plugin-googleplus
+// Do mobile app Google login within app using cordova-plugin-google-signin
 
 import jwt_decode from 'jwt-decode'
 
