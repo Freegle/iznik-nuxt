@@ -13,6 +13,7 @@
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",
   "dependencies": {
+    "cordova-plugin-google-signin": "git+https://github.com/Freegle/cordova-plugin-google-signin.git",
     "cordova-plugin-sign-in-with-apple": "^0.1.1"
   },
   "devDependencies": {
@@ -26,9 +27,6 @@
     "plugins": {
       "cordova-plugin-whitelist": {},
       "cordova-plugin-sign-in-with-apple": {},
-      "cordova-plugin-googleplus": {
-        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.423761283916-mfrb9i0ntt1omq2knit8j49agnhje648"
-      },
       "cordova-clipboard": {},
       "cordova-plugin-camera": {},
       "cordova-plugin-device": {},
@@ -42,7 +40,11 @@
       "cordova-plugin-network-information": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-statusbar": {},
-      "phonegap-plugin-push": {}
+      "phonegap-plugin-push": {},
+      "cordova-plugin-google-signin": {
+        "SERVER_CLIENT_ID": "423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com",
+        "REVERSED_IOSAPP_CLIENT_ID": "com.googleusercontent.apps.423761283916-rj53j0aoud6dgh3dnblschc72l052oie"
+      }
     },
     "platforms": [
       "ios"
