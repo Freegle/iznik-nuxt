@@ -36,7 +36,7 @@ export function appGoogleLogin(isiOS, callback) {
         },
         function (error) {
           console.error(error)
-          completeLoginCallback({ status: e.message })
+          completeLoginCallback({ status: error.message })
           tryingGoogleLogin = false
         }
       );
@@ -56,7 +56,7 @@ export function appGoogleLogin(isiOS, callback) {
         },
         function (error) {
           console.error(error)
-          completeLoginCallback({ status: e.message })
+          completeLoginCallback({ status: error.message })
           tryingGoogleLogin = false
         }
       )
