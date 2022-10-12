@@ -22,17 +22,11 @@ export function appGoogleLogin(isiOS, callback) {
       cordova.plugins.GoogleSignInPlugin.signIn(
         function (sdata) {
           const data = JSON.parse(sdata)
-          console.log("data", data)
-          console.log(data.message.id_token)
-          const decoded = jwt_decode(data.message.id_token)
-          console.log(decoded)
-  
+          // const decoded = jwt_decode(data.message.id_token)
           // Pass JWT to do login at Freegle
-          const authResult = { code: data.message.id_token } 
-          console.log("CALLING1")
-          completeLoginCallback(authResult)
-          console.log("CALLING2")
           tryingGoogleLogin = false
+          const authResult = { code: data.message.id_token } 
+          completeLoginCallback(authResult)
         },
         function (error) {
           console.error(error)
@@ -41,15 +35,12 @@ export function appGoogleLogin(isiOS, callback) {
         }
       );
     } else { // Android
-      console.log("Try one-tap login")
+      console.log("GoogleSignInPlugin.oneTapLogin")
       cordova.plugins.GoogleSignInPlugin.oneTapLogin(
         function (sdata) {
-          console.log("success", sdata)
           const data = JSON.parse(sdata)
-          console.log("data", data)
-          console.log(data.message.id_token)
-          const decoded = jwt_decode(data.message.id_token)
-          console.log(decoded)
+          // const decoded = jwt_decode(data.message.id_token)
+          // Pass JWT to do login at Freegle
           tryingGoogleLogin = false
           const authResult = { code: data.message.id_token }
           completeLoginCallback(authResult)
