@@ -21,9 +21,6 @@
       "cordova-plugin-geolocation": {
         "GPS_REQUIRED": "true"
       },
-      "cordova-plugin-googleplus": {
-        "PLAY_SERVICES_VERSION": "15.0.1"
-      },
       "cordova-plugin-camera": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+",
         "ANDROIDX_CORE_VERSION": "1.6.+"
@@ -35,6 +32,9 @@
       "@havesource/cordova-plugin-push": {
         "ANDROIDX_CORE_VERSION": "1.6.+",
         "FCM_VERSION": "23.+"
+      },
+      "cordova-plugin-google-signin": {
+        "SERVER_CLIENT_ID": "423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com"
       }
     },
     "platforms": [
@@ -45,7 +45,7 @@
     "cordova-plugin-camera": "^6.0.0",
     "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-geolocation": "^4.1.0",
-    "cordova-plugin-googleplus": "^8.4.0",
+    "cordova-plugin-google-signin": "git+https://github.com/Freegle/cordova-plugin-google-signin.git",
     "cordova-plugin-inappbrowser": "^5.0.0",
     "cordova-plugin-network-information": "^3.0.0",
     "cordova-plugin-splashscreen": "^6.0.2",

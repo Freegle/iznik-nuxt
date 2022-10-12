@@ -96,7 +96,7 @@
         "FCM_VERSION": "23.+"
       },
       "cordova-plugin-google-signin": {
-        "CLIENT_ID": "423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com"
+        "SERVER_CLIENT_ID": "423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com"
       }
     },
     "platforms": [
