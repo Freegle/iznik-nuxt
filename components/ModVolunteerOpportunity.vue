@@ -20,7 +20,7 @@
         </b-row>
       </b-card-header>
       <b-card-body>
-        <NoticeMessage v-if="volunteering.groups[0].ourPostingStatus === 'PROHIBITED'" variant="danger" class="mb-2">
+        <NoticeMessage v-if="volunteering.groups.length && volunteering.groups[0].ourPostingStatus === 'PROHIBITED'" variant="danger" class="mb-2">
           This member is set not to be able to post OFFERs/WANTEDs.
         </NoticeMessage>
         <VolunteerOpportunity :item="volunteering" :summary="false" />
