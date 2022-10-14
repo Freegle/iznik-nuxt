@@ -42,7 +42,7 @@
       "cordova-plugin-statusbar": {},
       "phonegap-plugin-push": {},
       "cordova-plugin-google-signin": {
-        "SERVER_CLIENT_ID": "423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com",
+        "REVERSED_SERVER_CLIENT_ID": "com.googleusercontent.apps.423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f",
         "REVERSED_IOSAPP_CLIENT_ID": "com.googleusercontent.apps.423761283916-rj53j0aoud6dgh3dnblschc72l052oie"
       }
     },
