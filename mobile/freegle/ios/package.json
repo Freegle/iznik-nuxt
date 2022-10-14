@@ -84,7 +84,7 @@
         "DEEPLINK_HOST": "www.ilovefreegle.org"
       },
       "cordova-plugin-google-signin": {
-        "SERVER_CLIENT_ID": "423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com",
+        "REVERSED_SERVER_CLIENT_ID": "com.googleusercontent.apps.423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f",
         "REVERSED_IOSAPP_CLIENT_ID": "com.googleusercontent.apps.423761283916-mfrb9i0ntt1omq2knit8j49agnhje648"
       }
     },
