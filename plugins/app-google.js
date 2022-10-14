@@ -1,8 +1,10 @@
-// Do mobile app Google login using auth popup handled within app using cordova-plugin-googleplus
+// Do mobile app Google login within app using cordova-plugin-google-signin
+
+import jwt_decode from 'jwt-decode'
 
 let tryingGoogleLogin = false
 
-export function appGoogleLogin(callback) {
+export function appGoogleLogin(isiOS, callback) {
   const completeLoginCallback = callback
   try {
     if (navigator.connection.type === Connection.NONE) {
@@ -12,46 +14,62 @@ export function appGoogleLogin(callback) {
     }
 
     if (tryingGoogleLogin) { return }
-    const clientId = process.env.GOOGLE_CLIENT_ID
-    console.log('Google clientId: ' + clientId)
+
     tryingGoogleLogin = true
 
-    // Not needed: window.plugins.googleplus.trySilentLogin(
-    window.plugins.googleplus.login(
-      {
-        // 'scopes': '... ', // optional - space-separated list of scopes, If not included or empty, defaults to `profile` and `email`.
-        webClientId: clientId,
-        offline: true // Must be true to get serverAuthCode
-      },
-      obj => { // SUCCESS
-        console.log('google success', obj)
-        tryingGoogleLogin = false
-        if (!obj.serverAuthCode) {
-          appGoogleLogout() // which should solve empty serverAuthCode, though app uninstall and re-install might be needed
-          completeLoginCallback({ status: 'No serverAuthCode. Please try again.' })
-        } else {
-          // Pass accessToken to do login at Freegle
-          const authResult = { code: obj.serverAuthCode } // accessToken
+    if (isiOS) { // iOS
+      console.log("GoogleSignInPlugin.signIn")
+      cordova.plugins.GoogleSignInPlugin.signIn(
+        function (sdata) {
+          const data = JSON.parse(sdata)
+          // const decoded = jwt_decode(data.message.id_token)
+          // Pass JWT to do login at Freegle
+          tryingGoogleLogin = false
+          const authResult = { code: data.message.id_token } 
           completeLoginCallback(authResult)
+        },
+        function (error) {
+          console.error(error)
+          completeLoginCallback({ status: error.message })
+          tryingGoogleLogin = false
         }
-      },
-      msg => { // ERROR
-        console.log('google error: ' + msg)
-        tryingGoogleLogin = false
-        completeLoginCallback({ status: msg })
-      }
-    )
+      );
+    } else { // Android
+      console.log("GoogleSignInPlugin.oneTapLogin")
+      cordova.plugins.GoogleSignInPlugin.oneTapLogin(
+        function (sdata) {
+          const data = JSON.parse(sdata)
+          // const decoded = jwt_decode(data.message.id_token)
+          // Pass JWT to do login at Freegle
+          tryingGoogleLogin = false
+          const authResult = { code: data.message.id_token }
+          completeLoginCallback(authResult)
+        },
+        function (error) {
+          console.error(error)
+          completeLoginCallback({ status: error.message })
+          tryingGoogleLogin = false
+        }
+      )
+    }
+    
   } catch (e) {
     console.log('=========appGoogleLogin exception', e)
     completeLoginCallback({ status: e.message })
+    tryingGoogleLogin = false
   }
 }
 
 export function appGoogleLogout() {
   if (process.env.IS_APP) {
     console.log('appGoogleLogout start')
-    window.plugins.googleplus.logout(function (msg) {
-      console.log('appGoogleLogout done', msg)
-    })
+    cordova.plugins.GoogleSignInPlugin.signOut(
+      function (success) {
+        console.log(success);
+      },
+      function (error) {
+        console.error(error);
+      }
+    );
   }
 }

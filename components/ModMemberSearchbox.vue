@@ -36,6 +36,11 @@ export default {
       type: String,
       required: false,
       default: null
+    },
+    spam: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   computed: {
@@ -53,7 +58,9 @@ export default {
       // Tick to allow value to appear.
       this.$nextTick(() => {
         const url =
-          '/modtools/members/approved/search/' +
+          (this.spam
+            ? '/modtools/spammers/'
+            : '/modtools/members/approved/search/') +
           (this.groupid ? this.groupid + '/' : '') +
           this.term.trim()
         this.$router.push(url)

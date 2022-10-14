@@ -1,7 +1,7 @@
 <template>
   <div>
     <client-only>
-      <ScrollToTop />
+      <ScrollToTop :prepend="groupName" />
       <div class="d-flex justify-content-between flex-wrap">
         <GroupSelect v-model="groupid" modonly remember="membersapproved" />
         <div v-if="groupid" class="d-flex">
@@ -83,6 +83,15 @@ export default {
       search: null,
       filter: '0',
       memberCount: 0
+    }
+  },
+  computed: {
+    groupName() {
+      if (this.groupid) {
+        return this.$store.getters['group/get'](this.groupid)?.namedisplay
+      }
+
+      return null
     }
   },
   watch: {

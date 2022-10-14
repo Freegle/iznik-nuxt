@@ -625,21 +625,25 @@ export default {
     async loginGoogle() { // CC
       this.$store.dispatch('auth/setLoginType', 'Google')
 
+      const isiOS = this.$store.getters['mobileapp/isiOS']
+
       this.nativeLoginError = null
       this.socialLoginError = null
       this.loginWaitMessage = null
       if (process.env.IS_APP) { // CC..
         let authResult = { status: 'init' }
         await new Promise(function (resolve) {
-          appGoogleLogin(function (ret) {
+          appGoogleLogin(isiOS, function (ret) {
             authResult = ret
             resolve()
           })
         })
         this.loginWaitMessage = "Please wait..."
         if (authResult.code) { // status, code
+          console.log("authResult.code", authResult.code)
+          console.log("typeof authResult.code", typeof authResult.code)
           await this.$store.dispatch('auth/login', {
-            googleauthcode: authResult.code,
+            googlejwt: authResult.code,
             googlelogin: true
           })
           // We are now logged in.

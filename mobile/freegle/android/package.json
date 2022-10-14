@@ -18,7 +18,7 @@
     "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-facebook-connect": "^3.2.0",
     "cordova-plugin-geolocation": "^4.1.0",
-    "cordova-plugin-googleplus": "^8.4.0",
+    "cordova-plugin-google-signin": "git+https://github.com/Freegle/cordova-plugin-google-signin.git",
     "cordova-plugin-inappbrowser": "^5.0.0",
     "cordova-plugin-network-information": "^3.0.0",
     "cordova-plugin-splashscreen": "^6.0.2",
@@ -46,9 +46,6 @@
       "cordova-plugin-device": {},
       "cordova-plugin-network-information": {},
       "cordova-plugin-inappbrowser": {},
-      "cordova-plugin-googleplus": {
-        "PLAY_SERVICES_VERSION": "15.0.1"
-      },
       "cordova-plugin-x-socialsharing": {
         "ANDROID_SUPPORT_V4_VERSION": "24.1.1+"
       },
@@ -97,6 +94,9 @@
       "@havesource/cordova-plugin-push": {
         "ANDROIDX_CORE_VERSION": "1.6.+",
         "FCM_VERSION": "23.+"
+      },
+      "cordova-plugin-google-signin": {
+        "SERVER_CLIENT_ID": "423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com"
       }
     },
     "platforms": [

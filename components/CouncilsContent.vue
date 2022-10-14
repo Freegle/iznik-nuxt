@@ -25,6 +25,11 @@
         </nuxt-link>
       </li>
       <li>
+        <nuxt-link to="/councils/casestudies/sutton">
+          Case study - Sutton
+        </nuxt-link>
+      </li>
+      <li>
         <nuxt-link to="/councils/bulkywaste">
           Freegle Focus - Bulky Waste
         </nuxt-link>

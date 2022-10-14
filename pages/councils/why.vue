@@ -13,17 +13,18 @@
           </h2>
           <b-img fluid-grow src="/councils/NeedFurniture.png" />
           <p class="mt-2">
-            Join a growing number of forward thinking councils who are working with Freegle - the reuse experts. Make reuse your priority and provide residents with the help they need to become more resilient. By sponsoring your local Freegle communities you will facilitate a fantastic amount of reuse locally in a highly cost effective way.
+            Join a growing number of forward thinking councils who are working with Freegle - the reuse experts. Make reuse your priority and provide residents with the help they need to become more resilient. By partnering with your local Freegle communities you will facilitate a fantastic amount of reuse locally in a highly cost effective way.
           </p>
           <div class="even">
             <b-img src="/sponsors/BlackpoolCouncil.jpg" thumbnail />
             <b-img src="/sponsors/Buckinghamshire.png" thumbnail />
             <b-img src="/sponsors/LoveEssex.jpg" thumbnail />
-            <b-img src="/sponsors/LancashireCountyCouncil.jpg" thumbnail />
             <b-img src="/sponsors/LancasterCityCouncil.jpg" thumbnail />
+            <b-img src="/sponsors/NewcastleUnderLyme.jpg" thumbnail />
+            <b-img src="/sponsors/NWP.jpg" thumbnail />
           </div>
           <p class="mt-2">
-            A word from one of our sponsors -
+            A word from one of our partners -
           </p>
           <p>
             <em><strong>
@@ -60,7 +61,7 @@
             You will have access to detailed data about the reuse that is happening in your area
           </h2>
           <p>
-            We will provide detailed data on how well the community (or communities) that you sponsor are doing by generating a range of membership and reuse data on a quarterly basis, including by postcode specific area. With the data we collect, we can calculate tonnages reused, avoided costs and CO2 savings for your particular locality
+            We will provide detailed data on how well the community (or communities) that you partner with are doing by generating a range of membership and reuse data on a quarterly basis, including by postcode specific area. With the data we collect, we can calculate tonnages reused, avoided costs and CO2 savings for your particular locality
           </p>
           <h2>
             We can share your news with the freeglers living in your area
@@ -91,7 +92,7 @@
             Reduce fly tipping and the associated costs
           </h2>
           <p>
-            By sponsoring Freegle you are supporting a highly accessible and free to use option for the disposal of residents’ unwanted items. In 2019, our statistician friends at Defra carried out some pro-bono analysis on fly-tipping. Results showed that the fly-tipping cost saving in 2019 due to freegled items was £167,910. Read more detail about the calculation
+            By partnering with Freegle you are supporting a highly accessible and free to use option for the disposal of residents’ unwanted items. In 2019, our statistician friends at Defra carried out some pro-bono analysis on fly-tipping. Results showed that the fly-tipping cost saving in 2019 due to freegled items was £167,910. Read more detail about the calculation
             <!-- eslint-disable-next-line -->
             <ExternalLink href="/Freegle_fly_tipping_method_statement.docx">here</ExternalLink>
           </p>
