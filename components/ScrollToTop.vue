@@ -3,6 +3,7 @@
     <b-btn v-if="scrollY > 50" variant="secondary" @click="scrollToTop">
       <v-icon name="caret-up" />
       <span class="d-none d-md-inline">
+        {{ prepend }}
         Top
       </span>
     </b-btn>
@@ -10,6 +11,13 @@
 </template>
 <script>
 export default {
+  props: {
+    prepend: {
+      type: String,
+      required: false,
+      default: null
+    }
+  },
   data: function() {
     return {
       scrollY: 0

@@ -369,6 +369,7 @@ export default {
   }
 }
 </script>
+
 <style scoped lang="scss">
 @import 'color-vars';
 @import '~bootstrap/scss/functions';

@@ -104,7 +104,7 @@
           </p>
 
           <p>
-            In 2020, Essex CC awarded Freegle sponsorship from the county's Waste Prevention budget. This funding
+            In 2020, Essex CC partnered with  Freegle using funds from the county's Waste Prevention budget. This funding
             helped with the platform's hosting and site maintenance costs in addition to covering some
             of the loss of income that Freegle experienced in 2020, due to a reduction in user donations
             during the Covid-19 crisis. The county have recently committed to continuing this support in 2021.
