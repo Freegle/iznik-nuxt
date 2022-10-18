@@ -48,6 +48,9 @@
             <MessageHistory :message="message" modinfo display-message-link />
             <div v-if="homegroup && message && message.groups && message.groups.length && homegroup !== message.groups[0].namedisplay" class="small text-danger">
               Possibly should be on {{ homegroup }}
+              <span v-if="!homegroupontn">
+                but group not on TN
+              </span>
             </div>
             <ModMessageDuplicate v-for="(duplicate, index) in duplicates" :key="'duplicate-' + duplicate.id + '-' + index" :message="duplicate" />
             <ModMessageCrosspost v-for="crosspost in crossposts" :key="'crosspost-' + crosspost.id" :message="crosspost" />
@@ -422,7 +425,8 @@ export default {
       editgroup: null,
       uploading: false,
       attachments: [],
-      homegroup: null
+      homegroup: null,
+      homegroupontn: false
     }
   },
   computed: {
@@ -818,7 +822,9 @@ export default {
         })
 
         if (loc && loc.groupsnear && loc.groupsnear.length) {
+          // The group might not be on TN.
           this.homegroup = loc.groupsnear[0].namedisplay
+          this.homegroupontn = loc.groupsnear[0].ontn
         }
       }
     },
