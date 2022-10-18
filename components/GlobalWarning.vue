@@ -7,7 +7,7 @@
         </b-btn>
         <p>
           On Monday 17th, our volunteer and friend Wanda died.  She had been with Freegle since 2005, and volunteered
-          countless hours to help freeglers and make the world better with kindness and patience - both locally in
+          countless hours to help freeglers and make the world better, with kindness and patience - both locally in
           Luton, and nationally in our Support team.  We will miss her.  Rest well, Wanda.
         </p>
       </NoticeMessage>
