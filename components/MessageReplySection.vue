@@ -297,7 +297,6 @@ export default {
           // Now we can send the reply via chat.
           this.$nextTick(async () => {
             await this.replyToPost()
-            this.sent()
           })
         } else {
           // We're not logged in yet.  We need to force a log in.  Once that completes then either the watch in here
