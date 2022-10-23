@@ -15,6 +15,7 @@
       :server="{ process, revert, restore, load, fetch }"
       :drop-on-element="false"
       :drop-on-page="true"
+      :max-parallel-uploads="1"
       @init="photoInit"
       @processfile="processed"
       @processfiles="allProcessed"
