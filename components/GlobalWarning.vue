@@ -1,5 +1,5 @@
 <template>
-  <div v-if="true">
+  <div v-if="false">
     <client-only>
       <NoticeMessage v-if="show" variant="info">
         <b-btn variant="link" class="float-right" @click="hideit">
