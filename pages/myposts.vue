@@ -23,7 +23,9 @@
           <Visible :at="['xs', 'sm', 'md']" class="ml-2 mr-2 mb-2">
             <LoveJunk variant="mobile" :shown.sync="shownLoveJunk" />
           </Visible>
-          <LoveJunk variant="desktop" :shown.sync="shownLoveJunk" class="mb-2" />
+          <Visible :at="['lg', 'xl']" class="ml-2 mr-2 mb-2">
+            <LoveJunk variant="desktop" :shown.sync="shownLoveJunk" />
+          </Visible>
           <Visible :at="['xs', 'sm', 'md']">
             <JobsTopBar v-if="!justPosted" :shown-love-junk="shownLoveJunk" />
           </Visible>
