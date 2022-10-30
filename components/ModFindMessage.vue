@@ -58,7 +58,7 @@ export default {
         // This is a #id
         await this.searchById(term.substring(1))
       } else {
-        this.searchBySubject(this.term)
+        await this.searchBySubject(this.term)
       }
 
       this.busy = false
