@@ -142,7 +142,8 @@ export default {
               if (
                 !message.outcomes?.length &&
                 message.attachments?.length > 0 &&
-                message.item.approxweight > 10
+                message.item.approxweight > 10 &&
+                message.type === 'Offer'
               ) {
                 this.heavy = message
                 this.chosen = 'personalised'
