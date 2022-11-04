@@ -480,12 +480,15 @@ export default ({ app, store, $api, $axios }) => { // route
           if (app.router.currentRoute.path !== route) {
             console.log('GO TO ', route)
             app.router.push({ path: route })
-            setTimeout(function () {
+            let checker = 0
+            const intervalId = setInterval(function () {
               if (app.router.currentRoute.path !== route) {
                 console.log('RE GO TO ', route)
+                clearInterval(intervalId)
                 app.router.push({ path: route })
               }
-            }, 5000)
+              if( ++checker===10) clearInterval(intervalId)
+            }, 2000)
 
           }
           if (linkstate.route.queryString) { // copied from middleware/src.js
