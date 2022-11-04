@@ -38,13 +38,13 @@
             <b-btn v-if="message.canedit && message.location && message.item" variant="secondary" class="m-1" @click="edit">
               <v-icon name="pen" /> Edit
             </b-btn>
-            <b-btn v-if="!rejected && message.type === 'Offer' && !taken" variant="secondary" class="m-1" @click="outcome('Taken')">
+            <b-btn v-if="!rejected && message.type === 'Offer' && !taken" variant="secondary" class="m-1" @click="outcome('Taken', $event)">
               <v-icon name="check" /> Mark as TAKEN
             </b-btn>
-            <b-btn v-if="!rejected && message.type === 'Wanted' && !received" variant="secondary" class="m-1" @click="outcome('Received')">
+            <b-btn v-if="!rejected && message.type === 'Wanted' && !received" variant="secondary" class="m-1" @click="outcome('Received', $event)">
               <v-icon name="check" /> Mark as RECEIVED
             </b-btn>
-            <b-btn v-if="!rejected && !taken && !received && !withdrawn" variant="secondary" class="m-1" @click="outcome('Withdrawn')">
+            <b-btn v-if="!rejected && !taken && !received && !withdrawn" variant="secondary" class="m-1" @click="outcome( 'Withdrawn', $event)">
               <v-icon name="trash-alt" /> Withdraw
             </b-btn>
           </div>
@@ -127,19 +127,19 @@
               <b-btn v-if="rejected && message.location && message.item" variant="warning" class="mr-2 mb-1" @click="repost">
                 <v-icon class="d-none d-sm-inline" name="pen" /> Edit and Resend
               </b-btn>
-              <b-btn v-if="rejected && !withdrawn" variant="secondary" class="mr-2 mb-1" @click="outcome('Withdrawn')">
+              <b-btn v-if="rejected && !withdrawn" variant="secondary" class="mr-2 mb-1" @click="outcome('Withdrawn', $event)">
                 <v-icon class="d-none d-sm-inline" name="trash-alt" /> Withdraw
               </b-btn>
-              <b-btn v-if="!rejected && message.type === 'Offer' && !taken" variant="primary" class="mr-2 mb-1" @click="outcome('Taken')">
+              <b-btn v-if="!rejected && message.type === 'Offer' && !taken" variant="primary" class="mr-2 mb-1" @click="outcome('Taken', $event)">
                 <v-icon class="d-none d-sm-inline" name="check" /> Mark as TAKEN
               </b-btn>
-              <b-btn v-if="!rejected && message.type === 'Wanted' && !received" variant="primary" class="mr-2 mb-1" @click="outcome('Received')">
+              <b-btn v-if="!rejected && message.type === 'Wanted' && !received" variant="primary" class="mr-2 mb-1" @click="outcome('Received', $event)">
                 <v-icon class="d-none d-sm-inline" name="check" /> Mark as RECEIVED
               </b-btn>
               <b-btn v-if="!rejected && message.canedit && message.location && message.item" variant="secondary" class="mr-2 mb-1" @click="edit">
                 <v-icon class="d-none d-sm-inline" name="pen" /> Edit
               </b-btn>
-              <b-btn v-if="!rejected && !taken && !received && !withdrawn" variant="secondary" class="mr-2 mb-1" @click="outcome('Withdrawn')">
+              <b-btn v-if="!rejected && !taken && !received && !withdrawn" variant="secondary" class="mr-2 mb-1" @click="outcome('Withdrawn', $event)">
                 <v-icon class="d-none d-sm-inline" name="trash-alt" /> Withdraw
               </b-btn>
               <b-btn v-if="!rejected && message.canrepost && message.location && message.item" variant="secondary" class="mr-2 mb-1" @click="repost">
@@ -554,13 +554,26 @@ export default {
 
       return unseen
     },
-    outcome(type) {
+    outcome(type, e) {
+      console.log('outcome', type, e)
+      if (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+      }
+
       this.showOutcomeModal = true
       this.waitForRef('outcomeModal', () => {
         this.$refs.outcomeModal.show(type)
       })
     },
-    share() {
+    share(e) {
+      if (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+      }
+      this.showShareModal = true
       if (process.env.IS_APP) { // CC..
         console.log('MyMessage.vue')
         const href = 'https://www.ilovefreegle.org/message/' + this.message.id + '?src=mobileshare'
@@ -592,13 +605,25 @@ export default {
         })
       }
     },
-    edit() {
+    edit(e) {
+      if (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+      }
+
       this.showEditModal = true
       this.waitForRef('editModal', () => {
         this.$refs.editModal.show()
       })
     },
-    async repost() {
+    async repost(e) {
+      if (e) {
+        e.preventDefault()
+        e.stopPropagation()
+        e.stopImmediatePropagation()
+      }
+
       // Remove any partially composed messages we currently have, because they'll be confusing.
       await this.$store.dispatch('compose/clearMessages')
 

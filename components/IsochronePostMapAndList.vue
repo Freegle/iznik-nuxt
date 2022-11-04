@@ -146,7 +146,7 @@
             <LoveJunk variant="mobile" :shown.sync="shownLoveJunk" />
           </Visible>
           <Visible :at="['lg', 'xl']" class="ml-2 mr-2 mb-2">
-            <LoveJunk variant="desktop" :shown.sync="shownLoveJunk" />
+            <LoveJunk v-if="filteredMessages && filteredMessages.length > 1" variant="desktop" :shown.sync="shownLoveJunk" />
           </Visible>
 
           <div v-for="message in filteredMessages" :key="'messagelist-' + message.id" :ref="'messagewrapper-' + message.id" class="p-0">
@@ -200,6 +200,7 @@ import map from '@/mixins/map.js'
 import { MAX_MAP_ZOOM } from '../utils/constants'
 import Visible from '../components/Visible'
 import JoinWithConfirm from '~/components/JoinWithConfirm'
+import LoveJunk from '~/components/LoveJunk'
 const AdaptiveMapGroup = () => import('./AdaptiveMapGroup')
 const ExternalLink = () => import('./ExternalLink')
 const GroupSelect = () => import('./GroupSelect')
@@ -208,7 +209,6 @@ const Message = () => import('~/components/Message.vue')
 const IsochronePostMap = () => import('~/components/IsochronePostMap')
 const GroupHeader = () => import('~/components/GroupHeader.vue')
 const JobsTopBar = () => import('~/components/JobsTopBar')
-const LoveJunk = () => import('~/components/LoveJunk')
 
 if (process.client) {
   Vue.use(VueObserveVisibility)

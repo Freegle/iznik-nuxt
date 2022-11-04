@@ -47,18 +47,21 @@ export default {
       this.error = false
       const term = this.term.trim()
 
-      this.$emit('searched', term)
-
+      await this.$store.dispatch('messages/clearContext')
       await this.$store.dispatch('messages/clear')
 
-      if (!isNaN(term)) {
-        // This is a raw message id
-        await this.searchById(term)
-      } else if (term.substring(0, 1) === '#' && !isNaN(term.substring(1))) {
-        // This is a #id
-        await this.searchById(term.substring(1))
-      } else {
-        this.searchBySubject(this.term)
+      this.$emit('searched', term)
+
+      if (term) {
+        if (!isNaN(term)) {
+          // This is a raw message id
+          await this.searchById(term)
+        } else if (term.substring(0, 1) === '#' && !isNaN(term.substring(1))) {
+          // This is a #id
+          await this.searchById(term.substring(1))
+        } else {
+          await this.searchBySubject(this.term)
+        }
       }
 
       this.busy = false

@@ -21,8 +21,14 @@
           </b-btn>
         </div>
         <div v-else>
+          <Visible :at="['xs', 'sm', 'md']" class="ml-2 mr-2 mb-2">
+            <LoveJunk variant="mobile" :shown.sync="shownLoveJunk" />
+          </Visible>
+          <Visible :at="['lg', 'xl']" class="ml-2 mr-2 mb-2">
+            <LoveJunk variant="desktop" :shown.sync="shownLoveJunk" />
+          </Visible>
           <Visible :at="['xs', 'sm', 'md']">
-            <JobsTopBar v-if="!justPosted" />
+            <JobsTopBar v-if="!justPosted" :shown-love-junk="shownLoveJunk" />
           </Visible>
           <b-card v-if="contactPicker" border-variant="info">
             <Invite class="bg-white" />
@@ -177,6 +183,7 @@
 import loginOptional from '@/mixins/loginOptional.js'
 import buildHead from '@/mixins/buildHead.js'
 import AppUpdateAvailable from '~/components/AppUpdateAvailable.vue'
+import LoveJunk from '@/components/LoveJunk'
 import Invite from '../components/Invite'
 import Visible from '../components/Visible'
 const JustPosted = () => import('~/components/JustPosted')
@@ -201,7 +208,8 @@ export default {
     SidebarRight,
     DonationAskModal,
     RateAppModal,
-    ExpectedRepliesWarning
+    ExpectedRepliesWarning,
+    LoveJunk
   },
   mixins: [loginOptional, buildHead],
   data() {
@@ -217,7 +225,8 @@ export default {
       removedSearch: null,
       donationGroup: null,
       newuser: false,
-      newpassword: null
+      newpassword: null,
+      shownLoveJunk: false
     }
   },
   computed: {

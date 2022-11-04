@@ -97,6 +97,7 @@ export default {
     searchedMessage(term) {
       this.messageTerm = term
       this.memberTerm = null
+      this.context = null
 
       // Need to rerender the infinite scroll
       this.bump++
