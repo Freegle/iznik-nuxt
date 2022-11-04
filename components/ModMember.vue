@@ -313,12 +313,10 @@ export default {
     isTN() {
       let ret = false
       if (this.user) {
-        console.log('USer', this.user)
         if (this.user.emails) {
           this.user.emails.forEach(e => {
             console.log('Check email', e.email)
             if (e.email && e.email.indexOf('@user.trashnothing.com') !== -1) {
-              console.log('TN user')
               ret = true
             }
           })
