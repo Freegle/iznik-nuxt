@@ -38,7 +38,7 @@
     "cordova-clipboard": "^1.3.0",
     "cordova-plugin-androidx-adapter": "1.1.3",
     "cordova-plugin-whitelist": "1.3.5",
-    "ionic-plugin-deeplinks": "^1.0.24"
+    "ionic-plugin-deeplinks": "git+https://github.com/Freegle/ionic-plugin-deeplinks.git"
   },
   "cordova": {
     "plugins": {
@@ -60,24 +60,6 @@
       },
       "cordova-plugin-androidx-adapter": {},
       "cordova-plugin-whitelist": {},
-      "ionic-plugin-deeplinks": {
-        "URL_SCHEME": "freegle",
-        "DEEPLINK_SCHEME": "https",
-        "DEEPLINK_HOST": "www.ilovefreegle.org",
-        "ANDROID_PATH_PREFIX": "/",
-        "ANDROID_2_PATH_PREFIX": "/",
-        "ANDROID_3_PATH_PREFIX": "/",
-        "ANDROID_4_PATH_PREFIX": "/",
-        "ANDROID_5_PATH_PREFIX": "/",
-        "DEEPLINK_2_SCHEME": " ",
-        "DEEPLINK_2_HOST": " ",
-        "DEEPLINK_3_SCHEME": " ",
-        "DEEPLINK_3_HOST": " ",
-        "DEEPLINK_4_SCHEME": " ",
-        "DEEPLINK_4_HOST": " ",
-        "DEEPLINK_5_SCHEME": " ",
-        "DEEPLINK_5_HOST": " "
-      },
       "cordova-clipboard": {},
       "cordova-plugin-facebook-connect": {
         "APP_ID": "134980666550322",
@@ -97,6 +79,24 @@
       },
       "cordova-plugin-google-signin": {
         "SERVER_CLIENT_ID": "423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com"
+      },
+      "ionic-plugin-deeplinks": {
+        "URL_SCHEME": "freegle",
+        "DEEPLINK_SCHEME": "https",
+        "DEEPLINK_HOST": "www.ilovefreegle.org",
+        "ANDROID_PATH_PREFIX": "/",
+        "ANDROID_2_PATH_PREFIX": "/",
+        "ANDROID_3_PATH_PREFIX": "/",
+        "ANDROID_4_PATH_PREFIX": "/",
+        "ANDROID_5_PATH_PREFIX": "/",
+        "DEEPLINK_2_SCHEME": " ",
+        "DEEPLINK_2_HOST": " ",
+        "DEEPLINK_3_SCHEME": " ",
+        "DEEPLINK_3_HOST": " ",
+        "DEEPLINK_4_SCHEME": " ",
+        "DEEPLINK_4_HOST": " ",
+        "DEEPLINK_5_SCHEME": " ",
+        "DEEPLINK_5_HOST": " "
       }
     },
     "platforms": [
