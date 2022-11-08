@@ -18,10 +18,10 @@
         <p>
           You might like to review the
           <!-- eslint-disable-next-line -->
-          <ExternalLink href="http://wiki.ilovefreegle.org/Basic_Requirements_of_a_Freegle_Group#Affiliation_Requirements">Basic Requirements of a Freegle group</ExternalLink>
+          <ExternalLink href="https://wiki.ilovefreegle.org/Group_Affiliation_Requirements_Policy">Basic Requirements of a Freegle group</ExternalLink>
           and
           <!-- eslint-disable-next-line -->
-          <ExternalLink href="http://wiki.ilovefreegle.org/Freegle_Volunteer_Agreement">Freegle Volunteer Agreement</ExternalLink>.
+          <ExternalLink href="https://wiki.ilovefreegle.org/Our_Aims">Our Aims</ExternalLink>.
         </p>
         <p>
           Any moderator on the group can do this, even a backup mod, but if you need to discuss it with your other
