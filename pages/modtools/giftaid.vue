@@ -30,6 +30,9 @@
             <span v-if="result.period === 'Future'">
               Gift Aid consent for all future from {{ dateonly(result.timestamp) }}
             </span>
+            <span v-if="result.period === 'Past4YearsAndFuture'">
+              Gift Aid consent for four years before {{ dateonly(result.timestamp) }} and all future.
+            </span>
             &nbsp;{{ result.homeaddress }}
           </div>
           <div v-for="d in result.donations" :key="'donation-' + d.id" class="pl-4 small">

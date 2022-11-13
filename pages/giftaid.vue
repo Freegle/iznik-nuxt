@@ -8,23 +8,45 @@
           Your kind donation will go even further if we can claim Gift Aid on it.  Please fill out this form
           if you are able.
         </p>
-        <client-only>
-          <label class="strong">
-            I'd like Freegle to claim Gift Aid:
-          </label>
-          <br>
-          <OurToggle
-            v-model="giftAidAllowed"
-            :height="34"
-            :width="150"
-            :font-size="14"
-            :sync="true"
-            :labels="{checked: 'Yes', unchecked: 'No'}"
-            color="#61AE24"
-            @change="changeGiftAidToggle"
-          />
-          <br>
-        </client-only>
+        <div v-if="oldoptions">
+          <client-only>
+            <label class="strong">
+              I'd like Freegle to claim Gift Aid:
+            </label>
+            <br>
+            <OurToggle
+              v-model="giftAidAllowed"
+              :height="34"
+              :width="150"
+              :font-size="14"
+              :sync="true"
+              :labels="{checked: 'Yes', unchecked: 'No'}"
+              color="#61AE24"
+              @change="changeGiftAidToggle"
+            />
+            <br>
+          </client-only>
+        </div>
+        <div v-else>
+          <client-only>
+            <label class="strong">
+              I'd like Freegle to claim Gift Aid on my donation, and any donations I make in the future or
+              have made in the past four years:
+            </label>
+            <br>
+            <OurToggle
+              v-model="giftAidAllowed"
+              :height="34"
+              :width="150"
+              :font-size="14"
+              :sync="true"
+              :labels="{checked: 'Yes', unchecked: 'No'}"
+              color="#61AE24"
+              @change="changeGiftAidToggle"
+            />
+            <br>
+          </client-only>
+        </div>
         <div v-if="giftAidAllowed">
           <b-form-group
             id="fullnamelabel"
@@ -75,11 +97,15 @@
             />
           </b-form-group>
           <b-form-group
+            v-if="oldoptions"
             id="periodlabel"
             label="This declaration covers"
             label-for="period"
             label-class="label"
           >
+            <b-form-radio v-model="period" name="period" value="Past4YearsAndFuture">
+              This donation and any donations I make in the future or have made in the past four years
+            </b-form-radio>
             <b-form-radio v-model="period" name="period" value="Since">
               All donations in the last five years
             </b-form-radio>
@@ -93,8 +119,7 @@
           <NoticeMessage class="info">
             By submitting this declaration I confirm that I am a UK taxpayer and understand that if I pay less Income
             Tax and/or Capital Gains Tax in the current tax year than the amount of Gift Aid claimed on all my donations
-            it is my responsibility to pay any
-            difference.
+            it is my responsibility to pay any difference.
           </NoticeMessage>
         </div>
         <SpinButton
@@ -152,7 +177,8 @@ export default {
   mixins: [loginRequired, buildHead],
   data() {
     return {
-      period: 'Since',
+      period: 'Past4YearsAndFuture',
+      oldoptions: false,
       fullname: null,
       homeaddress: null,
       addresses: [],
@@ -187,6 +213,15 @@ export default {
 
         if (this.period === 'Declined') {
           this.giftAidAllowed = false
+        }
+
+        if (
+          this.period === 'Since' ||
+          this.period === 'This' ||
+          this.period === 'Future'
+        ) {
+          // Older gift aid options from a previous declaration.
+          this.oldoptions = true
         }
       }
     },
