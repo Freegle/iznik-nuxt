@@ -13,11 +13,34 @@
             Photos
           </h3>
           <p>
-            Looking for some images of items being Freegled?  We have permission to use these fantastic photographs
+            Looking for some images of items being Freegled?  We have some fantastic new photos of real freeglers in
+            Brighton!  Feel free to download and use them on your promotional materials, website and anywhere else to
+            help you promote Freegle and reuse.
+          </p>
+          <ExternalLink href="https://freegle.in/Photos2022">
+            <b-img fluid src="Freegle_clothes_shoes_kids_Gracie_Annabel_FEMALE_youth_pic_Alex_Bamford.jpeg" class="mb-2" />
+          </ExternalLink>
+          <p>
+            See all the photos
+            <!-- eslint-disable-next-line -->
+            <ExternalLink href="https://freegle.in/Photos2022">here</ExternalLink>.
+            Please acknowledge the photographer,
+            <!-- eslint-disable-next-line -->
+            <ExternalLink href="https://www.alexbamford.com">Alex Bamford</ExternalLink>.
+          </p>
+          <p>
+            We also have permission to use these fantastic photographs
             which were published in the first issue of National Geographic 'Green' December 2009 to illustrate Sarah
             Lonsdale's article on recycling initiatives.  Pictured are Freegle members in Hackney and Waltham Forest.
             If you would like to use these, please ensure that they are referenced.
-            <a href="http://www.inviewphotography.co.uk/freegle.htm" target="_blank" rel="noopener noreferrer">www.inviewphotography.co.uk/freegle.htm</a>
+          </p>
+          <p>
+            Find all the photos at
+            <!-- eslint-disable-next-line -->
+            <ExternalLink href="http://www.inviewphotography.co.uk/freegle.htm">www.inviewphotography.co.uk/freegle.htm</ExternalLink>.
+            <ExternalLink href="http://www.inviewphotography.co.uk/freegle.htm">
+              <b-img fluid src="http://www.inviewphotography.co.uk/images/large_format/FREECYCLE/FC_20-07-09_054I2306.jpg" />
+            </ExternalLink>
           </p>
           <p>
             You may also be able to find willing local Freegle members who would be happy to feature in photographs
