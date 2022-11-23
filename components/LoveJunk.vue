@@ -13,8 +13,8 @@
             title="Item picture"
             :src="heavy.attachments[0].path"
             itemprop="image"
-            @error.native="brokenImage"
-            @click.native="$emit('zoom')"
+            @error="brokenImage"
+            @click="$emit('zoom')"
           />
         </div>
       </div>
@@ -226,6 +226,8 @@ export default {
       margin-bottom: 20px;
       max-height: 160px;
       object-fit: cover;
+      min-width: 144px;
+      max-width: 144px;
     }
   }
 }
