@@ -112,7 +112,8 @@ export const actions = {
       try {
         const res = await this.$axios.get(process.env.API + '/notification', {
           params: {
-            count: true
+            count: true,
+            modtools: false
           }
         })
 
