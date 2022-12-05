@@ -29,7 +29,7 @@
     <div id="adnotice" class="d-flex justify-content-around text-muted small">
       Advertisement. Why am I seeing this?
     </div>
-    <b-tooltip target="adnotice" class="d-none d-md-block">
+    <b-tooltip target="adnotice">
       Showing this generates a bit of income for Freegle, which helps us keep going.
     </b-tooltip>
   </div>
