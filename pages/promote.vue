@@ -47,7 +47,7 @@
           <h3 class="header--size4">
             A4
           </h3>
-          <a href="https://freegle.in/A4Poster" target="_blank" class="mr-2" rel="noopener noreferrer">
+          <a href="/posters/A4.jpg" class="mr-2" rel="noopener noreferrer">
             <b-img-lazy src="~static/posters/A4.jpg" class="poster border border-dark mb-2" />
             <br>
             <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
@@ -59,7 +59,7 @@
           <h3 class="header--size4">
             A5
           </h3>
-          <a href="/posters/A5.jpg" target="_blank" class="mr-2">
+          <a href="/posters/A5.jpg" class="mr-2">
             <b-img-lazy src="~static/posters/A5.jpg" class="poster border border-dark mb-2" />
             <br>
             <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
@@ -73,7 +73,7 @@
           <h3 class="header--size4">
             A4
           </h3>
-          <a href="~static/posters/A4Welsh.jpg" target="_blank">
+          <a href="/posters/A4Welsh.jpg">
             <b-img-lazy src="~static/posters/A4Welsh.jpg" class="poster border border-dark mb-2" />
             <br>
             <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
@@ -85,7 +85,7 @@
           <h3 class="header--size4">
             A5
           </h3>
-          <a href="~static/posters/A5Welsh.jpg" target="_blank">
+          <a href="/posters/A5Welsh.jpg">
             <b-img-lazy src="~static/posters/A5Welsh.jpg" class="poster border border-dark mb-2" />
             <br>
             <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
@@ -97,7 +97,7 @@
           <h3 class="header--size4">
             A5 x 2
           </h3>
-          <a href="~static/posters/A5x2Welsh.jpg" target="_blank">
+          <a href="/posters/A5x2Welsh.jpg">
             <b-img-lazy src="~static/posters/A5x2Welsh.jpg" class="poster border border-dark mb-2" />
             <br>
             <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
@@ -145,7 +145,7 @@
         <div>
           <b-img-lazy src="/businesscards/FreegleBusinessCardSmall.jpg" class="border border-dark mb-2 mr-2 businesscard" />
         </div>
-        <a href="https://freegle.in/BusinessCard" target="_blank" class="mt-1 mb-1" rel="noopener noreferrer">
+        <a href="/businesscards/FreegleBusinessCardSmall.jpg" class="mt-1 mb-1" rel="noopener noreferrer">
           <b-btn size="lg" variant="primary">
             Download business card
           </b-btn>
@@ -155,7 +155,7 @@
         <div>
           <b-img-lazy src="/businesscards/FreegleBusinessCardSmallWelsh.jpg" class="border border-dark mb-2 businesscard" />
         </div>
-        <a href="https://freegle.in/BusinessCardWelsh" target="_blank" class="mt-1 mb-1" rel="noopener noreferrer">
+        <a href="/businesscards/FreegleBusinessCardSmallWelsh.jpg" class="mt-1 mb-1" rel="noopener noreferrer">
           <b-btn size="lg" variant="primary">
             Download business card
           </b-btn>
