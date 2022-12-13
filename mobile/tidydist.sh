@@ -16,7 +16,6 @@ node ./node_modules/replace/bin/replace.js '\/bytemark.png' 'bytemark.png' dist 
 node ./node_modules/replace/bin/replace.js '\/mythic-beasts.png' 'mythic-beasts.png' dist -r --quiet
 node ./node_modules/replace/bin/replace.js '\/businesscards\/' 'businesscards/' dist -r --quiet
 node ./node_modules/replace/bin/replace.js '\/static\/' '' dist -r --quiet
-node ./node_modules/replace/bin/replace.js '\/posters\/' 'posters/' dist -r --quiet
 
 node ./node_modules/replace/bin/replace.js '<title>' '<meta name="viewport" content="user-scalable=yes, width=device-width, initial-scale=1"><title>' dist/index.html --quiet
 

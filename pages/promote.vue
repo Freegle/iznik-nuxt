@@ -47,25 +47,25 @@
           <h3 class="header--size4">
             A4
           </h3>
-          <a href="/posters/A4.jpg" class="mr-2" rel="noopener noreferrer">
+          <ExternalLink href="https://www.penrithedenfreegle.org.uk/sites/default/files/posters/A4.jpg" class="mr-2">
             <b-img-lazy src="~static/posters/A4.jpg" class="poster border border-dark mb-2" />
             <br>
             <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
               Download poster
             </b-btn>
-          </a>
+          </ExternalLink>
         </div>
         <div class="mr-1">
           <h3 class="header--size4">
             A5
           </h3>
-          <a href="/posters/A5.jpg" class="mr-2">
+          <ExternalLink href="https://www.penrithedenfreegle.org.uk/sites/default/files/posters/A5.jpg" class="mr-2">
             <b-img-lazy src="~static/posters/A5.jpg" class="poster border border-dark mb-2" />
             <br>
             <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
               Download poster
             </b-btn>
-          </a>
+          </ExternalLink>
         </div>
       </div>
       <div v-if="language === 'Welsh'" class="d-flex flex-wrap">
@@ -73,37 +73,37 @@
           <h3 class="header--size4">
             A4
           </h3>
-          <a href="/posters/A4Welsh.jpg">
+          <ExternalLink href="https://www.penrithedenfreegle.org.uk/sites/default/files/posters/A4Welsh.jpg" class="mr-2">
             <b-img-lazy src="~static/posters/A4Welsh.jpg" class="poster border border-dark mb-2" />
             <br>
             <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
               Download poster
             </b-btn>
-          </a>
+          </ExternalLink>
         </div>
         <div class="mr-1">
           <h3 class="header--size4">
             A5
           </h3>
-          <a href="/posters/A5Welsh.jpg">
+          <ExternalLink href="https://www.penrithedenfreegle.org.uk/sites/default/files/posters/A5Welsh.jpg" class="mr-2">
             <b-img-lazy src="~static/posters/A5Welsh.jpg" class="poster border border-dark mb-2" />
             <br>
             <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
               Download poster
             </b-btn>
-          </a>
+          </ExternalLink>
         </div>
         <div class="mr-1">
           <h3 class="header--size4">
             A5 x 2
           </h3>
-          <a href="/posters/A5x2Welsh.jpg">
+          <ExternalLink href="https://www.penrithedenfreegle.org.uk/sites/default/files/posters/A5x2Welsh.jpg" class="mr-2">
             <b-img-lazy src="~static/posters/A5x2Welsh.jpg" class="poster border border-dark mb-2" />
             <br>
             <b-btn variant="secondary" size="lg" class="mt-2 mb-2">
               Download poster
             </b-btn>
-          </a>
+          </ExternalLink>
         </div>
       </div>
       <p>
@@ -145,21 +145,21 @@
         <div>
           <b-img-lazy src="/businesscards/FreegleBusinessCardSmall.jpg" class="border border-dark mb-2 mr-2 businesscard" />
         </div>
-        <a href="/businesscards/FreegleBusinessCardSmall.jpg" class="mt-1 mb-1" rel="noopener noreferrer">
-          <b-btn size="lg" variant="primary">
-            Download business card
-          </b-btn>
-        </a>
+        <ExternalLink href="https://www.penrithedenfreegle.org.uk/sites/default/files/posters/FreegleBusinessCardSmall.jpg" class="mt-1 mb-1">
+            <b-btn size="lg" variant="primary">
+              Download business card
+            </b-btn>
+          </ExternalLink>
       </div>
       <div v-else>
         <div>
           <b-img-lazy src="/businesscards/FreegleBusinessCardSmallWelsh.jpg" class="border border-dark mb-2 businesscard" />
         </div>
-        <a href="/businesscards/FreegleBusinessCardSmallWelsh.jpg" class="mt-1 mb-1" rel="noopener noreferrer">
+        <ExternalLink href="https://www.penrithedenfreegle.org.uk/sites/default/files/posters/FreegleBusinessCardSmallWelsh.jpg" class="mt-1 mb-1">
           <b-btn size="lg" variant="primary">
             Download business card
           </b-btn>
-        </a>
+        </ExternalLink>
       </div>
       <br>
       <hr>
@@ -184,9 +184,10 @@ import loginRequired from '@/mixins/loginRequired.js'
 import PosterModal from '../components/PosterModal'
 import buildHead from '../mixins/buildHead'
 import Invite from '../components/Invite'
+const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
-  components: { Invite, PosterModal },
+  components: { ExternalLink, Invite, PosterModal },
   mixins: [loginRequired, buildHead],
   data: function() {
     return {
