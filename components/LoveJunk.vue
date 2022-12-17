@@ -224,6 +224,7 @@ export default {
       margin-left: 18px;
       margin-top: 20px;
       margin-bottom: 20px;
+      min-height: 160px;
       max-height: 160px;
       object-fit: cover;
       min-width: 144px;
