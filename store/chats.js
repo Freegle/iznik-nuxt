@@ -198,6 +198,9 @@ export const actions = {
 
       if (chats) {
         if (current) {
+          if (chats && !chats.find) {
+            console.error('Weird chat', chats)
+          }
           const already =
             chats &&
             chats.find(c => {

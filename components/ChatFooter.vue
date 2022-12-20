@@ -120,7 +120,7 @@
           <b-btn v-if="mod" variant="secondary" @click="spamReport">
             <v-icon name="ban" /> Spammer
           </b-btn>
-          <external-link href="https://discourse.ilovefreegle.org/c/central" class="nocolor btn btn-secondary">
+          <external-link v-if="chat && chat.chattype === 'User2Mod' && mod" href="https://discourse.ilovefreegle.org/c/central" class="nocolor btn btn-secondary">
             <v-icon name="question-circle" /> Central
           </external-link>
           <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="otheruser" />

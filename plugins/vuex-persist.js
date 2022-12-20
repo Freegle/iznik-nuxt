@@ -65,7 +65,7 @@ export default async ({ app, store }) => {
       // would just result in Sentry errors.
       localStorage.setItem('izniktest', true)
 
-      Sentry = require('@sentry/browser')
+      //Sentry = cordova.require("sentry-cordova.Sentry");
 
       try {
         if (localStorage.getItem('useSmaller2')) {

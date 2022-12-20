@@ -14,6 +14,18 @@
         <b-badge v-if="chatmessage.replyexpected && !chatmessage.replyreceived" variant="danger">
           RSVP - reply expected
         </b-badge>
+        <span v-if="chat.chattype === 'Mod2Mod'">
+          <span v-if="chatmessage.userid === me.id">
+            You
+          </span>
+          <span v-else-if="othermodname">
+            {{ othermodname }}
+          </span>
+          <span v-else>
+            <v-icon name="hashtag" class="text-muted" scale="0.5" />{{ chatmessage.userid }}
+          </span>
+          sent this
+        </span>
       </b-col>
       <b-col v-else>
         <span class="float-right chat__dateread--mine">
@@ -29,7 +41,7 @@
           <span v-else title="This message has been delivered in Chat.  Depending on the other freegler's settings it may also be sent out by email soon - then this would turn into a little envelope.">
             <v-icon name="check" class="text-muted" />
           </span>
-          <span v-if="chat.chattype === 'User2Mod'">
+          <span v-if="chat.chattype === 'User2Mod' || chat.chattype === 'Mod2Mod'">
             <span v-if="chatmessage.userid === me.id">
               You
             </span>

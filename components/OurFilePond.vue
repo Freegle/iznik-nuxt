@@ -43,6 +43,8 @@ if (process.client) {
   heic2any = require('heic2any')
 }
 
+var Sentry = cordova.require("sentry-cordova.Sentry")
+
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
   FilePondPluginImagePreview,
@@ -108,6 +110,7 @@ export default {
   },
   methods: {
     takeAppPhoto: function () { // CC
+      console.log("TAKE APP PHOTO")
       const maxDimension = 800
       navigator.camera.getPicture(imageURI => {
           this.cameraSuccess(imageURI)
@@ -130,6 +133,7 @@ export default {
       )
     },
     cameraError: function (msg) {
+      console.log("PHOTO: cameraError")
       setTimeout(function () {
         if (msg === "No Image Selected") { msg = "No photo taken or chosen" }
         if (msg === "Camera cancelled") { msg = "No photo taken or chosen" }
@@ -141,6 +145,7 @@ export default {
       }, 0)
     },
     cameraSuccess: function (imageData) {
+      console.log("PHOTO: cameraSuccess")
       console.log("cameraSuccess size:" + imageData.length)
       const contentType = 'image/jpeg'
       const sliceSize = 512
@@ -166,7 +171,7 @@ export default {
       this.$refs.pond.addFile(imageBlob)
     },
     photoInit: function () {
-      console.log('photoInit') // CC
+      console.log('PHOTO: photoInit') // CC
       if (process.env.IS_APP) {
         if (mobilestate.isiOS) {
           this.$refs.pond.labelIdle = '<div><span class="filepond--label-action btn btn-white">Take a photo or Browse</span></div><div id="camera-msg"></div>'
@@ -203,6 +208,7 @@ export default {
       }
     },
     async process(fieldName, file, metadata, load, error, progress, abort) {
+      console.log('PHOTO: process') // CC
       await this.$store.dispatch('compose/setUploading', true)
 
       const data = new FormData()
@@ -215,8 +221,20 @@ export default {
         const blob = file.slice(0, file.size, 'image/heic')
         const png = await heic2any({ blob, toType: 'image/jpeg', quality: 0.1 })
         data.append('photo', png, 'photo')
+
+        if (!png) {
+          Sentry.captureException(
+            'Failed to convert HEIC to JPEG size ' + file.size
+          )
+        }
       } else {
         data.append('photo', file, 'photo')
+
+        if (!file) {
+          Sentry.captureException(
+            'Passed empty file for upload' + JSON.stringify(file)
+          )
+        }
       }
 
       data.append(this.imgflag, true)

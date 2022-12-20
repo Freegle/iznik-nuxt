@@ -183,6 +183,17 @@ const cordovaApp = {
         console.log('INTENT onNewIntent: ', url)
       }) */
 
+      console.log("Sentry", process.env.SENTRY_DSN)
+      try {
+        var Sentry = cordova.require("sentry-cordova.Sentry");
+        Sentry.init({
+          dsn: process.env.SENTRY_DSN,
+          // debug: true,
+        });
+      } catch (e) {
+        console.log('Sentry catch', e)
+      }
+
       // Prompt a check for the latest app versions
       pushstate.checkForUpdate = true
 
@@ -280,6 +291,7 @@ function handleNotification(notificationType, data) {
     mobilePush.clearAllNotifications() // no success and error fns given
     console.log('clearAllNotifications')
   }
+  console.log('handleNotification badgeCount', badgeCount)
   mobilePush.setApplicationIconBadgeNumber(function () { }, function () { }, data.count)
 
   if (!mobilestate.isiOS && 'inlineReply' in data.additionalData) {
@@ -367,6 +379,7 @@ export function setBadgeCount(badgeCount) {
   if (badgeCount !== lastBadgeCount) {
     if (process.env.IS_APP) {
       if (mobilePush) {
+        console.log('setBadgeCount', badgeCount)
         mobilePush.setApplicationIconBadgeNumber(function () { }, function () { }, badgeCount)
         lastBadgeCount = badgeCount
       }

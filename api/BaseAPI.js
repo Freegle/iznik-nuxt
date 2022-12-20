@@ -1,10 +1,4 @@
-let Sentry
-
-if (process.client) {
-  Sentry = require('@sentry/browser')
-} else {
-  Sentry = require('@sentry/node')
-}
+//var Sentry = cordova.require("sentry-cordova.Sentry");
 
 export class APIError extends Error {
   constructor({ request, response }, message) {
@@ -162,7 +156,7 @@ export default class BaseAPI {
         const log = typeof logError === 'function' ? logError(data) : logError
         console.log('Log it?', log)
 
-        if (log) {
+        if (log && Sentry) {
           Sentry.captureException(
             'API request failed ' +
               path +
