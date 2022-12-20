@@ -183,6 +183,17 @@ const cordovaApp = {
         console.log('INTENT onNewIntent: ', url)
       }) */
 
+      console.log("Sentry", process.env.SENTRY_DSN)
+      try {
+        var Sentry = cordova.require("sentry-cordova.Sentry");
+        Sentry.init({
+          dsn: process.env.SENTRY_DSN,
+          // debug: true,
+        });
+      } catch (e) {
+        console.log('Sentry catch', e)
+      }
+
       // Prompt a check for the latest app versions
       pushstate.checkForUpdate = true
 

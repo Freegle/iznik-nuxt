@@ -4,11 +4,11 @@ import { Dedupe as DedupeIntegration } from '@sentry/integrations'
 import sitemap from './utils/sitemap.js'
 
 const FACEBOOK_APPID = '134980666550322'
-const SENTRY_DSN = 'https://4de62393d60a4d2aae4ccc3519e94878@sentry.io/1868170'
+const SENTRY_DSN = 'https://b68903e730034a4ba3b8b2358331389e@o118493.ingest.sentry.io/4504362603184128' // Cordova
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
-const MOBILE_VERSION = '2.0.114'
-const MODTOOLS_VERSION = '0.3.88'
+const MOBILE_VERSION = '2.0.115'
+const MODTOOLS_VERSION = '0.3.89'
 
 require('dotenv').config()
 

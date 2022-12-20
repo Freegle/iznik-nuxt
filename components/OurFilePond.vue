@@ -43,13 +43,7 @@ if (process.client) {
   heic2any = require('heic2any')
 }
 
-let Sentry
-
-if (process.client) {
-  Sentry = require('@sentry/browser')
-} else {
-  Sentry = require('@sentry/node')
-}
+var Sentry = cordova.require("sentry-cordova.Sentry")
 
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,

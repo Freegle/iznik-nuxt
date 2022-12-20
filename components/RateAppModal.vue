@@ -32,6 +32,7 @@
 </template>
 <script>
 import { mobilestate } from '@/plugins/app-init-push'
+
 export default {
   data: function() {
     return {
