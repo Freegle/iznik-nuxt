@@ -19,12 +19,12 @@
                 <b-img fluid thumbnail src="/councils/socialmedia/Its_not_waste_until_you_waste_it_FB.jpg" alt="Publicity image" /></a>
             </div>
             <div class="col-sm-4">
-              <a target="_blank" href="/councils/socialmedia/We reuse. You can too!_FB_clothes.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/We reuse. You can too!_FB_clothes.png" alt="Publicity image" /></a>
+              <a target="_blank" href="/councils/socialmedia/Freegle_bike_Facebook.png">
+                <b-img fluid thumbnail src="/councils/socialmedia/Freegle_bike_Facebook.png" alt="Publicity image" /></a>
             </div>
             <div class="col-sm-4">
-              <a target="_blank" href="/councils/socialmedia/We reuse. You can too!_FB_desk.png">
-                <b-img fluid thumbnail src="/councils/socialmedia/We reuse. You can too!_FB_desk.png" alt="Publicity image" /></a>
+              <a target="_blank" href="/councils/socialmedia/Freegle_carpet_pile_Facebook.png">
+                <b-img fluid thumbnail src="/councils/socialmedia/Freegle_carpet_pile_Facebook.png" alt="Publicity image" /></a>
             </div>
           </div>
           <div class="row">

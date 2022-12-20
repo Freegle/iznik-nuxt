@@ -6,7 +6,7 @@
       <ModAimsModal ref="aims" />
       <!--      <ModFreeStock class="mb-2" />-->
       <NoticeMessage variant="info" class="mb-2 d-block d-md-none">
-        <ModZoomStock />
+        <ModZoomStock color-class="text-black" />
       </NoticeMessage>
       <div class="d-flex justify-content-between">
         <GroupSelect v-model="groupid" all modonly :work="['pending', 'pendingother']" remember="pending" />
