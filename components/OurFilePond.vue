@@ -41,6 +41,14 @@ if (process.client) {
   heic2any = require('heic2any')
 }
 
+let Sentry
+
+if (process.client) {
+  Sentry = require('@sentry/browser')
+} else {
+  Sentry = require('@sentry/node')
+}
+
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
   FilePondPluginImagePreview,
@@ -133,8 +141,20 @@ export default {
         const blob = file.slice(0, file.size, 'image/heic')
         const png = await heic2any({ blob, toType: 'image/jpeg', quality: 0.1 })
         data.append('photo', png, 'photo')
+
+        if (!png) {
+          Sentry.captureException(
+            'Failed to convert HEIC to JPEG size ' + file.size
+          )
+        }
       } else {
         data.append('photo', file, 'photo')
+
+        if (!file) {
+          Sentry.captureException(
+            'Passed empty file for upload' + JSON.stringify(file)
+          )
+        }
       }
 
       data.append(this.imgflag, true)
