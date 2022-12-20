@@ -108,6 +108,7 @@ export default {
   },
   methods: {
     takeAppPhoto: function () { // CC
+      console.log("TAKE APP PHOTO")
       const maxDimension = 800
       navigator.camera.getPicture(imageURI => {
           this.cameraSuccess(imageURI)
@@ -130,6 +131,7 @@ export default {
       )
     },
     cameraError: function (msg) {
+      console.log("PHOTO: cameraError")
       setTimeout(function () {
         if (msg === "No Image Selected") { msg = "No photo taken or chosen" }
         if (msg === "Camera cancelled") { msg = "No photo taken or chosen" }
@@ -141,6 +143,7 @@ export default {
       }, 0)
     },
     cameraSuccess: function (imageData) {
+      console.log("PHOTO: cameraSuccess")
       console.log("cameraSuccess size:" + imageData.length)
       const contentType = 'image/jpeg'
       const sliceSize = 512
@@ -166,7 +169,7 @@ export default {
       this.$refs.pond.addFile(imageBlob)
     },
     photoInit: function () {
-      console.log('photoInit') // CC
+      console.log('PHOTO: photoInit') // CC
       if (process.env.IS_APP) {
         if (mobilestate.isiOS) {
           this.$refs.pond.labelIdle = '<div><span class="filepond--label-action btn btn-white">Take a photo or Browse</span></div><div id="camera-msg"></div>'
@@ -203,6 +206,7 @@ export default {
       }
     },
     async process(fieldName, file, metadata, load, error, progress, abort) {
+      console.log('PHOTO: process') // CC
       await this.$store.dispatch('compose/setUploading', true)
 
       const data = new FormData()
