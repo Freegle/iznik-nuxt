@@ -96,6 +96,9 @@
         <config-file overwrite="true" parent="NSContactsUsageDescription" platform="ios" target="*-Info.plist">
             <string>To invite a friend to use Freegle</string>
         </config-file>
+        <config-file overwrite="true" parent="ITSAppUsesNonExemptEncryption" platform="ios" target="*-Info.plist">
+          <false/>
+        </config-file>
         <config-file target="*-Debug.plist" parent="com.apple.developer.associated-domains">
           <array>
             <string>applinks:www.ilovefreegle.org</string>

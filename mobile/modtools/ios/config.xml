@@ -45,6 +45,9 @@
     <icon height="100" platform="ios" src="package-assets/Tile100.png" width="100" />
     <icon height="167" platform="ios" src="package-assets/Tile167.png" width="167" />
     <icon height="1024" platform="ios" src="package-assets/Tile1024.png" width="1024" />
+    <config-file overwrite="true" parent="ITSAppUsesNonExemptEncryption" platform="ios" target="*-Info.plist">
+      <false/>
+    </config-file>
     <platform name="ios">
         <preference name="AutoHideSplashScreen" value="true" />
         <preference name="FadeSplashScreen" value="false" />
