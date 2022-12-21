@@ -263,6 +263,15 @@ jobs:
         cordova platform rm android;
         cordova platform add android@10.1.2
       "
+
+      # Make sentry.properties file
+      - run: cd ../iznik-nuxt-app; echo "defaults.url=https://sentry.io/" >sentry.properties
+      - run: cd ../iznik-nuxt-app; echo "defaults.org=freegle" >>sentry.properties
+      - run: cd ../iznik-nuxt-app; echo "defaults.project=cordova" >>sentry.properties
+      - run: cd ../iznik-nuxt-app; echo "auth.token=$SENTRY_AUTH_TOKEN" >>sentry.properties
+      - run: cd ../iznik-nuxt-app; echo "cli.executable=node_modules\\@sentry\\cli\\bin\\sentry-cli" >>sentry.properties
+      - run: cd ../iznik-nuxt-app; cat sentry.properties
+      
       # Special handling for socialsharing plugin which needs updating:
       # https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin/pull/1158
       # done in scripts/update_manifest.js
