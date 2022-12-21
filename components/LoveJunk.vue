@@ -188,6 +188,9 @@ export default {
       })
 
       window.open('https://www.lovejunk.com/rubbish-clearance/')
+    },
+    brokenImage(event) {
+      event.target.src = require('~/static/placeholder.jpg')
     }
   }
 }
