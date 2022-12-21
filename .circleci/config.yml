@@ -256,7 +256,6 @@ jobs:
       - run: cd ../iznik-nuxt-app; echo "defaults.project=cordova" >>sentry.properties
       - run: cd ../iznik-nuxt-app; echo "auth.token=$SENTRY_AUTH_TOKEN" >>sentry.properties
       - run: cd ../iznik-nuxt-app; echo "cli.executable=node_modules\\@sentry\\cli\\bin\\sentry-cli" >>sentry.properties
-      - run: cd ../iznik-nuxt-app; cat sentry.properties
 
       # Set up build
       - run: "cd ../iznik-nuxt-app; 
@@ -342,6 +341,15 @@ jobs:
       - run: npm run mtapp
       - run: pwd; ls -l mobile/modtools/scripts
       - run: mkdir ../iznik-nuxt-mt
+      
+      # Make sentry.properties file
+      - run: cd ../iznik-nuxt-mt; echo "defaults.url=https://sentry.io/" >sentry.properties
+      - run: cd ../iznik-nuxt-mt; echo "defaults.org=freegle" >>sentry.properties
+      - run: cd ../iznik-nuxt-mt; echo "defaults.project=cordova" >>sentry.properties
+      - run: cd ../iznik-nuxt-mt; echo "auth.token=$SENTRY_AUTH_TOKEN" >>sentry.properties
+      - run: cd ../iznik-nuxt-mt; echo "cli.executable=node_modules\\@sentry\\cli\\bin\\sentry-cli" >>sentry.properties
+
+      # Set up build
       - run: "cd ../iznik-nuxt-mt; 
         ln -s ../project/mobile/modtools/android/config.xml config.xml;
         ln -s ../project/mobile/modtools/android/package.json package.json;
