@@ -111,7 +111,7 @@ export default async ({ app, store }) => {
 
           if (FUNCTIONAL_PARTS.indexOf(type) !== -1) {
             // These are changes to an area of the store which affects function. We want to include those.
-            console.log('Functional mutation, will save ', mutation.type)
+            //console.log('Functional mutation, will save ', mutation.type)
             return true
           }
 
@@ -121,13 +121,13 @@ export default async ({ app, store }) => {
           // console.log('Compare', now, lastSave)
 
           if (!lastSave || now - lastSave > 1000) {
-            console.log('Long enough since last, will save')
+            //console.log('Long enough since last, will save')
             return true
           }
 
           // We're not going to save this.  But all is not lost - if something happens again, then the data will
           // get saved at that point.
-          console.log('Too soon since last store save, suppress')
+          //console.log('Too soon since last store save, suppress')
           return false
         },
 
@@ -280,7 +280,7 @@ export default async ({ app, store }) => {
               // We are already saving.  Queue this up to save when we've finished. This may overwrite any ones
               // which came in earlier, which is what we want.
               saveInstance++
-              console.log('Save in progress, queue for later')
+              //console.log('Save in progress, queue for later')
             } else {
               let savingNow
 
@@ -293,11 +293,11 @@ export default async ({ app, store }) => {
                 lastSave = new Date().getTime()
 
                 if (savingNow !== saveInstance) {
-                  console.log('...more came in, keep saving')
+                  //console.log('...more came in, keep saving')
                 }
               } while (savingNow !== saveInstance)
 
-              console.log('Save complete')
+              //console.log('Save complete')
             }
 
             // Succeeded
