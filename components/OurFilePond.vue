@@ -47,7 +47,7 @@ var Sentry
 try {
   Sentry = cordova.require("sentry-cordova.Sentry")
 }
-catch () { }
+catch (e) { }
 
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
