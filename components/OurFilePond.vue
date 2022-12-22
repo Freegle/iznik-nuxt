@@ -43,7 +43,11 @@ if (process.client) {
   heic2any = require('heic2any')
 }
 
-var Sentry = cordova.require("sentry-cordova.Sentry")
+var Sentry
+try {
+  Sentry = cordova.require("sentry-cordova.Sentry")
+}
+catch () { }
 
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
@@ -222,7 +226,7 @@ export default {
         const png = await heic2any({ blob, toType: 'image/jpeg', quality: 0.1 })
         data.append('photo', png, 'photo')
 
-        if (!png) {
+        if (!png && Sentry) {
           Sentry.captureException(
             'Failed to convert HEIC to JPEG size ' + file.size
           )
@@ -230,7 +234,7 @@ export default {
       } else {
         data.append('photo', file, 'photo')
 
-        if (!file) {
+        if (!file && Sentry) {
           Sentry.captureException(
             'Passed empty file for upload' + JSON.stringify(file)
           )

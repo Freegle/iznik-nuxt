@@ -306,12 +306,6 @@ export default {
         availablenow: availablenow
       })
     },
-    photoAdd() {
-      // Flag that we're uploading.  This will trigger the render of the filepond instance and subsequently the
-      // init callback below.
-      console.log("PostMessage.vue photoAdd")
-      this.uploading = true
-    },
     photoProcessed(imageid, imagethumb, image, ocr, suggestions) {
       // We have uploaded a photo.  Remove the filepond instance.
       const att = {
