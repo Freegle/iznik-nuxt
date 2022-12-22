@@ -291,7 +291,7 @@ function handleNotification(notificationType, data) {
     mobilePush.clearAllNotifications() // no success and error fns given
     console.log('clearAllNotifications')
   }
-  console.log('handleNotification badgeCount', badgeCount)
+  console.log('handleNotification badgeCount', data.count)
   mobilePush.setApplicationIconBadgeNumber(function () { }, function () { }, data.count)
 
   if (!mobilestate.isiOS && 'inlineReply' in data.additionalData) {

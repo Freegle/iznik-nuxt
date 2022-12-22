@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.ilovefreegle.modtools" ios-CFBundleVersion="392" version="0.3.90" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="org.ilovefreegle.modtools" ios-CFBundleVersion="393" version="0.3.91" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>ModTools</name>
     <description>Tool to help moderators of Freegle and similar groups</description>
     <author email="geeks@ilovefreegle.org" href="https://ilovefreegle.org">
@@ -45,6 +45,9 @@
     <icon height="100" platform="ios" src="package-assets/Tile100.png" width="100" />
     <icon height="167" platform="ios" src="package-assets/Tile167.png" width="167" />
     <icon height="1024" platform="ios" src="package-assets/Tile1024.png" width="1024" />
+    <config-file overwrite="true" parent="ITSAppUsesNonExemptEncryption" platform="ios" target="*-Info.plist">
+      <false/>
+    </config-file>
     <platform name="ios">
         <preference name="AutoHideSplashScreen" value="true" />
         <preference name="FadeSplashScreen" value="false" />
