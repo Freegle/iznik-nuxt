@@ -223,7 +223,7 @@ export const actions = {
       let prom = null
 
       if (needFetch) {
-        console.log(
+        /*console.log(
           'Need to fetch',
           params.id,
           modtools,
@@ -233,7 +233,7 @@ export const actions = {
           message && message.addedToStore
             ? now.diff(this.$dayjs(message.addedToStore), 'minute')
             : ''
-        )
+        )*/
         errorOK = true
 
         commit('fetching', params.id)
