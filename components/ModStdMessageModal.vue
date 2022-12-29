@@ -286,8 +286,8 @@ export default {
         if (msg) {
           // We have an existing body to include.  Quote it, unless it's an edit.
           const edit = this.stdmsg && this.stdmsg.action === 'Edit'
-          if (!edit) {
-            msg = '> ' + msg.replace(/((\r\n)|\r|\n)/gm, '\n> ')
+          if (!edit && msg) {
+            msg = '> ' + (msg + '').replace(/((\r\n)|\r|\n)/gm, '\n> ')
           }
         }
 
