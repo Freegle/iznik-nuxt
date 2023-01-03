@@ -10,8 +10,6 @@
       <template slot="default">
         <div v-if="variant === 'video'">
           <p class="font-weight-bold">
-            <!--            We've made little video to explain why we ask for donations.  This one is from Derek in Fife, with a-->
-            <!--            special guest.-->
             We've made little video to explain why we ask for donations.  It's
             just this guy Edward in his living room, because we don't waste your money on fancy PR agencies.
           </p>
@@ -62,10 +60,19 @@
               <p v-if="variant === 'paypal1510minutes'">
                 <strong>£1</strong> keeps Freegle running across the UK for <strong>7 minutes</strong>.  Can you help?
               </p>
-              <p v-else>
-                <strong>{{ groupname }}</strong> is a charity that's free to use, but not free to run.  This month we're
-                trying to raise <strong>&pound;{{ target }}</strong><span v-if="groupid && !targetMet"> for this community</span><span v-else> across the UK</span>.
-              </p>
+              <div v-else>
+                <div v-if="variant === 'quote'">
+                  <p>
+                    Freegler Mary writes:
+                  </p>
+                  <!-- eslint-disable-next-line -->
+                  <p class="quote">I pass on my unwanted items here as I hate waste with a passion! It's a last resort to bin it! I also donate to Freegle via Paypal as it's my way of saying thank you for all the free items and to make sure Freegle is kept going.</p>
+                </div>
+                <p v-else>
+                  <strong>{{ groupname }}</strong> is a charity that's free to use, but not free to run.  This month we're
+                  trying to raise <strong>&pound;{{ target }}</strong><span v-if="groupid && !targetMet"> for this community</span><span v-else> across the UK</span>.
+                </p>
+              </div>
               <p>
                 If you can, <strong>
                   <span v-if="variant === 'link1' || variant === 'buttons1'">
@@ -77,7 +84,7 @@
                   <span v-else-if="variant === 'buttonsmonthly'">
                     please set up a monthly donation
                   </span>
-                  <span v-else-if="variant === 'buttons1510' || variant === 'buttons51025' || variant === 'buttons2510'">
+                  <span v-else-if="variant === 'buttons1510' || variant === 'buttons51025' || variant === 'buttons2510' || variant === 'quote'">
                     please donate
                   </span>
                   <span v-else>
@@ -104,7 +111,7 @@
                 <donation-button link="paypal1" show="£1/month" monthly monthlyvalue="Supporter1" @clicked="score(4)" />
                 <donation-button link="paypal1" show="£5/month" monthly monthlyvalue="Supporter5" @clicked="score(20)" />
               </div>
-              <div v-else-if="variant === 'buttons1510'" class="d-flex justify-content-between flex-wrap">
+              <div v-else-if="variant === 'buttons1510' || variant === 'quote'" class="d-flex justify-content-between flex-wrap">
                 <donation-button link="paypal1" show="£1" class="mb-1" @clicked="score(1)" />
                 <donation-button link="paypal5" show="£5" class="mb-1" @clicked="score(5)" />
                 <donation-button link="paypal10" show="£10" class="mb-1" @clicked="score(10)" />
@@ -244,3 +251,18 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+.quote {
+  font-size: 1.25rem;
+  font-weight: bold;
+  font-style: italic;
+
+  &::before {
+    content: open-quote;
+  }
+
+  &::after {
+    content: close-quote;
+  }
+}
+</style>
