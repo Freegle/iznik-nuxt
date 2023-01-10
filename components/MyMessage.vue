@@ -380,6 +380,7 @@ export default {
 
             if (
               u.info.ratings.Up > u.info.ratings.Down &&
+              u.info.ratings.Up > 2 &&
               (rating === null || thisrating > rating)
             ) {
               rating = thisrating
