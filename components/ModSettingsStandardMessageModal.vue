@@ -131,10 +131,15 @@ export default {
       type: Number,
       required: false,
       default: null
+    },
+    types: {
+      type: Array,
+      required: false,
+      default: null
     }
   },
   data: function() {
-    return {
+    const ret = {
       newmsg: [],
       options: [
         { value: null, text: '-- Pending Messages -- ' },
@@ -151,6 +156,12 @@ export default {
         { value: 'Leave Approved Member', text: 'Reply' }
       ]
     }
+
+    if (this.types) {
+      ret.options = ret.options.filter(o => this.types.includes(o.value))
+    }
+
+    return ret
   },
   computed: {
     locked() {

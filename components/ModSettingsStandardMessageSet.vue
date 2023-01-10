@@ -58,7 +58,7 @@
     <b-btn v-if="!locked" variant="white" @click="add">
       <v-icon name="plus" /> Add new standard message
     </b-btn>
-    <ModSettingsStandardMessageModal v-if="showModal" ref="msgmodal" :locked="locked" @hide="fetch" />
+    <ModSettingsStandardMessageModal v-if="showModal" ref="msgmodal" :locked="locked" :types="types" @hide="fetch" />
   </div>
 </template>
 <script>
