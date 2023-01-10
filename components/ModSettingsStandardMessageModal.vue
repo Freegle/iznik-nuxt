@@ -92,12 +92,6 @@
           </b-select>
           <label>Message Body</label>
           <b-textarea v-model="stdmsg.body" rows="10" />
-
-          <!--          <p class="text-muted mt-2">-->
-          <!--            * These are Yahoo terms, and don't exactly match our settings.  They work fine, but it would be-->
-          <!--            nice to change them to match our terminology.  That needs to wait until this new-->
-          <!--            version has replaced the old version.  TODO-->
-          <!--          </p>-->
         </template>
         <template slot="modal-footer" slot-scope="{ ok, cancel }">
           <div class="d-flex justify-content-between flex-wrap w-100">
