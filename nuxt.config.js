@@ -626,7 +626,8 @@ module.exports = {
             // Some errors seem benign, and so we ignore them on the client side rather than clutter our sentry logs.
             ignoreErrors: [
               'ResizeObserver loop limit exceeded', // Unclear where this happens.
-              'Navigation cancelled from ' // This can happen if someone clicks twice in quick succession
+              'Navigation cancelled from ', // This can happen if someone clicks twice in quick succession,
+              "Reading 'CodeMirror'" // BlackBox extension - see https://stackoverflow.com/questions/74491558/cannot-read-properties-of-null-reading-codemirror
             ]
           })
         )
@@ -660,7 +661,7 @@ module.exports = {
   },
 
   router: {
-    middleware: ['src'],
+    middleware: ['src']
   },
 
   sitemap: {
