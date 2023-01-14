@@ -59,7 +59,7 @@
                           @change="changeUseProfile"
                         />
                         <br>
-                        <span v-if="me.profile.ours" class="clickme mt-1 align-bottom" @click="rotateLeft">
+                        <span v-if="me.profile.ours && useprofile" class="clickme mt-1 align-bottom" @click="rotateLeft">
                           <v-icon label="Rotate left" title="Rotate left">
                             <v-icon name="circle" scale="2" class="text-muted" />
                             <v-icon
@@ -71,7 +71,7 @@
                         <b-btn variant="secondary" class="mt-2" @click="uploadProfile">
                           <v-icon name="camera" /> Upload photo
                         </b-btn>
-                        <span v-if="me.profile.ours" class="clickme mt-1 align-bottom" @click="rotateRight">
+                        <span v-if="me.profile.ours && useprofile" class="clickme mt-1 align-bottom" @click="rotateRight">
                           <v-icon label="Rotate right" title="Rotate right" flip="horizontal">
                             <v-icon name="circle" scale="2" class="text-muted" />
                             <v-icon
