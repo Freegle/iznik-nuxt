@@ -67,6 +67,9 @@
                   </p>
                   <!-- eslint-disable-next-line -->
                   <p class="quote">I pass on my unwanted items here as I hate waste with a passion! It's a last resort to bin it! I also donate to Freegle via Paypal as it's my way of saying thank you for all the free items and to make sure Freegle is kept going.</p>
+                  <p>
+                    Could you be like Mary and help us keep going?
+                  </p>
                 </div>
                 <p v-else>
                   <strong>{{ groupname }}</strong> is a charity that's free to use, but not free to run.  This month we're
