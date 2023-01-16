@@ -329,7 +329,7 @@ jobs:
       #- run: cd ../iznik-nuxt-app; cat platforms/android/build.gradle
       - run: cd ../iznik-nuxt-app; cp ../project/mobile/build-extras.gradle platforms/android/app
       - run: cd ../iznik-nuxt-app; cat platforms/android/app/build-extras.gradle
-      - run: cd ../iznik-nuxt-app; cp ../project/mobile/secrets/api-freegle-google-play-deployment-2023.json platforms/android/app
+      - run: cd ../iznik-nuxt-app; cp ../project/mobile/secrets/api-freegle-google-play-deployment-2023.json platforms/android/app/api-freegle-google-play-deployment.json
       - run: cd ../iznik-nuxt-app/platforms/android; gradle publishReleaseApk --info || true # Ignore errors ie if versionCode already submitted
       #- run: cd ../iznik-nuxt-app/platforms/android; gradle publishBundle --info || true # Ignore errors ie if versionCode already submitted
 
@@ -388,7 +388,7 @@ jobs:
       - run: cd ../iznik-nuxt-mt; sed -i "/AGP_VERSION/aclasspath 'com.github.triplet.gradle:play-publisher:3.5.0'" platforms/android/app/build.gradle
       - run: cd ../iznik-nuxt-mt; cat platforms/android/build.gradle
       - run: cd ../iznik-nuxt-mt; cp ../project/mobile/build-extras.gradle platforms/android/app
-      - run: cd ../iznik-nuxt-mt; cp ../project/mobile/secrets/api-freegle-google-play-deployment-2023.json platforms/android/app
+      - run: cd ../iznik-nuxt-mt; cp ../project/mobile/secrets/api-freegle-google-play-deployment-2023.json platforms/android/app/api-freegle-google-play-deployment.json
       - run: cd ../iznik-nuxt-mt/platforms/android; gradle publishReleaseApk || true # Ignore errors ie if versionCode already submitted
 
 ################
