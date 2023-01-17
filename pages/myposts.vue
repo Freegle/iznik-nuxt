@@ -351,7 +351,7 @@ export default {
       !lastask || new Date().getTime() - lastask > 60 * 60 * 1000 * 24 * 7
 
     // Donation ask on Browse page is only used when we have a specific push.
-    canask = false
+    canask = true
 
     if (canask) {
       this.ask()
