@@ -7,7 +7,7 @@ const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://b68903e730034a4ba3b8b2358331389e@o118493.ingest.sentry.io/4504362603184128' // Cordova
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
-const MOBILE_VERSION = '2.0.116'
+const MOBILE_VERSION = '2.0.117'
 const MODTOOLS_VERSION = '0.3.92'
 
 require('dotenv').config()
@@ -224,7 +224,8 @@ const config = {
     { src: '~/plugins/app-google.js', mode: 'client' },
     { src: '~/plugins/app-yahoo.js', mode: 'client' },
     { src: '~/plugins/app-apple.js', mode: 'client' },
-    { src: '~/plugins/vue2-leaflet', ssr: false }
+    { src: '~/plugins/vue2-leaflet', ssr: false },
+    { src: '@/plugins/load-script.js' },
   ],
 
   // Can't use redirect as this doesn't work with nuxt generate, so redirects are done as rewrites in nginx config.
@@ -405,7 +406,8 @@ const config = {
       /^vue2-google-maps($|\/)/,
       'vue-lazy-youtube-video',
       'vue-draggable-resizable',
-      'vuex-persist'
+      'vuex-persist',
+      'vue-plugin-load-script'
     ],
 
     extend(config, ctx) {
@@ -640,7 +642,8 @@ const config = {
             // Some errors seem benign, and so we ignore them on the client side rather than clutter our sentry logs.
             ignoreErrors: [
               'ResizeObserver loop limit exceeded', // Unclear where this happens.
-              'Navigation cancelled from ' // This can happen if someone clicks twice in quick succession
+              'Navigation cancelled from ', // This can happen if someone clicks twice in quick succession,
+              "Reading 'CodeMirror'" // BlackBox extension - see https://stackoverflow.com/questions/74491558/cannot-read-properties-of-null-reading-codemirror
             ]
           })
         )
@@ -674,7 +677,7 @@ const config = {
   },
 
   router: {
-    middleware: ['src'],
+    middleware: ['src']
   },
 
   sitemap: {

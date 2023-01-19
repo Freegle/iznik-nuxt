@@ -10,8 +10,6 @@
       <template slot="default">
         <div v-if="variant === 'video'">
           <p class="font-weight-bold">
-            <!--            We've made little video to explain why we ask for donations.  This one is from Derek in Fife, with a-->
-            <!--            special guest.-->
             We've made little video to explain why we ask for donations.  It's
             just this guy Edward in his living room, because we don't waste your money on fancy PR agencies.
           </p>
@@ -21,35 +19,16 @@
           </div>
           <client-only>
             <p class="font-weight-bold text-center mt-4">
-              If you're able to donate to help us keep going, that would be lovely.
+              If you're able to donate to help us keep going, that would be lovely.  Monthly donations are particularly
+              helpful.
             </p>
-            <p class="text-center mt-2">
-              Click to donate monthly:
-            </p>
-            <div class="d-flex justify-content-around">
-              <OurToggle
-                v-model="monthly"
-                :sync="true"
-                :height="36"
-                :width="200"
-                :font-size="14"
-                :labels="{unchecked: 'One-off donation', checked: 'Monthly donation'}"
-                class="toggle"
-                color="#84CF96"
-              />
-            </div>
             <p class="text-center mt-1">
               Click the amount to donate:
             </p>
-            <div v-if="monthly" class="d-flex flex-wrap justify-content-between mt-2">
-              <donation-button link="paypal1" show="£1" monthly monthlyvalue="Supporter1" @clicked="score(4)" />
-              <donation-button link="paypal1" show="£5" monthly monthlyvalue="Supporter5" @clicked="score(20)" />
-              <donation-button link="paypal1" show="£10" monthly monthlyvalue="Supporter10" @clicked="score(40)" />
-            </div>
-            <div v-else class="d-flex flex-wrap justify-content-between mt-2">
-              <donation-button link="paypal1" show="£1" class="mb-1" @clicked="score(1)" />
-              <donation-button link="paypal5" show="£5" class="mb-1" @clicked="score(5)" />
-              <donation-button link="paypal10" show="£10" class="mb-1" @clicked="score(10)" />
+            <div class="d-flex flex-wrap justify-content-between mt-2">
+              <donation-button value="2" class="mb-1" @clicked="score(2)" />
+              <donation-button value="5" class="mb-1" @clicked="score(5)" />
+              <donation-button value="10" class="mb-1" @clicked="score(10)" />
             </div>
           </client-only>
         </div>
@@ -62,10 +41,22 @@
               <p v-if="variant === 'paypal1510minutes'">
                 <strong>£1</strong> keeps Freegle running across the UK for <strong>7 minutes</strong>.  Can you help?
               </p>
-              <p v-else>
-                <strong>{{ groupname }}</strong> is a charity that's free to use, but not free to run.  This month we're
-                trying to raise <strong>&pound;{{ target }}</strong><span v-if="groupid && !targetMet"> for this community</span><span v-else> across the UK</span>.
-              </p>
+              <div v-else>
+                <div v-if="variant === 'quote'">
+                  <p>
+                    Freegler Mary writes:
+                  </p>
+                  <!-- eslint-disable-next-line -->
+                  <p class="quote">I pass on my unwanted items here as I hate waste with a passion! It's a last resort to bin it! I also donate to Freegle via Paypal as it's my way of saying thank you for all the free items and to make sure Freegle is kept going.</p>
+                  <p>
+                    Could you be like Mary and help us keep going?
+                  </p>
+                </div>
+                <p v-else>
+                  <strong>{{ groupname }}</strong> is a charity that's free to use, but not free to run.  This month we're
+                  trying to raise <strong>&pound;{{ target }}</strong><span v-if="groupid && !targetMet"> for this community</span><span v-else> across the UK</span>.
+                </p>
+              </div>
               <p>
                 If you can, <strong>
                   <span v-if="variant === 'link1' || variant === 'buttons1'">
@@ -77,7 +68,7 @@
                   <span v-else-if="variant === 'buttonsmonthly'">
                     please set up a monthly donation
                   </span>
-                  <span v-else-if="variant === 'buttons1510' || variant === 'buttons51025' || variant === 'buttons2510'">
+                  <span v-else-if="variant === 'buttons1510' || variant === 'buttons51025' || variant === 'buttons2510' || variant === 'quote'">
                     please donate
                   </span>
                   <span v-else>
@@ -95,34 +86,30 @@
                 </div>
               </div>
 
-              <donation-button v-if="variant === 'whatyoucanrunning'" link="paypal1510" @clicked="score(5)" />
-              <donation-button v-else-if="variant === 'link1'" link="paypal1" @clicked="score(1)" />
-              <donation-button v-else-if="variant === 'link3'" link="paypal3" @clicked="score(3)" />
-              <donation-button v-else-if="variant === 'buttons1'" link="paypal1" show="£1" @clicked="score(1)" />
-              <donation-button v-else-if="variant === 'buttons3'" link="paypal3" show="£3" @clicked="score(3)" />
-              <div v-else-if="variant === 'buttonsmonthly'" class="d-flex justify-content-between flex-wrap">
-                <donation-button link="paypal1" show="£1/month" monthly monthlyvalue="Supporter1" @clicked="score(4)" />
-                <donation-button link="paypal1" show="£5/month" monthly monthlyvalue="Supporter5" @clicked="score(20)" />
-              </div>
-              <div v-else-if="variant === 'buttons1510'" class="d-flex justify-content-between flex-wrap">
-                <donation-button link="paypal1" show="£1" class="mb-1" @clicked="score(1)" />
-                <donation-button link="paypal5" show="£5" class="mb-1" @clicked="score(5)" />
-                <donation-button link="paypal10" show="£10" class="mb-1" @clicked="score(10)" />
+              <donation-button v-if="variant === 'whatyoucanrunning'" value="1510" @clicked="score(5)" />
+              <donation-button v-else-if="variant === 'link1'" value="1" @clicked="score(1)" />
+              <donation-button v-else-if="variant === 'link3'" value="3" @clicked="score(3)" />
+              <donation-button v-else-if="variant === 'buttons1'" value="1" @clicked="score(1)" />
+              <donation-button v-else-if="variant === 'buttons3'" value="3" @clicked="score(3)" />
+              <div v-else-if="variant === 'buttons1510' || variant === 'quote'" class="d-flex justify-content-between flex-wrap">
+                <donation-button value="1" class="mb-1" @clicked="score(1)" />
+                <donation-button value="5" class="mb-1" @clicked="score(5)" />
+                <donation-button value="10" class="mb-1" @clicked="score(10)" />
               </div>
               <div v-else-if="variant === 'paypal1510minutes'" class="d-flex justify-content-between flex-wrap">
-                <donation-button link="paypal1" show="£1" class="mb-1" @clicked="score(1)" />
-                <donation-button link="paypal5" show="£5" class="mb-1" @clicked="score(5)" />
-                <donation-button link="paypal10" show="£10" class="mb-1" @clicked="score(10)" />
+                <donation-button value="1" class="mb-1" @clicked="score(1)" />
+                <donation-button value="5" class="mb-1" @clicked="score(5)" />
+                <donation-button value="10" class="mb-1" @clicked="score(10)" />
               </div>
               <div v-else-if="variant === 'buttons2510'" class="d-flex justify-content-between flex-wrap">
-                <donation-button link="paypal2" show="£2" class="mb-1" @clicked="score(2)" />
-                <donation-button link="paypal5" show="£5" class="mb-1" @clicked="score(5)" />
-                <donation-button link="paypal10" show="£10" class="mb-1" @clicked="score(10)" />
+                <donation-button value="2" class="mb-1" @clicked="score(2)" />
+                <donation-button value="5" class="mb-1" @clicked="score(5)" />
+                <donation-button value="10" class="mb-1" @clicked="score(10)" />
               </div>
               <div v-else-if="variant === 'buttons51025'" class="d-flex justify-content-between flex-wrap">
-                <donation-button link="paypal5" show="£5" class="mb-1" @clicked="score(5)" />
-                <donation-button link="paypal10" show="£10" class="mb-1" @clicked="score(10)" />
-                <donation-button link="paypal25" show="£25" class="mb-1" @clicked="score(25)" />
+                <donation-button value="5" class="mb-1" @clicked="score(5)" />
+                <donation-button value="10" class="mb-1" @clicked="score(10)" />
+                <donation-button value="25" class="mb-1" @clicked="score(25)" />
               </div>
               <!--            if="variant === 'whatyoucan'"-->
               <donation-button v-else link="paypal1510" @clicked="score(5)" />
@@ -156,11 +143,8 @@ import DonationThermometer from './DonationThermometer'
 import DonationButton from './DonationButton'
 import Supporter from '~/components/Supporter'
 
-const OurToggle = () => import('~/components/OurToggle')
-
 export default {
   components: {
-    OurToggle,
     Supporter,
     DonationThermometer,
     DonationButton
@@ -244,3 +228,18 @@ export default {
   }
 }
 </script>
+<style scoped lang="scss">
+.quote {
+  font-size: 1.25rem;
+  font-weight: bold;
+  font-style: italic;
+
+  &::before {
+    content: open-quote;
+  }
+
+  &::after {
+    content: close-quote;
+  }
+}
+</style>

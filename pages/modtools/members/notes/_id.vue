@@ -57,6 +57,7 @@ export default {
         return (
           this.groupid === null ||
           this.groupid === c.groupid ||
+          c.flag ||
           c.byuser?.id === this.myid
         )
       })

@@ -223,17 +223,6 @@ export const actions = {
       let prom = null
 
       if (needFetch) {
-        /*console.log(
-          'Need to fetch',
-          params.id,
-          modtools,
-          !message,
-          message && !message.addedToStore,
-          params.force,
-          message && message.addedToStore
-            ? now.diff(this.$dayjs(message.addedToStore), 'minute')
-            : ''
-        )*/
         errorOK = true
 
         commit('fetching', params.id)
@@ -245,14 +234,6 @@ export const actions = {
 
       if (modtools || !message || params.force) {
         // We need to wait until the fetch completes.
-        console.log(
-          'Wait for fetch',
-          params.id,
-          // JSON.stringify(Object.keys(state.index)),
-          modtools,
-          !message,
-          params.force
-        )
         const res = await prom
         await dispatch('processResult', {
           params,

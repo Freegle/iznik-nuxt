@@ -1,7 +1,12 @@
 <template>
   <NoticeMessage v-if="savedComment" variant="danger" class="mb-2">
     <div v-for="n in 10" :key="'modcomments-' + user.id + '-' + savedComment.id + '-' + n">
-      <read-more v-if="savedComment['user' + n]" :text="savedComment['user' + n]" :max-chars="expandComments ? 1000 : 80" class="font-weight-bold nopara" />
+      <div class="d-flex">
+        <div v-if="n === 1 && savedComment.flag">
+          <v-icon v-if="savedComment.flag" name="exclamation-triangle" class="mr-1" />
+        </div>
+        <read-more v-if="savedComment['user' + n]" :text="savedComment['user' + n]" :max-chars="expandComments ? 1000 : 80" class="font-weight-bold nopara" />
+      </div>
     </div>
     <div class="small">
       <span v-if="savedComment.byuser">

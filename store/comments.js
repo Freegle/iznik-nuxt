@@ -48,8 +48,16 @@ export const getters = {
 
   sortedList: state => {
     const k = Object.values(state.list)
-    return k.sort(function(a, b) {
-      return new Date(b.reviewed).getTime() - new Date(a.reviewed).getTime()
+
+    // Sort by flag then reviewed date descending
+    return k.sort((a, b) => {
+      if (a.flagged && !b.flagged) {
+        return -1
+      } else if (!a.flagged && b.flagged) {
+        return 1
+      } else {
+        return new Date(b.reviewed).getTime() - new Date(a.reviewed).getTime()
+      }
     })
   },
 

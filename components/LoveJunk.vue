@@ -26,12 +26,9 @@
         </a>
       </div>
     </div>
-    <div id="adnotice" class="d-flex justify-content-around text-muted small">
+    <div v-b-tooltip title="Showing this generates a bit of income for Freegle, which helps us keep going." class="d-flex justify-content-around text-muted small">
       Advertisement. Why am I seeing this?
     </div>
-    <b-tooltip target="adnotice">
-      Showing this generates a bit of income for Freegle, which helps us keep going.
-    </b-tooltip>
   </div>
 </template>
 <script>
@@ -188,6 +185,9 @@ export default {
       })
 
       window.open('https://www.lovejunk.com/rubbish-clearance/')
+    },
+    brokenImage(event) {
+      event.target.src = require('~/static/placeholder.jpg')
     }
   }
 }

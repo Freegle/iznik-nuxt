@@ -20,7 +20,7 @@
             will see you're a committed freegler.
           </p>
           <div class="d-flex justify-content-between flex-wrap">
-            <DonationButton link="paypal1510" class="mt-2" />
+            <DonationButton value="1510" class="mt-2" />
             <div class="align-self-center">
               <b-btn variant="secondary" size="lg" :disabled="amMicroVolunteering" @click="donateTime">
                 <span v-if="amMicroVolunteering" class="text-wrap">

@@ -7,15 +7,7 @@
         </div>
         <div v-if="message">
           <GlobalWarning />
-          <MyMessage
-            v-if="message.fromuser && me && message.fromuser.id === me.id"
-            :key="bump"
-            :message="message"
-            :show-old="true"
-            :expand="true"
-            :action="action"
-          />
-          <b-alert v-else variant="warning" class="mt-2" show>
+          <b-alert v-if="me && message.fromuser && message.fromuser.id && message.fromuser.id !== me.id" variant="warning" class="mt-2" show>
             <h3>That post wasn't made from {{ me.email }}.</h3>
             <h5>{{ message.subject }}</h5>
             <p>
@@ -25,6 +17,14 @@
               if necessary - we'll merge your accounts.
             </p>
           </b-alert>
+          <MyMessage
+            v-else
+            :key="bump"
+            :message="message"
+            :show-old="true"
+            :expand="true"
+            :action="action"
+          />
         </div>
         <div v-if="missing">
           <NoticeMessage variant="danger" class="mt-1">
