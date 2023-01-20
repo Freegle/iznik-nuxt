@@ -18,6 +18,7 @@ export default class SessionAPI extends BaseAPI {
     fblogin,
     fbaccesstoken,
     googlelogin,
+    googlejwt,
     googleauthcode,
     u,
     k
@@ -28,6 +29,7 @@ export default class SessionAPI extends BaseAPI {
       fblogin,
       fbaccesstoken,
       googlelogin,
+      googlejwt,
       googleauthcode,
       u,
       k

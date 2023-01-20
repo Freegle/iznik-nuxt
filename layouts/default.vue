@@ -1,7 +1,7 @@
 <template>
   <div>
     <MainHeader :chat-count.sync="chatCount" :unread-notification-count.sync="unreadNotificationCount" />
-    <main>
+    <main v-if="complete">
       <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent" />
     </main>
     <BouncingEmail />
@@ -19,6 +19,7 @@
         <ChatButton v-if="replyToSend" ref="replyToPostChatButton" :userid="replyToUser" />
       </div>
       <Breakpoint />
+      <GoogleOneTap @complete="complete = true" />
     </client-only>
   </div>
 </template>
@@ -31,6 +32,7 @@ const Breakpoint = () => import('~/components/Breakpoint')
 const ChatPopups = () => import('~/components/ChatPopups')
 const ChatButton = () => import('~/components/ChatButton')
 const ExternalLink = () => import('~/components/ExternalLink')
+const GoogleOneTap = () => import('~/components/GoogleOneTap')
 
 export default {
   components: {
@@ -39,7 +41,8 @@ export default {
     ChatButton,
     BouncingEmail,
     ExternalLink,
-    MainHeader
+    MainHeader,
+    GoogleOneTap
   },
   mixins: [replyToPost],
   data: function() {

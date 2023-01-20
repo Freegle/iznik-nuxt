@@ -49,7 +49,7 @@
               <l-tile-layer :url="osmtile" :attribution="attribution" />
               <div v-if="showMessages">
                 <ClusterMarker v-if="messagesForMap.length" :markers="messagesForMap" :map="mapObject" :tag="['post', 'posts']" @click="idle" />
-                <l-marker v-if="me && me.settings && me.settings.mylocation" :lat-lng="[me.lat, me.lng]" :icon="homeIcon" @click="goHome">
+                <l-marker v-if="me && me.settings && me.settings.mylocation && (me.lat || me.lng)" :lat-lng="[me.lat, me.lng]" :icon="homeIcon" @click="goHome">
                   <l-tooltip>
                     This is where your postcode is. You can change your postcode from Settings.
                   </l-tooltip>
@@ -640,7 +640,9 @@ export default {
       }
     },
     goHome() {
-      this.mapObject.flyTo(new L.LatLng(this.me.lat, this.me.lng))
+      if (this.me.lat || this.me.lng) {
+        this.mapObject.flyTo(new L.LatLng(this.me.lat, this.me.lng))
+      }
     },
     hideMap() {
       this.$store.dispatch('misc/set', {

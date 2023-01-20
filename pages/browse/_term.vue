@@ -187,7 +187,7 @@ export default {
               // Nudge to ask people to to introduce themselves.
               this.showAboutMe = true
             }
-          } else {
+          } else if (this.me) {
             const monthsago = dayjs().diff(
               dayjs(this.me.aboutme.timestamp),
               'months'
@@ -278,7 +278,7 @@ export default {
           nelng !== null
         ) {
           bounds = [[swlat, swlng], [nelat, nelng]]
-        } else if (this.me && mylat !== null && mylng !== null) {
+        } else if (this.me && (mylat || mylng)) {
           // We're not a member of any groups, but at least we know where we are.  Centre there, and then let
           // the map zoom to somewhere sensible.
           bounds = [[mylat - 0.01, mylng - 0.01], [mylat + 0.01, mylng + 0.01]]

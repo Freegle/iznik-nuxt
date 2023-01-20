@@ -46,10 +46,7 @@
           <b-img src="~/static/signinbuttons/facebook-logo.png" class="social-button__image" />
           <span class="p-2 text--medium font-weight-bold">Continue with Facebook</span>
         </b-btn>
-        <b-btn class="social-button social-button--google" :disabled="googleDisabled" @click="loginGoogle">
-          <b-img src="~/static/signinbuttons/google-logo.svg" class="social-button__image" />
-          <span class="p-2 text--medium font-weight-bold">Continue with Google</span>
-        </b-btn>
+        <b-btn id="googleLoginButton" class="social-button social-button--google" :disabled="googleDisabled" />
         <b-btn class="social-button social-button--yahoo" :disabled="yahooDisabled" @click="loginYahoo">
           <b-img src="~/static/signinbuttons/yahoo-logo.svg" class="social-button__image" />
           <span class="p-2 text--medium font-weight-bold">Continue with Yahoo</span>
@@ -212,6 +209,9 @@ export default {
     }
   },
   computed: {
+    clientId() {
+      return process.env.GOOGLE_CLIENT_ID
+    },
     modtools() {
       return this.$store.getters['misc/get']('modtools')
     },
@@ -284,13 +284,16 @@ export default {
       handler(newVal) {
         this.pleaseShowModal = newVal
 
-        if (newVal && !this.initialisedSocialLogin) {
-          // We only use the Google and Facebook SDKs in login, so we can install them here in the modal.  This means we
-          // don't load the scripts for every page.
-          console.log('Load SDK')
+        if (newVal) {
+          if (!this.initialisedSocialLogin) {
+            // We only use the Google and Facebook SDKs in login, so we can install them here in the modal.  This means we
+            // don't load the scripts for every page.
+            this.installFacebookSDK()
+            this.initialisedSocialLogin = true
+          }
+
+          // Need to install Google every time to get the button rendered.
           this.installGoogleSDK()
-          this.installFacebookSDK()
-          this.initialisedSocialLogin = true
         }
       }
     },
@@ -304,6 +307,14 @@ export default {
       immediate: true,
       handler(newVal) {
         this.showModal = this.pleaseShowModal || newVal
+      }
+    },
+    me(newVal) {
+      // Need to do this when we log out to get the signin button rendered on the login modal.
+      if (!newVal) {
+        this.$nextTick(() => {
+          this.installGoogleSDK()
+        })
       }
     }
   },
@@ -505,44 +516,29 @@ export default {
         this.socialLoginError = 'Facebook login error: ' + e.message
       }
     },
-    loginGoogle() {
-      this.$store.dispatch('auth/setLoginType', 'Google')
-
+    async handleGoogleCredentialsResponse(response) {
+      console.log('Google login', response)
+      this.loginType = 'Google'
       this.nativeLoginError = null
       this.socialLoginError = null
-      const params = {
-        clientid: process.env.GOOGLE_CLIENT_ID,
-        cookiepolicy: 'single_host_origin',
-        callback: async authResult => {
-          console.log('Signin returned', authResult)
-          if (authResult.access_token) {
-            console.log('Signed in')
+      if (response?.credential) {
+        console.log('Signed in', response)
 
-            try {
-              await this.$store.dispatch('auth/login', {
-                googleauthcode: authResult.code,
-                googlelogin: true
-              })
+        try {
+          await this.$store.dispatch('auth/login', {
+            googlejwt: response.credential,
+            googlelogin: true
+          })
 
-              // We are now logged in.
-              console.log('Logged in')
-              self.pleaseShowModal = false
-            } catch (e) {
-              this.socialLoginError = 'Google login failed: ' + e.message
-            }
-          } else if (
-            authResult.error &&
-            authResult.error !== 'immediate_failed'
-          ) {
-            this.socialLoginError = 'Google login failed: ' + authResult.error
-          }
-        },
-        immediate: false,
-        scope: 'profile email',
-        app_package_name: 'org.ilovefreegle.direct'
+          // We are now logged in.
+          console.log('Logged in')
+          this.pleaseShowModal = false
+        } catch (e) {
+          this.socialLoginError = 'Google login failed: ' + e.message
+        }
+      } else if (response?.error && response.error !== 'immediate_failed') {
+        this.socialLoginError = 'Google login failed: ' + response.error
       }
-
-      window.gapi.auth.signIn(params)
     },
     loginYahoo() {
       this.$store.dispatch('auth/setLoginType', 'Yahoo')
@@ -590,43 +586,19 @@ export default {
       this.$router.push('/forgot')
     },
     installGoogleSDK() {
-      ;(function(d, s, id) {
-        const fjs = d.getElementsByTagName(s)[0]
-        if (d.getElementById(id)) {
-          return
-        }
-        const js = d.createElement(s)
-        js.id = id
-        js.src = 'https://apis.google.com/js/platform.js'
-        js.onload = e => {
-          setTimeout(() => {
-            if (window.gapi) {
-              try {
-                window.gapi.load('client', {
-                  callback: function() {
-                    window.gapi.client.init({
-                      apiKey: process.env.GOOGLE_API_KEY
-                    })
-                    window.gapiLoaded = true
-                  },
-                  onerror: function() {
-                    console.error('gapi.client failed to load!')
-                  },
-                  timeout: 30000,
-                  ontimeout: function() {
-                    console.error('GAPI client load timed out')
-                  }
-                })
-
-                window.gapi.load('auth2')
-              } catch (e) {
-                console.error('GAPI load failed', e)
-              }
-            }
-          }, 10)
-        }
-        fjs.parentNode.insertBefore(js, fjs)
-      })(document, 'script', 'google-jssdk')
+      this.$nextTick(() => {
+        console.log('Install google SDK')
+        // Google client library should be loaded by default.vue.
+        window.google.accounts.id.initialize({
+          client_id: this.clientId,
+          callback: this.handleGoogleCredentialsResponse
+        })
+        console.log('Render google button')
+        window.google.accounts.id.renderButton(
+          document.getElementById('googleLoginButton'),
+          { theme: 'outline', size: 'large', width: '300px' }
+        )
+      })
     },
     installFacebookSDK() {
       if (typeof Vue.FB === 'undefined') {
@@ -686,7 +658,6 @@ export default {
   }
 }
 </script>
-
 <style scoped lang="scss">
 @import 'color-vars';
 @import '~bootstrap/scss/functions';
@@ -740,16 +711,19 @@ $color-yahoo: #6b0094;
 .social-button--facebook {
   border: 2px solid $color-facebook;
   background-color: $color-facebook;
+  width: 100%;
 }
 
 .social-button--google {
   border: 2px solid $color-google;
-  background-color: $color-google;
+  background-color: #dadce0;
+  width: 100%;
 }
 
 .social-button--yahoo {
   border: 2px solid $color-yahoo;
   background-color: $color-yahoo;
+  width: 100%;
 }
 
 .divider__wrapper {
