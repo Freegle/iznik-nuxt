@@ -69,7 +69,22 @@ export default {
       }
     },
     show() {
-      return this.value ? '£' + this.value : this.$props.show
+      switch (this.value) {
+        case '1':
+          return 'BA7SYG5KVH4WW'
+        case '2':
+          return 'S3RKX5JHQUUL4'
+        case '3':
+          return 'L4GDMEU6FMNFJ'
+        case '5':
+          return '92MLE3SKST546'
+        case '10':
+          return 'KTNBE4YMDUGUY'
+        case '25':
+          return '£' + this.value
+        default:
+          return 'Donate'
+      }
     }
   },
   async mounted() {
