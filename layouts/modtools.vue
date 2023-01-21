@@ -92,10 +92,11 @@
             </a>
           </div>
         </div>
-        <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent w-100" />
+        <nuxt v-if="complete" ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent w-100" />
       </div>
       <ChatPopups v-if="loggedIn" class="d-none d-sm-block" />
-      <LoginModal ref="loginModal" />
+      <GoogleOneTap @complete="complete = true" />
+      <LoginModal v-if="complete" ref="loginModal" />
       <div id="sizer" ref="sizer" class="d-none d-lg-block" />
     </div>
   </client-only>
@@ -109,6 +110,7 @@ const ChatMenu = () => import('~/components/ChatMenu')
 const ModZoomStock = () => import('~/components/ModZoomStock')
 const ExternalLink = () => import('~/components/ExternalLink')
 const ChatPopups = () => import('~/components/ChatPopups')
+const GoogleOneTap = () => import('~/components/GoogleOneTap')
 
 export default {
   components: {
@@ -118,7 +120,8 @@ export default {
     ModStatus,
     ChatMenu,
     ExternalLink,
-    ModZoomStock
+    ModZoomStock,
+    GoogleOneTap
   },
 
   data: function() {
@@ -127,7 +130,8 @@ export default {
       showMenu: false,
       sliding: false,
       timeTimer: null,
-      chatCount: 0
+      chatCount: 0,
+      complete: false
     }
   },
   computed: {

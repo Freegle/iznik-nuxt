@@ -24,6 +24,7 @@ export default {
   },
   mounted() {
     const self = this
+    console.log('onetap mounted')
 
     if (!this.loggedIn) {
       window.handleGoogleCredentialsResponse = this.handleGoogleCredentialsResponse
