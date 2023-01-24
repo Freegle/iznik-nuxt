@@ -36,6 +36,7 @@
             highlight-emails
           />
         </div>
+        <ModSpammer v-if="message.touser.spammer" :user="message.touser" />
         <div class="d-flex justify-content-between flex-wrap">
           <span>
             {{ timeago(message.date) }}
@@ -50,6 +51,7 @@
             <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ message.id }}
           </span>
         </div>
+        <ModSpammer v-if="message.fromuser.spammer" :user="message.fromuser" />
         <div class="d-flex justify-content-around">
           <div>
             <span>
@@ -155,6 +157,7 @@ import SpinButton from './SpinButton'
 
 const ModMessageEmailModal = () => import('~/components/ModMessageEmailModal')
 const ExternalLink = () => import('~/components/ExternalLink')
+const ModSpammer = () => import('~/components/ModSpammer')
 
 export default {
   components: {
@@ -165,7 +168,8 @@ export default {
     ModChatReviewUser,
     NoticeMessage,
     ModMessageEmailModal,
-    ExternalLink
+    ExternalLink,
+    ModSpammer
   },
   mixins: [chat],
   props: {
