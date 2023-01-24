@@ -1,6 +1,6 @@
 <template>
   <div>
-    <MainHeader :chat-count.sync="chatCount" :unread-notification-count.sync="unreadNotificationCount" />
+    <MainHeader :chat-count.sync="chatCount" :unread-notification-count.sync="unreadNotificationCount" @login="login" />
     <main v-if="complete">
       <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent" />
     </main>
@@ -19,15 +19,17 @@
         <ChatButton v-if="replyToSend" ref="replyToPostChatButton" :userid="replyToUser" />
       </div>
       <Breakpoint />
-      <GoogleOneTap @complete="complete = true" />
+      <GoogleOneTap @complete="googleLoaded" />
+      <LoginModal v-if="complete" ref="loginModal" />
     </client-only>
   </div>
 </template>
-
 <script>
 import replyToPost from '@/mixins/replyToPost'
 import BouncingEmail from '~/components/BouncingEmail'
 import MainHeader from '~/components/MainHeader'
+import LoginModal from '~/components/LoginModal'
+
 const Breakpoint = () => import('~/components/Breakpoint')
 const ChatPopups = () => import('~/components/ChatPopups')
 const ChatButton = () => import('~/components/ChatButton')
@@ -42,7 +44,8 @@ export default {
     BouncingEmail,
     ExternalLink,
     MainHeader,
-    GoogleOneTap
+    GoogleOneTap,
+    LoginModal
   },
   mixins: [replyToPost],
   data: function() {
@@ -50,7 +53,8 @@ export default {
       complete: false,
       timeTimer: null,
       unreadNotificationCount: 0,
-      chatCount: 0
+      chatCount: 0,
+      googleComplete: false
     }
   },
   head() {
@@ -192,6 +196,12 @@ export default {
     updateTime() {
       this.$store.dispatch('misc/setTime')
       this.timeTimer = setTimeout(this.updateTime, 10000)
+    },
+    googleLoaded() {
+      this.complete = true
+    },
+    login() {
+      this.$refs.loginModal.show()
     }
   }
 }

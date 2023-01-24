@@ -285,6 +285,12 @@ export default {
     updateTime() {
       this.$store.dispatch('misc/setTime')
       this.timeTimer = setTimeout(this.updateTime, 30000)
+    },
+    googleLoaded() {
+      this.complete = true
+    },
+    login() {
+      this.$refs.loginModal.show()
     }
   },
   head() {

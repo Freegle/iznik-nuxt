@@ -86,7 +86,6 @@ export default {
 
           // We are now logged in.
           console.log('Logged in')
-          self.pleaseShowModal = false
         } catch (e) {
           this.socialLoginError = 'Google login failed: ' + e.message
         }
