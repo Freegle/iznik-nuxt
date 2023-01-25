@@ -228,15 +228,11 @@
       </b-collapse>
     </b-navbar>
     <client-only>
-      <LoginModal ref="loginModal" />
       <AboutMeModal ref="aboutMeModal" />
     </client-only>
   </header>
 </template>
-
 <script>
-// Import login modal as I've seen an issue where it's not in $refs when you click on the signin button too rapidly.
-import LoginModal from '~/components/LoginModal'
 const AboutMeModal = () => import('~/components/AboutMeModal')
 const ChatMenu = () => import('~/components/ChatMenu')
 const SimpleView = () => import('../components/SimpleView')
@@ -248,7 +244,6 @@ export default {
     SimpleView,
     NotificationOptions,
     ChatMenu,
-    LoginModal,
     AboutMeModal
   },
   data: function() {
@@ -325,7 +320,7 @@ export default {
   },
   methods: {
     requestLogin() {
-      this.$refs.loginModal.show()
+      this.$emit('login')
     },
     async logOut() {
       // Remove all cookies, both client and server.  This seems to be necessary to kill off the PHPSESSID cookie

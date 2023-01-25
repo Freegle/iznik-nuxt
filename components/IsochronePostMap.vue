@@ -90,7 +90,7 @@
                   :tag="['post', 'posts']"
                   @click="clusterClick"
                 />
-                <l-marker v-if="me && me.settings && me.settings.mylocation" :lat-lng="[me.lat, me.lng]" :icon="homeIcon" @click="goHome">
+                <l-marker v-if="me && me.settings && me.settings.mylocation && (me.lat || me.lng)" :lat-lng="[me.lat, me.lng]" :icon="homeIcon" @click="goHome">
                   <l-tooltip>
                     This is where your postcode is. You can change your postcode from Settings.
                   </l-tooltip>

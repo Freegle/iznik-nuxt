@@ -46,7 +46,12 @@ export function appGoogleLogin(isiOS, callback) {
           completeLoginCallback(authResult)
         },
         function (error) {
-          console.error(error)
+          if (typeof error === 'string') error = JSON.parse(error)
+          console.log("GoogleSignInPlugin error", error.message)
+          if (error.message === 'One Tap Signin was denied by the user.') {
+            error.message += ' Reinstall app or wait 24 hours before trying again.'
+          }
+          console.log(error)
           completeLoginCallback({ status: error.message })
           tryingGoogleLogin = false
         }
