@@ -28,6 +28,21 @@
         <b-input v-model="comment.user9" :placeholder="placeholders[9]" />
         <b-input v-model="comment.user10" :placeholder="placeholders[10]" />
         <b-input v-model="comment.user11" :placeholder="placeholders[11]" />
+        <p class="mt-2">
+          You can choose for this note to be be alerted to other groups, which will put the member in <em>Member->Review</em>
+          if they are an existing member or join a group.  Please use this only for serious issues.
+        </p>
+        <OurToggle
+          :value="comment.flag"
+          class="mt-2"
+          :height="30"
+          :width="250"
+          :font-size="14"
+          :sync="true"
+          :labels="{checked: 'Will alert other groups', unchecked: 'Will not alert other groups'}"
+          color="#61AE24"
+          @change="toggleFlag"
+        />
       </template>
       <template slot="modal-footer" slot-scope="{ cancel }">
         <b-button variant="white" @click="cancel">
@@ -42,8 +57,12 @@
 </template>
 <script>
 import modal from '@/mixins/modal'
+const OurToggle = () => import('~/components/OurToggle')
 
 export default {
+  components: {
+    OurToggle
+  },
   mixins: [modal],
   props: {
     user: {
@@ -67,6 +86,9 @@ export default {
     }
   },
   methods: {
+    toggleFlag() {
+      this.comment.flag = !this.comment.flag
+    },
     async save() {
       // Go direct to API because comments aren't in the Store separately.
       await this.$api.comment.save(this.comment)

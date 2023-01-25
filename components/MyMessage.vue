@@ -54,11 +54,9 @@
     <div v-else-if="showOld || !message.outcomes || !message.outcomes.length">
       <b-card no-body class="mb-1 bnuorder" :border-variant="expanded ? 'primary' : 'success'">
         <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button
+          <div
             :v-b-toggle="'mypost-' + message.id"
-            block
-            variant="white"
-            class="text-left text-truncate noborder hover p-1 p-md-2"
+            class="bg-white p-2 clickme"
             @click="toggle"
           >
             <div class="d-flex justify-content-between">
@@ -152,7 +150,7 @@
                 <v-icon class="d-none d-sm-inline" name="share-alt" /> Share
               </b-btn>
             </div>
-          </b-button>
+          </div>
         </b-card-header>
         <b-collapse :id="'mypost-' + message.id" :visible="expanded" role="tabpanel" @show="expanded = true" @hidden="expanded = false">
           <div v-if="expanded">
@@ -382,6 +380,7 @@ export default {
 
             if (
               u.info.ratings.Up > u.info.ratings.Down &&
+              u.info.ratings.Up > 2 &&
               (rating === null || thisrating > rating)
             ) {
               rating = thisrating
@@ -536,6 +535,7 @@ export default {
   },
   methods: {
     toggle() {
+      console.log('Toggle')
       this.$root.$emit('bv::toggle::collapse', 'mypost-' + this.message.id)
     },
     showPhotos() {
@@ -606,6 +606,7 @@ export default {
       }
     },
     edit(e) {
+      console.log('Edit')
       if (e) {
         e.preventDefault()
         e.stopPropagation()

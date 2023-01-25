@@ -4,8 +4,13 @@
       hidden: hidden
     }"
   >
-    <b-badge variant="primary rounded supporter" :class="'clickme ' + 'size-' + size" @click="showModal">
-      <v-icon name="heart" />
+    <b-badge
+      variant="primary rounded supporter"
+      :class="'clickme ' + 'size-' + size"
+      title="Kindly supports Freegle - click for more info."
+      @click="showModal"
+    >
+      <v-icon name="trophy" />
       Supporter
     </b-badge>
     <SupporterInfoModal ref="modal" />

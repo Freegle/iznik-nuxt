@@ -32,6 +32,21 @@
         <b-input v-model="user9" :placeholder="placeholders[9]" />
         <b-input v-model="user10" :placeholder="placeholders[10]" />
         <b-input v-model="user11" :placeholder="placeholders[11]" />
+        <p class="mt-2">
+          You can choose for this note to be be alerted to other groups, which will put the member in <em>Member->Review</em>
+          if they are an existing member or join a group.  Please use this only for serious issues.
+        </p>
+        <OurToggle
+          :value="flag"
+          class="mt-2"
+          :height="30"
+          :width="250"
+          :font-size="14"
+          :sync="true"
+          :labels="{checked: 'Will alert other groups', unchecked: 'Will not alert other groups'}"
+          color="#61AE24"
+          @change="toggleFlag"
+        />
       </template>
       <template slot="modal-footer" slot-scope="{ cancel }">
         <b-button variant="white" @click="cancel">
@@ -47,9 +62,10 @@
 <script>
 import modal from '@/mixins/modal'
 import ExternalLink from '~/components/ExternalLink'
+const OurToggle = () => import('~/components/OurToggle')
 
 export default {
-  components: { ExternalLink },
+  components: { OurToggle, ExternalLink },
   mixins: [modal],
   props: {
     user: {
@@ -81,10 +97,14 @@ export default {
         '...and more information here',
         '...and here',
         '...you get the idea'
-      ]
+      ],
+      flag: false
     }
   },
   methods: {
+    toggleFlag() {
+      this.flag = !this.flag
+    },
     async save() {
       // Go direct to API because comments aren't in the Store separately.
       await this.$api.comment.add({
@@ -100,7 +120,8 @@ export default {
         user8: this.user8,
         user9: this.user9,
         user10: this.user10,
-        user11: this.user11
+        user11: this.user11,
+        flag: this.flag
       })
 
       this.$emit('added')

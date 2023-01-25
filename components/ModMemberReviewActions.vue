@@ -4,7 +4,10 @@
       <div>
         <strong>{{ membership.namedisplay.length > 32 ? (membership.namedisplay.substring(0, 32) + '...') : membership.namedisplay }}</strong>
         <span :class="'small ' + (daysago(membership.added) < 31 ? 'text-danger font-weight-bold' : 'text-muted')">joined {{ timeago(membership.added) }}</span>
-        <span v-if="membership.reviewreason" class="text-danger ml-1 mr-1">{{ membership.reviewreason }}</span>
+        <span v-if="membership.reviewreason" class="text-danger ml-1 mr-1">
+          <span v-if="membership.reviewrequestedat" class="text-dark small ">flagged {{ timeago(membership.reviewrequestedat) }}</span>
+          {{ membership.reviewreason }}
+        </span>
       </div>
       <div v-if="amAModOn(membership.id) && needsReview" class="d-flex mt-2 flex-wrap">
         <SpinButton

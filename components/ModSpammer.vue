@@ -2,7 +2,7 @@
   <div>
     <NoticeMessage :variant="variant" class="mb-1">
       <div>
-        {{ collname }}: {{ user.spammer.reason }}
+        {{ user.displayname }} {{ collname }}: {{ user.spammer.reason }}
       </div>
       <div class="small">
         <span v-if="user.spammer.collection === 'PendingAdd'">

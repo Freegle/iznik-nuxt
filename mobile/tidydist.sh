@@ -15,6 +15,7 @@ node ./node_modules/replace/bin/replace.js '\/vmg.png' 'vmg.png' dist -r --quiet
 node ./node_modules/replace/bin/replace.js '\/bytemark.png' 'bytemark.png' dist -r --quiet
 node ./node_modules/replace/bin/replace.js '\/mythic-beasts.png' 'mythic-beasts.png' dist -r --quiet
 node ./node_modules/replace/bin/replace.js '\/businesscards\/' 'businesscards/' dist -r --quiet
+node ./node_modules/replace/bin/replace.js '\/pp_cc_mark_37x23.jpg' 'pp_cc_mark_37x23.jpg' dist -r --quiet
 node ./node_modules/replace/bin/replace.js '\/static\/' '' dist -r --quiet
 
 node ./node_modules/replace/bin/replace.js '<title>' '<meta name="viewport" content="user-scalable=yes, width=device-width, initial-scale=1"><title>' dist/index.html --quiet

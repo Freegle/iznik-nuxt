@@ -53,7 +53,7 @@
         <div id="appleid-signin" data-color="black" data-border="true" data-type="sign in"></div>
         <b-btn class="social-button social-button--google" :disabled="googleDisabled" @click="loginGoogle">
           <b-img src="~/static/signinbuttons/google-logo.svg" class="social-button__image" />
-          <span class="p-2 text--medium font-weight-bold">Continue with Google</span>
+          <span class="p-2 text--medium font-weight-bold">Sign in with Google</span>
         </b-btn>
         <b-btn class="social-button social-button--yahoo" :disabled="yahooDisabled" @click="loginYahoo">
           <b-img src="~/static/signinbuttons/yahoo-logo.svg" class="social-button__image" />
@@ -233,7 +233,7 @@ export default {
       const isiOS = this.$store.getters['mobileapp/isiOS']
       //console.log('LOGINMODAL isiOSapp', isiOS)
       if (process.env.IS_APP) {
-        if( 'device' in window){
+        if ('device' in window) {
           if (isiOS && parseFloat(window.device.version) >= 13) {
             //console.log('LOGINMODAL isiOSapp TRUE')
             return true
@@ -245,6 +245,9 @@ export default {
       }
       //console.log('LOGINMODAL isiOSapp FALSE')
       return false
+    },
+    clientId() {
+      return process.env.GOOGLE_CLIENT_ID
     },
     modtools() {
       return this.$store.getters['misc/get']('modtools')
@@ -335,13 +338,16 @@ export default {
         this.loginWaitMessage = null
         this.pleaseShowModal = newVal
 
-        if (newVal && !this.initialisedSocialLogin) {
-          // We only use the Google and Facebook SDKs in login, so we can install them here in the modal.  This means we
-          // don't load the scripts for every page.
-          console.log('Load SDK')
-          this.installGoogleSDK()
-          this.installFacebookSDK()
-          this.initialisedSocialLogin = true
+        if (newVal) {
+          if (!this.initialisedSocialLogin) {
+            // We only use the Google and Facebook SDKs in login, so we can install them here in the modal.  This means we
+            // don't load the scripts for every page.
+            this.installFacebookSDK()
+            this.initialisedSocialLogin = true
+          }
+
+          // Need to install Google every time to get the button rendered.
+          // CC APP this.installGoogleSDK()
         }
       }
     },
@@ -356,6 +362,14 @@ export default {
       handler(newVal) {
         this.loginWaitMessage = null
         this.showModal = this.pleaseShowModal || newVal
+      }
+    },
+    me(newVal) {
+      // Need to do this when we log out to get the signin button rendered on the login modal.
+      if (!newVal) {
+        this.$nextTick(() => {
+          // CC APP this.installGoogleSDK()
+        })
       }
     }
   },
@@ -640,8 +654,6 @@ export default {
         })
         this.loginWaitMessage = "Please wait..."
         if (authResult.code) { // status, code
-          console.log("authResult.code", authResult.code)
-          console.log("typeof authResult.code", typeof authResult.code)
           await this.$store.dispatch('auth/login', {
             googlejwt: authResult.code,
             googlelogin: true
@@ -792,45 +804,21 @@ export default {
       this.$store.dispatch('auth/forceLogin', false)
       this.$router.push('/forgot')
     },
-    installGoogleSDK() {
-      ;(function(d, s, id) {
-        const fjs = d.getElementsByTagName(s)[0]
-        if (d.getElementById(id)) {
-          return
-        }
-        const js = d.createElement(s)
-        js.id = id
-        js.src = 'https://apis.google.com/js/platform.js'
-        js.onload = e => {
-          setTimeout(() => {
-            if (window.gapi) {
-              try {
-                window.gapi.load('client', {
-                  callback: function() {
-                    window.gapi.client.init({
-                      apiKey: process.env.GOOGLE_API_KEY
-                    })
-                    window.gapiLoaded = true
-                  },
-                  onerror: function() {
-                    console.error('gapi.client failed to load!')
-                  },
-                  timeout: 30000,
-                  ontimeout: function() {
-                    console.error('GAPI client load timed out')
-                  }
-                })
-
-                window.gapi.load('auth2')
-              } catch (e) {
-                console.error('GAPI load failed', e)
-              }
-            }
-          }, 10)
-        }
-        fjs.parentNode.insertBefore(js, fjs)
-      })(document, 'script', 'google-jssdk')
-    },
+    /* CC APP installGoogleSDK() {
+      this.$nextTick(() => {
+        console.log('Install google SDK')
+        // Google client library should be loaded by default.vue.
+        window.google.accounts.id.initialize({
+          client_id: this.clientId,
+          callback: this.handleGoogleCredentialsResponse
+        })
+        console.log('Render google button')
+        window.google.accounts.id.renderButton(
+          document.getElementById('googleLoginButton'),
+          { theme: 'outline', size: 'large', width: '300px' }
+        )
+      })
+    },*/
     installFacebookSDK() {
       if (process.env.IS_APP) return;
       if (typeof Vue.FB === 'undefined') {
@@ -890,7 +878,6 @@ export default {
   }
 }
 </script>
-
 <style scoped lang="scss">
 @import 'color-vars';
 @import '~bootstrap/scss/functions';
@@ -945,6 +932,7 @@ $color-apple: #000000;
 .social-button--facebook {
   border: 2px solid $color-facebook;
   background-color: $color-facebook;
+  width: 100%;
 }
 
 .social-button--apple {
@@ -959,12 +947,15 @@ $color-apple: #000000;
 
 .social-button--google {
   border: 2px solid $color-google;
-  background-color: $color-google;
+  background-color: #fff; /* #dadce0 */
+  color: #3c4043;
+  width: 100%;
 }
 
 .social-button--yahoo {
   border: 2px solid $color-yahoo;
   background-color: $color-yahoo;
+  width: 100%;
 }
 
 .divider__wrapper {

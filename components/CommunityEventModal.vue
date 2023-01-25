@@ -26,10 +26,6 @@
     <template slot="default">
       <div v-if="added">
         <p>One of our volunteers will check over your event, and then we'll publicise it to other freeglers.  Hope it goes well!</p>
-        <p>
-          Hope you find someone!  Please make sure you get back to everyone who replies, so that they feel good about your organisation
-          (and Freegle!).
-        </p>
         <p>Freegle is free to use, but not free to run.  If you can, <strong>please donate &pound;1</strong> to keep us running - but anything you can give is very welcome.</p>
         <donation-button />
       </div>
