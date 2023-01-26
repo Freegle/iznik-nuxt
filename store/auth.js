@@ -183,6 +183,13 @@ export const actions = {
   },
 
   logout({ commit }) {
+    try {
+      console.log('Disable Google autoselect')
+      window.google.accounts.id.disableAutoSelect()
+    } catch (e) {
+      console.log('Ignore Google autoselect error', e)
+    }
+
     commit('setUser', null)
     this.$api.session.logout()
     this.$axios.defaults.headers.common.Authorization = null
