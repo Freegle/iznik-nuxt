@@ -34,6 +34,7 @@ export default {
         ;(function(d, s, id) {
           const fjs = d.getElementsByTagName(s)[0]
           if (d.getElementById(id)) {
+            self.$emit('complete')
             return
           }
           const js = d.createElement(s)
