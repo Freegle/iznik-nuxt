@@ -30,7 +30,7 @@ export default {
     setTimeout(() => {
       console.log('One Tap fallback')
       self.$emit('complete')
-    }, 30000)
+    }, 15000)
 
     if (!this.loggedIn) {
       try {
