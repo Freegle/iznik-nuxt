@@ -29,7 +29,7 @@ export default {
     // Fallback in case the script load just quietly fails.  We've seen this on some Firefox versions.
     setTimeout(() => {
       console.log('One Tap fallback')
-      this.$emit('complete')
+      self.$emit('complete')
     }, 30000)
 
     if (!this.loggedIn) {
