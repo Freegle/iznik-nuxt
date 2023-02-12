@@ -26,6 +26,12 @@ export default {
     const self = this
     console.log('onetap mounted')
 
+    // Fallback in case the script load just quietly fails.  We've seen this on some Firefox versions.
+    setTimeout(() => {
+      console.log('One Tap fallback')
+      this.$emit('complete')
+    }, 30000)
+
     if (!this.loggedIn) {
       try {
         console.log('Set credentials response')
