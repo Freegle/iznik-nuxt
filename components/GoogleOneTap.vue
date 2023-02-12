@@ -28,37 +28,53 @@ export default {
 
     if (!this.loggedIn) {
       try {
+        console.log('Set credentials response')
         window.handleGoogleCredentialsResponse = this.handleGoogleCredentialsResponse
 
+        console.log('Set show')
         this.show = true
+        console.log('Load SDK')
         ;(function(d, s, id) {
-          const fjs = d.getElementsByTagName(s)[0]
-          if (d.getElementById(id)) {
-            self.$emit('complete')
-            return
-          }
-          const js = d.createElement(s)
-          js.id = id
-          js.src = 'https://accounts.google.com/gsi/client'
-          js.onload = e => {
-            window.google.accounts.id.prompt(notification => {
-              console.log('One Tap prompt returned', notification)
+          try {
+            console.log('SDK callback')
+            const fjs = d.getElementsByTagName(s)[0]
+            if (d.getElementById(id)) {
+              self.$emit('complete')
+              return
+            }
+            console.log('Load GSI')
+            const js = d.createElement(s)
+            js.id = id
+            js.src = 'https://accounts.google.com/gsi/client'
+            js.onload = e => {
+              console.log('GSI loaded')
+              try {
+                window.google.accounts.id.prompt(notification => {
+                  console.log('One Tap prompt returned', notification)
 
-              if (
-                notification.isNotDisplayed() ||
-                !notification.isDisplayed()
-              ) {
-                console.log('One Tap not displayed')
+                  if (
+                    notification.isNotDisplayed() ||
+                    !notification.isDisplayed()
+                  ) {
+                    console.log('One Tap not displayed')
+                    self.$emit('complete')
+                  }
+                })
+              } catch (e) {
+                console.error('One Tap error', e)
                 self.$emit('complete')
               }
-            })
+            }
             js.onerror = e => {
               console.log('Error loading Google One Tap', e)
               self.$emit('complete')
             }
+            fjs.parentNode.insertBefore(js, fjs)
+          } catch (e) {
+            console.log('Exception in SDK callback', e)
           }
-          fjs.parentNode.insertBefore(js, fjs)
         })(document, 'script', 'google-jssdk')
+        console.log('Loaded SDK')
       } catch (e) {
         console.log('Failed to load One Tap', e)
         self.$emit('complete')
