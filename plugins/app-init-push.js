@@ -600,6 +600,7 @@ export function versionOutOfDate(newver) {
     const cv = parseInt(acurrentver[vno])
     const nv = parseInt(anewver[vno])
     if (nv > cv) return true
+    if (nv < cv) return false
   }
   return false
 }
