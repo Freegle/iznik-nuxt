@@ -160,7 +160,7 @@ export const actions = {
   },
 
   async addEmail({ commit, dispatch }, params) {
-    await this.$api.user.addEmail(params.id, params.email)
+    await this.$api.user.addEmail(params.id, params.email, params.primary)
     await dispatch('fetch', { id: params.id, info: true })
   },
 
