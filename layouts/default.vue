@@ -20,7 +20,7 @@
       </div>
       <Breakpoint />
       <GoogleOneTap @loggedin="googleLoggedIn" />
-      <LoginModal v-if="!loggedIn" ref="loginModal" />
+      <LoginModal v-if="!loggedIn" ref="loginModal" :key="bump" />
     </client-only>
   </div>
 </template>
