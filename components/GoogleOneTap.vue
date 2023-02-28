@@ -95,33 +95,38 @@ export default {
       console.log('Google login in OneTap', response)
       console.log('Are we logged in', this.loggedIn)
 
+      // We might already be logged in - in that case just ignore it.  This can happen if we have a token in store,
+      // for example.
       if (!this.loggedIn) {
         const decoded = jwt_decode(response.credential)
         console.log('Decoded', decoded)
 
         // Now we can pass response.credential to the server, which can verify it to confirm our login as per
         // https://developers.google.com/identity/gsi/web/guides/verify-google-id-token.
-      }
 
-      this.loginType = 'Google'
-      this.nativeLoginError = null
-      this.socialLoginError = null
-      if (response?.credential) {
-        console.log('Signed in')
+        this.loginType = 'Google'
+        this.nativeLoginError = null
+        this.socialLoginError = null
+        if (response?.credential) {
+          console.log('Signed in')
 
-        try {
-          await this.$store.dispatch('auth/login', {
-            googlejwt: response.credential,
-            googlelogin: true
-          })
+          try {
+            await this.$store.dispatch('auth/login', {
+              googlejwt: response.credential,
+              googlelogin: true
+            })
 
-          // We are now logged in.
-          console.log('Logged in')
-        } catch (e) {
-          this.socialLoginError = 'Google login failed: ' + e.message
+            // We are now logged in.
+            console.log('Logged in')
+            this.$emit('loggedin')
+          } catch (e) {
+            this.socialLoginError = 'Google login failed: ' + e.message
+          }
+        } else if (response?.error && response.error !== 'immediate_failed') {
+          this.socialLoginError = 'Google login failed: ' + response.error
         }
-      } else if (response?.error && response.error !== 'immediate_failed') {
-        this.socialLoginError = 'Google login failed: ' + response.error
+      } else {
+        this.$emit('complete')
       }
     }
   }
