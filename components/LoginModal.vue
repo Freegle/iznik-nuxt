@@ -718,6 +718,7 @@ $color-yahoo: #6b0094;
   border: 2px solid $color-google;
   background-color: #dadce0;
   width: 100%;
+  min-height: 44px;
 }
 
 .social-button--yahoo {
