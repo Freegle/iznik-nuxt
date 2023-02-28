@@ -19,8 +19,8 @@
         <ChatButton v-if="replyToSend" ref="replyToPostChatButton" :userid="replyToUser" />
       </div>
       <Breakpoint />
-      <GoogleOneTap @loggedin="googleLoggedIn" />
-      <LoginModal v-if="!loggedIn" ref="loginModal" :key="bump" />
+      <GoogleOneTap @loggedin="googleLoggedIn" @complete="googleLoaded" />
+      <LoginModal v-if="!loggedIn" ref="loginModal" :key="bumpLogin" />
     </client-only>
   </div>
 </template>
@@ -53,7 +53,8 @@ export default {
       timeTimer: null,
       unreadNotificationCount: 0,
       chatCount: 0,
-      bump: 0
+      bump: 0,
+      bumpLogin: 0
     }
   },
   head() {
@@ -199,6 +200,9 @@ export default {
     googleLoggedIn() {
       // Re-render the page, now that we are logged in.
       this.bump++
+    },
+    googleLoaded() {
+      this.bumpLogin++
     },
     login() {
       this.$refs.loginModal.show()
