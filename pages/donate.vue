@@ -82,7 +82,8 @@
                 You can donate by cheque.
               </p>
               <p>
-                Please make it payable to Freegle Limited and send to Freegle, 64A North Road, Ormesby, Great Yarmouth NR29 3LE.
+                Please make it payable to Freegle Limited and send to Freegle, 64A North Road, Ormesby, Great Yarmouth NR29 3LE.  Please
+                include your Freegle email, so we can work out who it comes from!
               </p>
               <p>
                 If you do this, please complete a Gift Aid
