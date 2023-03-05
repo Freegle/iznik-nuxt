@@ -32,6 +32,18 @@
             <b-img width="200" src="/councils/bulkywaste_kitchen.jpg" class="img-thumbnail img-fluid float-right ml-4 mb-2 mt-2" />
           </div>
           <h3>
+            New guidance on Persistent Organic Pollutants or 'POP's in seating textiles and foams has led to calls for more reuse.
+          </h3>
+          <p>
+            After an investigation found large levels of Persistent Organic Pollutants or 'POP's in seating textiles and foams, the Environment Agency (EA) issued instructions in 2022 that from Jan 2023 waste upholstered domestic seating must be sent for incineration rather than landfill and could not be mixed with non-POPs waste.
+          </p>
+          <p>
+            Industry reports in early 2023 recorded major disruption to councils' collection systems with some councils taking steps to temporarily ban items such as sofas and armchairs, bean bags and foot stools at their household waste and recycling centres.
+          </p>
+          <p>
+            Meanwhile, the Charity Retail Association recently reported that charity shops face a “potentially significant” increase in the cost of disposing of items of upholstered furniture due to new rules.
+          </p>
+          <h3>
             Millions of families in the UK are living in Furniture Poverty.
           </h3>
           <div class="d-inline-flex">

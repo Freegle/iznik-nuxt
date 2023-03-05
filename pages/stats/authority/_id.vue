@@ -280,7 +280,7 @@ const GroupMarker = () => import('~/components/GroupMarker')
 Vue.use(TablePlugin)
 
 // Benefit of reuse per tonne is £711 and CO2 impact is -0.51tCO2eq based on WRAP figures.
-// http://www.wrap.org.uk/content/monitoring-tools-and-resources
+// https://wrap.org.uk/resources/tool/benefits-reuse-tool
 const BENEFIT_PER_TONNE = 711
 const CO2_PER_TONNE = 0.51
 
@@ -362,7 +362,7 @@ export default {
       return Math.round(this.totalWeightUnRounded / 100) / 10
     },
     // Benefit of reuse per tonne is £711 and CO2 impact is -0.51tCO2eq based on WRAP figures.
-    // http://www.wrap.org.uk/content/monitoring-tools-and-resources
+    // https://wrap.org.uk/resources/tool/benefits-reuse-tool
     totalBenefit() {
       return (this.totalWeightUnRounded * BENEFIT_PER_TONNE) / 1000
     },

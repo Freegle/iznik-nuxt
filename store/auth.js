@@ -198,6 +198,16 @@ export const actions = {
     appGoogleLogout() // CC
     appAppleLogout() // CC
     logoutPushId() // CC
+
+    if (!process.env.IS_APP) {
+      try {
+        console.log('Disable Google autoselect')
+        window.google.accounts.id.disableAutoSelect()
+      } catch (e) {
+        console.log('Ignore Google autoselect error', e)
+      }
+    }
+
     commit('setUser', null)
     commit('setSession', null) // CC
     this.$api.session.logout()

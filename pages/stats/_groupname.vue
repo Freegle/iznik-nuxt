@@ -71,7 +71,7 @@
               <p>
                 This is an estimate of the weight of items we have diverted from the waste stream. People don't always
                 tell us when things have worked, so it's likely to be an underestimate. Benefit and CO2 are calculated
-                using a <a href="http://www.wrap.org.uk/content/monitoring-tools-and-resources" target="_blank" rel="noopener noreferrer">tool from WRAP</a>.
+                using a <a href="https://wrap.org.uk/resources/tool/benefits-reuse-tool" target="_blank" rel="noopener noreferrer">tool from WRAP</a>.
                 Figures are only available since September 2016 and may change as we improve our estimates.
               </p>
               <GChart
@@ -223,7 +223,7 @@ export default {
       return total / 1000
     },
     // Benefit of reuse per tonne is £711 and CO2 impact is -0.51tCO2eq based on WRAP figures.
-    // http://www.wrap.org.uk/content/monitoring-tools-and-resources
+    // https://wrap.org.uk/resources/tool/benefits-reuse-tool
     totalBenefit() {
       return this.totalWeight * 711
     },

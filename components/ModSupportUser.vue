@@ -182,6 +182,14 @@
             autocomplete="off"
             class="max"
           />
+          <b-select v-model="newEmailAs" class="max">
+            <option value="1">
+              As Primary
+            </option>
+            <option value="2">
+              As Secondary
+            </option>
+          </b-select>
           <b-input-group-append>
             <SpinButton variant="white" name="save" label="Add Email" :handler="addEmail" />
           </b-input-group-append>
@@ -399,6 +407,7 @@ export default {
       showSpamModal: false,
       newpassword: null,
       newemail: null,
+      newEmailAs: 1,
       addComment: false
     }
   },
@@ -563,7 +572,8 @@ export default {
       if (this.newemail) {
         await this.$store.dispatch('user/addEmail', {
           id: this.user.id,
-          email: this.newemail
+          email: this.newemail,
+          primary: parseInt(this.newEmailAs) === 1
         })
       }
     },

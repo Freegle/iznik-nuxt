@@ -950,6 +950,7 @@ $color-apple: #000000;
   background-color: #fff; /* #dadce0 */
   color: #3c4043;
   width: 100%;
+  min-height: 44px;
 }
 
 .social-button--yahoo {
