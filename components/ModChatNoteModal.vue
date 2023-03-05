@@ -12,7 +12,18 @@
         </div>
       </template>
       <template slot="default">
-        <p>This will add a note from the moderators, which will be visible to everyone in this chat.</p>
+        <p>
+          This will add a note from the moderators, which will be visible to everyone in this chat.
+        </p>
+        <p>
+          Please include your name and the relevant group (if any).  It's also good to explain that
+          only some messages are reviewed, so that people don't wrongly think we read all their messages.
+        </p>
+        <p>
+          Please use a general phrase like "our automated checks flagged this for review" - don't provide really precise
+          details about what caused a message to be held for review, because people will then just find ways
+          around that.
+        </p>
         <b-form-textarea v-model="note" placeholder="Add your note here" />
       </template>
       <template slot="modal-footer" slot-scope="{ cancel }">
