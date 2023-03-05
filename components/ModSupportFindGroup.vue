@@ -129,11 +129,17 @@
         CGA
       </h4>
       <b-textarea v-model="group.cga" rows="4" class="mb-2" />
+      <p v-if="CGAerror" class="text-danger">
+        {{ CGAerror }}
+      </p>
       <SpinButton variant="white" name="save" label="Save Update" :handler="saveCGA" />
       <h4 class="mt-2">
         DPA
       </h4>
       <b-textarea v-model="group.dpa" rows="4" class="mb-2" />
+      <p v-if="DPAerror" class="text-danger">
+        {{ DPAerror }}
+      </p>
       <SpinButton variant="white" name="save" label="Save Update" :handler="saveDPA" />
       <h4 class="mt-2">
         Volunteers
@@ -175,7 +181,9 @@ export default {
     return {
       loading: false,
       searchgroup: null,
-      fetchingVolunteers: false
+      fetchingVolunteers: false,
+      CGAerror: null,
+      DPAerror: null
     }
   },
   computed: {
@@ -316,16 +324,26 @@ export default {
       return name ? name.toLowerCase().replace(/-|_| /g, '') : null
     },
     async saveCGA() {
-      await this.$store.dispatch('group/update', {
-        id: this.groupid,
-        polyofficial: this.group.cga
-      })
+      this.CGAerror = null
+      try {
+        await this.$store.dispatch('group/update', {
+          id: this.groupid,
+          polyofficial: this.group.cga
+        })
+      } catch (e) {
+        this.CGAerror = e.message
+      }
     },
     async saveDPA() {
-      await this.$store.dispatch('group/update', {
-        id: this.groupid,
-        poly: this.group.dpa
-      })
+      this.DPAerror = null
+      try {
+        await this.$store.dispatch('group/update', {
+          id: this.groupid,
+          poly: this.group.dpa
+        })
+      } catch (e) {
+        this.DPAerror = e.message
+      }
     },
     async saveCentres() {
       await this.$store.dispatch('group/update', {

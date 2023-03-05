@@ -66,7 +66,7 @@ export default {
       return total / 1000
     },
     // Benefit of reuse per tonne is £711 and CO2 impact is -0.51tCO2eq based on WRAP figures.
-    // http://www.wrap.org.uk/content/monitoring-tools-and-resources
+    // https://wrap.org.uk/resources/tool/benefits-reuse-tool
     totalBenefit() {
       return this.totalWeight * 711
     },

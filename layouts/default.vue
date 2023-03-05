@@ -1,7 +1,7 @@
 <template>
   <div>
-    <MainHeader :chat-count.sync="chatCount" :unread-notification-count.sync="unreadNotificationCount" @login="login" />
-    <main v-if="complete">
+    <MainHeader :key="bump" :chat-count.sync="chatCount" :unread-notification-count.sync="unreadNotificationCount" @login="login" />
+    <main :key="bump">
       <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent" />
     </main>
     <BouncingEmail />
@@ -53,7 +53,8 @@ export default {
       timeTimer: null,
       unreadNotificationCount: 0,
       chatCount: 0,
-      googleComplete: false
+      bump: 0,
+      bumpLogin: 0
     }
   },
   head() {
@@ -199,8 +200,12 @@ export default {
       this.$store.dispatch('misc/setTime')
       this.timeTimer = setTimeout(this.updateTime, 10000)
     },
+    googleLoggedIn() {
+      // Re-render the page, now that we are logged in.
+      this.bump++
+    },
     googleLoaded() {
-      this.complete = true
+      this.bumpLogin++
     },
     login() {
       this.$refs.loginModal.show()
