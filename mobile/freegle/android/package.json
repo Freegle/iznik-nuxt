@@ -21,7 +21,6 @@
     "cordova-plugin-google-signin": "git+https://github.com/Freegle/cordova-plugin-google-signin.git",
     "cordova-plugin-inappbrowser": "^5.0.0",
     "cordova-plugin-network-information": "^3.0.0",
-    "cordova-plugin-splashscreen": "^6.0.2",
     "cordova-plugin-x-socialsharing": "^6.0.3",
     "cordova-plugin-zoom-control-2": "^0.4.2",
     "es6-promise-plugin": "^4.2.2",
@@ -34,16 +33,13 @@
   "comment": "Fix up cordova-plugin-x-socialsharing in manifest in scripts/add_sharing_export.js",
   "devDependencies": {
     "@havesource/cordova-plugin-push": "git+https://github.com/havesource/cordova-plugin-push.git",
-    "cordova-android": "^10.1.2",
+    "cordova-android": "^11.0.0",
     "cordova-clipboard": "^1.3.0",
-    "cordova-plugin-androidx-adapter": "1.1.3",
-    "cordova-plugin-whitelist": "1.3.5",
     "ionic-plugin-deeplinks": "git+https://github.com/Freegle/ionic-plugin-deeplinks.git",
     "sentry-cordova": "^1.0.4"
   },
   "cordova": {
     "plugins": {
-      "cordova-plugin-splashscreen": {},
       "cordova-plugin-device": {},
       "cordova-plugin-network-information": {},
       "cordova-plugin-inappbrowser": {},
@@ -59,8 +55,6 @@
       "cordova-plugin-geolocation": {
         "GPS_REQUIRED": "false"
       },
-      "cordova-plugin-androidx-adapter": {},
-      "cordova-plugin-whitelist": {},
       "cordova-clipboard": {},
       "cordova-plugin-facebook-connect": {
         "APP_ID": "134980666550322",
