@@ -400,7 +400,8 @@ jobs:
       - run: cd ../iznik-nuxt-mt; cat platforms/android/repositories.gradle
       - run: cd ../iznik-nuxt-mt; cat platforms/android/build.gradle
       #- run: cd ../iznik-nuxt-mt; sed -i "/classpath/aclasspath 'com.github.triplet.gradle:play-publisher:3.5.0'" platforms/android/build.gradle
-      - run: cd ../iznik-nuxt-mt; sed -i "/AGP_VERSION/aclasspath 'com.github.triplet.gradle:play-publisher:3.5.0'" platforms/android/app/build.gradle
+      #- run: cd ../iznik-nuxt-mt; sed -i "/AGP_VERSION/aclasspath 'com.github.triplet.gradle:play-publisher:3.5.0'" platforms/android/app/build.gradle
+      - run: cd ../iznik-nuxt-mt; sed -i "/AGP_VERSION/aclasspath 'com.github.triplet.gradle:play-publisher:3.7.0'" platforms/android/app/build.gradle
       - run: cd ../iznik-nuxt-mt; cat platforms/android/build.gradle
       - run: cd ../iznik-nuxt-mt; cp ../project/mobile/build-extras.gradle platforms/android/app
       - run: cd ../iznik-nuxt-mt; cp ../project/mobile/secrets/api-freegle-google-play-deployment-2023.json platforms/android/app/api-freegle-google-play-deployment.json
