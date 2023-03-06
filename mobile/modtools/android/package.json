@@ -15,7 +15,6 @@
   "cordova": {
     "plugins": {
       "cordova-plugin-device": {},
-      "cordova-plugin-splashscreen": {},
       "cordova-plugin-network-information": {},
       "cordova-plugin-inappbrowser": {},
       "cordova-plugin-geolocation": {
@@ -25,19 +24,14 @@
         "ANDROID_SUPPORT_V4_VERSION": "27.+",
         "ANDROIDX_CORE_VERSION": "1.6.+"
       },
-      "cordova-plugin-androidx-adapter": {},
-      "cordova-plugin-whitelist": {},
       "cordova-plugin-zoom-control-2": {},
       "cordova-clipboard": {},
-      "@havesource/cordova-plugin-push": {
-        "ANDROIDX_CORE_VERSION": "1.6.+",
-        "FCM_VERSION": "23.+"
-      },
       "cordova-plugin-google-signin": {
         "SERVER_CLIENT_ID": "423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com"
       },
-      "sentry-cordova": {
-        "SENTRY_ANDROID_SDK_VERSION": "6.4.1"
+      "@havesource/cordova-plugin-push": {
+        "ANDROIDX_CORE_VERSION": "1.6.+",
+        "FCM_VERSION": "23.+"
       }
     },
     "platforms": [
@@ -51,16 +45,12 @@
     "cordova-plugin-google-signin": "git+https://github.com/Freegle/cordova-plugin-google-signin.git",
     "cordova-plugin-inappbrowser": "^5.0.0",
     "cordova-plugin-network-information": "^3.0.0",
-    "cordova-plugin-splashscreen": "^6.0.2",
     "phonegap-plugin-multidex": "^1.0.0"
   },
   "devDependencies": {
     "@havesource/cordova-plugin-push": "git+https://github.com/havesource/cordova-plugin-push.git",
-    "cordova-android": "^10.1.2",
+    "cordova-android": "^11.0.0",
     "cordova-clipboard": "1.3.0",
-    "cordova-plugin-androidx-adapter": "1.1.3",
-    "cordova-plugin-whitelist": "1.3.5",
-    "cordova-plugin-zoom-control-2": "^0.4.2",
-    "sentry-cordova": "^1.0.4"
+    "cordova-plugin-zoom-control-2": "^0.4.2"
   }
 }
