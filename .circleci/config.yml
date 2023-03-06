@@ -218,7 +218,17 @@ jobs:
       #
       #      echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
       #      echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
-      - run: nvm install 14.21.3; nvm use 14.21.3; nvm alias default 14.21.3
+      #- run: nvm install 14.21.3; nvm use 14.21.3; nvm alias default 14.21.3
+      - run:
+          name: 'Install Project Node'
+          command: |
+            set +x
+            source ~/.bashrc
+
+            nvm install 14.21.3
+            NODE_DIR=$(dirname $(which node))
+            echo "export PATH=$NODE_DIR:\$PATH" >> $BASH_ENV
+
       - run: npm -v; node -v # OK: 7.5.2 v14.15.4  # 6.14.11 v14.15.4 # Seems OK: 7.10.0 14.16.1 # npm 7.6.1 node v14.16.0
 
       - run: npm install
