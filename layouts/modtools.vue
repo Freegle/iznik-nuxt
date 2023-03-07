@@ -96,7 +96,7 @@
       </div>
       <ChatPopups v-if="loggedIn" class="d-none d-sm-block" />
       <GoogleOneTap @loggedin="googleLoggedIn" @complete="googleLoaded" />
-      <LoginModal v-if="complete" ref="loginModal" :key="'login-' + bumpLogin" />
+      <LoginModal id="loginModal" ref="loginModal" :key="'login-' + bumpLogin" />
       <div id="sizer" ref="sizer" class="d-none d-lg-block" />
     </div>
   </client-only>

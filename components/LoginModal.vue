@@ -46,7 +46,7 @@
           <b-img src="~/static/signinbuttons/facebook-logo.png" class="social-button__image" />
           <span class="p-2 text--medium font-weight-bold">Continue with Facebook</span>
         </b-btn>
-        <b-btn id="googleLoginButton" class="social-button social-button--google" :disabled="googleDisabled" />
+        <b-btn id="googleLoginButton" ref="googleLoginButton" class="social-button social-button--google" :disabled="googleDisabled" />
         <b-btn class="social-button social-button--yahoo" :disabled="yahooDisabled" @click="loginYahoo">
           <b-img src="~/static/signinbuttons/yahoo-logo.svg" class="social-button__image" />
           <span class="p-2 text--medium font-weight-bold">Continue with Yahoo</span>
@@ -587,17 +587,33 @@ export default {
     },
     installGoogleSDK() {
       this.$nextTick(() => {
-        console.log('Install google SDK')
-        // Google client library should be loaded by default.vue.
-        window.google.accounts.id.initialize({
-          client_id: this.clientId,
-          callback: this.handleGoogleCredentialsResponse
-        })
-        console.log('Render google button')
-        window.google.accounts.id.renderButton(
-          document.getElementById('googleLoginButton'),
-          { theme: 'outline', size: 'large', width: '300px' }
-        )
+        if (
+          window &&
+          window.google &&
+          window.google.accounts &&
+          window.google.accounts.id
+        ) {
+          console.log('Install google SDK')
+          // Google client library should be loaded by default.vue.
+          window.google.accounts.id.initialize({
+            client_id: this.clientId,
+            callback: this.handleGoogleCredentialsResponse
+          })
+          console.log(
+            'Render google button',
+            document.getElementById('googleLoginButton')
+          )
+
+          this.waitForRef('googleLoginButton', () => {
+            console.log('Found google button ref')
+            window.google.accounts.id.renderButton(
+              document.getElementById('googleLoginButton'),
+              { theme: 'outline', size: 'large', width: '300px' }
+            )
+          })
+        } else {
+          console.log('Google not yet fully loaded')
+        }
       })
     },
     installFacebookSDK() {
