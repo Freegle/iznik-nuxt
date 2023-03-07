@@ -10,7 +10,7 @@ export default {
     const url = 'https://freegle.in/' + this.id
     if (process.env.IS_APP) {
       // eslint-disable-next-line no-undef
-      cordova.InAppBrowser.open(goto, '_system')
+      cordova.InAppBrowser.open(url, '_system')
       return
     }
     window.location = url
