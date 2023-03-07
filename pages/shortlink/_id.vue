@@ -11,6 +11,11 @@ export default {
     if (process.env.IS_APP) {
       // eslint-disable-next-line no-undef
       cordova.InAppBrowser.open(url, '_system')
+      try {
+        this.$router.back()
+      } catch (e) {
+        this.$router.push('/')
+      }
       return
     }
     window.location = url
