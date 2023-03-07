@@ -1,7 +1,7 @@
 <template>
   <client-only>
     <div class="pageback">
-      <b-navbar id="navbar" :key="'nuxt-' + bump" type="dark" class="navback p-0 p-sm-1 justify-content-between" fixed="top">
+      <b-navbar id="navbar" :key="'nuxt1-' + bump" type="dark" class="navback p-0 p-sm-1 justify-content-between" fixed="top">
         <b-navbar-brand class="p-0 pr-2 d-flex">
           <b-img
             class="logo clickme"
@@ -45,7 +45,7 @@
         </b-navbar-nav>
       </b-navbar>
 
-      <div :key="'nuxt-' + bump" class="d-flex">
+      <div :key="'nuxt2-' + bump" class="d-flex">
         <div v-if="showMenu" class="leftmenu text--medium-large-spaced">
           <ModMenuItemLeft link="/modtools" name="Dashboard" />
           <hr>

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <MainHeader :key="'nuxt-' + bump" :chat-count.sync="chatCount" :unread-notification-count.sync="unreadNotificationCount" @login="login" />
-    <main :key="'nuxt-' + bump">
+    <MainHeader :key="'nuxt1-' + bump" :chat-count.sync="chatCount" :unread-notification-count.sync="unreadNotificationCount" @login="login" />
+    <main :key="'nuxt2-' + bump">
       <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent" />
     </main>
     <BouncingEmail />
