@@ -12,7 +12,19 @@
       <span v-if="modinfo">
         via {{ source }},
         <span v-if="message.fromip">
-          from IP {{ message.fromip }} in <span :class="message.fromcountry === 'United Kingdom' ? '' : 'text-danger'">{{ message.fromcountry }}.</span>
+          from IP
+          <span v-if="message.fromip.length > 16">
+            hash {{ message.fromip }}
+          </span>
+          <span v-else>
+            address {{ message.fromip }}
+          </span>
+          <span v-if="message.fromcountry">
+            in
+            <span
+              :class="message.fromcountry === 'United Kingdom' ? '' : 'text-danger'"
+            >{{ message.fromcountry }}.</span>
+          </span>
         </span>
         <span v-else>
           IP unavailable.
