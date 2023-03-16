@@ -1,6 +1,6 @@
 <template>
   <div class="font-weight-bold">
-    <div v-if="now" class="pulsate d-flex">
+    <div v-if="now" class="text-danger d-flex">
       <!-- eslint-disable-next-line-->
       <ExternalLink href="https://zoom.us/j/95789187203?pwd=VE9Va1M5YWJWY0M1dC9sc014L0xjQT09" :class="colorClass">ZoomStock happening now till 5pm! Join other volunteers for a natter - click here.</ExternalLink>
     </div>
