@@ -1,14 +1,14 @@
 <template>
-  <div v-if="false">
+  <div>
     <client-only>
       <NoticeMessage v-if="show" variant="info">
         <b-btn variant="link" class="float-right" @click="hideit">
           Hide this
         </b-btn>
         <p>
-          On Monday 17th, our volunteer and friend Wanda died.  She had been with Freegle since 2005, and volunteered
-          countless hours to help freeglers and make the world better, with kindness and patience - both locally in
-          Luton, and nationally in our Support team.  We will miss her.  Rest well, Wanda.
+          Emails are disrupted for some people at the moment, as things settle down after moving our servers to new
+          hosting.  Please check your spam folder if you're not getting emails, and mark them as not spam.  If you're expecting
+          replies, please check occasionally on the website/app in case email hasn't got through.
         </p>
       </NoticeMessage>
       <div v-else class="text-danger text-right clickme" @click="showit">
