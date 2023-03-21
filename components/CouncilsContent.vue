@@ -39,6 +39,11 @@
           Freegle Focus - Social Housing
         </nuxt-link>
       </li>
+      <li>
+        <nuxt-link to="/councils/climate-emergency">
+          Freegle Focus - Climate Emergency
+        </nuxt-link>
+      </li>
     </ul>
 
     <p>
