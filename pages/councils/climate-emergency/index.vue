@@ -79,7 +79,7 @@
           <ExternalLink href="https://www.ilovefreegle.org/explore">
             Find your local Freegle community
           </ExternalLink>
-          <p class="font-weight-bold">
+          <p class="font-weight-bold mt-2">
             Ambitious targets require urgent action. Engaging with Freegle and encouraging more reuse in your community will help your local authority to:-
           </p>
           <ul>
@@ -165,12 +165,13 @@
             <ExternalLink href="https://www.ilovefreegle.org/explore/Crawley-Freegle">
               Crawley Freegle
             </ExternalLink>
-          </p><p class="quote">
-            Freegle makes the hassle of restarting my life just a bit easier.
+          </p>
+          <p>
+            Freegle makes the hassle of restarting my life just a bit easier:
           </p>
 
           <p class="quote">
-            "When I was a teenager I used to go the the tipping sites and recover stuff. I even learnt electronics so I could fix TV's and radios I found. Most of the time they just needed a fuse that would back then cost a few pennies. I love the new drive and volume of people trying to reduce the waste we produce, the restarters, recyclers, self producers, crafters, up-cyclers, the more the better for us all and nature. But right now its more poignant because after being homeless for a long while I've just got a home again, and being able to collect the things I need just makes the hassle of restarting my life just a bit easier."
+            When I was a teenager I used to go the the tipping sites and recover stuff. I even learnt electronics so I could fix TV's and radios I found. Most of the time they just needed a fuse that would back then cost a few pennies. I love the new drive and volume of people trying to reduce the waste we produce, the restarters, recyclers, self producers, crafters, up-cyclers, the more the better for us all and nature. But right now its more poignant because after being homeless for a long while I've just got a home again, and being able to collect the things I need just makes the hassle of restarting my life just a bit easier."
             From <ExternalLink href="https://www.ilovefreegle.org/explore/RoyalGreenwichFreegle">
               Royal Borough of Greenwich Freegle
             </ExternalLink>
