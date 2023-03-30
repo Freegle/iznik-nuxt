@@ -28,7 +28,7 @@
     </notice-message>
     <div v-if="supportOrAdmin" class="d-flex justify-content-end">
       <b-btn variant="link" class="reply__button" @click="deleteReply">
-        Delete
+        Delete this warning.
       </b-btn>
       <ConfirmModal v-if="showDeleteModal" ref="deleteConfirm" title="Delete refer from" @confirm="deleteConfirm" />
     </div>
