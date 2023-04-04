@@ -1,7 +1,7 @@
 <template>
   <div>
     <client-only>
-      <NoticeMessage v-if="show" variant="info">
+      <NoticeMessage v-if="show && false" variant="info">
         <b-btn variant="link" class="float-right" @click="hideit">
           Hide this
         </b-btn>
