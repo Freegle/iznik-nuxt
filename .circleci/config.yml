@@ -114,6 +114,12 @@ jobs:
 
       - run: cd ../iznik-nuxt-app; nvm use 14.17.6; cordova platform rm ios
       - run: cd ../iznik-nuxt-app; nvm use 14.17.6; cordova platform add ios@6.2.0
+  
+      # Fix podfile
+      - run: cd ../iznik-nuxt-app/platforms/ios/App; find . -name "Podfile"
+      - run: cd ../iznik-nuxt-app/platforms/ios/App; ls -l Podfile
+      - run: cd ../iznik-nuxt-app/platforms/ios/App; sed -i '' "s/FREEGLE_TEAM_ID/$iosDeveloper/" Podfile
+      - run: cd ../iznik-nuxt-app/platforms/ios/App; ls -l Podfile
 
       # Fix cordova-ios
       - run: cd ../iznik-nuxt-app; sed -i '' "s/PROVISIONING_PROFILE =/PROVISIONING_PROFILE_SPECIFIER =/" platforms/ios/cordova/lib/build.js
