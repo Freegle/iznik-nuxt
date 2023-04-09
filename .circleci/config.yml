@@ -126,7 +126,7 @@ jobs:
       - run: cd ../iznik-nuxt-app; cat ../project/mobile/Podfile_ext.txt >> platforms/ios/Podfile # add the post_install block
       - run: cd ../iznik-nuxt-app/platforms/ios; cat Podfile
       - run: cd ../iznik-nuxt-app/platforms/ios; pod deintegrate
-      - run: cd ../iznik-nuxt-app/platforms/ios; pod clean
+      #- run: cd ../iznik-nuxt-app/platforms/ios; pod clean
       - run: cd ../iznik-nuxt-app/platforms/ios; pod install # post_install block is run
   
 
