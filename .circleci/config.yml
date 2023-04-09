@@ -36,6 +36,7 @@ jobs:
       # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
       xcode: "13.0.0" # 11.3.1 12.4.0 13.2.1
     #resource_class: large
+    resource_class: macos.x86.medium.gen2
     steps:
       - checkout
       - run: nvm list
