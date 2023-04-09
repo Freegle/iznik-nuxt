@@ -293,6 +293,11 @@ export default {
               'It might not be in English, so needs checking via Google Translate.'
             break
           }
+          case 'SameImage': {
+            ret =
+              'Same image sent many times recently, which sometimes indicates spam.'
+            break
+          }
           default: {
             ret = this.message.reviewreason
           }

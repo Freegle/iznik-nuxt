@@ -1,7 +1,7 @@
 <template>
   <client-only>
     <div class="pageback">
-      <b-navbar id="navbar" type="dark" class="navback p-0 p-sm-1 justify-content-between" fixed="top">
+      <b-navbar id="navbar" :key="'nuxt1-' + bump" type="dark" class="navback p-0 p-sm-1 justify-content-between" fixed="top">
         <b-navbar-brand class="p-0 pr-2 d-flex">
           <b-img
             class="logo clickme"
@@ -45,7 +45,7 @@
         </b-navbar-nav>
       </b-navbar>
 
-      <div class="d-flex">
+      <div :key="'nuxt2-' + bump" class="d-flex">
         <div v-if="showMenu" class="leftmenu text--medium-large-spaced">
           <ModMenuItemLeft link="/modtools" name="Dashboard" />
           <hr>
@@ -92,10 +92,10 @@
             </a>
           </div>
         </div>
-        <nuxt v-if="complete" ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent w-100" />
+        <nuxt ref="pageContent" class="ml-0 pl-0 pl-sm-1 pr-0 pr-sm-1 pageContent w-100" />
       </div>
       <ChatPopups v-if="loggedIn" class="d-none d-sm-block" />
-      <LoginModal v-if="complete" ref="loginModal" />
+      <LoginModal v-if="complete" ref="loginModal" :key="'login-' + bumpLogin" />
       <div id="sizer" ref="sizer" class="d-none d-lg-block" />
     </div>
   </client-only>
@@ -131,7 +131,9 @@ import { setBadgeCount } from '../plugins/app-init-push' // CC
       sliding: false,
       timeTimer: null,
       chatCount: 0,
-      complete: true  // CC
+      complete: true,  // CC
+      bump: 0,
+      bumpLogin: 0
     }
   },
   computed: {
@@ -295,8 +297,12 @@ import { setBadgeCount } from '../plugins/app-init-push' // CC
       this.$store.dispatch('misc/setTime')
       this.timeTimer = setTimeout(this.updateTime, 30000)
     },
+    googleLoggedIn() {
+      // Re-render the page, now that we are logged in.
+      this.bump++
+    },
     googleLoaded() {
-      this.complete = true
+      this.bumpLogin++
     },
     login() {
       this.$refs.loginModal.show()
