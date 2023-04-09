@@ -137,7 +137,7 @@
           height="58"
           width="58"
           rounded
-          :src="require(`@/static/icon.png`)"
+          :src="logo"
           alt="Home"
         />
       </b-navbar-brand>
@@ -312,6 +312,9 @@ export default {
     
       if (ret.ret === 0 && ret.logo) {
         this.logo = ret.logo.path.replace(/.*logos/, '/logos')
+        if (this.isApp) {
+          this.logo = ret.logo.path.replace('/images', '')
+        }
       }
     }
     }, 5000)
