@@ -46,6 +46,7 @@ jobs:
           #node-version: "14.18.1"
           #npm-version: "7.6.1"
       - run: nvm list
+      - run: nvm install 14.17.6
       - run: nvm use 14.17.6; npm -v; node -v
       - run: sudo chown -R 502:20 "/Users/distiller/.npm"
 
