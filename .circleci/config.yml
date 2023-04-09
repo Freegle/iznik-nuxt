@@ -36,6 +36,7 @@ jobs:
       # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
       xcode: "13.0.0" # 11.3.1 12.4.0 13.2.1
     #resource_class: large
+    resource_class: macos.x86.medium.gen2
     steps:
       - checkout
       - run: nvm list
@@ -117,12 +118,12 @@ jobs:
       - run: cd ../iznik-nuxt-app; sed -i '' "s/PROVISIONING_PROFILE =/PROVISIONING_PROFILE_SPECIFIER =/" platforms/ios/cordova/lib/build.js
 
       # Build debug build
-      - run: cd ../iznik-nuxt-app; nvm use 14.17.6; cordova build --debug --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="Freegle adhoc 0123" >buildlogdebug.txt || true
+      - run: cd ../iznik-nuxt-app; nvm use 14.17.6; cordova build --debug --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="Freegle adhoc 0323" >buildlogdebug.txt || true
       - run: cd ../iznik-nuxt-app; tail -n 50 buildlogdebug.txt
       - run: cd ../iznik-nuxt-app; cp platforms/ios/build/device/Freegle.ipa ../project/releases/Freegle-ios-app-$MOBILE_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
 
       # Build release build and publish
-      - run: cd ../iznik-nuxt-app; nvm use 14.17.6; cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="Freegle 0123"  >buildlogrelease.txt || true
+      - run: cd ../iznik-nuxt-app; nvm use 14.17.6; cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="Freegle 0323"  >buildlogrelease.txt || true
       - run: cd ../iznik-nuxt-app; tail -n 50 buildlogrelease.txt
       - run: cd ../iznik-nuxt-app; cp platforms/ios/build/device/Freegle.ipa ../project/releases/Freegle-ios-app-$MOBILE_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
       - run: cd ../iznik-nuxt-app; xcrun altool --upload-app --type ios --file "platforms/ios/build/device/Freegle.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd" || true
@@ -148,12 +149,12 @@ jobs:
       - run: cd ../iznik-nuxt-mt; sed -i '' "s/PROVISIONING_PROFILE =/PROVISIONING_PROFILE_SPECIFIER =/" platforms/ios/cordova/lib/build.js
 
       # Build debug build
-      - run: cd ../iznik-nuxt-mt; nvm use 14.17.6; cordova build --debug --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="ModTools adhoc 0123" >buildlogdebug.txt || true
+      - run: cd ../iznik-nuxt-mt; nvm use 14.17.6; cordova build --debug --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="ad-hoc" --automaticProvisioning="false" --provisioningProfile="ModTools adhoc 0323" >buildlogdebug.txt || true
       - run: cd ../iznik-nuxt-mt; tail -n 50 buildlogdebug.txt
       - run: cd ../iznik-nuxt-mt; cp platforms/ios/build/device/ModTools.ipa ../project/releases/ModTools-ios-app-$MODTOOLS_VERSION-debug-$(date +'%Y%m%d%H%M%S').ipa
 
       # Build release build and publish
-      - run: cd ../iznik-nuxt-mt; nvm use 14.17.6; cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="ModTools 0123"  >buildlogrelease.txt || true
+      - run: cd ../iznik-nuxt-mt; nvm use 14.17.6; cordova build --release --device --codeSignIdentity="iPhone Distribution" --developmentTeam="$iosDeveloper" --packageType="app-store" --automaticProvisioning="false" --provisioningProfile="ModTools 0323"  >buildlogrelease.txt || true
       - run: cd ../iznik-nuxt-mt; tail -n 50 buildlogrelease.txt
       - run: cd ../iznik-nuxt-mt; cp platforms/ios/build/device/ModTools.ipa ../project/releases/ModTools-ios-app-$MODTOOLS_VERSION-release-$(date +'%Y%m%d%H%M%S').ipa
       - run: cd ../iznik-nuxt-mt; xcrun altool --upload-app --type ios --file "platforms/ios/build/device/ModTools.ipa" --username $AppleUserId --password "$AppleAppSpecificPwd" || true

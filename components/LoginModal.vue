@@ -42,7 +42,7 @@
         <p v-if="signUp" class="font-weight-bold">
           Using one of these buttons is the easiest way to create an account:
         </p>
-        <b-btn v-if="notMTapp" class="social-button social-button--facebook" :disabled="facebookDisabled" @click="loginFacebook">
+        <b-btn class="social-button social-button--facebook" :disabled="facebookDisabled" @click="loginFacebook">
           <b-img src="~/static/signinbuttons/facebook-logo.png" class="social-button__image" />
           <span class="p-2 text--medium font-weight-bold">Continue with Facebook</span>
         </b-btn>
@@ -226,7 +226,7 @@ export default {
     }
   },
   computed: {
-    notMTapp(){ // CC
+    notMTapp() { // CC v-if="notMTapp" 
       return !process.env.IS_APP || !process.env.IS_MTAPP;
     },
     isiOSapp() { // CC
@@ -256,8 +256,10 @@ export default {
     // normal reactivity but that's because the SDKs we use aren't written in Vue.
     facebookDisabled() {
       if (process.env.IS_APP) { // CC
+        console.log("facebookDisabled false")
+        return false // MT app enabled now
         //// Facebook login requires separate APP_ID for ModTools app, so just disable for MT:
-        return process.env.IS_MTAPP
+        //return process.env.IS_MTAPP
         //Old Oauth login still works on iOS:
         //const isiOS = this.$store.getters['mobileapp/isiOS']
         //return !isiOS
@@ -632,6 +634,7 @@ export default {
           this.loginWaitMessage = null
         }
       } catch (e) {
+        console.log(e.message)
         this.socialLoginError = 'Facebook login error: ' + e.message
         this.loginWaitMessage = null
       }
@@ -806,17 +809,33 @@ export default {
     },
     /* CC APP installGoogleSDK() {
       this.$nextTick(() => {
-        console.log('Install google SDK')
-        // Google client library should be loaded by default.vue.
-        window.google.accounts.id.initialize({
-          client_id: this.clientId,
-          callback: this.handleGoogleCredentialsResponse
-        })
-        console.log('Render google button')
-        window.google.accounts.id.renderButton(
-          document.getElementById('googleLoginButton'),
-          { theme: 'outline', size: 'large', width: '300px' }
-        )
+        if (
+          window &&
+          window.google &&
+          window.google.accounts &&
+          window.google.accounts.id
+        ) {
+          console.log('Install google SDK')
+          // Google client library should be loaded by default.vue.
+          window.google.accounts.id.initialize({
+            client_id: this.clientId,
+            callback: this.handleGoogleCredentialsResponse
+          })
+          console.log(
+            'Render google button',
+            document.getElementById('googleLoginButton')
+          )
+
+          this.waitForRef('googleLoginButton', () => {
+            console.log('Found google button ref')
+            window.google.accounts.id.renderButton(
+              document.getElementById('googleLoginButton'),
+              { theme: 'outline', size: 'large', width: '300px' }
+            )
+          })
+        } else {
+          console.log('Google not yet fully loaded')
+        }
       })
     },*/
     installFacebookSDK() {

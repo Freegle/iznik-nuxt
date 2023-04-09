@@ -16,6 +16,11 @@
               <h4 v-else>
                 Message from Freegle Volunteers
               </h4>
+              <div v-if="realMod" class="text-muted small">
+                <div class="small">
+                  (Sent by <v-icon name="hashtag" class="text-muted" scale="0.5" />{{ chatmessage.userid }})
+                </div>
+              </div>
             </b-card-title>
             <b-card-text>
               <div :class="emessage ? 'media-body chatMessage' : 'media-body'">
@@ -56,6 +61,14 @@ export default {
     },
     amUser() {
       return this.chat && this.chat.user && this.chat.user.id === this.myid
+    },
+    realMod() {
+      return (
+        this.realMe &&
+        (this.realMe.systemrole === 'Moderator' ||
+          this.realMe.systemrole === 'Support' ||
+          this.realMe.systemrole === 'Admin')
+      )
     }
   },
   methods: {

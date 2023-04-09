@@ -8,6 +8,7 @@
       id="statusmmodal"
       v-model="show"
       no-stacking
+      size="lg"
       :title="'Platform Status: ' + headline"
     >
       <template slot="default">

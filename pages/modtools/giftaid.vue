@@ -54,7 +54,13 @@
         </p>
         <b-input v-model="userid" type="number" placeholder="User's ID from Support Tools" class="mt-2" />
         <b-input v-model="amount" type="number" placeholder="Amount e.g. 1.50. No pound sign" class="mt-2" />
-        <b-input v-model="date" type="date" placeholder="Date of donation" class="mt-2" />
+        <date-picker
+          v-model="date"
+          lang="en"
+          type="date"
+          format="DD/MM/YYYY"
+          placeholder="Date of donation"
+        />
         <SpinButton variant="white" name="save" label="Record external donation" :handler="recordDonation" class="mt-4" />
       </b-card-body>
     </b-card>
@@ -65,16 +71,23 @@
     </p>
   </b-container>
 </template>
-
 <script>
+import DatePicker from 'vue2-datepicker'
 import loginRequired from '@/mixins/loginRequired.js'
 import ModGiftAid from '../../components/ModGiftAid'
 import ModHelpGiftAid from '../../components/ModHelpGiftAid'
 import SpinButton from '~/components/SpinButton'
 import ExternalLink from '~/components/ExternalLink'
+import 'vue2-datepicker/index.css'
 
 export default {
-  components: { ModHelpGiftAid, ModGiftAid, SpinButton, ExternalLink },
+  components: {
+    ModHelpGiftAid,
+    ModGiftAid,
+    SpinButton,
+    ExternalLink,
+    DatePicker
+  },
   layout: 'modtools',
   mixins: [loginRequired],
   data() {

@@ -7,7 +7,18 @@ export default {
     this.id = this.$route.params.id
   },
   mounted() {
-    window.location = 'https://freegle.in/' + this.id
+    const url = 'https://freegle.in/' + this.id
+    if (process.env.IS_APP) {
+      // eslint-disable-next-line no-undef
+      cordova.InAppBrowser.open(url, '_system')
+      try {
+        this.$router.back()
+      } catch (e) {
+        this.$router.push('/')
+      }
+      return
+    }
+    window.location = url
   }
 }
 </script>
