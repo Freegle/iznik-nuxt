@@ -122,9 +122,9 @@ jobs:
       #- run: cd ../iznik-nuxt-app/platforms/ios/Freegle; ls -l Podfile
       # https://github.com/dpa99c/cordova-plugin-firebasex/issues/766#issuecomment-1364467277
       - run: cd ../iznik-nuxt-app; nvm use 14.17.6; cordova prepare ios
-      - run: cd ../iznik-nuxt-app/platforms/ios; ls -l Podfile
-      - run: cd ../iznik-nuxt-app; cp ../project/mobile/Podfile_ext.txt >> platforms/ios/Podfile # add the post_install block
-      - run: cd ../iznik-nuxt-app/platforms/ios; ls -l Podfile
+      - run: cd ../iznik-nuxt-app/platforms/ios; cat Podfile
+      - run: cd ../iznik-nuxt-app; cat ../project/mobile/Podfile_ext.txt >> platforms/ios/Podfile # add the post_install block
+      - run: cd ../iznik-nuxt-app/platforms/ios; cat Podfile
       - run: cd ../iznik-nuxt-app/platforms/ios; pod deintegrate
       - run: cd ../iznik-nuxt-app/platforms/ios; pod clean
       - run: cd ../iznik-nuxt-app/platforms/ios; pod install # post_install block is run
