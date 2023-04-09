@@ -115,21 +115,14 @@ jobs:
       - run: cd ../iznik-nuxt-app; nvm use 14.17.6; cordova platform rm ios
       - run: cd ../iznik-nuxt-app; nvm use 14.17.6; cordova platform add ios@6.2.0
   
-      # Fix podfile
-      #- run: cd ../iznik-nuxt-app/platforms/ios/Freegle; find . -name "Podfile"
-      #- run: cd ../iznik-nuxt-app/platforms/ios/Freegle; ls -l Podfile
-      #- run: cd ../iznik-nuxt-app/platforms/ios/Freegle; sed -i '' "s/FREEGLE_TEAM_ID/$iosDeveloper/" Podfile
-      #- run: cd ../iznik-nuxt-app/platforms/ios/Freegle; ls -l Podfile
-      # https://github.com/dpa99c/cordova-plugin-firebasex/issues/766#issuecomment-1364467277
+      # Fix podfile for xcode 14
       - run: cd ../iznik-nuxt-app; nvm use 14.17.6; cordova prepare ios
       - run: cd ../iznik-nuxt-app/platforms/ios; cat Podfile
       - run: cd ../iznik-nuxt-app; cat ../project/mobile/Podfile_ext.txt >> platforms/ios/Podfile # add the post_install block
       - run: cd ../iznik-nuxt-app/platforms/ios; cat Podfile
       - run: cd ../iznik-nuxt-app/platforms/ios; pod deintegrate
-      #- run: cd ../iznik-nuxt-app/platforms/ios; pod clean
       - run: cd ../iznik-nuxt-app/platforms/ios; pod install # post_install block is run
   
-
       # Fix cordova-ios
       - run: cd ../iznik-nuxt-app; sed -i '' "s/PROVISIONING_PROFILE =/PROVISIONING_PROFILE_SPECIFIER =/" platforms/ios/cordova/lib/build.js
 
@@ -160,6 +153,14 @@ jobs:
       - run: cd ../iznik-nuxt-mt; ln -s ../project/dist www
       - run: cd ../iznik-nuxt-mt; nvm use 14.17.6; cordova platform rm ios
       - run: cd ../iznik-nuxt-mt; nvm use 14.17.6; cordova platform add ios@6.2.0
+
+      # Fix podfile for xcode 14
+      - run: cd ../iznik-nuxt-mt; nvm use 14.17.6; cordova prepare ios
+      - run: cd ../iznik-nuxt-mt/platforms/ios; cat Podfile
+      - run: cd ../iznik-nuxt-mt; cat ../project/mobile/Podfile_ext.txt >> platforms/ios/Podfile # add the post_install block
+      - run: cd ../iznik-nuxt-mt/platforms/ios; cat Podfile
+      - run: cd ../iznik-nuxt-mt/platforms/ios; pod deintegrate
+      - run: cd ../iznik-nuxt-mt/platforms/ios; pod install # post_install block is run
 
       # Fix cordova-ios
       - run: cd ../iznik-nuxt-mt; sed -i '' "s/PROVISIONING_PROFILE =/PROVISIONING_PROFILE_SPECIFIER =/" platforms/ios/cordova/lib/build.js
