@@ -1,18 +1,20 @@
 <template>
   <div>
     <client-only>
-      <NoticeMessage v-if="show && false" variant="info">
-        <b-btn variant="link" class="float-right" @click="hideit">
-          Hide this
-        </b-btn>
-        <p>
-          Emails are disrupted for some people at the moment, as things settle down after moving our servers to new
-          hosting.  Please check your spam folder if you're not getting emails, and mark any there as not spam.  If you're expecting
-          replies, please check occasionally on the website/app in case email hasn't got through.
-        </p>
-      </NoticeMessage>
-      <div v-else class="text-danger text-right clickme" @click="showit">
-        Show notice.
+      <div v-if="false">
+        <NoticeMessage v-if="show" variant="info">
+          <b-btn variant="link" class="float-right" @click="hideit">
+            Hide this
+          </b-btn>
+          <p>
+            Emails are disrupted for some people at the moment, as things settle down after moving our servers to new
+            hosting.  Please check your spam folder if you're not getting emails, and mark any there as not spam.  If you're expecting
+            replies, please check occasionally on the website/app in case email hasn't got through.
+          </p>
+        </NoticeMessage>
+        <div v-else class="text-danger text-right clickme" @click="showit">
+          Show notice.
+        </div>
       </div>
     </client-only>
   </div>
