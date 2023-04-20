@@ -181,6 +181,9 @@
               <SpinButton v-if="selectedId" variant="danger" name="trash-alt" label="Delete" :handler="deleteArea" />
             </b-card-footer>
           </b-card>
+          <NoticeMessage v-if="zoom <= 12" variant="danger" show class="mb-2">
+            Please zoom in further to see locations.
+          </NoticeMessage>
           <ModPostcodeTester />
           <b-card v-if="dodgyInBounds.length" no-body style="max-height: 600px; overflow-y: scroll">
             <b-card-header class="bg-warning d-flex justify-content-between">
@@ -216,6 +219,7 @@ import ModPostcodeTester from '@/components/ModPostcodeTester'
 import turfpolygon from 'turf-polygon'
 import turfintersect from 'turf-intersect'
 import turfarea from 'turf-area'
+import NoticeMessage from '@/components/NoticeMessage'
 import SpinButton from './SpinButton'
 import ModGroupMapLocation from './ModGroupMapLocation'
 import ClusterMarker from '~/components/ClusterMarker'
@@ -243,6 +247,7 @@ const DPA_BOUNDARY_COLOUR = 'darkblue'
 
 export default {
   components: {
+    NoticeMessage,
     ModChangedMapping,
     ModGroupMapLocation,
     ModPostcodeTester,
