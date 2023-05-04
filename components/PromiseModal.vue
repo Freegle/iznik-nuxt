@@ -106,7 +106,7 @@
       <p class="mt-2">
         <span v-if="date && !time" class="text-danger font-weight-bold">Please add a time.</span>
         If you don't want to specify a precise day and time yet, clear the day and click the <em>Promise</em> button.  You
-        you can come back here later.
+        can come back here later.
       </p>
     </template>
     <template slot="modal-footer" slot-scope="{ ok, cancel }">
