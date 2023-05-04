@@ -293,7 +293,11 @@ export default {
       this.bump++
     },
     googleLoaded() {
-      this.bumpLogin++
+      if (this.$refs.loginModal && this.$refs.loginModal.showModal) {
+        console.log('Showing login modal - leave well alone')
+      } else {
+        this.bumpLogin++
+      }
     },
     login() {
       this.$refs.loginModal.show()
