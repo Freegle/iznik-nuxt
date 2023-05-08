@@ -34,6 +34,22 @@
           This is locked by #{{ config.createdby }}.  You can use, view or copy it, but you can't change or delete it.
         </span>
       </NoticeMessage>
+      <NoticeMessage v-if="config.using && config.using.length" class="mb-2">
+        <p>
+          This config is being used.
+        </p>
+        <b-btn v-if="!showUsing" variant="link" @click="showUsing = true">
+          Show who's using it
+        </b-btn>
+        <div v-if="showUsing">
+          <div v-for="using in config.using" :key="'using-' + using.id">
+            {{ using.fullname }}
+            <span class="text-muted small">
+              <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ using.userid }}
+            </span>
+          </div>
+        </div>
+      </NoticeMessage>
       <b-card no-body class="mb-2 mt-1">
         <b-card-header>
           <b-btn v-b-toggle.accordion-general block href="#" variant="secondary">
@@ -42,22 +58,6 @@
         </b-card-header>
         <b-collapse id="accordion-general" accordion="settings-accordion" role="tabpanel">
           <b-card-body>
-            <NoticeMessage v-if="config.using && config.using.length && parseInt(config.createdby) === myid" class="mb-2">
-              <p>
-                This config is being used. You won't be able to delete it.
-              </p>
-              <b-btn v-if="!showUsing" variant="link" @click="showUsing = true">
-                Show who's using it
-              </b-btn>
-              <div v-if="showUsing">
-                <div v-for="using in config.using" :key="'using-' + using.id">
-                  {{ using.fullname }}
-                  <span class="text-muted small">
-                    <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ using.userid }}
-                  </span>
-                </div>
-              </div>
-            </NoticeMessage>
             <p v-if="config.cansee">
               You can see this because
               <span v-if="config.cansee === 'Created'">
@@ -169,6 +169,7 @@
           </b-card-body>
         </b-collapse>
       </b-card>
+
       <b-card no-body class="mb-2 mt-1">
         <b-card-header>
           <b-btn v-b-toggle.accordion-approvedmembers block href="#" variant="secondary">
@@ -188,7 +189,7 @@
             <SpinButton variant="white" name="plus" label="Copy" :handler="copy" :disabled="!copyconfigname" />
           </b-input-group-append>
         </b-input-group>
-        <b-btn v-if="!locked" variant="white" class="mt-2" @click="deleteIt">
+        <b-btn v-if="!locked && (!config || !config.using || !config.using.length)" variant="white" class="mt-2" @click="deleteIt">
           <v-icon name="trash-alt" /> Delete
         </b-btn>
       </div>
