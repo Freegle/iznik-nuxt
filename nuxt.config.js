@@ -7,8 +7,8 @@ const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://b68903e730034a4ba3b8b2358331389e@o118493.ingest.sentry.io/4504362603184128' // Cordova
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
-const MOBILE_VERSION = '2.0.119'
-const MODTOOLS_VERSION = '0.3.94'
+const MOBILE_VERSION = '2.0.120'
+const MODTOOLS_VERSION = '0.3.95'
 
 require('dotenv').config()
 
@@ -24,8 +24,8 @@ require('dotenv').config()
 // - The rest of the client code just uses the API prefix.  The base URL kicks in (or doesn't) as described above.
 let API = '/api'
 if ((process.env.NUXT_BUILD_TYPE === 'fdapp') || (process.env.NUXT_BUILD_TYPE === 'mtapp')) {
-  //API = 'https://fdapidbg.ilovefreegle.org/api'
-  API = 'https://www.ilovefreegle.org/api'
+  // API = 'https://www.ilovefreegle.org/api'
+  API = 'https://fdapilive.ilovefreegle.org/api'
 }
 if (process.env.NUXT_BUILD_TYPE === 'mtapp') {
   API = 'https://modtools.org/api'
