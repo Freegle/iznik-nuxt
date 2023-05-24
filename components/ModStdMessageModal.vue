@@ -62,17 +62,35 @@
       </div>
     </template>
     <template slot="modal-footer" slot-scope="{ cancel }">
-      <SpinButton
-        ref="process"
-        :label="processLabel"
-        name="envelope"
-        spinclass="success"
-        variant="primary"
-        :handler="process"
-      />
-      <b-button variant="white" @click="cancel">
-        Cancel
-      </b-button>
+      <div class="d-flex justify-content-between w-100">
+        <div>
+          <b-btn variant="white" class="nohover" size="xs" @click="moveLeft">
+            <v-icon name="arrow-left" />
+          </b-btn>
+          <b-btn variant="white" class="nohover" size="xs" @click="moveRight">
+            <v-icon name="arrow-right" />
+          </b-btn>
+          <b-btn variant="white" class="nohover" size="xs" @click="moveUp">
+            <v-icon name="arrow-up" />
+          </b-btn>
+          <b-btn variant="white" class="nohover" size="xs" @click="moveDown">
+            <v-icon name="arrow-down" />
+          </b-btn>
+        </div>
+        <div>
+          <SpinButton
+            ref="process"
+            :label="processLabel"
+            name="envelope"
+            spinclass="success"
+            variant="primary"
+            :handler="process"
+          />
+          <b-button variant="white" @click="cancel">
+            Cancel
+          </b-button>
+        </div>
+      </div>
     </template>
   </b-modal>
 </template>
@@ -118,7 +136,9 @@ export default {
       changingNewDelStatus: false,
       changedNewDelStatus: false,
       changingHold: false,
-      changedHold: false
+      changedHold: false,
+      margTop: 0,
+      margLeft: 0
     }
   },
   computed: {
@@ -645,6 +665,26 @@ export default {
     },
     postcodeSelect(newpc) {
       this.message.location = newpc
+    },
+    moveLeft() {
+      this.margLeft -= 10
+      window.document.getElementById('stdmsgmodal').style.left =
+        this.margLeft + 'px'
+    },
+    moveRight() {
+      this.margLeft += 10
+      window.document.getElementById('stdmsgmodal').style.left =
+        this.margLeft + 'px'
+    },
+    moveUp() {
+      this.margTop -= 10
+      window.document.getElementById('stdmsgmodal').style.top =
+        this.margTop + 'px'
+    },
+    moveDown() {
+      this.margTop += 10
+      window.document.getElementById('stdmsgmodal').style.top =
+        this.margTop + 'px'
     }
   }
 }
