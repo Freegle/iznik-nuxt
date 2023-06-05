@@ -103,7 +103,7 @@
             this and future donations.
           </span>
           <span v-if="user.giftaid.period === 'Past4YearsAndFuture'">
-            for four years before date and all future.
+            four years before date and all future.
           </span>
         </p>
       </div>
