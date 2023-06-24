@@ -97,6 +97,7 @@
 <script>
 import modal from '@/mixins/modal'
 import keywords from '@/mixins/keywords.js'
+import { SUBJECT_REGEX } from '@/utils/constants'
 import Postcode from './Postcode'
 import NoticeMessage from './NoticeMessage'
 import SpinButton from './SpinButton'
@@ -326,7 +327,7 @@ export default {
 
           if (this.stdmsg.edittext === 'Correct Case') {
             // First the subject
-            const matches = /(.*?):([^)].*)\((.*)\)/.exec(this.subject)
+            const matches = SUBJECT_REGEX.exec(this.subject)
             if (
               matches &&
               matches.length > 0 &&
