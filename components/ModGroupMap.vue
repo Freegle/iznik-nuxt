@@ -637,11 +637,6 @@ export default {
         .addTo(self.$refs.map.mapObject)
 
       if (this.groupid) {
-        await this.$store.dispatch('group/fetch', {
-          id: this.groupid,
-          polygon: true
-        })
-
         const group = this.$store.getters['group/get'](this.groupid)
 
         if (group) {
@@ -651,7 +646,7 @@ export default {
             // Zoom the map to fit the DPA/CGA of the group.  We need to do this before fetching the locations so that
             // we don't fetch them for the whole country.
             this.initialGroupZoomed = true
-            const area = group.dpa || group.cga
+            const area = group.poly || group.polyofficial
 
             const wkt = new Wkt.Wkt()
             wkt.read(area)
@@ -688,6 +683,8 @@ export default {
         this.bounds = this.$refs.map.mapObject.getBounds()
         this.zoom = this.$refs.map.mapObject.getZoom()
         this.busy = true
+
+        await this.$nextTick()
 
         const data = {
           swlat: this.bounds.getSouthWest().lat,
