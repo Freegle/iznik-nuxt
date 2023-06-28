@@ -21,12 +21,30 @@
               </h4>
             </b-card-title>
             <b-card-text>
-              <span v-if="refmsg.type === 'Offer'">
-                This is no longer available.
-              </span>
-              <span v-else>
-                Thanks, this has now been received.
-              </span>
+              <div v-if="emessage">
+                <NoticeMessage variant="info">
+                  <div class="text-muted small">
+                    <v-icon name="info-circle" />
+                    <span v-if="refmsg && refmsg.type === 'Offer'">
+                      This is no longer available.
+                    </span>
+                    <span v-else> Thanks, this has now been received. </span>
+                  </div>
+                </NoticeMessage>
+                <div class="preline forcebreak mt-1">
+                  {{ emessage }}
+                </div>
+              </div>
+              <div v-else>
+                <v-icon name="info-circle" />
+                <span v-if="refmsg && refmsg.type === 'Offer'">
+                  We've let them know this is no longer available.
+                </span>
+                <span v-else> This has now been received. </span>
+                <div class="text-muted small">
+                  This is an automated message.
+                </div>
+              </div>
             </b-card-text>
           </b-card>
         </div>
@@ -49,17 +67,29 @@
               </h4>
             </b-card-title>
             <b-card-text>
-              <div>
-                <v-icon name="info-circle" />
-                <span v-if="refmsg.type === 'Offer'">
-                  We've let them know this is no longer available.
-                </span>
-                <span v-else>
-                  This has now been received.
-                </span>
+              <div v-if="emessage">
+                <NoticeMessage variant="info">
+                  <div class="small">
+                    <v-icon name="info-circle" />
+                    <span v-if="refmsg && refmsg.type === 'Offer'">
+                      This is no longer available.
+                    </span>
+                    <span v-else> Thanks, this has now been received. </span>
+                  </div>
+                </NoticeMessage>
+                <div class="preline forcebreak mt-1">
+                  {{ emessage }}
+                </div>
               </div>
-              <div class="text-muted small">
-                This is an automated message.
+              <div v-else>
+                <v-icon name="info-circle" />
+                <span v-if="refmsg && refmsg.type === 'Offer'">
+                  This is no longer available.
+                </span>
+                <span v-else> Thanks, this has now been received. </span>
+                <div class="text-muted small">
+                  This is an automated message.
+                </div>
               </div>
             </b-card-text>
           </b-card>
