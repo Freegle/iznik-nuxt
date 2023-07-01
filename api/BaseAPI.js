@@ -62,7 +62,7 @@ export default class BaseAPI {
     // Ensure we tell the API whether we are FD or MT.  Doing it here avoids all the calling code needing to know.
     if (method !== 'POST') {
       if (config.params) {
-        config.params.modtools = modtools
+        config.params.modtools = !!modtools
         config.params.app = process.env.IS_APP ? true : false
         if (pushAccepted) config.params.pushAccepted = (pushAccepted === 2)
       }
@@ -71,7 +71,7 @@ export default class BaseAPI {
         config.data = {}
       }
 
-      config.data.modtools = modtools
+      config.data.modtools = !!modtools
       config.data.app = process.env.IS_APP ? true : false
       if (pushAccepted) config.data.pushAccepted = (pushAccepted === 2)
     }

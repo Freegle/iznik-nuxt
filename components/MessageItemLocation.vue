@@ -37,6 +37,7 @@
 </template>
 <script>
 import twem from 'assets/js/twem'
+import { SUBJECT_REGEX } from '@/utils/constants'
 
 const Highlighter = () => import('vue-highlight-words')
 
@@ -81,7 +82,7 @@ export default {
       let ret = this.subject
 
       if (this.subject) {
-        const matches = /(.*?):([^)].*)\((.*)\)/.exec(this.subject)
+        const matches = SUBJECT_REGEX.exec(this.subject)
 
         if (matches && matches.length > 0 && matches[2].length > 0) {
           ret = matches[2]
@@ -94,7 +95,7 @@ export default {
       let ret = null
 
       if (this.subject) {
-        const matches = /(.*?):([^)].*)\((.*)\)/.exec(this.subject)
+        const matches = SUBJECT_REGEX.exec(this.subject)
 
         if (matches && matches.length > 0 && matches[3].length > 0) {
           ret = matches[3]
