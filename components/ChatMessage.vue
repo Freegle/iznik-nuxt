@@ -1,7 +1,10 @@
 <template>
   <client-only>
     <div
-      :class="selected ? 'selected' : ''"
+      :class="{
+        selected: selected,
+        strike: chatmessage.reviewrejected
+      }"
       @click="selectMe"
     >
       <div v-if="chatmessage.type === 'Default'">

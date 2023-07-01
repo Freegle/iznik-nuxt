@@ -4,7 +4,7 @@
       Hide Help
     </b-btn>
     <p>
-      These are the notes for members on your communities, oldest first.
+      These are the notes for members on your communities, newest first.
     </p>
     <p>
       For GDPR reasons we should not keep notes older than three years unless they are still relevant.  You can

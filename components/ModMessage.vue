@@ -319,6 +319,7 @@
 </template>
 <script>
 import keywords from '@/mixins/keywords.js'
+import { SUBJECT_REGEX } from '@/utils/constants'
 import MessageHistory from './MessageHistory'
 import MessageUserInfo from './MessageUserInfo'
 import MessageReplyInfo from './MessageReplyInfo'
@@ -744,6 +745,12 @@ export default {
       subj = subj.replace(/\s+/g, ' ')
 
       subj = subj.trim()
+
+      const matches = SUBJECT_REGEX.exec(subj)
+      if (matches?.length > 2) {
+        // Well-formed - remove the location.
+        subj = matches[1] + ': ' + matches[2].toLowerCase().trim()
+      }
 
       return subj
     },

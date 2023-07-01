@@ -302,7 +302,18 @@ import { setBadgeCount } from '../plugins/app-init-push' // CC
       this.bump++
     },
     googleLoaded() {
-      this.bumpLogin++
+      if (
+        this.$refs.loginModal &&
+        this.$refs.loginModal.showModal &&
+        this.$refs.loginModal.email
+      ) {
+        console.log(
+          'Showing login modal - leave well alone',
+          this.$refs.loginModal.email
+        )
+      } else {
+        this.bumpLogin++
+      }
     },
     login() {
       this.$refs.loginModal.show()

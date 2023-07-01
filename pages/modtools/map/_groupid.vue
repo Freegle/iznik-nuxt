@@ -32,18 +32,9 @@ export default {
   },
   async mounted() {
     // Get the data before we load the map to avoid timing windows.
-    if (!this.groupid) {
-      // We want to show all groups
-      await this.$store.dispatch('group/list', {
-        grouptype: 'Freegle'
-      })
-    } else {
-      // Areas for a specific group.
-      await this.$store.dispatch('group/fetch', {
-        id: this.groupid,
-        polygon: true
-      })
-    }
+    await this.$store.dispatch('group/list', {
+      grouptype: 'Freegle'
+    })
 
     this.loaded = true
   },

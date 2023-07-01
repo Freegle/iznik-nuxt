@@ -56,7 +56,7 @@
           v-if="admin"
           variant="white"
           class="mr-2 mb-1"
-          :href="user.loginlink ? user.loginlink.replace(/http.*\?u/, 'http://localhost:3000/?u') : null"
+          :href="user.loginlink ? user.loginlink.replace(/http.*\?u/, 'http://localhost:3002/?u') : null"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -103,7 +103,7 @@
             this and future donations.
           </span>
           <span v-if="user.giftaid.period === 'Past4YearsAndFuture'">
-            for four years before date and all future.
+            four years before date and all future.
           </span>
         </p>
       </div>

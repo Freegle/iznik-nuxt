@@ -551,6 +551,11 @@ export default ({ app, store, $api, $axios }) => { // route
 async function checkForAppUpdate($api, $axios, store, router) {
   try {
     if (process.env.IS_APP || process.env.IS_MTAPP) {
+      // In due course, switch to use:
+      // https://api.ilovefreegle.org/apiv2/config/app_mt_version_android_latest
+      // https://api.ilovefreegle.org/apiv2/config/app_mt_version_android_required
+      // https://api.ilovefreegle.org/apiv2/config/app_mt_version_ios_latest
+      // https://api.ilovefreegle.org/apiv2/config/app_mt_version_ios_required
       //console.log('checkForAppUpdate isIOS', mobilestate.isiOS)
       const requiredKey = process.env.IS_MTAPP ? (mobilestate.isiOS ? 'app_mt_version_ios_required' : 'app_mt_version_android_required') :
         (mobilestate.isiOS ? 'app_fd_version_ios_required' : 'app_fd_version_android_required')
