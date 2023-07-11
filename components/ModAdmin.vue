@@ -7,15 +7,20 @@
             <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ admin.id }}
           </b-col>
           <b-col cols="6" md="3" class="small">
-            Created {{ timeago(admin.created) }}
-            <span v-if="!admin.pending">
-              <span v-if="admin.complete">
-                Sent {{ timeago(admin.complete) }}
+            <div>
+              Created {{ timeago(admin.created) }}
+              <span v-if="!admin.pending">
+                <span v-if="admin.complete">
+                  Sent {{ timeago(admin.complete) }}
+                </span>
+                <span v-else>
+                  Queued for send
+                </span>
               </span>
-              <span v-else>
-                Queued for send
-              </span>
-            </span>
+            </div>
+            <div v-if="admin.sendafter && !admin.complete" class="text-danger">
+              Will send after {{ datetimeshort(admin.sendafter) }}
+            </div>
           </b-col>
           <b-col cols="12" md="4">
             {{ admin.subject }}
