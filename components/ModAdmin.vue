@@ -105,6 +105,9 @@
             rows="15"
           />
         </b-form-group>
+        <NoticeMessage v-if="admin.ctalink" variant="info" class="mb-2">
+          The following text and link will be added as a big green button in the mails for people to click on.
+        </NoticeMessage>
         <b-form-group
           label="Call To Action text:"
           label-for="ctatext"
