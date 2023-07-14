@@ -5,10 +5,10 @@
         <div class="d-flex">
           <v-icon name="sync" :class="busy ? 'text-success fa-spin ml-4 mt-1' : 'text-faded ml-4 mt-1'" scale="2" />
         </div>
-        <b-form-checkbox v-if="groups" v-model="cga" class="ml-2">
+        <b-form-checkbox v-if="groups || groupid" v-model="cga" class="ml-2">
           <strong style="color: darkgreen">Show CGAs</strong>
         </b-form-checkbox>
-        <b-form-checkbox v-if="groups" v-model="dpa" class="ml-2">
+        <b-form-checkbox v-if="groups || groupid" v-model="dpa" class="ml-2">
           <strong style="color: darkblue">Show DPAs</strong>
         </b-form-checkbox>
         <b-form-checkbox v-if="groupid" v-model="labels" class="ml-2 font-weight-bold">
@@ -181,6 +181,9 @@
               <SpinButton v-if="selectedId" variant="danger" name="trash-alt" label="Delete" :handler="deleteArea" />
             </b-card-footer>
           </b-card>
+          <NoticeMessage v-if="zoom <= 12" variant="danger" show class="mb-2">
+            Please zoom in further to see locations.
+          </NoticeMessage>
           <ModPostcodeTester />
           <b-card v-if="dodgyInBounds.length" no-body style="max-height: 600px; overflow-y: scroll">
             <b-card-header class="bg-warning d-flex justify-content-between">
@@ -216,6 +219,7 @@ import ModPostcodeTester from '@/components/ModPostcodeTester'
 import turfpolygon from 'turf-polygon'
 import turfintersect from 'turf-intersect'
 import turfarea from 'turf-area'
+import NoticeMessage from '@/components/NoticeMessage'
 import SpinButton from './SpinButton'
 import ModGroupMapLocation from './ModGroupMapLocation'
 import ClusterMarker from '~/components/ClusterMarker'
@@ -243,6 +247,7 @@ const DPA_BOUNDARY_COLOUR = 'darkblue'
 
 export default {
   components: {
+    NoticeMessage,
     ModChangedMapping,
     ModGroupMapLocation,
     ModPostcodeTester,
@@ -632,11 +637,6 @@ export default {
         .addTo(self.$refs.map.mapObject)
 
       if (this.groupid) {
-        await this.$store.dispatch('group/fetch', {
-          id: this.groupid,
-          polygon: true
-        })
-
         const group = this.$store.getters['group/get'](this.groupid)
 
         if (group) {
@@ -646,7 +646,7 @@ export default {
             // Zoom the map to fit the DPA/CGA of the group.  We need to do this before fetching the locations so that
             // we don't fetch them for the whole country.
             this.initialGroupZoomed = true
-            const area = group.dpa || group.cga
+            const area = group.poly || group.polyofficial
 
             const wkt = new Wkt.Wkt()
             wkt.read(area)
@@ -683,6 +683,8 @@ export default {
         this.bounds = this.$refs.map.mapObject.getBounds()
         this.zoom = this.$refs.map.mapObject.getZoom()
         this.busy = true
+
+        await this.$nextTick()
 
         const data = {
           swlat: this.bounds.getSouthWest().lat,

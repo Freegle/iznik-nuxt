@@ -114,6 +114,12 @@
                 Avoid text - it's not readable.  Aim for a simple image that people will recognise as relating to your
                 location.
               </b-form-text>
+              <NoticeMessage variant="warning" class="mb-2">
+                Remember not to use copyrighted images.  See <ExternalLink href="https://wiki.ilovefreegle.org/How_to_add_a_picture_to_a_community_home_page">
+                  here
+                </ExternalLink>
+                for more info.
+              </NoticeMessage>
               <GroupProfileImage
                 :image="group.profile ? group.profile : '/placeholder.png'"
                 :alt-text="'Profile picture for ' + group.namedisplay"
@@ -383,7 +389,7 @@
               :groupid="groupid"
               name="settings.widerchatreview"
               label="Quicker Chat Review?"
-              description="Chat messages between members may get sent for review to check they're ok.  They will always show for you if the recipient is a member of your group.  You can choose whether they are also shown to other Freegle mods who have chosen this setting, in which case they can be approved quickly if they are innocent (but can't be rejected).  Otherwise they'll only show for mods on the group."
+              description="Chat messages between members may get sent for review to check they're ok.  They will always show for you if the recipient is a member of your group.  You can choose whether they are also shown to other Freegle mods who have chosen this setting, in which case they can be approved quickly if they are innocent (but can't be rejected).  Otherwise they'll only show for mods on the group.  NB this function is not active yet - see https://discourse.ilovefreegle.org/t/messages-delayed-in-chat-review/4633/82 for details"
               type="toggle"
               toggle-checked="All Freegle Mods"
               toggle-unchecked="Just this group"

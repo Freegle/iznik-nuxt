@@ -57,7 +57,7 @@
             </span>
             <span v-else-if="log.message">
               <span v-if="log.message.deleted">
-                <em>Emailed message #{{ log.message.id }} which has been deleted</em>
+                <em>Emailed message #{{ log.message.id }} which has been deleted (typically email chat reply)</em>
               </span>
               <span v-else>
                 Emailed <em>{{ log.message.subject }}</em> to <em>{{ log.message.envelopeto }}</em>
