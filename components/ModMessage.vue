@@ -913,27 +913,23 @@ export default {
   }
 }
 
+.addedMessage, .removedMessage {
+  display: none;
+}
+
 .addedImage {
   border: 1px solid $color-green--dark !important;
 
   .addedMessage {
-    display: block;
-  }
-
-  .removedMessage {
-    display: none;
+    display: block !important;
   }
 }
 
 .removedImage {
   border: 1px solid $color-red--dark !important;
 
-  .addedMessage {
-    display: none;
-  }
-
   .removedMessage {
-    display: block;
+    display: block !important;
   }
 }
 </style>
