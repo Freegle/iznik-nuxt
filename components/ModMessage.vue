@@ -171,7 +171,15 @@
                 </span>
               </div>
               <div v-if="attachments.length" class="w-100 d-flex flex-wrap">
-                <ModPhoto v-for="attachment in attachments" :key="'attachment-' + attachment.id" :message="message" :attachment="attachment" class="d-inline pr-1" />
+                <div v-for="attachment in attachments" :key="'attachment-' + attachment.id" :class="{'d-inline':true, 'pr-1': true, addedImage: imageAdded(attachment.id), removeImage: imageRemoved(attachment.id)}">
+                  <div class="addedMessage pl-2 font-weight-bold text-success">
+                    Added
+                  </div>
+                  <div class="removedMessage pl-2 font-weight-bold text-warning">
+                    Removed
+                  </div>
+                  <ModPhoto :message="message" :attachment="attachment" />
+                </div>
               </div>
               <MessageReplyInfo v-if="!pending || message.replies && message.replies.length" :message="message" class="d-inline" />
             </div>
@@ -641,6 +649,36 @@ export default {
     this.$emit('destroy', this.message.id, this.next)
   },
   methods: {
+    imageAdded(id) {
+      let ret = false
+
+      if (this.editreview && this.message && this.message.edits) {
+        this.message.edits.forEach(edit => {
+          const n = edit.newimages ? JSON.parse(edit.newimages) : []
+          const o = edit.oldimages ? JSON.parse(edit.oldimages) : []
+          if (n.includes(id) && !o.includes(id)) {
+            ret = true
+          }
+        })
+      }
+
+      return ret
+    },
+    imageRemoved(id) {
+      let ret = false
+
+      if (this.editreview && this.message && this.message.edits) {
+        this.message.edits.forEach(edit => {
+          const n = edit.newimages ? JSON.parse(edit.newimages) : []
+          const o = edit.oldimages ? JSON.parse(edit.oldimages) : []
+          if (!n.includes(id) && o.includes(id)) {
+            ret = true
+          }
+        })
+      }
+
+      return ret
+    },
     hasCollection(coll) {
       let ret = false
 
@@ -850,6 +888,7 @@ export default {
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins/_breakpoints';
+@import 'color-vars';
 
 .type {
   max-width: 150px;
@@ -871,6 +910,30 @@ export default {
 
   @include media-breakpoint-down(md) {
     grid-template-columns: 1fr;
+  }
+}
+
+.addedImage {
+  border: 1px solid $color-green--dark !important;
+
+  .addedMessage {
+    display: block;
+  }
+
+  .removedMessage {
+    display: none;
+  }
+}
+
+.removedImage {
+  border: 1px solid $color-red--dark !important;
+
+  .addedMessage {
+    display: none;
+  }
+
+  .removedMessage {
+    display: block;
   }
 }
 </style>
