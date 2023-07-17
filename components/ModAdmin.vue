@@ -7,20 +7,15 @@
             <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ admin.id }}
           </b-col>
           <b-col cols="6" md="3" class="small">
-            <div>
-              Created {{ timeago(admin.created) }}
-              <span v-if="!admin.pending">
-                <span v-if="admin.complete">
-                  Sent {{ timeago(admin.complete) }}
-                </span>
-                <span v-else>
-                  Queued for send
-                </span>
+            Created {{ timeago(admin.created) }}
+            <span v-if="!admin.pending">
+              <span v-if="admin.complete">
+                Sent {{ timeago(admin.complete) }}
               </span>
-            </div>
-            <div v-if="admin.sendafter && !admin.complete" class="text-danger">
-              Will send after {{ datetimeshort(admin.sendafter) }}
-            </div>
+              <span v-else>
+                Queued for send
+              </span>
+            </span>
           </b-col>
           <b-col cols="12" md="4">
             {{ admin.subject }}
@@ -105,9 +100,6 @@
             rows="15"
           />
         </b-form-group>
-        <NoticeMessage v-if="admin.ctalink" variant="info" class="mb-2">
-          The following text and link will be added as a big green button in the mails for people to click on.
-        </NoticeMessage>
         <b-form-group
           label="Call To Action text:"
           label-for="ctatext"
@@ -137,7 +129,7 @@
         <b-btn v-if="!admin.heldby" variant="warning" @click="deleteIt">
           <v-icon name="trash-alt" /> Delete
         </b-btn>
-        <b-btn v-if="!admin.heldby" variant="white" @click="save">
+        <b-btn v-if="!admin.heldby || admin.heldby === myid" variant="white" @click="save">
           <v-icon v-if="saving" name="sync" class="text-success fa-spin" />
           <v-icon v-else-if="saved" name="check" class="text-success" />
           <v-icon v-else name="save" />
