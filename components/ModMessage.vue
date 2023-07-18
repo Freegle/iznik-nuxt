@@ -913,7 +913,8 @@ export default {
   }
 }
 
-.addedMessage, .removedMessage {
+.addedMessage,
+.removedMessage {
   display: none;
 }
 

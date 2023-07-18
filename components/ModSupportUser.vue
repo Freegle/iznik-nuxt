@@ -194,6 +194,9 @@
             <SpinButton variant="white" name="save" label="Add Email" :handler="addEmail" />
           </b-input-group-append>
         </b-input-group>
+        <NoticeMessage v-if="emailAddError" variant="danger" class="mt-2">
+          {{ emailAddError }}
+        </NoticeMessage>
       </div>
       <h3 class="mt-2">
         Notifications
@@ -408,7 +411,8 @@ export default {
       newpassword: null,
       newemail: null,
       newEmailAs: 1,
-      addComment: false
+      addComment: false,
+      emailAddError: null
     }
   },
   computed: {
@@ -569,12 +573,18 @@ export default {
       }
     },
     async addEmail() {
+      this.emailAddError = null
+
       if (this.newemail) {
-        await this.$store.dispatch('user/addEmail', {
-          id: this.user.id,
-          email: this.newemail,
-          primary: parseInt(this.newEmailAs) === 1
-        })
+        try {
+          await this.$store.dispatch('user/addEmail', {
+            id: this.user.id,
+            email: this.newemail,
+            primary: parseInt(this.newEmailAs) === 1
+          })
+        } catch (e) {
+          this.emailAddError = e.message
+        }
       }
     },
     maybeExpand() {
