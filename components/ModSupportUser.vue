@@ -60,7 +60,7 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          <v-icon name="user" /> Impersonate (localhost:3000)
+          <v-icon name="user" /> Impersonate (localhost:3002)
         </b-btn>
         <ModMergeButton class="mr-2 mb-1" />
         <b-btn variant="white" class="mr-2 mb-1" @click="logs">
