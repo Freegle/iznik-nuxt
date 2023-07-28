@@ -30,7 +30,7 @@ const IZNIK_API = process.env.IZNIK_API || 'https://fdapilive.ilovefreegle.org'
 const USER_SITE = 'https://www.ilovefreegle.org'
 
 // This is where images are served from.
-const IMAGE_SITE = 'https://images.ilovefreegle.org'
+const IMAGE_SITE = process.env.IMAGE_SITE || 'https://images.ilovefreegle.org'
 
 // Long polls interact badly with per-host connection limits so send to here instead.
 const CHAT_HOST = 'https://users.ilovefreegle.org:555'

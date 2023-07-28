@@ -2,8 +2,9 @@ FROM node:14-alpine3.15
 
 WORKDIR /app
 
-ENV IZNIK_API=http://apiv1 \
-	API=http://apiv1/api
+ENV IZNIK_API=https://apiv1 \
+	API=https://apiv1/api \
+	IMAGE_SITE=https://apiv1
 
 RUN apk update && apk add git python2 \
     && git clone https://github.com/Freegle/iznik-nuxt.git
