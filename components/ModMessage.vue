@@ -202,7 +202,7 @@
                   Sender only available to mods.
                 </NoticeMessage>
                 <NoticeMessage v-else variant="danger">
-                  Can't identify sender.  Could have been purged but probably a bug.
+                  Can't identify sender.  Could have been purged but perhaps a bug.
                 </NoticeMessage>
               </div>
             </div>
