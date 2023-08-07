@@ -166,6 +166,9 @@ export default {
     },
     findLongest(s1, s2) {
       // From https://codereview.stackexchange.com/questions/210940/find-longest-common-string-subsequence
+      s1 = s1 + ''
+      s2 = s2 + ''
+
       const removeDistinct = (s1, s2) =>
         s1
           .split('')
