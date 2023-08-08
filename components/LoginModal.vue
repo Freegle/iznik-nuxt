@@ -42,15 +42,16 @@
         <p v-if="signUp" class="font-weight-bold">
           Using one of these buttons is the easiest way to create an account:
         </p>
-        <b-btn class="social-button social-button--facebook" :disabled="facebookDisabled" @click="loginFacebook">
-          <b-img src="~/static/signinbuttons/facebook-logo.png" class="social-button__image" />
-          <span class="p-2 text--medium font-weight-bold">Continue with Facebook</span>
-        </b-btn>
         <b-btn id="googleLoginButton" ref="googleLoginButton" class="social-button social-button--google" :disabled="googleDisabled" />
         <b-btn class="social-button social-button--yahoo" :disabled="yahooDisabled" @click="loginYahoo">
           <b-img src="~/static/signinbuttons/yahoo-logo.svg" class="social-button__image" />
           <span class="p-2 text--medium font-weight-bold">Continue with Yahoo</span>
         </b-btn>
+        <p v-if="modtools" class="text-center">
+          <!-- eslint-disable-next-line -->
+          You can't log in to ModTools using Facebook, I'm afraid.  If that's how you log in to Freegle, use email/password
+          and trigger a lost password request.
+        </p>
         <notice-message v-if="socialblocked" variant="warning">
           Social log in blocked - check your privacy settings, including any ad blockers such as
           Adblock Plus.
@@ -168,9 +169,7 @@
     </div>
   </b-modal>
 </template>
-
 <script>
-import Vue from 'vue'
 import { LoginError, SignUpError } from '../api/BaseAPI'
 import EmailValidator from './EmailValidator'
 
@@ -217,18 +216,6 @@ export default {
     },
     // Use of this.bump means we will recompute when we need to, i.e. when the modal is shown.  This is overriding
     // normal reactivity but that's because the SDKs we use aren't written in Vue.
-    facebookDisabled() {
-      console.log(
-        'Evaluate Facebook disabled',
-        this.showSocialLoginBlocked,
-        typeof Vue.FB,
-        this.bump
-      )
-      return (
-        this.bump &&
-        (this.showSocialLoginBlocked || typeof Vue.FB === 'undefined')
-      )
-    },
     googleDisabled() {
       return (
         this.bump &&
@@ -244,7 +231,7 @@ export default {
       const ret =
         this.bump &&
         this.initialisedSocialLogin &&
-        (this.facebookDisabled || this.googleDisabled || this.yahooDisabled) &&
+        (this.googleDisabled || this.yahooDisabled) &&
         this.timerElapsed
       return ret
     },
@@ -285,13 +272,6 @@ export default {
         this.pleaseShowModal = newVal
 
         if (newVal) {
-          if (!this.initialisedSocialLogin) {
-            // We only use the Google and Facebook SDKs in login, so we can install them here in the modal.  This means we
-            // don't load the scripts for every page.
-            this.installFacebookSDK()
-            this.initialisedSocialLogin = true
-          }
-
           // Need to install Google every time to get the button rendered.
           this.installGoogleSDK()
         }
@@ -480,42 +460,6 @@ export default {
           })
       }
     },
-    async loginFacebook() {
-      this.$store.dispatch('auth/setLoginType', 'Facebook')
-
-      this.nativeLoginError = null
-      this.socialLoginError = null
-      try {
-        let response = null
-        const promise = new Promise(function(resolve) {
-          Vue.FB.login(
-            function(ret) {
-              response = ret
-              resolve()
-            },
-            { scope: 'email' }
-          )
-        })
-
-        await promise
-        if (response.authResponse) {
-          const accessToken = response.authResponse.accessToken
-
-          await this.$store.dispatch('auth/login', {
-            fblogin: 1,
-            fbaccesstoken: accessToken
-          })
-
-          // We are now logged in.
-          self.pleaseShowModal = false
-        } else {
-          this.socialLoginError =
-            'Facebook response is unexpected.  Please try later.'
-        }
-      } catch (e) {
-        this.socialLoginError = 'Facebook login error: ' + e.message
-      }
-    },
     async handleGoogleCredentialsResponse(response) {
       console.log('Google login', response)
       this.loginType = 'Google'
@@ -615,61 +559,6 @@ export default {
           console.log('Google not yet fully loaded')
         }
       })
-    },
-    installFacebookSDK() {
-      if (typeof Vue.FB === 'undefined') {
-        console.log('Need to install Facebook SDK')
-        const VueFB = {}
-
-        VueFB.install = function install(Vue, options) {
-          Vue.FB = undefined
-
-          window.fbAsyncInit = function() {
-            window.FB.init(options)
-            window.FB.AppEvents.logPageView()
-            Vue.FB = window.FB
-
-            // We need to have some special code for IE11 - see https://stackoverflow.com/questions/27176983/dispatchevent-not-working-in-ie11.
-            let event
-
-            if (typeof Event === 'function') {
-              event = new Event('fb-sdk-ready')
-            } else {
-              event = document.createEvent('Event')
-              event.initEvent('fb-sdk-ready', true, true)
-            }
-          }
-          ;(function(d, s, id) {
-            setTimeout(() => {
-              try {
-                const fjs = d.getElementsByTagName(s)[0]
-                if (d.getElementById(id)) {
-                  return
-                }
-
-                const js = d.createElement(s)
-                js.id = id
-                js.src = '//connect.facebook.net/en_US/sdk.js'
-                fjs.parentNode.insertBefore(js, fjs)
-              } catch (e) {
-                console.error('Failed to load Facebook SDK', e)
-              }
-            }, 1000)
-          })(document, 'script', 'facebook-jssdk')
-        }
-
-        Vue.use(VueFB, {
-          appId: process.env.FACEBOOK_APPID,
-          autoLogAppEvents: true,
-          xfbml: true,
-          version: 'v4.0'
-        })
-
-        console.log('Installed FB SDK, bump')
-        this.bump++
-      } else {
-        console.log('FB SDK already loaded')
-      }
     }
   }
 }
