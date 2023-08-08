@@ -19,6 +19,14 @@
             <span v-if="log.user && log.byuser && log.byuser.id !== log.user.id">
               (added by <ModLogUser :user="log.byuser" />)
             </span>
+            <span v-if="log.text">
+              <span v-if="log.text === 'Manual'">
+                Clicked on Join button
+              </span>
+              <span v-else>
+                Joined automatically when posting/replying
+              </span>
+            </span>
           </span>
           <span v-else-if="log.subtype === 'Applied'">
             Applied to <ModLogGroup :log="log" />

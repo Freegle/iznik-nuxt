@@ -8,7 +8,7 @@ const SENTRY_DSN = 'https://b68903e730034a4ba3b8b2358331389e@o118493.ingest.sent
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
 const MOBILE_VERSION = '2.0.120'
-const MODTOOLS_VERSION = '0.3.96'
+const MODTOOLS_VERSION = '0.3.97'
 
 require('dotenv').config()
 
@@ -39,7 +39,7 @@ const IZNIK_API = process.env.IZNIK_API || 'https://fdapilive.ilovefreegle.org'
 const USER_SITE = 'https://www.ilovefreegle.org'
 
 // This is where images are served from.
-const IMAGE_SITE = 'https://images.ilovefreegle.org'
+const IMAGE_SITE = process.env.IMAGE_SITE || 'https://images.ilovefreegle.org'
 
 // Long polls interact badly with per-host connection limits so send to here instead.
 const CHAT_HOST = 'https://users.ilovefreegle.org:555'
