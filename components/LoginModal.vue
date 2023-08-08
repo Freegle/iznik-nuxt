@@ -59,6 +59,10 @@
           <b-img src="~/static/signinbuttons/yahoo-logo.svg" class="social-button__image" />
           <span class="p-2 text--medium font-weight-bold">Continue with Yahoo</span>
         </b-btn>
+        <p v-if="modtools" class="text-center">
+          You can't log in to ModTools using Facebook, I'm afraid.  If that's how you log in to Freegle, use email/password
+          and trigger a lost password request.
+        </p>
         <notice-message v-if="socialblocked" variant="warning">
           Social log in blocked - check your privacy settings, including any ad blockers such as
           Adblock Plus.
@@ -255,6 +259,10 @@ export default {
     // Use of this.bump means we will recompute when we need to, i.e. when the modal is shown.  This is overriding
     // normal reactivity but that's because the SDKs we use aren't written in Vue.
     facebookDisabled() {
+      if (process.env.IS_MTAPP) {
+        console.log("facebookDisabled true")
+        return true // MT app disabled
+      }
       if (process.env.IS_APP) { // CC
         console.log("facebookDisabled false")
         return false // MT app enabled now
