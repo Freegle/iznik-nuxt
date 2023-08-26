@@ -53,7 +53,6 @@
   "dependencies": {
     "cordova-plugin-camera": "^6.0.0",
     "cordova-plugin-device": "^2.0.3",
-    "cordova-plugin-facebook-connect": "3.2.0",
     "cordova-plugin-geolocation": "^4.1.0",
     "cordova-plugin-google-signin": "git+https://github.com/Freegle/cordova-plugin-google-signin.git",
     "cordova-plugin-inappbrowser": "^5.0.0",
