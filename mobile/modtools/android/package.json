@@ -32,18 +32,6 @@
       "@havesource/cordova-plugin-push": {
         "ANDROIDX_CORE_VERSION": "1.6.+",
         "FCM_VERSION": "23.+"
-      },
-      "cordova-plugin-facebook-connect": {
-        "APP_ID": "161792100826551",
-        "APP_NAME": "ModTools",
-        "FACEBOOK_URL_SCHEME_SUFFIX": " ",
-        "OTHER_APP_SCHEMES": " ",
-        "FACEBOOK_AUTO_LOG_APP_EVENTS": "true",
-        "FACEBOOK_HYBRID_APP_EVENTS": "false",
-        "FACEBOOK_ADVERTISER_ID_COLLECTION": "true",
-        "FACEBOOK_ANDROID_SDK_VERSION": "16.1.3",
-        "FACEBOOK_IOS_SDK_VERSION": "16.1.3",
-        "FACEBOOK_BROWSER_SDK_VERSION": "v16.0"
       }
     },
     "platforms": [
