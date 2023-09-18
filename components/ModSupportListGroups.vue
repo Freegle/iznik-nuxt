@@ -246,24 +246,41 @@ export default {
       )
     },
     autoApproves(hotInstance, td, row, column, prop, value, cellProperties) {
-      let auto = parseInt(value)
+      // We don't want to highlight the colour for unpublished groups, because they're not actually causing any
+      // issues.
+      const publish = cellProperties.instance.getDataAtRow(row)[7]
 
-      if (auto > 50) {
-        td.style.backgroundColor = 'orange'
+      if (publish) {
+        let auto = parseInt(value)
+
+        if (auto > 50) {
+          td.style.backgroundColor = 'orange'
+        }
+
+        auto = Math.abs(auto)
+
+        Handsontable.renderers.NumericRenderer.call(
+          this,
+          hotInstance,
+          td,
+          row,
+          column,
+          prop,
+          auto,
+          cellProperties
+        )
+      } else {
+        Handsontable.renderers.TextRenderer.call(
+          this,
+          hotInstance,
+          td,
+          row,
+          column,
+          prop,
+          '-',
+          cellProperties
+        )
       }
-
-      auto = Math.abs(auto)
-
-      Handsontable.renderers.NumericRenderer.call(
-        this,
-        hotInstance,
-        td,
-        row,
-        column,
-        prop,
-        auto,
-        cellProperties
-      )
     },
     forceDate(hotInstance, td, row, column, prop, value, cellProperties) {
       let val = '-'
