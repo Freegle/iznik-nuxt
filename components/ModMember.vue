@@ -165,6 +165,15 @@
               color="#61AE24"
               @change="changeNewsletter"
             />
+            <OurToggle
+              v-model="autorepost"
+              :height="30"
+              :width="200"
+              :font-size="14"
+              :sync="true"
+              :labels="{checked: 'Autorepost On', unchecked: 'Autorepost Off'}"
+              color="#61AE24"
+            />
           </div>
         </div>
       </b-card-body>
@@ -364,6 +373,12 @@ export default {
       set(newval) {
         this.user.newslettersallowed = newval
       }
+    },
+    autorepost: {
+      get() {
+        return this.member && Boolean(!this.member.autorepostsdisable)
+      },
+      setnewval() {}
     }
   },
   mounted() {
