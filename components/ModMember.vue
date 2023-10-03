@@ -377,9 +377,7 @@ export default {
     autorepost: {
       get() {
         return (
-          this.member &&
-          !this.isTN() &&
-          Boolean(!this.member.autorepostsdisable)
+          this.member && !this.isTN && Boolean(!this.member.autorepostsdisable)
         )
       },
       setnewval() {}
