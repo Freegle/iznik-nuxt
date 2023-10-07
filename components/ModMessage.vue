@@ -207,7 +207,7 @@
               </div>
             </div>
             <div class="d-flex justify-content-between flex-wrap">
-              <b-btn variant="link" @click="toggleMail">
+              <b-btn v-if="message.fromuser && !message.fromuser.ljuserid && !message.fromuser.tnuserid" variant="link" @click="toggleMail">
                 <span v-if="showMailSettings">
                   <v-icon name="cog" />
                   <span class="d-inline d-sm-none">
