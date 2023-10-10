@@ -130,7 +130,7 @@ export default {
         const CGA = this.CGA
 
         if (CGA) {
-          return turfbuffer(CGA, this.scale, { units: 'meters' })
+          return turfbuffer(CGA, this.scale, 'meters')
         } else {
           return null
         }

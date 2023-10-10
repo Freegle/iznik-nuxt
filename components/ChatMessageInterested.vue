@@ -3,6 +3,11 @@
     <div class="chatMessage forcebreak chatMessage__owner">
       <div v-if="chatmessage.userid != myid">
         <ChatMessageSummary v-if="refmsg" :message="refmsg" class="mt-1 mb-2" />
+        <div v-if="modtools">
+          <b-button variant="white" :to="modtoolsLink">
+            View message on ModTools
+          </b-button>
+        </div>
         <div>
           <!-- eslint-disable-next-line -->
           <span v-if="(chatmessage.secondsago < 60) || (chatmessage.id > chat.lastmsgseen)" class="prewrap font-weight-bold" v-html="emessage" />
@@ -113,6 +118,15 @@ export default {
       }
 
       return ret
+    },
+    modtoolsLink() {
+      if (!this.modtools || !this.refmsg || !this.refmsg.id) {
+        return null
+      }
+
+      const url = '/modtools/message/' + this.refmsg.id
+
+      return url
     }
   },
   methods: {
