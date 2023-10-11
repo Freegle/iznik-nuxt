@@ -3,12 +3,12 @@ import Sentry from '@nuxtjs/sentry'
 import { Dedupe as DedupeIntegration } from '@sentry/integrations'
 import sitemap from './utils/sitemap.js'
 
-const FACEBOOK_APPID = '134980666550322'
+// const FACEBOOK_APPID = '134980666550322'
 const SENTRY_DSN = 'https://b68903e730034a4ba3b8b2358331389e@o118493.ingest.sentry.io/4504362603184128' // Cordova
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
 const MOBILE_VERSION = '2.0.120'
-const MODTOOLS_VERSION = '0.3.98'
+const MODTOOLS_VERSION = '0.3.99'
 
 require('dotenv').config()
 
@@ -85,10 +85,10 @@ const config = {
       { hid: 'author', name: 'author', content: 'Freegle' },
       { name: 'supported-color-schemes', content: 'light' },
       { name: 'color-scheme', content: 'light' },
-      {
-        name: 'facebook-domain-verification',
-        content: 'zld0jt8mvf06rt1c3fnxvls3zntxj6'
-      },
+      // {
+      //  name: 'facebook-domain-verification',
+      //  content: 'zld0jt8mvf06rt1c3fnxvls3zntxj6'
+      // },
       { hid: 'og:type', property: 'og:type', content: 'website' },
       {
         hid: 'description',
@@ -120,14 +120,14 @@ const config = {
         property: 'og:url',
         content: 'https://www.ilovefreegle.org'
       },
-      { hid: 'fb:app_id', property: 'fb:app_id', content: FACEBOOK_APPID },
+      // { hid: 'fb:app_id', property: 'fb:app_id', content: FACEBOOK_APPID },
       {
         hid: 'og:description',
         property: 'og:description',
         content:
           "Give and get stuff for free in your local community.  Don't just recycle - reuse, freecycle and freegle!"
       },
-      { hid: 'fb:app_id', property: 'og:site_name', content: FACEBOOK_APPID },
+      // { hid: 'fb:app_id', property: 'og:site_name', content: FACEBOOK_APPID },
 
       {
         hid: 'twitter:title',
@@ -164,8 +164,8 @@ const config = {
       { rel: 'preconnect', href: 'https://www.youtube.com' },
       { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
       { rel: 'preconnect', href: 'https://storage.googleapis.com' },
-      { rel: 'preconnect', href: 'https://www.facebook.com' },
-      { rel: 'preconnect', href: 'https://connect.facebook.com' },
+      // { rel: 'preconnect', href: 'https://www.facebook.com' },
+      // { rel: 'preconnect', href: 'https://connect.facebook.com' },
       { rel: 'preconnect', href: 'https://apis.google.com' }
     ]
   },
@@ -220,7 +220,7 @@ const config = {
     { src: '~/plugins/vue-lazy-youtube-video', ssr: false },
     { src: '~/plugins/inspectlet', ssr: false },
     { src: '~/plugins/app-init-push.js', mode: 'client' },
-    { src: '~/plugins/app-facebook.js', mode: 'client' },
+    // { src: '~/plugins/app-facebook.js', mode: 'client' },
     { src: '~/plugins/app-google.js', mode: 'client' },
     { src: '~/plugins/app-yahoo.js', mode: 'client' },
     { src: '~/plugins/app-apple.js', mode: 'client' },
@@ -658,7 +658,7 @@ const config = {
     CHAT_HOST: CHAT_HOST,
     OSM_TILE: OSM_TILE,
     GEOCODE: GEOCODE,
-    FACEBOOK_APPID: FACEBOOK_APPID,
+    // FACEBOOK_APPID: FACEBOOK_APPID,
     YAHOO_CLIENTID: YAHOO_CLIENTID,
     GOOGLE_MAPS_KEY: 'AIzaSyCdTSJKGWJUOx2pq1Y0f5in5g4kKAO5dgg',
     GOOGLE_API_KEY: 'AIzaSyArVxoX781qdcbmQZi1PKHX-qa0bPbboH4',

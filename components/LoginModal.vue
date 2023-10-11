@@ -42,10 +42,10 @@
         <p v-if="signUp" class="font-weight-bold">
           Using one of these buttons is the easiest way to create an account:
         </p>
-        <b-btn class="social-button social-button--facebook" :disabled="facebookDisabled" @click="loginFacebook">
+        <!--b-btn class="social-button social-button--facebook" :disabled="facebookDisabled" @click="loginFacebook">
           <b-img src="~/static/signinbuttons/facebook-logo.png" class="social-button__image" />
           <span class="p-2 text--medium font-weight-bold">Continue with Facebook</span>
-        </b-btn>
+        </b-btn-->
         <b-btn v-if="isiOSapp" class="social-button social-button--apple" :disabled="appleDisabled" @click="loginApple">
           <b-img src="~/static/signinbuttons/Apple_logo_white.svg" class="social-button__image" style="padding: 0px;" />
           <span class="p-2 social-button__text font-weight-bold">Sign in with Apple</span>
@@ -59,10 +59,10 @@
           <b-img src="~/static/signinbuttons/yahoo-logo.svg" class="social-button__image" />
           <span class="p-2 text--medium font-weight-bold">Continue with Yahoo</span>
         </b-btn>
-        <p v-if="modtools" class="text-center">
+        <!--p v-if="modtools" class="text-center">
           You can't log in to ModTools using Facebook, I'm afraid.  If that's how you log in to Freegle, use email/password
           and trigger a lost password request.
-        </p>
+        </p--->
         <notice-message v-if="socialblocked" variant="warning">
           Social log in blocked - check your privacy settings, including any ad blockers such as
           Adblock Plus.
@@ -890,7 +890,7 @@ export default {
         }
 
         Vue.use(VueFB, {
-          appId: process.env.FACEBOOK_APPID,
+          // appId: process.env.FACEBOOK_APPID,
           autoLogAppEvents: true,
           xfbml: true,
           version: 'v4.0'

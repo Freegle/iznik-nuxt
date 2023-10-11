@@ -3,8 +3,13 @@
     <b-card bg-variant="white" no-body>
       <b-card-header class="d-flex justify-content-between flex-wrap">
         <div>
-          <!-- eslint-disable-next-line -->
-          <v-icon name="envelope" /> <ExternalLink :href="'mailto:' + email">{{ email }}</ExternalLink>
+          <div v-if="isLJ">
+            LoveJunk user #{{ user.ljuserid }}
+          </div>
+          <div v-else>
+            <!-- eslint-disable-next-line -->
+            <v-icon name="envelope" /> <ExternalLink :href="'mailto:' + email">{{ email }}</ExternalLink>
+          </div>
         </div>
         <div>
           <ProfileImage :image="member.profile.turl" class="ml-1 mb-1 inline" is-thumbnail size="sm" />
@@ -112,7 +117,7 @@
             </div>
           </div>
         </div>
-        <div v-if="user && user.id && !isTN">
+        <div v-if="user && user.id && !isTN && !isLJ">
           <hr>
           <div class="d-flex justify-content-between flex-wrap">
             <OurToggle
@@ -164,6 +169,15 @@
               :labels="{checked: 'Newsletters On', unchecked: 'Newsletters Off'}"
               color="#61AE24"
               @change="changeNewsletter"
+            />
+            <OurToggle
+              v-model="autorepost"
+              :height="30"
+              :width="200"
+              :font-size="14"
+              :sync="true"
+              :labels="{checked: 'Autorepost On', unchecked: 'Autorepost Off'}"
+              color="#61AE24"
             />
           </div>
         </div>
@@ -315,7 +329,6 @@ export default {
       if (this.user) {
         if (this.user.emails) {
           this.user.emails.forEach(e => {
-            console.log('Check email', e.email)
             if (e.email && e.email.indexOf('@user.trashnothing.com') !== -1) {
               ret = true
             }
@@ -324,6 +337,9 @@ export default {
       }
 
       return ret
+    },
+    isLJ() {
+      return this.user && this.user.ljuserid
     },
     settings() {
       if (this.user && this.user.settings && this.user.settings) {
@@ -364,6 +380,14 @@ export default {
       set(newval) {
         this.user.newslettersallowed = newval
       }
+    },
+    autorepost: {
+      get() {
+        return (
+          this.member && !this.isTN && Boolean(!this.member.autorepostsdisable)
+        )
+      },
+      setnewval() {}
     }
   },
   mounted() {

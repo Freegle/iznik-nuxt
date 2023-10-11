@@ -8,7 +8,7 @@ const CordovaOauthRedirectURL = 'https://www.facebook.com/connect/login_success.
 
 class openFB {
   constructor() {
-    this.fbAppId = process.env.FACEBOOK_APPID
+    // this.fbAppId = process.env.FACEBOOK_APPID
     this.tokenStore = window.sessionStorage // or could be window.localStorage
     this.loginCallback = false
     this.loginWindow = false
