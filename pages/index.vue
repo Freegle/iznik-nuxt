@@ -1,5 +1,11 @@
 <template>
   <div v-if="!me" class="grid m-0 pl-1 pr-1 pl-sm-0 pr-sm-0 mt-0 mt-lg-5 ml-2 mr-2">
+    <div v-if="isMTApp">
+      <div id="serverloader" class="bg-white">
+        <b-img src="~/static/loader.gif" alt="Loading..." />
+      </div>
+    </div>
+    <div v-else>
     <client-only>
       <Visible :not="['xs']" class="map justify-content-start flex-column d-flex">
         <VisualiseMap v-if="type === 'Map'" class="shadow flex-grow-1" />
@@ -57,6 +63,7 @@
       </a>
     </div>
     <main-footer class="thefooter" />
+    </div>
   </div>
 </template>
 <script>
@@ -73,6 +80,7 @@ export default {
     MainFooter
   },
 
+  layout: 'modtools',
   data: function() {
     return {
       userWatch: null,
@@ -131,6 +139,9 @@ export default {
   computed: {
     isApp() {
       return process.env.IS_APP
+    },
+    isMTApp() {
+      return process.env.IS_MTAPP
     }
   },
   beforeDestroy() {
