@@ -480,7 +480,7 @@
               :groupid="groupid"
               name="settings.spammers.replydistance"
               label="Reply distance check?"
-              description="When members reply to messages which are this far apart, in miles, then they may be flagged for review.  Default 50, 0 to disable."
+              description="When members reply to messages which are this far apart, in miles, then they may be flagged for review.  Default 100, 0 to disable."
               type="number"
               :step="5"
             />
