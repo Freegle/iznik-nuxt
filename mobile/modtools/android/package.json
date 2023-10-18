@@ -48,7 +48,7 @@
     "phonegap-plugin-multidex": "^1.0.0"
   },
   "devDependencies": {
-    "@havesource/cordova-plugin-push": "git+https://github.com/havesource/cordova-plugin-push.git",
+    "@havesource/cordova-plugin-push": "git+https://github.com/havesource/cordova-plugin-push.git#c3fb5b894afe17a05e21be135961f5831bafb1e0",
     "cordova-android": "^11.0.0",
     "cordova-clipboard": "1.3.0",
     "cordova-plugin-zoom-control-2": "^0.4.2"
