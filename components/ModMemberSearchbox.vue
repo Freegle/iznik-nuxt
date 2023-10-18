@@ -49,13 +49,16 @@ export default {
         return this.value
       },
       set(val) {
-        this.$emit('input', val)
+        if (val) {
+          this.$emit('input', val)
+        }
       }
     }
   },
   methods: {
     search() {
       // Tick to allow value to appear.
+      console.log('Search', this.term)
       this.$nextTick(() => {
         const url =
           (this.spam

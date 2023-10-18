@@ -21,6 +21,9 @@
             </ExternalLink>)
             user ID&nbsp;<v-icon name="hashtag" class="text-muted mt-1" />{{ result.userid }}
             -&nbsp;
+            <span v-if="result.period === 'Declined'">
+              Gift Aid declined
+            </span>
             <span v-if="result.period === 'Since'">
               Gift Aid consent for all since {{ dateonly(result.timestamp) }}
             </span>
