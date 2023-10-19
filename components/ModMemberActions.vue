@@ -17,7 +17,7 @@
     </b-btn>
     <ConfirmModal v-if="removeConfirm && groupname" ref="removeConfirm" :title="'Remove ' + displayname + ' from ' + groupname + '?'" @confirm="removeConfirmed" />
     <ConfirmModal v-if="removeConfirm && !groupname" ref="removeConfirm" title="Please select a group first." />
-    <ConfirmModal v-if="banConfirm" ref="banConfirm" :title="'Ban ' + displayname + ' from ' + groupname + '?'" @confirm="banConfirmed" />
+    <ModBanMemberConfirmModal v-if="banConfirm" ref="banConfirm" :userid="userid" :groupid="groupid" @confirm="banConfirmed" />
     <ModCommentAddModal v-if="addComment" ref="addComment" :user="user" :groupid="groupid" @added="updateComments" />
     <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="reportUser" :whitelist="whitelist" />
   </div>
@@ -26,9 +26,15 @@
 import ModCommentAddModal from './ModCommentAddModal'
 import ModSpammerReport from './ModSpammerReport'
 const ConfirmModal = () => import('./ConfirmModal')
+const ModBanMemberConfirmModal = () => import('./ModBanMemberConfirmModal')
 
 export default {
-  components: { ModSpammerReport, ModCommentAddModal, ConfirmModal },
+  components: {
+    ModSpammerReport,
+    ModCommentAddModal,
+    ConfirmModal,
+    ModBanMemberConfirmModal
+  },
 
   props: {
     userid: {
