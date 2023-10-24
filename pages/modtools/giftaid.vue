@@ -68,6 +68,33 @@
       </b-card-body>
     </b-card>
 
+    <b-card no-body class="mb-2">
+      <b-card-body>
+        <p>
+          You can also paste in a CSV file of donations from Xero.  The first line must be the
+          headers, which must always be:
+        </p>
+        <p class="text-monospace">
+          Date,Amt,"Name on Xero",ID / GA from Mod Tools,email address if known,"212 Reg, 213 One off",GA?,Name & Ref on bank statement
+        </p>
+        <b-form-textarea v-model="csv" rows="10" />
+        <SpinButton variant="white" name="play" label="Validate CSV" :handler="validateCSVDonations" class="mt-4 mb-2" />
+        <NoticeMessage v-if="csvError" variant="danger">
+          {{ csvError }}
+        </NoticeMessage>
+        <NoticeMessage v-else-if="csvTrace" v-html="csvTrace" />
+        <SpinButton
+          v-if="showSubmitCSV"
+          variant="white"
+          name="save"
+          label="Submit donations"
+          :handler="submitCSVDonations"
+          class="mt-4 mb-2"
+        />
+        <NoticeMessage v-if="csvTrace2" v-html="csvTrace2" />
+      </b-card-body>
+    </b-card>
+
     <ModGiftAid v-for="giftaid in giftaids" :key="'giftaid-' + giftaid.id" :giftaid="giftaid" class="mt-1" />
     <p v-if="!giftaids.length" class="mt-2 font-weight-bold">
       No gift aid to review.
@@ -75,8 +102,10 @@
   </b-container>
 </template>
 <script>
+import Papa from 'papaparse'
 import DatePicker from 'vue2-datepicker'
 import loginRequired from '@/mixins/loginRequired.js'
+import NoticeMessage from '@/components/NoticeMessage'
 import ModGiftAid from '../../components/ModGiftAid'
 import ModHelpGiftAid from '../../components/ModHelpGiftAid'
 import SpinButton from '~/components/SpinButton'
@@ -85,6 +114,7 @@ import 'vue2-datepicker/index.css'
 
 export default {
   components: {
+    NoticeMessage,
     ModHelpGiftAid,
     ModGiftAid,
     SpinButton,
@@ -100,7 +130,13 @@ export default {
       results: [],
       userid: null,
       amount: null,
-      date: null
+      date: null,
+      csv: null,
+      csvError: null,
+      csvTrace: null,
+      csvTrace2: null,
+      showSubmitCSV: false,
+      csvDonations: []
     }
   },
   async mounted() {
@@ -142,6 +178,160 @@ export default {
           amount: this.amount,
           date: this.date
         })
+      }
+    },
+    async validateCSVDonations() {
+      this.csvError = null
+      this.showSubmitCSV = false
+      this.csvDonations = []
+      this.csvTrace = ''
+
+      const res = Papa.parse(this.csv.trim())
+
+      if (res.errors.length) {
+        this.csvError = res.errors[0].message
+        return
+      }
+
+      if (res.data?.length === 0) {
+        this.csvError = 'No data found.'
+        return
+      }
+      if (res.data[0].length !== 8) {
+        this.csvError = 'Expecting 8 columns. Found ' + res.data[0].length
+        return
+      }
+
+      if (res.data[0][0] !== 'Date') {
+        this.csvError =
+          "Expecting first column in first row to be 'Date'. Found " +
+          res.data[0][0] +
+          '.  Maybe you forgot the headers?'
+        return
+      }
+
+      if (res.data[0][1] !== 'Amt') {
+        this.csvError =
+          "Expecting second column in first row to be 'Amt'. Found " +
+          res.data[0][1] +
+          '.  Maybe you forgot the headers?'
+        return
+      }
+
+      if (res.data[0][3] !== 'ID / GA from Mod Tools') {
+        this.csvError =
+          "Expecting second column in first row to be 'ID / GA from Mod Tools'. Found " +
+          res.data[0][1] +
+          '.  Maybe you forgot the headers?'
+        return
+      }
+
+      // Headers look ok.  Scan the rest of the rows.
+      for (let i = 1; i < res.data.length; i++) {
+        const row = res.data[i]
+        if (row.length !== 8) {
+          this.csvError =
+            'Expecting 8 columns. Found ' + row.length + ' on row ' + (i + 1)
+          break
+        }
+        const date = this.$dayjs(Date(row[0], 'YYYY-MM-DD', true))
+        if (!date.isValid()) {
+          this.csvError = 'Invalid date ' + row[0] + ' on row ' + (i + 1)
+          break
+        }
+        const amount = parseFloat(row[1])
+        if (isNaN(amount)) {
+          this.csvError = 'Invalid amount on row ' + (i + 1)
+          break
+        }
+
+        const userid = parseInt(row[3].substring(3))
+        if (isNaN(userid)) {
+          this.csvError = 'Invalid user ID on row ' + (i + 1)
+          break
+        }
+
+        // Check if the userid matches a valid user.
+        await this.$store.dispatch('user/fetch', {
+          id: userid
+        })
+
+        const user = this.$store.getters['user/get'](userid)
+
+        if (!user?.id) {
+          this.csvError =
+            'User ID ' +
+            userid +
+            ' on row ' +
+            (i + 1) +
+            ' not found in the system.  Unsubscribed or merged?'
+        }
+
+        // Check if email found in user's emails
+        let emailFound = false
+        const email = row[4]
+        for (let j = 0; j < user.emails.length; j++) {
+          if (user.emails[j].email === email) {
+            emailFound = true
+            break
+          }
+        }
+
+        if (!emailFound) {
+          this.csvError =
+            'Email ' +
+            row[4] +
+            ' on row ' +
+            (i + 1) +
+            ' not found in the emails for user ID ' +
+            userid +
+            '.  Perhaps this is the wrong user ID, or the email has been removed?'
+          break
+        }
+
+        this.csvDonations.push({
+          date: date,
+          amount: amount,
+          userid: userid,
+          email: email
+        })
+
+        this.csvTrace +=
+          date.format('YYYY-MM-DD') +
+          ' £' +
+          amount +
+          ' from #' +
+          userid +
+          ' (' +
+          email +
+          ')<br />'
+      }
+
+      if (!this.csvError) {
+        this.showSubmitCSV = true
+      }
+    },
+    async submitCSVDonations() {
+      this.csvTrace2 = ''
+
+      for (let i = 0; i < this.csvDonations.length; i++) {
+        const donation = this.csvDonations[i]
+
+        await this.$store.dispatch('donations/add', {
+          userid: donation.userid,
+          amount: donation.amount,
+          date: donation.date
+        })
+
+        this.csvTrace2 +=
+          donation.date.format('YYYY-MM-DD') +
+          ' £' +
+          donation.amount +
+          ' from #' +
+          donation.userid +
+          ' (' +
+          donation.email +
+          ') - recorded<br />'
       }
     }
   }
