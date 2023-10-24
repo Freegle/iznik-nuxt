@@ -35,6 +35,15 @@
           class="mr-2"
         />
         <OurToggle
+          :value="(Boolean)(group.onlovejunk)"
+          :height="36"
+          :width="150"
+          :font-size="14"
+          :labels="{unchecked: 'Not on LoveJunk', checked: 'On LoveJunk'}"
+          disabled
+          class="mr-2"
+        />
+        <OurToggle
           :value="(Boolean)(group.onmap)"
           :height="36"
           :width="150"

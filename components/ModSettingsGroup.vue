@@ -739,6 +739,15 @@
             />
             <ModGroupSetting
               :groupid="groupid"
+              name="onlovejunk"
+              label="On LoveJunk?"
+              description="On lovejunk.com too?"
+              type="toggle"
+              toggle-checked="On LoveJunk"
+              toggle-unchecked="Not on LoveJunk"
+            />
+            <ModGroupSetting
+              :groupid="groupid"
               name="mentored"
               label="Caretakers?"
               description="Whether this community is being run by Caretakers."

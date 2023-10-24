@@ -122,6 +122,8 @@ export const actions = {
       lng: params.lng,
       onyahoo: 0,
       onhere: 1,
+      ontn: 1,
+      onlovejunk: 1,
       licenserequired: 0,
       showonyahoo: 0
     })
