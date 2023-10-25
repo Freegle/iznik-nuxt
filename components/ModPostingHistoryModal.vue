@@ -30,6 +30,7 @@
             </div>
             <div class="text-muted">
               on {{ message.groupname }}<span v-if="message.outcome">, now {{ message.outcome }}</span><span v-else>, still open</span>
+              <span v-if="message.collection === 'Pending'" class="text-danger"> Pending</span>
             </div>
           </b-col>
         </b-row>
