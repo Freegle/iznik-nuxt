@@ -234,7 +234,7 @@ export default {
             'Expecting 8 columns. Found ' + row.length + ' on row ' + (i + 1)
           break
         }
-        const date = this.$dayjs(Date(row[0], 'YYYY-MM-DD', true))
+        const date = this.$dayjs(row[0], 'DD/MM/YYYY', true)
         if (!date.isValid()) {
           this.csvError = 'Invalid date ' + row[0] + ' on row ' + (i + 1)
           break
