@@ -82,6 +82,7 @@
         <NoticeMessage v-if="csvError" variant="danger">
           {{ csvError }}
         </NoticeMessage>
+        <!-- eslint-disable-next-line -->
         <NoticeMessage v-else-if="csvTrace" v-html="csvTrace" />
         <SpinButton
           v-if="showSubmitCSV"
@@ -91,6 +92,7 @@
           :handler="submitCSVDonations"
           class="mt-4 mb-2"
         />
+        <!-- eslint-disable-next-line -->
         <NoticeMessage v-if="csvTrace2" v-html="csvTrace2" />
       </b-card-body>
     </b-card>
@@ -333,6 +335,8 @@ export default {
           donation.email +
           ') - recorded<br />'
       }
+
+      this.showSubmitCSV = false
     }
   }
 }
