@@ -388,6 +388,10 @@ export const actions = {
     await this.$api.chat.typing(params.chatid)
   },
 
+  async referToSupport({ dispatch, commit }, params) {
+    await this.$api.chat.referToSupport(params.id)
+  },
+
   clear({ commit }) {
     commit('clear')
   }

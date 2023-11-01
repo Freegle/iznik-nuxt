@@ -111,4 +111,8 @@ export default class ChatAPI extends BaseAPI {
   typing(chatid) {
     return this.$post('/chatrooms', { id: chatid, action: 'Typing' })
   }
+
+  referToSupport(chatid) {
+    return this.$post('/chatrooms', { id: chatid, action: 'ReferToSupport' })
+  }
 }
