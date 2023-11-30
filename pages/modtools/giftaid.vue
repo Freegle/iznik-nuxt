@@ -189,6 +189,13 @@ export default {
       this.csvTrace = ''
 
       const res = Papa.parse(this.csv.trim())
+      console.log('res', res)
+
+      if (res.meta.delimiter !== ',') {
+        this.csvError =
+          "Data must be comma separated.  If you've used Excel, please use a text editor such as Notepad to open the CSV file, and copy and paste from there."
+        return
+      }
 
       if (res.errors.length) {
         this.csvError = res.errors[0].message
@@ -322,7 +329,7 @@ export default {
         await this.$store.dispatch('donations/add', {
           userid: donation.userid,
           amount: donation.amount,
-          date: donation.date
+          date: donation.date.format('YYYY-MM-DD')
         })
 
         this.csvTrace2 +=
