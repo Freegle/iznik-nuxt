@@ -103,6 +103,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    disabledExceptFor: {
+      type: Array,
+      required: false,
+      default: null
     }
   },
   computed: {
@@ -153,7 +158,7 @@ export default {
     },
 
     groupOptions() {
-      const groups = []
+      let groups = []
 
       if (this.all) {
         groups.push({
@@ -216,6 +221,14 @@ export default {
             selected: this.selectedGroup === group.id
           })
         }
+      }
+
+      if (this.disabledExceptFor !== null) {
+        // Only show groups they are a member of.  Mods are expected to add them if they want them to post on other
+        // groups.
+        groups = groups.filter(g => {
+          return this.disabledExceptFor.includes(g.value)
+        })
       }
 
       return groups
