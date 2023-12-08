@@ -63,13 +63,22 @@
               {{ message.fromuser.displayname }}
             </div>
             <div v-if="expanded" class="d-flex">
-              <div>
-                <b-btn v-if="message.source === 'Email'" variant="white" @click="viewSource">
-                  <v-icon name="book-open" /><span class="d-none d-sm-inline"> View Email Source</span>
-                </b-btn>
+              <div class="d-flex flex-column align-content-end">
                 <b-btn v-if="!editing" variant="white" @click="startEdit">
                   <v-icon name="pen" /><span class="d-none d-sm-inline"> Edit</span>
                 </b-btn>
+                <b-btn v-if="message.source === 'Email'" variant="white" @click="viewSource">
+                  <v-icon name="book-open" /><span class="d-none d-sm-inline"> View Email Source</span>
+                </b-btn>
+                <SpinButton
+                  v-if="message.groups[0].collection === 'Approved'"
+                  class="mt-2"
+                  variant="white"
+                  :handler="backToPending"
+                  name="reply"
+                  label="Back to Pending"
+                  confirm
+                />
               </div>
               <div class="ml-2">
                 <b-btn v-if="summary" variant="white" @click="expanded = !expanded">
@@ -350,6 +359,7 @@ import GroupSelect from './GroupSelect'
 import MessageMap from './MessageMap'
 import ModMessageMicroVolunteering from './ModMessageMicroVolunteering'
 import twem from '~/assets/js/twem'
+import SpinButton from '~/components/SpinButton'
 const Highlighter = () => import('vue-highlight-words')
 const OurFilePond = () => import('~/components/OurFilePond')
 
@@ -378,7 +388,8 @@ export default {
     MessageReplyInfo,
     MessageUserInfo,
     MessageHistory,
-    Highlighter
+    Highlighter,
+    SpinButton
   },
   mixins: [keywords],
   props: {
@@ -885,6 +896,11 @@ export default {
 
       // Fetch the message again to revert any changes.
       this.$store.dispatch('messages/fetch', {
+        id: this.message.id
+      })
+    },
+    backToPending() {
+      this.$store.dispatch('messages/backToPending', {
         id: this.message.id
       })
     }
