@@ -67,7 +67,7 @@
                 <b-btn v-if="!editing" variant="white" @click="startEdit">
                   <v-icon name="pen" /><span class="d-none d-sm-inline"> Edit</span>
                 </b-btn>
-                <b-btn v-if="message.source === 'Email'" variant="white" @click="viewSource">
+                <b-btn v-if="message.source === 'Email'" variant="white" class="mt-2" @click="viewSource">
                   <v-icon name="book-open" /><span class="d-none d-sm-inline"> View Email Source</span>
                 </b-btn>
                 <SpinButton
