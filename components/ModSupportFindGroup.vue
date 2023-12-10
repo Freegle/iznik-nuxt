@@ -35,6 +35,15 @@
           class="mr-2"
         />
         <OurToggle
+          :value="(Boolean)(group.onlovejunk)"
+          :height="36"
+          :width="150"
+          :font-size="14"
+          :labels="{unchecked: 'Not on LoveJunk', checked: 'On LoveJunk'}"
+          disabled
+          class="mr-2"
+        />
+        <OurToggle
           :value="(Boolean)(group.onmap)"
           :height="36"
           :width="150"
@@ -70,22 +79,6 @@
       <!-- eslint-disable-next-line -->
       <ExternalLink v-if="group.groupemail" :href="'mailto:' + group.groupemail">{{ group.groupemail }}</ExternalLink>
       <br>
-      <Clipboard v-if="group.twitter" class="mr-3 mb-1" :value="'https://twitter.com/' + group.twitter.name" />
-      Twitter:
-      <span v-if="group.twitter">
-        <ExternalLink :href="'https://twitter.com/' + group.twitter.name">
-          {{ group.twitter.name }}
-        </ExternalLink>
-        <span v-if="!group.twitter.valid" class="text-danger">
-          Invalid
-        </span>
-        <span v-if="group.twitter.locked" class="text-danger">
-          Locked
-        </span>
-      </span>
-      <span v-else>
-        None
-      </span>
       <div v-if="!group.facebook || !group.facebook.length">
         Facebook: none
       </div>

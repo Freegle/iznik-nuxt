@@ -52,7 +52,7 @@ export default {
     email() {
       let ret = null
 
-      if (this.user) {
+      if (this.user && this.user.emails) {
         this.user.emails.forEach(e => {
           if (!e.ourdomain && (!ret || e.preferred)) {
             ret = e.email

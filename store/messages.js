@@ -599,5 +599,15 @@ export const actions = {
     commit('remove', {
       id: params.id
     })
+  },
+  async backToPending({ dispatch, commit }, params) {
+    await this.$api.message.update({
+      id: params.id,
+      action: 'BackToPending'
+    })
+
+    commit('remove', {
+      id: params.id
+    })
   }
 }

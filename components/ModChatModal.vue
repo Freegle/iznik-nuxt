@@ -22,6 +22,9 @@
                 <v-icon name="hashtag" class="text-muted" scale="0.8" />{{ user1.id }}
               </span>
             </div>
+            <div v-if="chat2 && chat2.group">
+              {{ chat2.group.namedisplay }} Volunteers
+            </div>
           </div>
           <div v-else class="d-flex justify-content-between">
             <div v-if="user1">
@@ -35,6 +38,9 @@
               <span class="text-muted small">
                 <v-icon name="hashtag" class="text-muted" scale="0.8" />{{ user2.id }}
               </span>
+            </div>
+            <div v-if="chat2 && chat2.group">
+              {{ chat2.group.namedisplay }} Volunteers
             </div>
           </div>
         </div>
