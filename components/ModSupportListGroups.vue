@@ -119,6 +119,11 @@ export default {
           renderer: this.forceBool
         },
         {
+          data: 'onlovejunk',
+          type: 'checkbox',
+          renderer: this.forceBool
+        },
+        {
           data: 'region',
           type: 'text'
         },

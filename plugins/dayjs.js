@@ -5,6 +5,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import isBetween from 'dayjs/plugin/isBetween'
 import isToday from 'dayjs/plugin/isToday'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 
 import dayjs from 'dayjs'
 
@@ -15,3 +16,4 @@ dayjs.extend(isSameOrBefore)
 dayjs.extend(isSameOrAfter)
 dayjs.extend(isBetween)
 dayjs.extend(isToday)
+dayjs.extend(customParseFormat)

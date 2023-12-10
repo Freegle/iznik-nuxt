@@ -123,7 +123,15 @@
           <external-link v-if="chat && chat.chattype === 'User2Mod' && mod" href="https://discourse.ilovefreegle.org/c/central" class="nocolor btn btn-secondary">
             <v-icon name="question-circle" /> Central
           </external-link>
-          <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="otheruser" />
+          <b-btn
+            v-if="chat && chat.chattype === 'User2Mod' && mod"
+            v-b-tooltip.hover.top
+            title="Ask Support for help"
+            variant="secondary"
+            @click="confirmReferToSupport"
+          >
+            <v-icon name="question-circle" /> Refer to Support
+          </b-btn>
         </span>
         <b-btn variant="primary" class="float-right ml-1" @click="send">
           Send&nbsp;
@@ -168,6 +176,12 @@
             Central
           </div>
         </div>
+        <div v-if="chat && chat.chattype === 'User2Mod' && mod" v-b-tooltip.hover.top title="Ask Support for help" class="mr-2" @click="confirmReferToSupport">
+          <v-icon scale="2" name="question-circle" class="fa-mob" />
+          <div class="mobtext text--smallest">
+            Support
+          </div>
+        </div>
         <div v-if="chat && chat.chattype === 'User2User' && otheruser && !tooSoonToNudge && !simple" v-b-tooltip.hover.top title="Waiting for a reply?  Nudge this freegler." class="mr-2" @click="nudge">
           <v-icon scale="2" name="bell" class="fa-mob" />
           <div class="mobtext text--smallest">
@@ -206,6 +220,8 @@
     <NudgeTooSoonWarningModal ref="nudgetoosoonwarning" @confirm="doNudge" />
     <NudgeWarningModal ref="nudgewarning" @confirm="doNudge" />
     <MicroVolunteering v-if="showMicrovolunteering" />
+    <ConfirmModal ref="referConfirm" title="Refer this chat to Support?" message="The Support volunteers will have a look at the chat and get back to you by email." @confirm="referToSupport" />
+    <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="otheruser" />
   </div>
 </template>
 <script>
@@ -215,6 +231,7 @@ import chat from '@/mixins/chat.js'
 import chatCollate from '@/mixins/chatCollate.js'
 import ExternalLink from './ExternalLink'
 import ModComments from './ModComments'
+import ConfirmModal from '~/components/ConfirmModal'
 
 // Don't use dynamic imports because it stops us being able to scroll to the bottom after render.
 Vue.use(TooltipPlugin)
@@ -245,7 +262,8 @@ export default {
     ProfileModal,
     AddressModal,
     ChatRSVPModal,
-    MicroVolunteering
+    MicroVolunteering,
+    ConfirmModal
   },
   mixins: [chat, chatCollate],
   data: function() {
@@ -297,6 +315,14 @@ export default {
       })
 
       setTimeout(this.saveDraft, 5000)
+    },
+    async referToSupport() {
+      await this.$store.dispatch('chats/referToSupport', {
+        id: this.id
+      })
+    },
+    confirmReferToSupport() {
+      this.$refs.referConfirm.show()
     }
   }
 }

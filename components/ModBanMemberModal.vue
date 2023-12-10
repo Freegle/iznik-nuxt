@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-modal
-      id="addMemberModal"
+      id="banMemberModal"
       v-model="showModal"
       title="Ban Member"
       size="lg"

@@ -30,7 +30,7 @@
         <b-button variant="white" @click="cancel">
           Close
         </b-button>
-        <b-button variant="primary" @click="addit">
+        <b-button variant="primary" :disabled="!note" @click="addit">
           Add Mod Message
         </b-button>
       </template>
