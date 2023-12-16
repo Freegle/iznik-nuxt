@@ -7,7 +7,8 @@ export const state = () => ({
   list: {},
   currentChat: null,
   fetching: {},
-  listing: {}
+  listing: {},
+  lastSearch: null
 })
 
 export const mutations = {
@@ -70,6 +71,10 @@ export const mutations = {
     } else {
       state.listing[params.id] = params.item
     }
+  },
+
+  lastSearch(state, params) {
+    state.lastSearch = params
   }
 }
 
@@ -163,6 +168,13 @@ export const getters = {
 }
 
 export const actions = {
+  maybeListChats({ state, dispatch }, params) {
+    // This is used when we want to update the chat list, but we don't want to do it if we have done a search
+    // as that would reset the list.
+    if (!state.lastSearch) {
+      dispatch('listChats', params)
+    }
+  },
   async listChats({ commit, rootGetters, state }, params) {
     const modtools = rootGetters['misc/get']('modtools')
 
@@ -172,6 +184,8 @@ export const actions = {
     }
 
     params.summary = true
+
+    commit('lastSearch', params.search)
 
     try {
       let current = null
@@ -358,7 +372,7 @@ export const actions = {
     commit('currentChat', params.chatid)
   },
 
-  async fetchLatestChats({ dispatch, rootGetters }, params) {
+  async fetchLatestChats({ dispatch, rootGetters, state }, params) {
     const chatTypes = ['User2User', 'User2Mod']
     const modOnlyChatTypes = ['User2Mod', 'Mod2Mod']
     const me = rootGetters['auth/user']
@@ -369,7 +383,7 @@ export const actions = {
       const newCount = await dispatch('unseenCount')
 
       if (newCount !== currentCount) {
-        await dispatch('listChats', {
+        await dispatch('maybeListChats', {
           chattypes: modtools ? modOnlyChatTypes : chatTypes,
           summary: true,
           noerror: true
