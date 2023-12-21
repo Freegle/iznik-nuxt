@@ -92,15 +92,18 @@
           Gift Aid
         </h3>
         <p>
-          Gift Aid consent <v-icon name="hashtag" scale="0.8" />{{ user.giftaid.id }} given on {{ dateonly(user.giftaid.timestamp) }} for
+          Gift Aid consent <v-icon name="hashtag" scale="0.8" />{{ user.giftaid.id }} given on {{ dateonly(user.giftaid.timestamp) }} -
           <span v-if="user.giftaid.period === 'Since'">
-            donations since this date.
+            for donations since this date.
           </span>
           <span v-if="user.giftaid.period === 'This'">
-            this donation only.
+            for this donation only.
           </span>
           <span v-if="user.giftaid.period === 'Future'">
-            this and future donations.
+            for this and future donations.
+          </span>
+          <span v-if="user.giftaid.period === 'Declined'">
+            declined.
           </span>
           <span v-if="user.giftaid.period === 'Past4YearsAndFuture'">
             for four years before date and all future.
