@@ -184,11 +184,6 @@ export default {
   color: white;
 }
 
-::v-deep .twitter {
-  background-color: $color-twitter !important;
-  color: white;
-}
-
 ::v-deep .whatsapp {
   background-color: $color-whatsapp !important;
 }

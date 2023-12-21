@@ -20,7 +20,7 @@ export default ({ store }) => {
 
       if (newCount !== currentCount) {
         // It's changed - get the up to date chat rooms.
-        await store.dispatch('chats/listChats', {
+        await store.dispatch('chats/maybeListChats', {
           chattypes: modtools
             ? ['User2Mod', 'Mod2Mod']
             : ['User2User', 'User2Mod'],

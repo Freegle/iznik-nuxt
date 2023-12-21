@@ -241,7 +241,6 @@ function markSubmitted(id, commit, me) {
 }
 
 async function backToDraft(id, dispatch, commit) {
-  console.log('Back to draft', id)
   await dispatch(
     'messages/update',
     {

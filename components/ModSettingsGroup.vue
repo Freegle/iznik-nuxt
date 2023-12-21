@@ -642,28 +642,6 @@
         <b-collapse id="accordion-social" accordion="settings-accordion" role="tabpanel">
           <b-card-body>
             <b-form-text class="mb-2">
-              You can auto-tweet the subject and picture of posts to attract more people to your group.
-            </b-form-text>
-            <NoticeMessage v-if="group.twitter.locked" variant="danger">
-              This group's Twitter account has been locked.  Please log in to Twitter to unlock it.  Then
-              we'll try again to tweet.  After that, you may need to link it again - if so you'll see a
-              message here.
-            </NoticeMessage>
-            <NoticeMessage v-else-if="!group.twitter.valid" variant="warning">
-              This group is not linked to a Twitter account.  Please link it to get more publicity.
-            </NoticeMessage>
-            <div v-else>
-              <v-icon name="check" class="text-success" /> Linked to
-              <a :href="'https://twitter.com/' + group.twitter.name">@{{ group.twitter.name }}</a>
-              <span class="text-muted small">
-                {{ dateshort(group.twitter.authdate) }}
-              </span>
-            </div>
-            <ExternalLink class="btn btn-white mt-2" :href="'https://modtools.org/twitter/twitter_request.php?groupid=' + group.id">
-              Link to Twitter
-            </ExternalLink>
-
-            <b-form-text class="mb-2">
               You can link to a group Facebook page to attract more people to your group.
             </b-form-text>
 

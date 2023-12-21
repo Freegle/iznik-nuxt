@@ -18,7 +18,6 @@
       class="mb-2"
     />
     <ModMissingFacebook />
-    <ModMissingTwitter class="mt-1" />
     <ModMissingProfile class="mt-1" />
     <div class="d-flex mb-2 mt-2 flex-wrap">
       <div class="borderit d-flex flex-column">
@@ -123,7 +122,6 @@ import GroupSelect from '../../components/GroupSelect'
 import 'vue2-datepicker/index.css'
 import ModDashboardSkeleton from '../../components/ModDashboardSkeleton'
 import ModMissingFacebook from '../../components/ModMissingFacebook'
-import ModMissingTwitter from '../../components/ModMissingTwitter'
 import ModMissingProfile from '../../components/ModMissingProfile'
 import ActivityGraph from '../../components/ActivityGraph'
 import ModDashboardImpact from '../../components/ModDashboardImpact'
@@ -145,7 +143,6 @@ export default {
     ModDashboardImpact,
     ActivityGraph,
     ModMissingProfile,
-    ModMissingTwitter,
     ModMissingFacebook,
     GroupSelect,
     ModDashboardRecentCounts: lazyLoadComponent({

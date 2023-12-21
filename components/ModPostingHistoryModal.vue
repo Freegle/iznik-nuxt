@@ -8,9 +8,10 @@
       no-stacking
     >
       <template slot="default">
-        <NoticeMessage v-if="!messages.length" variant="info">
+        <NoticeMessage v-if="!messages.length" variant="info" class="mb-2">
           There are no posts to show.
         </NoticeMessage>
+        <GroupSelect v-model="groupid" modonly class="mb-2" />
         <b-row v-for="message in messages" :key="'postinghistory-' + message.id">
           <b-col cols="8" sm="3">
             <div>{{ datetimeshort(message.arrival) }}</div>
@@ -46,9 +47,10 @@
 <script>
 import modal from '@/mixins/modal'
 import NoticeMessage from './NoticeMessage'
+import GroupSelect from '~/components/GroupSelect'
 
 export default {
-  components: { NoticeMessage },
+  components: { NoticeMessage, GroupSelect },
   mixins: [modal],
   props: {
     user: {
@@ -59,6 +61,11 @@ export default {
       type: String,
       required: false,
       default: null
+    }
+  },
+  data: function() {
+    return {
+      groupid: null
     }
   },
   computed: {
@@ -85,6 +92,12 @@ export default {
         })
       }
 
+      if (this.groupid !== null) {
+        ret = ret.filter(message => {
+          return message.groupid === this.groupid
+        })
+      }
+
       return ret
     }
   },
@@ -93,6 +106,12 @@ export default {
     this.$store.dispatch('group/list', {
       grouptype: 'Freegle'
     })
+  },
+  methods: {
+    show() {
+      this.showModal = true
+      this.groupid = null
+    }
   }
 }
 </script>

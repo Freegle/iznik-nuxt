@@ -1,5 +1,6 @@
 <template>
   <div class="bg-white">
+    <ScrollToTop />
     <b-tabs content-class="mt-3" card>
       <b-tab active @click="clear('messages', true)">
         <template v-slot:title>
@@ -71,11 +72,12 @@
 <script>
 import loginRequired from '@/mixins/loginRequired.js'
 import GroupSelect from '../../components/GroupSelect'
+import ScrollToTop from '~/components/ScrollToTop'
 import ModLogs from '~/components/ModLogs'
 
 export default {
   layout: 'modtools',
-  components: { GroupSelect, ModLogs },
+  components: { GroupSelect, ModLogs, ScrollToTop },
   mixins: [loginRequired],
   data: function() {
     return {
