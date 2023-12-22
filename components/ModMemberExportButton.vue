@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-btn variant="white" @click="download">
+    <b-btn v-if="admin" variant="white" @click="download">
       <v-icon name="download" /> Export
     </b-btn>
     <b-modal
