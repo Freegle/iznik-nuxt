@@ -61,6 +61,7 @@ export default {
         'Publish?',
         'FD?',
         'TN?',
+        'LJ?',
         'Region',
         'Lat',
         'Lng',
@@ -97,7 +98,7 @@ export default {
         {
           data: 'recentautoapproves',
           type: 'numeric',
-          renderer: this.autoApproveCount
+          renderer: this.forceNumeric
         },
         {
           data: 'activemodcount',
@@ -246,7 +247,7 @@ export default {
     autoApproves(hotInstance, td, row, column, prop, value, cellProperties) {
       // We don't want to highlight the colour for unpublished groups, because they're not actually causing any
       // issues.
-      const publish = cellProperties.instance.getDataAtRow(row)[7]
+      const publish = cellProperties.instance.getDataAtRow(row)[8]
 
       if (publish) {
         let auto = parseInt(value)
