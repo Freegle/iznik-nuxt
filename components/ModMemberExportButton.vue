@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-btn v-if="admin" variant="white" @click="download">
+    <b-btn :disabled="!admin" variant="white" :title="admin ? 'Export' : 'This is now disabled for GDPR reasons.  If you wish to diaffiliate from Freegle please mail newgroups@ilovefreegle.org'" @click="download">
       <v-icon name="download" /> Export
     </b-btn>
     <b-modal
