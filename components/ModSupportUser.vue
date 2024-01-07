@@ -317,6 +317,43 @@
         No posting history.
       </p>
       <h3 class="mt-2">
+        ChitChat
+      </h3>
+      <div>
+        <p>Moderation status:</p>
+        <b-select v-model="newsfeedmodstatus" class="mb-2 flex-shrink-1 font-weight-bold">
+          <b-form-select-option value="Unmoderated">
+            Unmoderated
+          </b-form-select-option>
+          <b-form-select-option value="Suppressed">
+            Suppressed
+          </b-form-select-option>
+        </b-select>
+        <div v-for="newsfeed in user.newsfeed" :key="'newsfeed-' + newsfeed.id">
+          <div class="d-flex">
+            <div class="mr-2">
+              <ExternalLink :href="'https://www.ilovefreegle.org/chitchat/' + newsfeed.id">
+                {{ newsfeed.id }}
+              </ExternalLink>
+            </div>
+            <div class="mr-2">
+              {{ datetimeshort(newsfeed.timestamp) }}
+            </div>
+            <div class="mr-2">
+              <div class="truncate" :class="{strike: newsfeed.hidden || newsfeed.deleted}">
+                {{ newsfeed.message }}
+              </div>
+              <div v-if="newsfeed.hidden" class="small">
+                Hidden by <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ newsfeed.hiddenby }}
+              </div>
+              <div v-if="newsfeed.deletedby" class="small">
+                Deleted by <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ newsfeed.deletedby }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h3 class="mt-2">
         Recent Emails
       </h3>
       <div v-if="emailHistoriesShown.length">
@@ -532,6 +569,17 @@ export default {
               )
             })
         : []
+    },
+    newsfeedmodstatus: {
+      get() {
+        return this.user.newsfeedmodstatus
+      },
+      set(newVal) {
+        this.$store.dispatch('user/edit', {
+          id: this.user.id,
+          newsfeedmodstatus: newVal
+        })
+      }
     }
   },
   mounted() {
