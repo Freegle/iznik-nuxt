@@ -21,6 +21,9 @@
         <div>
           <v-icon name="hashtag" />{{ member.userid }}
         </div>
+        <div v-if="user.deleted" class="text-danger" title="Deleted users are in limbo for about 2 weeks before their data is purged, in case they change their mind.">
+          <v-icon name="trash-alt" /> Left {{ datetimeshort(user.deleted) }}
+        </div>
       </b-card-header>
       <b-card-body>
         <NoticeMessage v-if="banned" variant="danger" class="mb-2">

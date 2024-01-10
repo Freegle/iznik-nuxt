@@ -38,6 +38,10 @@
       <!-- eslint-disable-next-line -->
       <v-icon name="hashtag" class="text-muted" scale="0.8" />{{ user.id }}
     </span>
+    <span v-if="user.deleted" class="ml-2 order-3 order-md-1 small text-danger" title="Deleted users are in limbo for about 2 weeks before their data is purged, in case they change their mind.">
+      <v-icon name="trash-alt" />
+      Left {{ dateshort(user.deleted) }}
+    </span>
     <ModModeration v-if="modinfo && membership" :user="user" :membership="membership" class="order-2 order-md-3 order-lg-4" />
     <ModPostingHistory v-if="modinfo" :user="user" class="order-4 order-md-4 order-lg-3 mt-1 mt-md-0" />
     <ModMemberships v-if="modinfo" :user="user" class="order-5" />
