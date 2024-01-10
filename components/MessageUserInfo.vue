@@ -38,7 +38,7 @@
       <!-- eslint-disable-next-line -->
       <v-icon name="hashtag" class="text-muted" scale="0.8" />{{ user.id }}
     </span>
-    <span v-if="user.deleted" class="ml-2 order-3 order-md-1 small text-danger" title="Deleted users are in limbo for about 2 weeks before their data is purged, in case they change their mind.">
+    <span v-if="user.deleted" class="ml-2 order-3 order-md-1 small text-danger" title="Deleted users are in limbo for about 2 weeks before their data is removed, in case they change their mind.">
       <v-icon name="trash-alt" />
       Left {{ dateshort(user.deleted) }}
     </span>

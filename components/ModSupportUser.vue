@@ -73,6 +73,7 @@
           <v-icon name="tag" /> Add note
         </b-btn>
       </div>
+      <ModDeletedOrForgottn :user="user" class="mt-2" />
       <h3 class="mt-2">
         Trust Level
       </h3>
@@ -388,6 +389,7 @@
   </b-card>
 </template>
 <script>
+import ModDeletedOrForgottn from '@/components/ModDeletedOrForgotten'
 import ModSupportMembership from './ModSupportMembership'
 import ModLogsModal from './ModLogsModal'
 import ConfirmModal from './ConfirmModal'
@@ -424,7 +426,8 @@ export default {
     ModLogsModal,
     ModSupportMembership,
     ExternalLink,
-    ModCommentAddModal
+    ModCommentAddModal,
+    ModDeletedOrForgottn
   },
 
   props: {

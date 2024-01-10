@@ -21,11 +21,9 @@
         <div>
           <v-icon name="hashtag" />{{ member.userid }}
         </div>
-        <div v-if="user.deleted" class="text-danger" title="Deleted users are in limbo for about 2 weeks before their data is purged, in case they change their mind.">
-          <v-icon name="trash-alt" /> Left {{ datetimeshort(user.deleted) }}
-        </div>
       </b-card-header>
       <b-card-body>
+        <ModDeletedOrForgotten :user="user" />
         <NoticeMessage v-if="banned" variant="danger" class="mb-2">
           This freegler is banned from this group.
         </NoticeMessage>
@@ -204,6 +202,7 @@
   </div>
 </template>
 <script>
+import ModDeletedOrForgotten from '@/components/ModDeletedOrForgotten'
 import SettingsGroup from './SettingsGroup'
 import NoticeMessage from './NoticeMessage'
 import ProfileImage from './ProfileImage'
@@ -228,6 +227,7 @@ const ModLogsModal = () => import('~/components/ModLogsModal')
 export default {
   name: 'ModMember',
   components: {
+    ModDeletedOrForgotten,
     ModMemberEngagement,
     ConfirmModal,
     ModMemberButton,
