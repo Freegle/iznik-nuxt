@@ -1,7 +1,7 @@
 # iznik-nuxt
 
-Iznik is a platform for online reuse of unwanted items.  This is the new version of the front-end client
-for Freegle.  The old  version is [here](https://github.com/Freegle/iznik-client).  
+Iznik is a platform for online reuse of unwanted items.  This repo is now just used for ModTools - 
+the new version of the front-end client.  The old  version is [here](https://github.com/Freegle/iznik-nuxt3).  
 
 The development has been funded by [Freegle](https://www.ilovefreegle.org) for use in the UK, 
 but it is an open source platform which can be used or adapted by others.  Other contributors very welcome,
