@@ -23,6 +23,7 @@
         </div>
       </b-card-header>
       <b-card-body>
+        <ModDeletedOrForgotten :user="user" />
         <NoticeMessage v-if="banned" variant="danger" class="mb-2">
           This freegler is banned from this group.
         </NoticeMessage>
@@ -201,6 +202,7 @@
   </div>
 </template>
 <script>
+import ModDeletedOrForgotten from '@/components/ModDeletedOrForgotten'
 import SettingsGroup from './SettingsGroup'
 import NoticeMessage from './NoticeMessage'
 import ProfileImage from './ProfileImage'
@@ -225,6 +227,7 @@ const ModLogsModal = () => import('~/components/ModLogsModal')
 export default {
   name: 'ModMember',
   components: {
+    ModDeletedOrForgotten,
     ModMemberEngagement,
     ConfirmModal,
     ModMemberButton,

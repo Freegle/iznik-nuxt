@@ -4,9 +4,11 @@
       <div v-if="chatmessage.userid != myid">
         <ChatMessageSummary v-if="refmsg" :message="refmsg" class="mt-1 mb-2" />
         <div v-if="modtools">
-          <b-button variant="white" :to="modtoolsLink">
-            View message on ModTools
-          </b-button>
+          <ExternalLink v-if="modtoolsLink" :href="modtoolsLink">
+            <b-button variant="white">
+              View message on ModTools
+            </b-button>
+          </ExternalLink>
         </div>
         <div>
           <!-- eslint-disable-next-line -->
@@ -83,6 +85,7 @@
 <script>
 import ChatBase from '~/components/ChatBase'
 import ProfileImage from '~/components/ProfileImage'
+import ExternalLink from '~/components/ExternalLink'
 const OutcomeModal = () => import('~/components/OutcomeModal')
 const PromiseModal = () => import('~/components/PromiseModal')
 const ChatMessageSummary = () => import('~/components/ChatMessageSummary')
@@ -92,7 +95,8 @@ export default {
     ProfileImage,
     OutcomeModal,
     PromiseModal,
-    ChatMessageSummary
+    ChatMessageSummary,
+    ExternalLink
   },
   extends: ChatBase,
 

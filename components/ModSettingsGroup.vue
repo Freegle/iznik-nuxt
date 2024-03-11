@@ -459,7 +459,7 @@
         <b-collapse id="accordion-spam" accordion="settings-accordion" role="tabpanel">
           <b-card-body>
             <p>
-              All groups are checked for now spammers.  If any are found, they and their posts will be removed.
+              All groups are now checked for spammers.  If any are found, they and their posts will be removed.
             </p>
             <p>
               It's highly recommended that these settings are turned on.

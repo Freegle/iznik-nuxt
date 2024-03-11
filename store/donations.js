@@ -26,6 +26,11 @@ export const actions = {
   },
 
   async add({ commit }, params) {
-    await this.$api.donations.add(params.userid, params.amount, params.date)
+    const ret = await this.$api.donations.add(
+      params.userid,
+      params.amount,
+      params.date
+    )
+    return ret?.id
   }
 }
