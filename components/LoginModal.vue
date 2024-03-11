@@ -143,6 +143,8 @@
             Please use the <em>Continue with Yahoo</em> button to log in.  That way you don't need to remember a password on this site.
           </NoticeMessage>
           <PasswordEntry :original-password="password" :password.sync="password" />
+          <!--            :disabled="nativeDisabled" -->
+
           <b-btn
             v-b-modal.add
             block
@@ -151,7 +153,6 @@
             class="mb-2 mt-2"
             type="submit"
             value="login"
-            :disabled="nativeDisabled"
           >
             <span v-if="!signUp">
               Log in to Freegle

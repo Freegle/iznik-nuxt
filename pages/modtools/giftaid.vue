@@ -88,6 +88,7 @@
           v-if="showSubmitCSV"
           variant="white"
           name="save"
+          :disabled="disableSubmitCSV"
           label="Submit donations"
           :handler="submitCSVDonations"
           class="mt-4 mb-2"
@@ -138,6 +139,7 @@ export default {
       csvTrace: null,
       csvTrace2: null,
       showSubmitCSV: false,
+      disableSubmitCSV: false,
       csvDonations: []
     }
   },
@@ -326,24 +328,37 @@ export default {
       for (let i = 0; i < this.csvDonations.length; i++) {
         const donation = this.csvDonations[i]
 
-        await this.$store.dispatch('donations/add', {
+        const id = await this.$store.dispatch('donations/add', {
           userid: donation.userid,
           amount: donation.amount,
           date: donation.date.format('YYYY-MM-DD')
         })
 
-        this.csvTrace2 +=
-          donation.date.format('YYYY-MM-DD') +
-          ' £' +
-          donation.amount +
-          ' from #' +
-          donation.userid +
-          ' (' +
-          donation.email +
-          ') - recorded<br />'
+        if (id) {
+          this.csvTrace2 +=
+            donation.date.format('YYYY-MM-DD') +
+            ' £' +
+            donation.amount +
+            ' from #' +
+            donation.userid +
+            ' (' +
+            donation.email +
+            ') - recorded<br />'
+        } else {
+          this.csvTrace2 +=
+            '<span class="text-error">' +
+            donation.date.format('YYYY-MM-DD') +
+            ' £' +
+            donation.amount +
+            ' from #' +
+            donation.userid +
+            ' (' +
+            donation.email +
+            ') - failed</span><br />'
+        }
       }
 
-      this.showSubmitCSV = false
+      this.disableSubmitCSV = true
     }
   }
 }

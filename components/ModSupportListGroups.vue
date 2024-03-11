@@ -55,11 +55,13 @@ export default {
         'Display Name',
         'Last Auto-Approve',
         'Auto-Approve %',
+        'Auto-Approves',
         'Active Mods',
         'Last Moderated',
         'Publish?',
         'FD?',
         'TN?',
+        'LJ?',
         'Region',
         'Lat',
         'Lng',
@@ -92,6 +94,11 @@ export default {
           data: 'recentautoapprovespercent',
           type: 'numeric',
           renderer: this.autoApproves
+        },
+        {
+          data: 'recentautoapproves',
+          type: 'numeric',
+          renderer: this.forceNumeric
         },
         {
           data: 'activemodcount',
@@ -162,24 +169,11 @@ export default {
   },
   computed: {
     groups() {
-      let ret = Object.values(this.$store.getters['group/list'])
+      const ret = Object.values(this.$store.getters['group/list'])
       ret.sort((a, b) => {
         return a.nameshort
           .toLowerCase()
           .localeCompare(b.nameshort.toLowerCase())
-      })
-
-      // Autoapproves colouring is a special case where we don't want to colour it if the number of auto-approves
-      // is low, because that is a very quiet group.
-      ret = ret.map(m => {
-        if (m.recentautoapproves) {
-          m.recentautoapprovespercent =
-            m.recentautoapproves > 5
-              ? m.recentautoapprovespercent
-              : -m.recentautoapprovespercent
-        }
-
-        return m
       })
 
       return ret
@@ -253,12 +247,12 @@ export default {
     autoApproves(hotInstance, td, row, column, prop, value, cellProperties) {
       // We don't want to highlight the colour for unpublished groups, because they're not actually causing any
       // issues.
-      const publish = cellProperties.instance.getDataAtRow(row)[7]
+      const publish = cellProperties.instance.getDataAtRow(row)[8]
 
       if (publish) {
         let auto = parseInt(value)
 
-        if (auto > 50) {
+        if (auto >= 50) {
           td.style.backgroundColor = 'orange'
         }
 

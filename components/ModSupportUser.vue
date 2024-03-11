@@ -73,6 +73,7 @@
           <v-icon name="tag" /> Add note
         </b-btn>
       </div>
+      <ModDeletedOrForgottn :user="user" class="mt-2" />
       <h3 class="mt-2">
         Trust Level
       </h3>
@@ -92,15 +93,18 @@
           Gift Aid
         </h3>
         <p>
-          Gift Aid consent <v-icon name="hashtag" scale="0.8" />{{ user.giftaid.id }} given on {{ dateonly(user.giftaid.timestamp) }} for
+          Gift Aid consent <v-icon name="hashtag" scale="0.8" />{{ user.giftaid.id }} given on {{ dateonly(user.giftaid.timestamp) }} -
           <span v-if="user.giftaid.period === 'Since'">
-            donations since this date.
+            for donations since this date.
           </span>
           <span v-if="user.giftaid.period === 'This'">
-            this donation only.
+            for this donation only.
           </span>
           <span v-if="user.giftaid.period === 'Future'">
-            this and future donations.
+            for this and future donations.
+          </span>
+          <span v-if="user.giftaid.period === 'Declined'">
+            declined.
           </span>
           <span v-if="user.giftaid.period === 'Past4YearsAndFuture'">
             four years before date and all future.
@@ -314,6 +318,43 @@
         No posting history.
       </p>
       <h3 class="mt-2">
+        ChitChat
+      </h3>
+      <div>
+        <p>Moderation status:</p>
+        <b-select v-model="newsfeedmodstatus" class="mb-2 flex-shrink-1 font-weight-bold">
+          <b-form-select-option value="Unmoderated">
+            Unmoderated
+          </b-form-select-option>
+          <b-form-select-option value="Suppressed">
+            Suppressed
+          </b-form-select-option>
+        </b-select>
+        <div v-for="newsfeed in user.newsfeed" :key="'newsfeed-' + newsfeed.id">
+          <div class="d-flex">
+            <div class="mr-2">
+              <ExternalLink :href="'https://www.ilovefreegle.org/chitchat/' + newsfeed.id">
+                {{ newsfeed.id }}
+              </ExternalLink>
+            </div>
+            <div class="mr-2">
+              {{ datetimeshort(newsfeed.timestamp) }}
+            </div>
+            <div class="mr-2">
+              <div class="truncate" :class="{strike: newsfeed.hidden || newsfeed.deleted}">
+                {{ newsfeed.message }}
+              </div>
+              <div v-if="newsfeed.hidden" class="small">
+                Hidden by <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ newsfeed.hiddenby }}
+              </div>
+              <div v-if="newsfeed.deletedby" class="small">
+                Deleted by <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ newsfeed.deletedby }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h3 class="mt-2">
         Recent Emails
       </h3>
       <div v-if="emailHistoriesShown.length">
@@ -348,6 +389,7 @@
   </b-card>
 </template>
 <script>
+import ModDeletedOrForgottn from '@/components/ModDeletedOrForgotten'
 import ModSupportMembership from './ModSupportMembership'
 import ModLogsModal from './ModLogsModal'
 import ConfirmModal from './ConfirmModal'
@@ -384,7 +426,8 @@ export default {
     ModLogsModal,
     ModSupportMembership,
     ExternalLink,
-    ModCommentAddModal
+    ModCommentAddModal,
+    ModDeletedOrForgottn
   },
 
   props: {
@@ -529,6 +572,17 @@ export default {
               )
             })
         : []
+    },
+    newsfeedmodstatus: {
+      get() {
+        return this.user.newsfeedmodstatus
+      },
+      set(newVal) {
+        this.$store.dispatch('user/edit', {
+          id: this.user.id,
+          newsfeedmodstatus: newVal
+        })
+      }
     }
   },
   mounted() {
