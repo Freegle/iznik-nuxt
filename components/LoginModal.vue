@@ -521,8 +521,10 @@ export default {
           .then(() => {
             // We are now logged in. Prompt the browser to remember the credentials.
             console.log('Signed in')
+            this.loginWaitMessage = 'Signed in'
             if (window.PasswordCredential) {
               console.log('Try save')
+              this.loginWaitMessage = 'Try save'
               try {
                 // We used to pass in the DOM element, but in Chrome 92 that causes a crash.
                 const c = new window.PasswordCredential({
@@ -530,20 +532,25 @@ export default {
                   password: this.password
                 })
                 console.log('Got creds')
+                this.loginWaitMessage = 'Got creds'
                 navigator.credentials
                   .store(c)
                   .then(function() {
+                    this.loginWaitMessage = 'Stored'
                     console.log('Stored')
                     self.pleaseShowModal = false
                   })
                   .catch(err => {
+                    this.loginWaitMessage = 'Failed to save credentials'
                     console.error('Failed to save credentials', err)
                   })
               } catch (e) {
+                this.loginWaitMessage = 'Failed to save' + e.message
                 console.log('Failed to save', e)
                 self.pleaseShowModal = false
               }
             } else {
+              this.loginWaitMessage = 'No credentials'
               console.log('No credentials')
               self.pleaseShowModal = false
             }
