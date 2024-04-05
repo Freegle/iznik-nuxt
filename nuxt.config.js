@@ -28,6 +28,7 @@ const IZNIK_API = process.env.IZNIK_API || 'https://fdapilive.ilovefreegle.org'
 
 // This is where the user site is.
 const USER_SITE = 'https://www.ilovefreegle.org'
+const MOD_SITE = 'https://modtools.org'
 
 // This is where images are served from.
 const IMAGE_SITE = process.env.IMAGE_SITE || 'https://images.ilovefreegle.org'
@@ -651,6 +652,7 @@ module.exports = {
     GOOGLE_CLIENT_ID:
       '423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com',
     USER_SITE: USER_SITE,
+    MOD_SITE: MOD_SITE,
     IMAGE_SITE: IMAGE_SITE,
     SENTRY_DSN: SENTRY_DSN,
     BUILD_DATE: new Date().toISOString()
