@@ -128,7 +128,7 @@ export default {
         return null
       }
 
-      const url = '/modtools/message/' + this.refmsg.id
+      const url = process.env.MOD_SITE + '/modtools/message/' + this.refmsg.id
 
       return url
     }

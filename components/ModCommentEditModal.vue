@@ -33,7 +33,7 @@
           if they are an existing member or join a group.  Please use this only for serious issues.
         </p>
         <OurToggle
-          :value="comment.flag"
+          :value="commentflag"
           class="mt-2"
           :height="30"
           :width="250"
@@ -84,6 +84,20 @@ export default {
         '...you get the idea'
       ]
     }
+  },
+  computed: {
+    commentflag: {
+      get() {
+        return !!this.comment.flag
+      },
+      set(value) {
+        this.comment.flag = value ? 1 : 0
+      }
+    }
+  },
+  beforeDestroy() {
+    console.log('destroyed')
+    console.trace()
   },
   methods: {
     toggleFlag() {

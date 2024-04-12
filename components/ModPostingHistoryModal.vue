@@ -12,7 +12,7 @@
           There are no posts to show.
         </NoticeMessage>
         <GroupSelect v-model="groupid" modonly class="mb-2" />
-        <b-row v-for="message in messages" :key="'postinghistory-' + message.id">
+        <b-row v-for="message in messages" :key="'postinghistory-' + message.id + '-' + groupid">
           <b-col cols="8" sm="3">
             <div>{{ datetimeshort(message.arrival) }}</div>
           </b-col>
