@@ -6,7 +6,7 @@
         <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ user.id }}
       </span>
       <span v-if="email">
-        (<ExternalLink :href="'mailto:' + email">{{ email }}</ExternalLink>)
+        (<ExternalLink :href="'mailto:' + email">{{ email }}</ExternalLink> <Clipboard :value="email" />)
       </span>
     </div>
     <b-btn variant="white" size="xs" class="mt-1" @click="addAComment">
@@ -21,12 +21,13 @@
 <script>
 import ModComment from './ModComment'
 import ModCommentAddModal from './ModCommentAddModal'
+import Clipboard from './Clipboard.vue'
 import ExternalLink from '~/components/ExternalLink'
 
 const REVIEWCHAT = null
 
 export default {
-  components: { ExternalLink, ModCommentAddModal, ModComment },
+  components: { Clipboard, ExternalLink, ModCommentAddModal, ModComment },
 
   props: {
     user: {

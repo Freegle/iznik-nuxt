@@ -341,7 +341,7 @@
               {{ datetimeshort(newsfeed.timestamp) }}
             </div>
             <div class="mr-2">
-              <div class="truncate" :class="{strike: newsfeed.hidden || newsfeed.deleted}">
+              <div v-line-clamp="2" class="" :class="{strike: newsfeed.hidden || newsfeed.deleted}">
                 {{ newsfeed.message }}
               </div>
               <div v-if="newsfeed.hidden" class="small">
@@ -390,6 +390,7 @@
 </template>
 <script>
 import ModDeletedOrForgottn from '@/components/ModDeletedOrForgotten'
+import Vue from 'vue'
 import ModSupportMembership from './ModSupportMembership'
 import ModLogsModal from './ModLogsModal'
 import ConfirmModal from './ConfirmModal'
@@ -406,6 +407,14 @@ import ModMemberSummary from './ModMemberSummary'
 import ModBouncing from '~/components/ModBouncing'
 const ExternalLink = () => import('~/components/ExternalLink')
 const ModCommentAddModal = () => import('~/components/ModCommentAddModal')
+
+if (process.client) {
+  const lineClamp = require('vue-line-clamp')
+
+  Vue.use(lineClamp, {
+    textOverflow: 'ellipsis'
+  })
+}
 
 const SHOW = 3
 

@@ -132,6 +132,15 @@
           >
             <v-icon name="question-circle" /> Refer to Support
           </b-btn>
+          <b-btn
+            v-if="chat && chat.chattype === 'User2Mod' && mod"
+            v-b-tooltip.hover.top
+            title="Ask Support for help"
+            variant="secondary"
+            @click="addAComment"
+          >
+            <v-icon name="tag" /> Add note
+          </b-btn>
         </span>
         <b-btn variant="primary" class="float-right ml-1" @click="send">
           Send&nbsp;
@@ -182,6 +191,19 @@
             Support
           </div>
         </div>
+        <div
+          v-if="chat && chat.chattype === 'User2Mod' && mod"
+          v-b-tooltip.hover.top
+          title="Ask Support for help"
+          variant="secondary"
+          class="mr-2"
+          @click="addAComment"
+        >
+          <v-icon scale="2" name="tag" class="fa-mob" />
+          <div class="mobtext text--smallest">
+            Note
+          </div>
+        </div>
         <div v-if="chat && chat.chattype === 'User2User' && otheruser && !tooSoonToNudge && !simple" v-b-tooltip.hover.top title="Waiting for a reply?  Nudge this freegler." class="mr-2" @click="nudge">
           <v-icon scale="2" name="bell" class="fa-mob" />
           <div class="mobtext text--smallest">
@@ -222,6 +244,7 @@
     <MicroVolunteering v-if="showMicrovolunteering" />
     <ConfirmModal ref="referConfirm" title="Refer this chat to Support?" message="The Support volunteers will have a look at the chat and get back to you by email." @confirm="referToSupport" />
     <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="otheruser" />
+    <ModCommentAddModal v-if="addComment" ref="addComment" :user="otheruser" :groupid="chat.groupid" />
   </div>
 </template>
 <script>
@@ -247,6 +270,7 @@ const NudgeWarningModal = () => import('~/components/NudgeWarningModal')
 const NudgeTooSoonWarningModal = () =>
   import('~/components/NudgeTooSoonWarningModal')
 const MicroVolunteering = () => import('~/components/MicroVolunteering')
+const ModCommentAddModal = () => import('~/components/ModCommentAddModal')
 
 export default {
   components: {
@@ -263,12 +287,14 @@ export default {
     AddressModal,
     ChatRSVPModal,
     MicroVolunteering,
-    ConfirmModal
+    ConfirmModal,
+    ModCommentAddModal
   },
   mixins: [chat, chatCollate],
   data: function() {
     return {
-      saveTimer: null
+      saveTimer: null,
+      addComment: false
     }
   },
   computed: {
@@ -323,6 +349,12 @@ export default {
     },
     confirmReferToSupport() {
       this.$refs.referConfirm.show()
+    },
+    addAComment() {
+      this.addComment = true
+      this.waitForRef('addComment', () => {
+        this.$refs.addComment.show()
+      })
     }
   }
 }

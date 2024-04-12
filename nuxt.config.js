@@ -8,7 +8,7 @@ const SENTRY_DSN = 'https://b68903e730034a4ba3b8b2358331389e@o118493.ingest.sent
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
 const MOBILE_VERSION = '2.0.120'
-const MODTOOLS_VERSION = '0.3.103'
+const MODTOOLS_VERSION = '0.3.104'
 
 require('dotenv').config()
 
@@ -37,6 +37,7 @@ const IZNIK_API = process.env.IZNIK_API || 'https://fdapilive.ilovefreegle.org'
 
 // This is where the user site is.
 const USER_SITE = 'https://www.ilovefreegle.org'
+const MOD_SITE = 'https://modtools.org'
 
 // This is where images are served from.
 const IMAGE_SITE = process.env.IMAGE_SITE || 'https://images.ilovefreegle.org'
@@ -665,6 +666,7 @@ const config = {
     GOOGLE_CLIENT_ID:
       '423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com',
     USER_SITE: USER_SITE,
+    MOD_SITE: MOD_SITE,
     IMAGE_SITE: IMAGE_SITE,
     SENTRY_DSN: SENTRY_DSN,
     BUILD_DATE: new Date().toISOString()
