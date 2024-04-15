@@ -152,7 +152,7 @@ jobs:
       - run: cd ../iznik-nuxt-mt; cp ../project/mobile/secrets/GoogleService-Info.plist GoogleService-Info.plist
       - run: cd ../iznik-nuxt-mt; ln -s ../project/dist www
       - run: cd ../iznik-nuxt-mt; nvm use 14.17.6; cordova platform rm ios
-      - run: cd ../iznik-nuxt-mt; nvm use 14.17.6; cordova platform add ios@6.2.0
+      - run: cd ../iznik-nuxt-mt; nvm use 14.17.6; cordova platform add ios@6.3.0
 
       # Fix podfile for xcode 14
       - run: cd ../iznik-nuxt-mt; nvm use 14.17.6; cordova prepare ios
