@@ -216,6 +216,26 @@ export default {
     this.$store.dispatch('chats/fetchLatestChats')
 
     setTimeout(this.updateFavicon, 1000)
+
+    // Keep track of whether we have a modal open, so that we don't clear messages under its feet.
+    this.$root.$on('bv::modal::show', (bvEvent, modalId) => {
+      const opened = Date.now()
+
+      this.$store.dispatch('misc/set', {
+        key: 'modalOpen',
+        value: opened
+      })
+
+      console.log('Modal open')
+    })
+
+    this.$root.$on('bv::modal::hidden', (bvEvent, modalId) => {
+      this.$store.dispatch('misc/set', {
+        key: 'modalOpen',
+        value: false
+      })
+      console.log('Modal closed')
+    })
   },
   beforeDestroy() {
     if (this.workTimer) {
