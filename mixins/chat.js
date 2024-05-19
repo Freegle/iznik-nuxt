@@ -689,7 +689,10 @@ export default {
           }
 
           setTimeout(() => {
-            this.showNotices = false
+            // Don't hide if modal open - probably editing.
+            if (!document.body.classList.contains('modal-open')) {
+              this.showNotices = false
+            }
           }, 30000)
         }
       } else {

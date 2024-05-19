@@ -35,11 +35,18 @@
               <p class="text-center">
                 This is what people have said over the last year<span v-if="!groupid"> across all of Freegle</span>.
               </p>
-              <GChart
-                type="PieChart"
-                :data="happinessData"
-                :options="happinessOptions"
-              />
+              <div class="d-flex flex-wrap justify-content-between">
+                <GChart
+                  type="PieChart"
+                  :data="happinessData"
+                  :options="happinessOptions"
+                />
+                <GChart
+                  type="BarChart"
+                  :data="happinessData"
+                  :options="happinessOptions"
+                />
+              </div>
             </b-card-text>
           </b-card>
 
