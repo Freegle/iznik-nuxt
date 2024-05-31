@@ -20,6 +20,9 @@
             (<ExternalLink :href="'mailto:' + user.spammer.byuser.email">{{ user.spammer.byuser.email }}</ExternalLink>)
           </span>
         </span>
+        <span v-else>
+          the system (<ExternalLink href="mailto:spammerlist@ilovefreegle.org">spammerlist@ilovefreegle.org</ExternalLink>)
+        </span>
         #{{ user.spammer.byuserid }} {{ timeago(user.spammer.added) }}
       </div>
     </NoticeMessage>
