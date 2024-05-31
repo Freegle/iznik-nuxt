@@ -22,8 +22,7 @@
           <li>Mail can be spoofed or accounts can be hacked - so a member can appear to send spam but not be a spammer.</li>
         </ul>
         <p>
-          Spammers must have <strong>clear intent to deliberately spam/scam</strong>, or be a multijoiner across
-          communities a long way apart, without a good reason.
+          Spammers must have <strong>clear intent to deliberately spam/scam</strong>, or be a danger to other Freeglers.
         </p>
         <p>
           See <ExternalLink href="https://wiki.ilovefreegle.org/Spammers#SPAM_checking_before_submission">
