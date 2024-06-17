@@ -247,8 +247,8 @@ export default {
 
       if (this.body) {
         const checks = {
-          yahoo:
-            'Yahoo Groups is no longer supported, so any mention of it is probably out of date.',
+          yahoogroups:
+            'Yahoo Groups no longer exists, so any mention of it is probably out of date.',
           republisher:
             'Republisher is old and any mention of it is probably not valid any more.',
           messagemaker:
