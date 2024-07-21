@@ -14,24 +14,23 @@
   "comment3": "Sort out @havesource/cordova-plugin-push when targeting Android 31+: 3.0.1 fails",
   "cordova": {
     "plugins": {
-      "cordova-plugin-device": {},
       "cordova-plugin-network-information": {},
-      "cordova-plugin-inappbrowser": {},
+      "cordova-plugin-zoom-control-2": {},
+      "cordova-clipboard": {},
+      "cordova-plugin-camera": {
+        "ANDROIDX_CORE_VERSION": "1.6.+"
+      },
+      "cordova-plugin-device": {},
       "cordova-plugin-geolocation": {
         "GPS_REQUIRED": "true"
       },
-      "cordova-plugin-camera": {
-        "ANDROID_SUPPORT_V4_VERSION": "27.+",
-        "ANDROIDX_CORE_VERSION": "1.6.+"
-      },
-      "cordova-plugin-zoom-control-2": {},
-      "cordova-clipboard": {},
-      "cordova-plugin-google-signin": {
-        "SERVER_CLIENT_ID": "423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com"
-      },
+      "cordova-plugin-inappbrowser": {},
       "@havesource/cordova-plugin-push": {
         "ANDROIDX_CORE_VERSION": "1.6.+",
         "FCM_VERSION": "23.+"
+      },
+      "cordova-plugin-google-signin": {
+        "CLIENT_ID": "423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com"
       }
     },
     "platforms": [
@@ -39,18 +38,18 @@
     ]
   },
   "dependencies": {
-    "cordova-plugin-camera": "^6.0.0",
-    "cordova-plugin-device": "^2.0.3",
-    "cordova-plugin-geolocation": "^4.1.0",
-    "cordova-plugin-google-signin": "git+https://github.com/Freegle/cordova-plugin-google-signin.git",
-    "cordova-plugin-inappbrowser": "^5.0.0",
+    "cordova-plugin-google-signin": "github:russmedia-digital/cordova-plugin-google-signin",
     "cordova-plugin-network-information": "^3.0.0",
     "phonegap-plugin-multidex": "^1.0.0"
   },
   "devDependencies": {
-    "@havesource/cordova-plugin-push": "git+https://github.com/havesource/cordova-plugin-push.git#c3fb5b894afe17a05e21be135961f5831bafb1e0",
-    "cordova-android": "^11.0.0",
+    "@havesource/cordova-plugin-push": "^4.0.0",
+    "cordova-android": "^13.0.0",
     "cordova-clipboard": "1.3.0",
+    "cordova-plugin-camera": "^7.0.0",
+    "cordova-plugin-device": "^3.0.0",
+    "cordova-plugin-geolocation": "^5.0.0",
+    "cordova-plugin-inappbrowser": "^6.0.0",
     "cordova-plugin-zoom-control-2": "^0.4.2"
   }
 }

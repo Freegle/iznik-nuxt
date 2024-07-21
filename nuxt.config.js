@@ -8,7 +8,7 @@ const SENTRY_DSN = 'https://b68903e730034a4ba3b8b2358331389e@o118493.ingest.sent
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
 const MOBILE_VERSION = '2.0.120'
-const MODTOOLS_VERSION = '0.3.104'
+const MODTOOLS_VERSION = '0.3.105'
 
 require('dotenv').config()
 
