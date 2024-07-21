@@ -75,17 +75,22 @@ export default {
       // Count for the type of work we're interested in.
       const work = this.$store.getters['auth/work']
       return work.chatreview
+    },
+    modalOpen() {
+      return this.$store.getters['misc/get']('modalOpen')
     }
   },
   watch: {
     work(newVal, oldVal) {
-      if (newVal > oldVal) {
-        this.clearAndLoad()
-      } else {
-        const visible = this.$store.getters['misc/get']('visible')
-
-        if (!visible) {
+      if (!this.modalOpen) {
+        if (newVal > oldVal) {
           this.clearAndLoad()
+        } else {
+          const visible = this.$store.getters['misc/get']('visible')
+
+          if (!visible) {
+            this.clearAndLoad()
+          }
         }
       }
     }

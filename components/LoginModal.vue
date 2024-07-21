@@ -667,12 +667,14 @@ export default {
         let authResult = { status: 'init' }
         await new Promise(function (resolve) {
           appGoogleLogin(isiOS, function (ret) {
+            console.log("appGoogleLogin complete", ret)
             authResult = ret
             resolve()
           })
         })
         this.loginWaitMessage = "Please wait..."
         if (authResult.code) { // status, code
+          console.log("appGoogleLogin login", authResult.code)
           await this.$store.dispatch('auth/login', {
             googlejwt: authResult.code,
             googlelogin: true

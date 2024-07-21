@@ -29,8 +29,9 @@
     </span>
     <b-img
       v-if="thumbnail"
+      :key="'img-' + cacheBust"
       lazy
-      :src="paththumb + '?' + cacheBust"
+      :src="ourPathThumb"
       rounded
       thumbnail
       class="square"
@@ -38,8 +39,9 @@
     />
     <b-img
       v-else
+      :key="'img-' + cacheBust"
       lazy
-      :src="path+ '?' + cacheBust"
+      :src="path"
       rounded
       @click="$emit('click') "
     />
@@ -51,7 +53,6 @@ const ConfirmModal = () => import('./ConfirmModal.vue')
 
 export default {
   components: { ConfirmModal },
-
   props: {
     id: {
       type: Number,
@@ -74,7 +75,21 @@ export default {
   data: function() {
     return {
       cacheBust: Date.now(),
-      confirm: false
+      confirm: false,
+      deg: 0,
+      ourPath: null,
+      ourPathThumb: null
+    }
+  },
+  mounted() {
+    // Extract ro parameter from url of path
+    if (this.path.indexOf('ro=') !== 1) {
+      this.deg = parseInt(/ro=(\d+)/.exec(this.path)[1])
+      this.ourPath = this.path
+      this.ourPathThumb = this.paththumb
+    } else {
+      this.ourPath = this.path + '&ro=0'
+      this.ourPathThumb = this.paththumb + '&ro=0'
     }
   },
   methods: {
@@ -88,22 +103,30 @@ export default {
       this.$emit('remove', this.id)
     },
     rotate(deg) {
+      this.deg += deg
+
       this.$axios
         .post(process.env.API + '/image', {
           id: this.id,
-          rotate: deg,
+          rotate: this.deg,
           bust: Date.now()
         })
         .then(() => {
+          // Add or replace ro parameter in ourPath and ourPathThumb to include this.deg
+          this.ourPath = this.ourPath.replace(/ro=\d+/, `ro=${this.deg}`)
+          this.ourPathThumb = this.ourPathThumb.replace(
+            /ro=\d+/,
+            `ro=${this.deg}`
+          )
           this.cacheBust = Date.now()
         })
     },
     rotateLeft() {
-      this.rotate(90)
+      this.rotate(-90)
       this.cacheBust = Date.now()
     },
     rotateRight() {
-      this.rotate(-90)
+      this.rotate(90)
       this.cacheBust = Date.now()
     }
   }

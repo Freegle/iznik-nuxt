@@ -38,7 +38,7 @@
     ]
   },
   "dependencies": {
-    "cordova-plugin-google-signin": "github:russmedia-digital/cordova-plugin-google-signin",
+    "cordova-plugin-google-signin": "git+https://github.com/russmedia-digital/cordova-plugin-google-signin.git",
     "cordova-plugin-network-information": "^3.0.0",
     "phonegap-plugin-multidex": "^1.0.0"
   },

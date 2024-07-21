@@ -1,6 +1,6 @@
 <template>
   <div :id="'msg-' + id" class="position-relative">
-    <template v-if="message.successful">
+    <template v-if="successful">
       <MessageFreegled :id="id" />
     </template>
     <template v-else-if="message.promised">
@@ -97,6 +97,22 @@ export default {
     return {}
   },
   computed: {
+    successful() {
+      // This is a bit of a hack as we can be called from multiple places.
+      if (
+        (this.message.outcomes &&
+          this.message.outcomes.length &&
+          (this.message.outcomes[0].outcome === 'Taken' ||
+            this.message.outcomes[0].outcome === 'Received')) ||
+        (this.message.outcome === 'Taken' ||
+          this.message.outcome === 'Received') ||
+        this.message.successful
+      ) {
+        return true
+      }
+
+      return false
+    },
     message() {
       return this.messageOverride
         ? this.messageOverride

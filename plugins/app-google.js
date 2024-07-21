@@ -39,6 +39,7 @@ export function appGoogleLogin(isiOS, callback) {
       cordova.plugins.GoogleSignInPlugin.oneTapLogin(
         function (sdata) {
           const data = JSON.parse(sdata)
+          console.log("GoogleSignInPlugin.oneTapLogin OK", data)
           // const decoded = jwt_decode(data.message.id_token)
           // Pass JWT to do login at Freegle
           tryingGoogleLogin = false
@@ -46,6 +47,7 @@ export function appGoogleLogin(isiOS, callback) {
           completeLoginCallback(authResult)
         },
         function (error) {
+          console.log("GoogleSignInPlugin.oneTapLogin ERROR")
           if (typeof error === 'string') error = JSON.parse(error)
           console.log("GoogleSignInPlugin error", error.message)
           //if (error.message === 'One Tap Signin was denied by the user.') {

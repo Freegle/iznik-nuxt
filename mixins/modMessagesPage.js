@@ -18,13 +18,15 @@ export default {
       busy: false,
       messageTerm: null,
       memberTerm: null,
-      modalOpen: false,
       scrollHeight: null,
       scrollTop: null,
       nextAfterRemoved: null
     }
   },
   computed: {
+    modalOpen() {
+      return this.$store.getters['misc/get']('modalOpen')
+    },
     visibleMessages() {
       return this.messages.slice(0, this.show)
     },
@@ -74,14 +76,7 @@ export default {
       }
     },
     async work(newVal, oldVal) {
-      console.log('Work changed', newVal, oldVal, this.modalOpen)
       let doFetch = false
-
-      if (this.modalOpen && Date.now() - this.modalOpen > 10 * 60 * 1000) {
-        // We don't always seem to get the modal hidden event, so assume any modals open for a long time have actually
-        // closed.
-        this.modalOpen = null
-      }
 
       if (!this.modalOpen) {
         if (newVal > oldVal) {
@@ -137,20 +132,6 @@ export default {
         id: this.groupid
       })
     }
-
-    // Keep track of whether we have a modal open, so that we don't clear messages under its feet.
-    //
-    // We don't always seem to get the hidden event, so we store the timestamp so that we can time out our belief
-    // that the modal is open.
-    this.$root.$on('bv::modal::show', (bvEvent, modalId) => {
-      this.modalOpen = Date.now()
-      console.log('Modal open')
-    })
-
-    this.$root.$on('bv::modal::hidden', (bvEvent, modalId) => {
-      this.modalOpen = null
-      console.log('Modal closed')
-    })
   },
   methods: {
     loadMore: function($state) {

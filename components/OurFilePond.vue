@@ -212,7 +212,7 @@ export default {
       }
     },
     async process(fieldName, file, metadata, load, error, progress, abort) {
-      console.log('PHOTO: process') // CC
+      console.log('Process')
       await this.$store.dispatch('compose/setUploading', true)
 
       const data = new FormData()
@@ -260,6 +260,7 @@ export default {
         }
       })
 
+      console.log('Returned', JSON.parse(JSON.stringify(ret)))
       if (ret.status === 200 && ret.data.ret === 0) {
         this.imageid = ret.data.id
         this.imagethumb = ret.data.paththumb
