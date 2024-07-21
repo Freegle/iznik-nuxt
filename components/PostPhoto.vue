@@ -83,7 +83,7 @@ export default {
   },
   mounted() {
     // Extract ro parameter from url of path
-    if (this.path.indexOf('ro=') !== 1) {
+    if (this.path.indexOf('ro=') !== -1) {
       this.deg = parseInt(/ro=(\d+)/.exec(this.path)[1])
       this.ourPath = this.path
       this.ourPathThumb = this.paththumb
