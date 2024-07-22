@@ -39,14 +39,7 @@ export function appGoogleLogin(isiOS, callback) {
       cordova.plugins.GoogleSignInPlugin.oneTapLogin(
         function (sdata) {
           const data = JSON.parse(sdata)
-          console.log("GoogleSignInPlugin.oneTapLogin OK", data)
-          let decoded = jwt_decode(data.message.id_token)
-          console.log("GoogleSignInPlugin.oneTapLogin decoded", decoded)
-          const endcurly = decoded.indexOf('}')
-          if (endcurly !== -1) {
-            decoded = decoded.substring(0, endcurly)
-            console.log("GoogleSignInPlugin.oneTapLogin decoded NOW", decoded)
-          }
+          //let decoded = jwt_decode(data.message.id_token)
           // Pass JWT to do login at Freegle
           tryingGoogleLogin = false
           const authResult = { code: data.message.id_token }

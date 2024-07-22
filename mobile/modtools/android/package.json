@@ -30,6 +30,7 @@
         "FCM_VERSION": "23.+"
       },
       "cordova-plugin-google-signin": {
+        "REVERSED_CLIENT_ID": "com.googleusercontent.apps.423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f",
         "CLIENT_ID": "423761283916-1rpa8120tpudgv4nf44cpmlf8slqbf4f.apps.googleusercontent.com"
       }
     },
@@ -38,7 +39,7 @@
     ]
   },
   "dependencies": {
-    "cordova-plugin-google-signin": "git+https://github.com/russmedia-digital/cordova-plugin-google-signin.git",
+    "cordova-plugin-google-signin": "github:russmedia-digital/cordova-plugin-google-signin",
     "cordova-plugin-network-information": "^3.0.0",
     "phonegap-plugin-multidex": "^1.0.0"
   },

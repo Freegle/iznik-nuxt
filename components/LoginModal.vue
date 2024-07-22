@@ -674,7 +674,7 @@ export default {
         })
         this.loginWaitMessage = "Please wait..."
         if (authResult.code) { // status, code
-          console.log("appGoogleLogin login", authResult.code)
+          //console.log("appGoogleLogin login", authResult.code)
           await this.$store.dispatch('auth/login', {
             googlejwt: authResult.code,
             googlelogin: true
