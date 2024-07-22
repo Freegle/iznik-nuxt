@@ -28,6 +28,7 @@ if ((process.env.NUXT_BUILD_TYPE === 'fdapp') || (process.env.NUXT_BUILD_TYPE ==
   API = 'https://fdapilive.ilovefreegle.org/api'
 }
 if (process.env.NUXT_BUILD_TYPE === 'mtapp') {
+  //API = 'https://fdapidbg.ilovefreegle.org/api'
   API = 'https://modtools.org/api'
 }
 
