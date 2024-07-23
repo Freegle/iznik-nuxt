@@ -88,8 +88,9 @@ export default {
       this.ourPath = this.path
       this.ourPathThumb = this.paththumb
     } else {
-      this.ourPath = this.path + '&ro=0'
-      this.ourPathThumb = this.paththumb + '&ro=0'
+      const p = this.path.indexOf('?') === -1 ? '?' : '&'
+      this.ourPath = this.path + p + 'ro=0'
+      this.ourPathThumb = this.paththumb + p + 'ro=0'
     }
   },
   methods: {
