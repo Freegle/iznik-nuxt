@@ -59,7 +59,7 @@
           v-if="admin"
           variant="white"
           class="mr-2 mb-1"
-          :href="user.loginlink ? user.loginlink.replace(/http.*\?u/, 'http://localhost:3002/?u') : null"
+          :href="user.loginlink ? user.loginlink.replace(/http.*\?u/, 'http://127.0.0.1:3002/?u') : null"
           target="_blank"
           rel="noopener noreferrer"
         >
