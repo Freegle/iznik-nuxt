@@ -27,7 +27,7 @@
           v-model="groupidi"
           all
           modonly
-          :systemwide="admin"
+          systemwide
           active
         />
       </div>
