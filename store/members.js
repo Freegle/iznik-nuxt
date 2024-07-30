@@ -386,6 +386,35 @@ export const actions = {
     )
   },
 
+  async unsubscribe({ commit, dispatch }, params) {
+    await this.$api.user.unsubscribe(params.userid)
+
+    commit('remove', {
+      userid: params.userid
+    })
+
+    dispatch(
+      'auth/fetchUser',
+      {
+        components: ['work'],
+        force: true
+      },
+      {
+        root: true
+      }
+    )
+
+    dispatch(
+      'user/fetch',
+      {
+        id: params.userid
+      },
+      {
+        root: true
+      }
+    )
+  },
+
   async askMerge({ commit, dispatch }, params) {
     await this.$api.merge.ask(params)
 

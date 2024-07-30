@@ -23,6 +23,9 @@
         </div>
       </b-card-header>
       <b-card-body>
+        <NoticeMessage v-if="unsubscribed">
+          This freegler has been unsubscribed.
+        </NoticeMessage>
         <ModDeletedOrForgotten :user="user" />
         <NoticeMessage v-if="banned" variant="danger" class="mb-2">
           This freegler is banned from this group.
@@ -285,7 +288,8 @@ export default {
       type: null,
       allmemberships: false,
       showLogsModal: false,
-      banned: false
+      banned: false,
+      unsubscribed: false
     }
   },
   computed: {

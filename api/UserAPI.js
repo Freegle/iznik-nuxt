@@ -70,4 +70,11 @@ export default class UserAPI extends BaseAPI {
       id
     })
   }
+
+  unsubscribe(id) {
+    return this.$post('/user', {
+      id,
+      action: 'Unsubscribe'
+    })
+  }
 }
