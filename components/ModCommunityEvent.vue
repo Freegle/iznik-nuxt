@@ -7,9 +7,14 @@
             Event <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ event.id }}
           </b-col>
           <b-col cols="6" md="4">
-            {{ event.user.displayname }}
-            <span class="text-muted">
-              <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ event.user.id }}
+            <span v-if="!event.user.id">
+              Added by the system
+            </span>
+            <span v-else>
+              {{ event.user.displayname }}
+              <span class="text-muted">
+                <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ event.user.id }}
+              </span>
             </span>
           </b-col>
           <b-col cols="12" md="4">
@@ -34,6 +39,7 @@
           <v-icon name="trash-alt" /> Delete
         </b-btn>
         <ChatButton
+          v-if="event.user.id"
           :userid="event.user.id"
           :groupid="event.groups[0].id"
           title="Chat"
