@@ -41,11 +41,17 @@
           <span>
             {{ timeago(message.date) }}
           </span>
+          <span v-if="message.widerchatreview" class="text-danger">
+            <v-icon name="info-circle" />
+            <em>Quicker Chat Review</em>
+          </span>
           <span>
-            <v-icon name="info-circle" /> {{ message.touser.displayname }} is on {{ message.group.namedisplay }}, which you mod.
-            <b-btn :to="'/modtools/members/approved/search/' + message.group.id + '/' + message.touser.id" variant="link" class="p-0 border-0 align-top">
-              Go to membership
-            </b-btn>
+            <v-icon name="info-circle" /> {{ message.touser.displayname }} is on {{ message.group.namedisplay }}
+            <span v-if="!message.widerchatreview">, which you mod.
+              <b-btn :to="'/modtools/members/approved/search/' + message.group.id + '/' + message.touser.id" variant="link" class="p-0 border-0 align-top">
+                Go to membership
+              </b-btn>
+            </span>
           </span>
           <span>
             <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ message.id }}
@@ -56,44 +62,50 @@
           <div>
             <span>
               <!-- eslint-disable-next-line -->
-            <v-icon name="info-circle" /> {{ message.fromuser.displayname }} is <span v-if="message.groupfrom">on {{ message.groupfrom.namedisplay }}, which you mod</span><span v-else>not on any groups which you actively mod.</span>
+            <v-icon name="info-circle" /> {{ message.fromuser.displayname }} is <span v-if="message.groupfrom">on {{ message.groupfrom.namedisplay }}
+                <span v-if="!message.widerchatreview">
+                  <span v-if="message.groupfrom">, which you mod</span><span v-else>not on any groups which you actively mod.</span>
+                </span>
+              </span>
+              <b-btn v-if="message.groupfrom" :to="'/modtools/members/approved/search/' + message.groupfrom.id + '/' + message.fromuser.id" variant="link" class="p-0 border-0 align-top">
+                Go to membership
+              </b-btn>
             </span>
-            <b-btn v-if="message.groupfrom" :to="'/modtools/members/approved/search/' + message.groupfrom.id + '/' + message.fromuser.id" variant="link" class="p-0 border-0 align-top">
-              Go to membership
-            </b-btn>
           </div>
         </div>
       </b-card-body>
       <b-card-footer>
         <div class="d-flex flex-wrap justify-content-start">
-          <ModChatViewButton
-            :id="message.chatid"
-            :pov="message.touser.id"
-          />
-          <b-btn
-            v-if="message.held && me.id === message.held.id"
-            variant="warning"
-            class="mr-2 mb-1"
-            @click="release"
-          >
-            <v-icon name="play" /> Release
-          </b-btn>
-          <SpinButton
-            v-if="!message.held"
-            name="exclamation-triangle"
-            label="Add Mod Message"
-            variant="warning"
-            class="mr-2 mb-1"
-            :handler="modnote"
-          />
-          <SpinButton
-            v-if="!message.held"
-            name="eraser"
-            label="Remove highlighted emails"
-            variant="warning"
-            class="mr-2 mb-1"
-            :handler="redactEmails"
-          />
+          <template v-if="!message.widerchatreview">
+            <ModChatViewButton
+              :id="message.chatid"
+              :pov="message.touser.id"
+            />
+            <b-btn
+              v-if="message.held && me.id === message.held.id"
+              variant="warning"
+              class="mr-2 mb-1"
+              @click="release"
+            >
+              <v-icon name="play" /> Release
+            </b-btn>
+            <SpinButton
+              v-if="!message.held"
+              name="exclamation-triangle"
+              label="Add Mod Message"
+              variant="warning"
+              class="mr-2 mb-1"
+              :handler="modnote"
+            />
+            <SpinButton
+              v-if="!message.held"
+              name="eraser"
+              label="Remove highlighted emails"
+              variant="warning"
+              class="mr-2 mb-1"
+              :handler="redactEmails"
+            />
+          </template>
           <SpinButton
             v-if="!message.held"
             name="check"
@@ -103,42 +115,44 @@
             class="mr-2 mb-1"
             :handler="approve"
           />
-          <SpinButton
-            v-if="!message.held"
-            name="check"
-            label="Approve and whitelist"
-            spinclass="text-white"
-            variant="primary"
-            class="mr-2 mb-1"
-            confirm
-            :handler="whitelist"
-          />
-          <SpinButton
-            v-if="!message.held"
-            name="pause"
-            label="Hold"
-            variant="warning"
-            class="mr-2 mb-1"
-            :handler="hold"
-          />
-          <SpinButton
-            v-if="!message.held"
-            name="trash-alt"
-            label="Delete"
-            variant="danger"
-            class="mr-2 mb-1"
-            confirm
-            :handler="reject"
-          />
-          <SpinButton
-            v-if="!message.held"
-            name="ban"
-            label="Spam"
-            variant="danger"
-            class="mr-2 mb-1"
-            confirm
-            :handler="reject"
-          />
+          <template v-if="!message.widerchatreview">
+            <SpinButton
+              v-if="!message.held"
+              name="check"
+              label="Approve and whitelist"
+              spinclass="text-white"
+              variant="primary"
+              class="mr-2 mb-1"
+              confirm
+              :handler="whitelist"
+            />
+            <SpinButton
+              v-if="!message.held"
+              name="pause"
+              label="Hold"
+              variant="warning"
+              class="mr-2 mb-1"
+              :handler="hold"
+            />
+            <SpinButton
+              v-if="!message.held"
+              name="trash-alt"
+              label="Delete"
+              variant="danger"
+              class="mr-2 mb-1"
+              confirm
+              :handler="reject"
+            />
+            <SpinButton
+              v-if="!message.held"
+              name="ban"
+              label="Spam"
+              variant="danger"
+              class="mr-2 mb-1"
+              confirm
+              :handler="reject"
+            />
+          </template>
         </div>
       </b-card-footer>
     </b-card>
