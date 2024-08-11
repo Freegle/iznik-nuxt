@@ -65,11 +65,11 @@
             <v-icon name="info-circle" /> {{ message.fromuser.displayname }} is <span v-if="message.groupfrom">on {{ message.groupfrom.namedisplay }}
                 <span v-if="!message.widerchatreview">
                   <span v-if="message.groupfrom">, which you mod</span><span v-else>not on any groups which you actively mod.</span>
+                  <b-btn v-if="message.groupfrom" :to="'/modtools/members/approved/search/' + message.groupfrom.id + '/' + message.fromuser.id" variant="link" class="p-0 border-0 align-top">
+                    Go to membership
+                  </b-btn>
                 </span>
               </span>
-              <b-btn v-if="message.groupfrom" :to="'/modtools/members/approved/search/' + message.groupfrom.id + '/' + message.fromuser.id" variant="link" class="p-0 border-0 align-top">
-                Go to membership
-              </b-btn>
             </span>
           </div>
         </div>
