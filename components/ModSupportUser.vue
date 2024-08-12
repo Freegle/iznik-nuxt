@@ -52,6 +52,9 @@
         <b-btn variant="white" class="mr-2 mb-1" @click="purge">
           <v-icon name="trash-alt" /> Purge
         </b-btn>
+        <b-btn variant="white" class="mr-2 mb-1" @click="unsubscribe">
+          <v-icon name="trash-alt" /> Unsubscribe
+        </b-btn>
         <b-btn variant="white" class="mr-2 mb-1" :href="user.loginlink" target="_blank" rel="noopener noreferrer">
           <v-icon name="user" /> Impersonate - must right-click and open in Incognito/Private window
         </b-btn>
@@ -59,7 +62,7 @@
           v-if="admin"
           variant="white"
           class="mr-2 mb-1"
-          :href="user.loginlink ? user.loginlink.replace(/http.*\?u/, 'http://localhost:3002/?u') : null"
+          :href="user.loginlink ? user.loginlink.replace(/http.*\?u/, 'http://127.0.0.1:3002/?u') : null"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -77,6 +80,9 @@
         </b-btn>
       </div>
       <ModDeletedOrForgottn :user="user" class="mt-2" />
+      <NoticeMessage v-if="unsubscribed" variant="info">
+        You've unsubscribed this user.
+      </NoticeMessage>
       <h3 class="mt-2">
         Trust Level
       </h3>
@@ -385,7 +391,8 @@
       <ModSupportChatList :chats="chatsFiltered" :pov="user.id" />
     </b-card-body>
     <ModLogsModal ref="logs" :userid="user.id" />
-    <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + user.displayname + ' from the system?'" message="<p><strong>This can't be undone.</strong></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
+    <ConfirmModal v-if="purgeConfirm" ref="purgeConfirm" :title="'Purge ' + user.displayname + ' from the system?'" message="<p><strong>This can't be undone - it removes them immediately.</strong></p><p>Are you completely sure you want to do this?</p>" @confirm="purgeConfirmed" />
+    <ConfirmModal v-if="unsubscribeConfirm" ref="unsubscribeConfirm" :title="'Unsubscribe ' + user.displayname + '?'" message="<p>This will remove their data after a couple of weeks, and they can change their minds by logging back in.</p><p>Are you completely sure you want to do this?</p>" @confirm="unsubscribeConfirmed" />
     <ProfileModal v-if="user && user.info" :id="id" ref="profile" />
     <ModSpammerReport v-if="showSpamModal" ref="spamConfirm" :user="reportUser" />
     <ModCommentAddModal v-if="addComment" ref="addComment" :user="user" @added="updateComments" />
@@ -457,6 +464,7 @@ export default {
     return {
       expanded: true,
       purgeConfirm: false,
+      unsubscribeConfirm: false,
       showAllMemberships: false,
       showAllMembershipHistories: false,
       showAllMessages: false,
@@ -467,7 +475,8 @@ export default {
       newemail: null,
       newEmailAs: 1,
       addComment: false,
-      emailAddError: null
+      emailAddError: null,
+      unsubscribed: false
     }
   },
   computed: {
@@ -622,6 +631,20 @@ export default {
 
       this.waitForRef('purgeConfirm', () => {
         this.$refs.purgeConfirm.show()
+      })
+    },
+    async unsubscribeConfirmed() {
+      await this.$store.dispatch('members/unsubscribe', {
+        userid: this.id
+      })
+
+      this.unsubscribed = true
+    },
+    unsubscribe() {
+      this.unsubscribeConfirm = true
+
+      this.waitForRef('unsubscribeConfirm', () => {
+        this.$refs.unsubscribeConfirm.show()
       })
     },
     spamReport() {

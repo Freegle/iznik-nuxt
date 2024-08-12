@@ -17,7 +17,7 @@
         who aren't on Freegle see things that are appealing.
       </p>
       <p>
-        FREE! Trending yesterday on {{ group.namedisplay }}:
+        FREE! Here’s the sort of thing that has been freegled on {{ group.namedisplay }}:
       </p>
       <p>
         {{ message.subject }}

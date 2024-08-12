@@ -8,9 +8,15 @@
       such as a reference to money, swearing, a phone number or email address.
     </p>
     <p>
-      You will usually see chat messages here for review if the recipient is a member of one of your communities.
-      You might see some where the conversation is about a post on another community, because it’s not
-      possible for the system to tell reliably whether a message relates to a specific post, multiple posts,
+      If you are a mod on a group with the <em>Quicker Chat Review</em> setting in <em>Features for Moderators</em>
+      then you may see chat here which is between members of other groups.  That's the point of that
+      setting - it helps chats get reviewed more rapidly, which is better for the members.  If you're sure they
+      look fine, approve them.  Otherwise leave them for the local group volunteers.
+    </p>
+    <p>
+      Otherwise you will see chat messages here for review if the <b>recipient</b> is a member of one of your groups.
+      You might see some where the conversation is about a post on a group that you don't moderate, because it’s not
+      always possible for the system to tell reliably whether a message relates to a specific post, multiple posts,
       or no post at all. It’s fine to act on the message if you see it but unless it looks urgent it is
       better to leave it for the Mod on the group that the item was posted on.
     </p>

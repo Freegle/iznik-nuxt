@@ -24,12 +24,14 @@
     <div class="d-flex mb-2 mt-2 flex-wrap">
       <div class="borderit d-flex flex-column">
         <label for="dashboardgroup">Choose community:</label>
-        <GroupSelect id="dashboardgroup"
-                     v-model="groupidi"
-                     all
-                     modonly
-                     :systemwide="admin"
-                     active />
+        <GroupSelect
+          id="dashboardgroup"
+          v-model="groupidi"
+          all
+          modonly
+          systemwide
+          active
+        />
       </div>
       <div class="borderit d-flex flex-column">
         <label for="showInfo">Show info from:</label>

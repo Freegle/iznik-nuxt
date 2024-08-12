@@ -8,7 +8,16 @@ const SENTRY_DSN = 'https://b68903e730034a4ba3b8b2358331389e@o118493.ingest.sent
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
 const MOBILE_VERSION = '2.0.120'
-const MODTOOLS_VERSION = '0.3.105'
+const MODTOOLS_VERSION = '0.3.106'
+// nvm use 14.21.3
+// npm run mtapp
+// cd ../iznik-nuxt-mt
+// nvm use 20.15.1
+// cordova build android
+// ./devices.sh
+// ./install.sh
+// ./relapp.sh
+// Copy platforms/android/app/build/outputs/apk/release/app-release.apk to ../iznik-releases/mtx.y.z/
 
 require('dotenv').config()
 

@@ -157,10 +157,12 @@ export default {
     },
     async deleteConfirmed() {
       await this.visibleMessages.forEach(async m => {
-        await this.$store.dispatch('chatmessages/reject', {
-          id: m.id,
-          chatid: null
-        })
+        if (!m.widerchatreview) {
+          await this.$store.dispatch('chatmessages/reject', {
+            id: m.id,
+            chatid: null
+          })
+        }
       })
     }
   }
