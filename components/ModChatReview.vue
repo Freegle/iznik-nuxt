@@ -59,11 +59,11 @@
         </div>
         <ModSpammer v-if="message.fromuser.spammer" :user="message.fromuser" />
         <div class="d-flex justify-content-around">
-          <div>
+          <div v-if="!message.widerchatreview">
             <span>
               <!-- eslint-disable-next-line -->
-            <v-icon name="info-circle" /> {{ message.fromuser.displayname }} is
-              <span v-if="!message.widerchatreview">
+              <v-icon name="info-circle" /> {{ message.fromuser.displayname }} is
+              <span>
                 <span v-if="message.groupfrom">on {{ message.groupfrom.namedisplay }}, which you mod</span><span v-else>not on any groups which you actively mod.</span>
                 <b-btn v-if="message.groupfrom" :to="'/modtools/members/approved/search/' + message.groupfrom.id + '/' + message.fromuser.id" variant="link" class="p-0 border-0 align-top">
                   Go to membership
