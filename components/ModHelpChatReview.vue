@@ -27,7 +27,8 @@
     <p>
       You can use the ‘Add Moderator message’ to make members aware their chat has been reviewed and to let them know if
       they have broken a rule such as offering an item for sale in response to a Wanted on the board but this message
-      does go to both sides of the chat so please word it accordingly.
+      does go to both sides of the chat so please word it accordingly.  This doesn't show for Quicker Chat Review messages
+      - those notes should come from local volunteers.
     </p>
     <p>
       Read more about this on
