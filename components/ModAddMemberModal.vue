@@ -21,17 +21,13 @@
             If they've not used Freegle before, they will get the standard Freegle welcome mail with an invented
             password so that they can log in.
           </p>
-          <p>
-            Please let them know why you've added them:
-          </p>
-          <b-textarea v-model="reason" rows="5" placeholder="Why have you added them?" />
         </div>
       </template>
       <template slot="modal-footer" slot-scope="{ cancel }">
         <b-button variant="white" @click="cancel">
           Close
         </b-button>
-        <b-button v-if="!addedId" variant="primary" :disabled="!email || !reason" @click="add">
+        <b-button v-if="!addedId" variant="primary" :disabled="!email" @click="add">
           Add
         </b-button>
       </template>
@@ -54,7 +50,6 @@ export default {
   data: function() {
     return {
       email: null,
-      reason: null,
       addedId: null
     }
   },
