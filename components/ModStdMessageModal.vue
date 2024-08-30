@@ -256,6 +256,8 @@ export default {
           cafe:
             'The ChitChat area of the site is the place for cafe-type requests now.',
           newsfeed: 'Newsfeed is now called ChitChat.',
+          digest:
+            'Digest is a Yahoo Groups term, and freeglers won\'t recognise it.  Please use "What\'s New" instead, or just talk about emails.',
           freegledirect:
             'Freegle Direct is no longer an active term; we just talk about "our website" or "www.ilovefreegle.org" now.',
           'www.freegle.in':
