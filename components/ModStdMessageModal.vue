@@ -60,6 +60,9 @@
         <v-icon v-else name="pause" />
         Hold message
       </div>
+      <NoticeMessage v-if="replyTooShort" variant="danger" class="mt-1 mb-1">
+        This is a very short reply, so it may come across as a bit abrupt and unhelpful.  Please make it a bit longer.
+      </noticemessage>
     </template>
     <template slot="modal-footer" slot-scope="{ cancel }">
       <div class="d-flex justify-content-between w-100">
@@ -130,6 +133,8 @@ export default {
     return {
       subject: null,
       body: null,
+      bodyInitialLength: 0,
+      replyTooShort: false,
       keywordList: ['Offer', 'Taken', 'Wanted', 'Received', 'Other'],
       recentDays: 31,
       changingNewModStatus: false,
@@ -282,6 +287,11 @@ export default {
       return ret
     }
   },
+  watch: {
+    body() {
+      this.replyTooShort = false
+    }
+  },
   methods: {
     show() {
       // Calculate initial subject.  Everything apart from Edits adds a Re:.
@@ -312,6 +322,8 @@ export default {
           if (!edit && msg) {
             msg = '> ' + (msg + '').replace(/((\r\n)|\r|\n)/gm, '\n> ')
           }
+
+          this.bodyInitialLength = msg.length
         }
 
         if (this.stdmsg) {
@@ -531,140 +543,149 @@ export default {
     },
 
     async process() {
-      if (
-        this.stdmsg.newdelstatus &&
-        this.stdmsg.newdelstatus !== 'UNCHANGED'
-      ) {
-        this.changingNewDelStatus = true
-        await this.$store.dispatch('user/edit', {
-          id: this.userid,
-          groupid: this.groupid,
-          emailfrequency: this.emailfrequency
-        })
-        this.changingNewDelStatus = false
-        this.changedNewDelStatus = true
-      }
+      this.replyTooShort = false
 
-      if (
-        this.stdmsg.newmodstatus &&
-        this.stdmsg.newmodstatus !== 'UNCHANGED'
-      ) {
-        this.changingNewModStatus = true
-        await this.$store.dispatch('user/edit', {
-          id: this.userid,
-          groupid: this.groupid,
-          ourPostingStatus: this.stdmsg.newmodstatus
-        })
-        this.changingNewModStatus = false
-        this.changedNewModStatus = true
-      }
+      const msglen = this.body.length - this.bodyInitialLength
+      console.log('Len', msglen, this.body.length, this.bodyInitialLength)
 
-      const subj = this.subject.trim()
-      const body = this.body.trim()
+      if (msglen >= 0 && msglen < 30) {
+        this.replyTooShort = true
+      } else {
+        if (
+          this.stdmsg.newdelstatus &&
+          this.stdmsg.newdelstatus !== 'UNCHANGED'
+        ) {
+          this.changingNewDelStatus = true
+          await this.$store.dispatch('user/edit', {
+            id: this.userid,
+            groupid: this.groupid,
+            emailfrequency: this.emailfrequency
+          })
+          this.changingNewDelStatus = false
+          this.changedNewDelStatus = true
+        }
 
-      switch (this.stdmsg.action) {
-        case 'Approve':
-          await this.$store.dispatch('messages/approve', {
-            id: this.message.id,
+        if (
+          this.stdmsg.newmodstatus &&
+          this.stdmsg.newmodstatus !== 'UNCHANGED'
+        ) {
+          this.changingNewModStatus = true
+          await this.$store.dispatch('user/edit', {
+            id: this.userid,
             groupid: this.groupid,
-            subject: subj,
-            body: body,
-            stdmsgid: this.stdmsg.id
+            ourPostingStatus: this.stdmsg.newmodstatus
           })
-          break
-        case 'Leave':
-        case 'Leave Approved Message':
-          await this.$store.dispatch('messages/reply', {
-            id: this.message.id,
-            groupid: this.groupid,
-            subject: subj,
-            body: body,
-            stdmsgid: this.stdmsg.id
-          })
-          break
-        case 'Hold Message':
-          this.changingHold = true
+          this.changingNewModStatus = false
+          this.changedNewModStatus = true
+        }
 
-          await this.$store.dispatch('messages/hold', {
-            id: this.message.id
-          })
+        const subj = this.subject.trim()
+        const body = this.body.trim()
 
-          this.changingHold = false
-          this.changedHold = true
+        switch (this.stdmsg.action) {
+          case 'Approve':
+            await this.$store.dispatch('messages/approve', {
+              id: this.message.id,
+              groupid: this.groupid,
+              subject: subj,
+              body: body,
+              stdmsgid: this.stdmsg.id
+            })
+            break
+          case 'Leave':
+          case 'Leave Approved Message':
+            await this.$store.dispatch('messages/reply', {
+              id: this.message.id,
+              groupid: this.groupid,
+              subject: subj,
+              body: body,
+              stdmsgid: this.stdmsg.id
+            })
+            break
+          case 'Hold Message':
+            this.changingHold = true
 
-          await this.$store.dispatch('messages/reply', {
-            id: this.message.id,
-            groupid: this.groupid,
-            subject: subj,
-            body: body,
-            stdmsgid: this.stdmsg.id
-          })
-          break
-        case 'Leave Member':
-        case 'Leave Approved Member':
-          await this.$store.dispatch('members/reply', {
-            id: this.member.userid,
-            groupid: this.groupid,
-            subject: subj,
-            body: body,
-            stdmsgid: this.stdmsg.id
-          })
-          break
-        case 'Reject':
-          await this.$store.dispatch('messages/reject', {
-            id: this.message.id,
-            groupid: this.groupid,
-            subject: subj,
-            body: body,
-            stdmsgid: this.stdmsg.id
-          })
-          break
-        case 'Delete':
-        case 'Delete Approved Message':
-          await this.$store.dispatch('messages/delete', {
-            id: this.message.id,
-            groupid: this.groupid,
-            subject: subj,
-            body: body,
-            stdmsgid: this.stdmsg.id
-          })
-          break
-        case 'Delete Member':
-        case 'Delete Approved Member':
-          await this.$store.dispatch('members/delete', {
-            id: this.member.userid,
-            groupid: this.groupid,
-            subject: subj,
-            body: body,
-            stdmsgid: this.stdmsg.id
-          })
-          break
-        case 'Edit':
-          if (this.message) {
-            if (this.message.item && this.message.location) {
-              // Well-structured message
-              await this.$store.dispatch('messages/patch', {
-                id: this.message.id,
-                msgtype: this.message.type,
-                item: this.message.item.name,
-                location: this.message.location.name,
-                textbody: body
-              })
-            } else {
-              // Not
-              await this.$store.dispatch('messages/patch', {
-                id: this.message.id,
-                subject: subj,
-                textbody: body
-              })
+            await this.$store.dispatch('messages/hold', {
+              id: this.message.id
+            })
+
+            this.changingHold = false
+            this.changedHold = true
+
+            await this.$store.dispatch('messages/reply', {
+              id: this.message.id,
+              groupid: this.groupid,
+              subject: subj,
+              body: body,
+              stdmsgid: this.stdmsg.id
+            })
+            break
+          case 'Leave Member':
+          case 'Leave Approved Member':
+            await this.$store.dispatch('members/reply', {
+              id: this.member.userid,
+              groupid: this.groupid,
+              subject: subj,
+              body: body,
+              stdmsgid: this.stdmsg.id
+            })
+            break
+          case 'Reject':
+            await this.$store.dispatch('messages/reject', {
+              id: this.message.id,
+              groupid: this.groupid,
+              subject: subj,
+              body: body,
+              stdmsgid: this.stdmsg.id
+            })
+            break
+          case 'Delete':
+          case 'Delete Approved Message':
+            await this.$store.dispatch('messages/delete', {
+              id: this.message.id,
+              groupid: this.groupid,
+              subject: subj,
+              body: body,
+              stdmsgid: this.stdmsg.id
+            })
+            break
+          case 'Delete Member':
+          case 'Delete Approved Member':
+            await this.$store.dispatch('members/delete', {
+              id: this.member.userid,
+              groupid: this.groupid,
+              subject: subj,
+              body: body,
+              stdmsgid: this.stdmsg.id
+            })
+            break
+          case 'Edit':
+            if (this.message) {
+              if (this.message.item && this.message.location) {
+                // Well-structured message
+                await this.$store.dispatch('messages/patch', {
+                  id: this.message.id,
+                  msgtype: this.message.type,
+                  item: this.message.item.name,
+                  location: this.message.location.name,
+                  textbody: body
+                })
+              } else {
+                // Not
+                await this.$store.dispatch('messages/patch', {
+                  id: this.message.id,
+                  subject: subj,
+                  textbody: body
+                })
+              }
             }
-          }
-          break
-        default:
-          console.error('Unknown stdmsg action', this.stdmsg.action)
-      }
+            break
+          default:
+            console.error('Unknown stdmsg action', this.stdmsg.action)
+        }
 
-      this.hide()
+        this.hide()
+      }
     },
     postcodeSelect(newpc) {
       this.message.location = newpc
