@@ -95,6 +95,15 @@
           :chatusers="chatusers"
         />
       </div>
+      <div v-else-if="chatmessage.type === 'Reminder'">
+        <chat-message-reminder
+          :chat="chat"
+          :chatmessage="chatmessage"
+          :otheruser="null"
+          :pov="pov"
+          :chatusers="chatusers"
+        />
+      </div>
       <div v-else-if="chatmessage.type === 'Schedule' && otheruser">
         <chat-message-schedule
           v-if="otheruser"
@@ -156,6 +165,7 @@ import ChatMessageAddress from './ChatMessageAddress'
 import ChatMessageNudge from './ChatMessageNudge'
 import ChatMessageDateRead from './ChatMessageDateRead'
 import ChatMessageModMail from './ChatMessageModMail'
+import ChatMessageReminder from './ChatMessageReminder'
 import ChatMessageSchedule from './ChatMessageSchedule'
 import ChatMessageReport from './ChatMessageReport'
 import ChatMessageWarning from '~/components/ChatMessageWarning'
@@ -175,6 +185,7 @@ export default {
     ChatMessageReneged,
     ChatMessageNudge,
     ChatMessageModMail,
+    ChatMessageReminder,
     ChatMessageSchedule,
     ChatMessageReport
   },
