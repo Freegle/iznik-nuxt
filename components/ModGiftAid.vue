@@ -8,6 +8,12 @@
             <!-- eslint-disable-next-line -->
             <ExternalLink :href="'mailto:' + email + '?subject=A question about your Gift Aid declaration'"><v-icon name="envelope" />&nbsp;{{ email }}</ExternalLink>
           </div>
+          <NoticeMessage v-if="giftaid.donations" variant="info">
+            Total donations &pound;giftaid.donations
+          </NoticeMessage>
+          <NoticeMessage v-else variant="danger">
+            No donations found - check in case they are using multiple email addresses.
+          </NoticeMessage>
           <span class="small text-muted">
             {{ timeago(giftaid.timestamp) }}
             <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ giftaid.userid }}
@@ -34,10 +40,11 @@
 </template>
 <script>
 import SpinButton from './SpinButton'
+import NoticeMessage from './NoticeMessage'
 const ExternalLink = () => import('~/components/ExternalLink')
 
 export default {
-  components: { SpinButton, ExternalLink },
+  components: { SpinButton, ExternalLink, NoticeMessage },
   props: {
     giftaid: {
       type: Object,
