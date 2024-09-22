@@ -9,7 +9,7 @@
             <ExternalLink :href="'mailto:' + email + '?subject=A question about your Gift Aid declaration'"><v-icon name="envelope" />&nbsp;{{ email }}</ExternalLink>
           </div>
           <NoticeMessage v-if="giftaid.donations" variant="info">
-            Total donations &pound;giftaid.donations
+            Total donations &pound;{{ giftaid.donations }}
           </NoticeMessage>
           <NoticeMessage v-else variant="danger">
             No donations found - check in case they are using multiple email addresses.
