@@ -8,7 +8,7 @@ const SENTRY_DSN = 'https://b68903e730034a4ba3b8b2358331389e@o118493.ingest.sent
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
 const MOBILE_VERSION = '2.0.120'
-const MODTOOLS_VERSION = '0.3.107'
+const MODTOOLS_VERSION = '0.3.108'
 // nvm use 14.21.3
 // npm run mtapp
 // cd ../iznik-nuxt-mt
@@ -18,6 +18,7 @@ const MODTOOLS_VERSION = '0.3.107'
 // ./install.sh
 // ./relapp.sh
 // Copy platforms/android/app/build/outputs/apk/release/app-release.apk to ../iznik-releases/mtx.y.z/
+// Check after_prepare script removes android.permission.READ_MEDIA_VIDEO from iznik-nuxt-mt\platforms\android\app\src\main\AndroidManifest.xml
 
 require('dotenv').config()
 
