@@ -45,6 +45,12 @@
                 </b-badge>
               </span>
             </div>
+            <div v-if="message.deadline" class="text-danger small">
+              Deadline: end {{ dateonly(message.deadline) }}
+            </div>
+            <div v-if="message.deliverypossible" class="text-info small">
+              Delivery possible
+            </div>
             <MessageHistory :message="message" modinfo display-message-link />
             <div v-if="homegroup && message && message.groups && message.groups.length && homegroup !== message.groups[0].namedisplay" class="small text-danger">
               Possibly should be on {{ homegroup }}
