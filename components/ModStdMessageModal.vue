@@ -548,7 +548,7 @@ export default {
       const msglen = this.body.length - this.bodyInitialLength
       console.log('Len', msglen, this.body.length, this.bodyInitialLength)
 
-      if (msglen >= 0 && msglen < 30) {
+      if (this.stdmsg.action !== 'Edit' && msglen >= 0 && msglen < 30) {
         this.replyTooShort = true
       } else {
         if (
