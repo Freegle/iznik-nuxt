@@ -5,9 +5,9 @@
       <ModCakeModal />
       <ModAimsModal ref="aims" />
       <!--      <ModFreeStock class="mb-2" />-->
-      <NoticeMessage variant="info" class="mb-2 d-block d-md-none">
-        <ModZoomStock color-class="text-black" />
-      </NoticeMessage>
+      <!--      <NoticeMessage variant="info" class="mb-2 d-block d-md-none">-->
+      <!--        <ModZoomStock color-class="text-black" />-->
+      <!--      </NoticeMessage>-->
       <div class="d-flex justify-content-between">
         <GroupSelect v-model="groupid" all modonly :work="['pending', 'pendingother']" remember="pending" />
         <b-btn variant="link" @click="loadAll">
