@@ -107,7 +107,7 @@ import LoginModal from '~/components/LoginModal'
 const ModMenuItemLeft = () => import('../components/ModMenuItemLeft')
 const ModStatus = () => import('~/components/ModStatus')
 const ChatMenu = () => import('~/components/ChatMenu')
-const ModZoomStock = () => import('~/components/ModZoomStock')
+// const ModZoomStock = () => import('~/components/ModZoomStock')
 const ExternalLink = () => import('~/components/ExternalLink')
 const ChatPopups = () => import('~/components/ChatPopups')
 const GoogleOneTap = () => import('~/components/GoogleOneTap')
@@ -120,7 +120,7 @@ export default {
     ModStatus,
     ChatMenu,
     ExternalLink,
-    ModZoomStock,
+    // ModZoomStock,
     GoogleOneTap
   },
 

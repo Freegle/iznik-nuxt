@@ -41,7 +41,7 @@ import shuffle from '@/mixins/shuffle'
 import loginRequired from '@/mixins/loginRequired'
 import modMessagesPage from '@/mixins/modMessagesPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
-import ModZoomStock from '@/components/ModZoomStock'
+// import ModZoomStock from '@/components/ModZoomStock'
 // import ModFreeStock from '@/components/ModFreeStock'
 import ModAimsModal from '@/components/ModAimsModal'
 import NoticeMessage from '../../../../components/NoticeMessage'
@@ -54,7 +54,7 @@ import ModAffiliationConfirmModal from '~/components/ModAffiliationConfirmModal'
 export default {
   components: {
     ModAffiliationConfirmModal,
-    ModZoomStock,
+    // ModZoomStock,
     // ModFreeStock,
     ScrollToTop,
     ModCakeModal,
