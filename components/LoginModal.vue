@@ -51,7 +51,7 @@
           <span class="p-2 social-button__text font-weight-bold">Sign in with Apple</span>
         </b-btn>
         <div id="appleid-signin" data-color="black" data-border="true" data-type="sign in"></div>
-        <b-btn class="social-button social-button--google" :disabled="googleDisabled" @click="loginGoogle">
+        <b-btn v-if="isiOSapp" class="social-button social-button--google" :disabled="googleDisabled" @click="loginGoogle">
           <b-img src="~/static/signinbuttons/google-logo.svg" class="social-button__image" />
           <span class="p-2 text--medium font-weight-bold">Sign in with Google</span>
         </b-btn>
