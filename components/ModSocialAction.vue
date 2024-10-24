@@ -11,20 +11,20 @@
       </div>
     </b-card-header>
     <!-- eslint-disable-next-line-->
-    <b-card-body v-html="item.iframe" />
+    <b-card-body>
+      <ExternalLink v-if="appLink" class="btn btn-white mb-2" :href="appLink">Open in Facebook</ExternalLink>
+    </b-card-body>
     <b-card-footer :key="'sharelist-' + actioned.length">
       <b-btn variant="white" class="mb-1 mr-1" @click="shareAll">
         <v-icon name="share-alt" />
         Share all
       </b-btn>
-      <b-btn
-        v-for="group in groups"
-        :key="'socialaction-' + group.id"
-        :variant="isActioned(group.id) ? 'white' : 'primary'"
-        class="mb-1 mr-1"
-        :disabled="isActioned(group.id)"
-        @click="share(group)"
-      >
+      <b-btn v-for="group in groups"
+             :key="'socialaction-' + group.id"
+             :variant="isActioned(group.id) ? 'white' : 'primary'"
+             class="mb-1 mr-1"
+             :disabled="isActioned(group.id)"
+             @click="share(group)">
         <v-icon v-if="isActioned(group.id)" name="check" />
         <v-icon v-else-if="isBusy(group.id)" name="sync" class="fa-spin" />
         <v-icon v-else name="share-alt" />
@@ -38,9 +38,11 @@
   </b-card>
 </template>
 <script>
+import ExternalLink from './ExternalLink'
 import cloneDeep from 'lodash.clonedeep'
 
 export default {
+  components: { ExternalLink },
   props: {
     item: {
       type: Object,
@@ -54,6 +56,32 @@ export default {
     }
   },
   computed: {
+    appLink() { // Double extract from <iframe src="" ...></iframe>  https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2F134117207097%2Fposts%2F951769713651342%2F&width=auto&show_text=true&appId=115376591981611&height=500
+      try {
+        let applink = this.item.iframe
+        let pos = applink.indexOf('src="')
+        if (pos !== -1) {
+          applink = applink.substring(pos + 5)
+          pos = applink.indexOf('"')
+          if (pos !== -1) {
+            applink = applink.substring(0, pos)
+            pos = applink.indexOf('href=')
+            if (pos !== -1) {
+              applink = applink.substring(pos + 5)
+              pos = applink.indexOf('&')
+              if (pos !== -1) {
+                applink = applink.substring(0, pos)
+                applink = decodeURIComponent(applink)
+                return applink
+              }
+            }
+          }
+        }
+      } catch (e) {
+        console.log('applinkY', e.message)
+      }
+      return false
+    },
     groups() {
       const ret = []
 

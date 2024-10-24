@@ -13,7 +13,7 @@
           />
           <ModStatus class="status" />
         </b-navbar-brand>
-        <ModZoomStock class="d-none d-md-block text-white" />
+        <!--        <ModZoomStock class="d-none d-md-block text-white" />-->
         <b-navbar-nav class="d-flex align-items-center">
           <b-nav-item v-if="loggedIn" id="menu-option-modtools-discourse2" class="text-center p-0 mr-4" @click="discourse">
             <div class="position-relative small">
@@ -106,7 +106,7 @@ import LoginModal from '~/components/LoginModal'
 const ModMenuItemLeft = () => import('../components/ModMenuItemLeft')
 const ModStatus = () => import('~/components/ModStatus')
 const ChatMenu = () => import('~/components/ChatMenu')
-const ModZoomStock = () => import('~/components/ModZoomStock')
+// const ModZoomStock = () => import('~/components/ModZoomStock')
 const ExternalLink = () => import('~/components/ExternalLink')
 const ChatPopups = () => import('~/components/ChatPopups')
 // CC const GoogleOneTap = () => import('~/components/GoogleOneTap')
@@ -120,7 +120,7 @@ import { setBadgeCount } from '../plugins/app-init-push' // CC
     ModStatus,
     ChatMenu,
     ExternalLink,
-    ModZoomStock
+    // ModZoomStock
     // CC GoogleOneTap
   },
 

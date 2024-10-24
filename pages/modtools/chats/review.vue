@@ -7,8 +7,10 @@
           <ModChatReview :id="message.chatid" :message="message" />
         </div>
         <infinite-loading force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
-          <span v-if="!visibleMessages.length" slot="no-results">
-            There are no chat messages to review at the moment.
+          <span slot="no-results">
+            <span v-if="!visibleMessages.length">
+              There are no chat messages to review at the moment.
+            </span>
           </span>
           <span slot="no-more" />
           <span slot="spinner">

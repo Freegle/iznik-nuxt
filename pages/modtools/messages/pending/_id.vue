@@ -5,9 +5,9 @@
       <ModCakeModal />
       <ModAimsModal ref="aims" />
       <!--      <ModFreeStock class="mb-2" />-->
-      <NoticeMessage variant="info" class="mb-2 d-block d-md-none">
-        <ModZoomStock color-class="text-black" />
-      </NoticeMessage>
+      <!--      <NoticeMessage variant="info" class="mb-2 d-block d-md-none">-->
+      <!--        <ModZoomStock color-class="text-black" />-->
+      <!--      </NoticeMessage>-->
       <div class="d-flex justify-content-between">
         <GroupSelect v-model="groupid" all modonly :work="['pending', 'pendingother']" remember="pending" />
         <b-btn variant="link" @click="loadAll">
@@ -41,7 +41,7 @@ import shuffle from '@/mixins/shuffle'
 import loginRequired from '@/mixins/loginRequired'
 import modMessagesPage from '@/mixins/modMessagesPage'
 import createGroupRoute from '@/mixins/createGroupRoute'
-import ModZoomStock from '@/components/ModZoomStock'
+// import ModZoomStock from '@/components/ModZoomStock'
 // import ModFreeStock from '@/components/ModFreeStock'
 import ModAimsModal from '@/components/ModAimsModal'
 import NoticeMessage from '../../../../components/NoticeMessage'
@@ -54,7 +54,7 @@ import ModAffiliationConfirmModal from '~/components/ModAffiliationConfirmModal'
 export default {
   components: {
     ModAffiliationConfirmModal,
-    ModZoomStock,
+    // ModZoomStock,
     // ModFreeStock,
     ScrollToTop,
     ModCakeModal,
