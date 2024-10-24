@@ -29,12 +29,16 @@ export default {
       setTimeout(() => { this.copied = false }, 2000)
     },
     openInBrowser(event) {
-      console.log('openInBrowser')
-      if (process.env.IS_APP) {
-        // eslint-disable-next-line no-undef
-        cordova.InAppBrowser.open(this.href, '_system')
-        event.preventDefault()
-        return false
+      console.log('openInBrowser', this.href)
+      try {
+        if (process.env.IS_APP) {
+          // eslint-disable-next-line no-undef
+          cordova.InAppBrowser.open(this.href, '_system')
+          event.preventDefault()
+          return false
+        }
+      } catch (e) {
+        console.log('openInBrowser exception', e.message)
       }
       return true
     }
