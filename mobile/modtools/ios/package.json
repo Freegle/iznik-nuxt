@@ -17,8 +17,9 @@
     "cordova-plugin-sign-in-with-apple": "^0.1.1"
   },
   "devDependencies": {
-    "cordova-ios": "^7.1.0",
+    "cordova-ios": "^7.1.1",
     "cordova-plugin-camera": "^6.0.0",
+    "cordova-plugin-inappbrowser": "^6.0.0",
     "cordova-plugin-network-information": "^3.0.0",
     "cordova-plugin-splashscreen": "^6.0.2",
     "cordova-plugin-statusbar": "^3.0.0",
@@ -31,7 +32,6 @@
       "cordova-clipboard": {},
       "cordova-plugin-camera": {},
       "cordova-plugin-device": {},
-      "cordova-plugin-inappbrowser": {},
       "cordova-plugin-ios-camera-permissions": {
         "CAMERA_USAGE_DESCRIPTION": "So you can take a photo in reply to a member chat",
         "MICROPHONE_USAGE_DESCRIPTION": "So you can say what text to reply in a member chat",
@@ -47,8 +47,11 @@
       },
       "@havesource/cordova-plugin-push": {
         "IOS_FIREBASE_MESSAGING_VERSION": "~> 8.1.1"
-      }
+      },
+      "cordova-plugin-inappbrowser": {}
     },
-    "platforms": []
+    "platforms": [
+      "ios"
+    ]
   }
 }
