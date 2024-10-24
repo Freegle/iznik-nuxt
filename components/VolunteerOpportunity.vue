@@ -191,7 +191,7 @@ export default {
       return warn
     },
     mine() {
-      return this.item.user.id === this.myid
+      return this.item.user && this.item.user.id === this.myid
     }
   },
   methods: {

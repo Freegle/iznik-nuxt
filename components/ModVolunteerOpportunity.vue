@@ -7,9 +7,14 @@
             Opportunity <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ volunteering.id }}
           </b-col>
           <b-col cols="6" md="4">
-            {{ volunteering.user.displayname }}
-            <span class="text-muted">
-              <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ volunteering.user.id }}
+            <span v-if="volunteering.user">
+              {{ volunteering.user.displayname }}
+              <span class="text-muted">
+                <v-icon name="hashtag" scale="0.75" class="text-muted" />{{ volunteering.user.id }}
+              </span>
+            </span>
+            <span v-else>
+              System added
             </span>
           </b-col>
           <b-col cols="12" md="4">
@@ -36,7 +41,7 @@
           <v-icon name="trash-alt" /> Delete
         </b-btn>
         <ChatButton
-          v-if="volunteering.groups && volunteering.groups.length"
+          v-if="volunteering.groups && volunteering.groups.length && volunteering.user"
           :userid="volunteering.user.id"
           :groupid="volunteering.groups[0].id"
           title="Chat"
