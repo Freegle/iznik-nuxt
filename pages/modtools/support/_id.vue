@@ -63,6 +63,14 @@
             </template>
             <ModSupportAddGroup />
           </b-tab>
+          <b-tab>
+            <template v-slot:title>
+              <h2 class="ml-2 mr-2">
+                Check Volunteers
+              </h2>
+            </template>
+            <ModSupportCheckVolunteers />
+          </b-tab>
         </b-tabs>
       </div>
     </div>
@@ -79,6 +87,7 @@ import ModFindMessage from '../../../components/ModFindMessage'
 import ModSupportListGroups from '../../../components/ModSupportListGroups'
 import ModSupportAddGroup from '../../../components/ModSupportAddGroup'
 import ModSupportContactGroup from '../../../components/ModSupportContactGroup'
+import ModSupportCheckVolunteers from '../../../components/ModSupportCheckVolunteers'
 import ModMessage from '~/components/ModMessage'
 import NoticeMessage from '~/components/NoticeMessage'
 
@@ -90,6 +99,7 @@ export default {
     ModFindMessage,
     ModSupportFindUser,
     ModSupportFindGroup,
+    ModSupportCheckVolunteers,
     NoticeMessage,
     ModMessage
   },

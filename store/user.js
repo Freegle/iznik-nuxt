@@ -129,6 +129,8 @@ export const actions = {
     } else {
       commit('add', ret)
     }
+
+    return ret
   },
 
   async emailIsInUse({ commit, state }, params) {
