@@ -128,10 +128,23 @@ export default {
         this.$refs.banConfirm.show()
       })
     },
-    banConfirmed() {
-      this.$store.dispatch('members/ban', {
+    async banConfirmed(reason) {
+      await this.$store.dispatch('members/ban', {
         userid: this.userid,
         groupid: this.groupid
+      })
+
+      await this.$api.comment.add({
+        userid: this.userid,
+        groupid: this.groupid,
+        user1:
+          'Banned on ' +
+          this.group.nameshort +
+          ' by ' +
+          this.me.displayname +
+          ' reason: ' +
+          reason,
+        flag: true
       })
     },
     async addAComment() {
