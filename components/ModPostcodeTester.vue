@@ -47,9 +47,6 @@ export default {
   methods: {
     postcodeSelect(pc) {
       this.postcode = pc
-    },
-    postcodeClear() {
-      this.postcode = null
     }
   }
 }
