@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-row class="pb-1">
+    <b-row>
       <b-col cols="12" sm="6" :offset-sm="chatmessage.userid != myid ? 0 : 6">
         <div v-if="chatmessage.userid != myid" class="media">
           <b-card border-variant="success">

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-row class="pb-1">
+    <b-row>
       <b-col>
         <b-card v-if="!modtools" border-variant="warning">
           <b-card-title>
