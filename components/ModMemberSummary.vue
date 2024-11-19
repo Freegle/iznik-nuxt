@@ -72,11 +72,13 @@ export default {
     countType(type) {
       let count = 0
 
-      this.member.messagehistory.forEach(entry => {
-        if (entry.type === type && entry.daysago < 31 && !entry.deleted) {
-          count++
-        }
-      })
+      if (this.member && this.member.messagehistory) {
+        this.member.messagehistory.forEach(entry => {
+          if (entry.type === type && entry.daysago < 31 && !entry.deleted) {
+            count++
+          }
+        })
+      }
 
       return count
     },

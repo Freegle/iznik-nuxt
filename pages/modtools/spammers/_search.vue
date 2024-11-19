@@ -39,7 +39,7 @@
             </template>
           </b-tab>
         </b-tabs>
-        <ModMemberSearchbox v-if="tabIndex === 0" v-model="search" :groupid="groupid" spam class="mb-2" />
+        <ModMemberSearchbox v-if="tabIndex === 0" v-model="search" spam class="mb-2" />
         <ModMember v-for="spammer in visibleSpammers" :key="'spammer-' + tabIndex + '-' + spammer.id" :member="spammer.user" :sameip="spammer.sameip" class="mb-1" />
         <b-img v-if="busy" src="~/static/loader.gif" alt="Loading" />
         <div v-else-if="!spammers.length">
