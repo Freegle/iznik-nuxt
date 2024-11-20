@@ -201,6 +201,236 @@
       </b-card>
       <b-card no-body class="mb-2">
         <b-card-header>
+          <b-btn v-b-toggle.accordion-rules block href="#" variant="secondary">
+            Rules
+          </b-btn>
+        </b-card-header>
+        <b-collapse id="accordion-rules" accordion="settings-accordion" role="tabpanel">
+          <b-card-body>
+            <p>
+              This section records information about rules you might have on your group.
+            </p>
+            <p v-if="readonly" class="text-info">
+              Only owners can change these rules.
+            </p>
+            <div class="d-flex flex-wrap">
+              <strong class="mr-1 mt-2">Copy rules from:</strong>
+              <GroupSelect v-model="copyfrom" modonly class="mb-2 mr-2" />
+              <div>
+                <b-btn variant="secondary" :disabled="copyfrom <= 0" @click="copy">
+                  <v-icon name="copy" /> Copy
+                </b-btn>
+              </div>
+            </div>
+            <div :key="rulesBump">
+              <h4>Rules about the group</h4>
+              <ModGroupRule
+                :groupid="groupid"
+                name="fullymoderated"
+                label="Do you moderate all posts?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="requirefirstpostoffer"
+                label="Do you require a member’s first post to be an Offer?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="limitconcurrentwanteds"
+                label="Do you limit the number of Wanted posts allowed at one time?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="restrictcrossposting"
+                label="Do you restrict cross-posting to other groups?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="allowloans"
+                label="Do you allow any loans or requests to borrow?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="suggesteddonations"
+                label="Do you allow suggested donations to charity to obtain items?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="declareselling"
+                label="Do you inform members that they must declare if they intend to sell items on?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="restrictpersonalinfo"
+                label="Do you restrict personal info in posts eg telephone numbers, addresses?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="restrictpersonalinfo"
+                label="Do you remove any members purely for being out of your group area?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <h4>Rules about specific items</h4>
+              <ModGroupRule
+                :groupid="groupid"
+                name="animalswanted"
+                label="Do you allow any requests for animals on your group?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="animalsoffer"
+                label="Do you allow any offers of animals for rehoming on your group?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="weapons"
+                label="Do you allow any requests or offers of weapons on your group?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="firearms"
+                label="Do you allow any offers or requests for guns if members have a firearms license?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="knives"
+                label="Do you allow any offers or requests for household or craft knives?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="knivesrestrict"
+                label="If so, do you restrict these to over 18s and only if personally collected?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="medicationsprescription"
+                label="Do you allow any offers or requests for prescription medication?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="medicationsotc"
+                label="Do you allow any offers or requests for over-the-counter medication?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="medicationsanimals"
+                label="Do you allow any offers or requests for medication for animals?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="contactlenses"
+                label="Do you allow any offers or requests for Contact Lenses?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="contactlensessolutions"
+                label="Do you allow any offers or requests for Contact Lens Solutions?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="tobacco"
+                label="Do you allow any offers or requests for tobacco?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="vaping"
+                label="Do you allow any offers or requests for Vaping products?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="alcohol"
+                label="Do you allow any offers or requests for Alcohol?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="gascylinders"
+                label="Do you allow any offers or requests for Gas Cylinders?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="tickets"
+                label="Do you allow any offers or requests for vouchers, coupons or tickets?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+              />
+            </div>
+          </b-card-body>
+        </b-collapse>
+      </b-card>
+      <b-card no-body class="mb-2">
+        <b-card-header>
           <b-btn v-b-toggle.accordion-features-members block href="#" variant="secondary">
             Features for Members
           </b-btn>
@@ -753,6 +983,7 @@ import GroupSelect from './GroupSelect'
 import ModSettingShortlink from './ModSettingShortlink'
 import GroupProfileImage from './GroupProfileImage'
 import ModGroupSetting from './ModGroupSetting'
+import ModGroupRule from './ModGroupRule'
 import SpinButton from './SpinButton'
 import NoticeMessage from './NoticeMessage'
 import ModSettingsGroupFacebook from './ModSettingsGroupFacebook'
@@ -778,6 +1009,7 @@ export default {
     NoticeMessage,
     SpinButton,
     ModGroupSetting,
+    ModGroupRule,
     OurFilePond,
     GroupProfileImage,
     OurToggle,
@@ -796,9 +1028,11 @@ export default {
   },
   data: function() {
     return {
+      copyfrom: null,
       groupid: null,
       uploadingProfile: false,
       editingDescription: false,
+      rulesBump: 0,
       editorOptions: {
         modules: {
           htmlEditButton: {}
@@ -949,6 +1183,29 @@ export default {
       })
 
       this.editingDescription = false
+    },
+    async copy() {
+      await this.$store.dispatch('group/fetch', {
+        id: this.copyfrom
+      })
+
+      const copyfrom = this.$store.getters['group/get'](this.copyfrom)
+
+      if (copyfrom) {
+        let rules = copyfrom.rules
+        rules = typeof rules === 'string' ? JSON.parse(rules) : rules
+
+        await this.$store.dispatch('group/update', {
+          id: this.groupid,
+          rules: rules
+        })
+
+        await this.$store.dispatch('group/fetch', {
+          id: this.groupid
+        })
+
+        this.rulesBump++
+      }
     }
   }
 }
