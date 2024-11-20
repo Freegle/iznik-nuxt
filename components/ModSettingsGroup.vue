@@ -425,6 +425,13 @@
                 toggle-checked="Yes"
                 toggle-unchecked="No"
               />
+              <h4>Other rules</h4>
+              <ModGroupRule
+                :groupid="groupid"
+                name="other"
+                label="Please add in information about any rules you have which aren't covered by the questions above."
+                type="textarea"
+              />
             </div>
           </b-card-body>
         </b-collapse>
