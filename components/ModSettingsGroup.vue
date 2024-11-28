@@ -210,6 +210,13 @@
             <p>
               This section records information about rules you might have on your group.
             </p>
+            <p>
+              When we ask <strong>do you allow any</strong>, you should answer yes if you
+              allow any at all, even if you don't allow all of them.  For example, if you allow
+              some requests for animals, but not all, answer <em>Yes</em>.  Similarly, if you allow
+              tickets but not coupons, answer <em>Yes</em>.  Only answer <em>No</em> if you do not allow any
+              <strong>at all</strong>.
+            </p>
             <p v-if="readonly" class="text-info">
               Only owners can change these rules.
             </p>
