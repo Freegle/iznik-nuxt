@@ -55,6 +55,11 @@
           carefully.  A manual thank you will be requested (not just for larger amounts), a Supporter Badge will be
           added, and the user will be prompted to complete a Gift Aid form if appropriate.
         </p>
+        <p>
+          If you put an amount of 0, then this will trigger the Supporter badge and ad-suppression.  This is useful
+          if someone has donated using PayPal top up and checkout, where we don't get their details, and then contacted
+          us.
+        </p>
         <b-input v-model="userid" type="number" placeholder="User's ID from Support Tools" class="mt-2" />
         <b-input v-model="amount" type="number" placeholder="Amount e.g. 1.50. No pound sign" class="mt-2" />
         <date-picker
@@ -176,7 +181,7 @@ export default {
       }
     },
     recordDonation() {
-      if (this.userid && this.amount > 0 && this.date) {
+      if (this.userid && this.amount >= 0 && this.date) {
         this.$store.dispatch('donations/add', {
           userid: this.userid,
           amount: this.amount,
