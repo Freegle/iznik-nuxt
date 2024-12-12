@@ -126,12 +126,19 @@
         </h3>
         <div v-for="d in user.donations" :key="'donation-' + d.id">
           <div v-if="!d.GrossAmount">
-            {{ dateshort(d.timestamp ) }} <span class="small text-muted">Probable donation via JustGiving; amount unknown; gift aid claimed by them not us</span>
+            {{ dateshort(d.timestamp ) }} <span class="small text-muted">Probable manual dummy donation or donation via JustGiving; amount unknown; gift aid claimed by them not us</span>
           </div>
           <div v-else>
-            &pound;{{ d.GrossAmount }} on {{ dateshort(d.timestamp ) }} <span class="small text-muted">via {{ d.source }}</span>
-            <span v-if="d.source === 'PayPalGivingFund' || d.source === 'eBay' || d.source === 'Facebook'" class="small text-muted">
-              (Gift Aid claimed by them not us)
+            &pound;{{ d.GrossAmount }} on {{ dateshort(d.timestamp ) }} <span class="small text-muted">via
+              <span v-if="d.source === 'BankTransfer'">
+                Bank Transfer or Cheque
+              </span>
+              <span v-else>
+                {{ d.source }}
+              </span>
+              <span v-if="d.source === 'PayPalGivingFund' || d.source === 'eBay' || d.source === 'Facebook'" class="small text-muted">
+                (Gift Aid claimed by them not us)
+              </span>
             </span>
           </div>
         </div>

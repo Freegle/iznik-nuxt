@@ -1,5 +1,5 @@
 <template>
-  <div class="chatMessageWrapper pb-1" :class="{ myChatMessage : messageIsFromCurrentUser }">
+  <div class="chatMessageWrapper" :class="{ myChatMessage : messageIsFromCurrentUser }">
     <div class="chatMessage forcebreak chatMessage__owner">
       <div v-if="chatmessage.userid != myid">
         <ChatMessageSummary v-if="refmsg" :message="refmsg" class="mt-1 mb-2" />

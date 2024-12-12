@@ -67,7 +67,7 @@ export default {
           : 0
     },
     filteredApplied() {
-      if (!this.user || !this.user.applied) {
+      if (!this.user || !this.user.applied || !this.user.memberof) {
         return []
       }
 

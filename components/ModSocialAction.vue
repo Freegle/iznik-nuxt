@@ -19,12 +19,27 @@
         <v-icon name="share-alt" />
         Share all
       </b-btn>
-      <b-btn v-for="group in groups"
-             :key="'socialaction-' + group.id"
-             :variant="isActioned(group.id) ? 'white' : 'primary'"
-             class="mb-1 mr-1"
-             :disabled="isActioned(group.id)"
-             @click="share(group)">
+      <b-btn
+        v-for="group in groups"
+        :key="'socialaction2-' + group.id"
+        :variant="isActioned(group.id) ? 'white' : 'primary'"
+        class="mb-1 mr-1"
+        :disabled="isActioned(group.id)"
+        @click="FBUIShare(group)"
+      >
+        <v-icon v-if="isActioned(group.id)" name="check" />
+        <v-icon v-else-if="isBusy(group.id)" name="sync" class="fa-spin" />
+        <v-icon v-else name="share-alt" />
+        FB.ui {{ group.namedisplay }}
+      </b-btn>
+      <b-btn
+        v-for="group in groups"
+        :key="'socialaction-' + group.id"
+        :variant="isActioned(group.id) ? 'white' : 'primary'"
+        class="mb-1 mr-1"
+        :disabled="isActioned(group.id)"
+        @click="share(group)"
+      >
         <v-icon v-if="isActioned(group.id)" name="check" />
         <v-icon v-else-if="isBusy(group.id)" name="sync" class="fa-spin" />
         <v-icon v-else name="share-alt" />
@@ -39,6 +54,7 @@
 </template>
 <script>
 import ExternalLink from './ExternalLink'
+import Vue from 'vue'
 import cloneDeep from 'lodash.clonedeep'
 
 export default {
@@ -122,7 +138,75 @@ export default {
       return ret
     }
   },
+  mounted() {
+    this.installFacebookSDK()
+  },
   methods: {
+    installFacebookSDK() {
+      if (typeof Vue.FB === 'undefined') {
+        console.log('Need to install Facebook SDK')
+        const VueFB = {}
+
+        VueFB.install = function install(Vue, options) {
+          Vue.FB = undefined
+
+          window.fbAsyncInit = function() {
+            window.FB.init(options)
+            window.FB.AppEvents.logPageView()
+            Vue.FB = window.FB
+
+            // We need to have some special code for IE11 - see https://stackoverflow.com/questions/27176983/dispatchevent-not-working-in-ie11.
+            let event
+
+            if (typeof Event === 'function') {
+              event = new Event('fb-sdk-ready')
+            } else {
+              event = document.createEvent('Event')
+              event.initEvent('fb-sdk-ready', true, true)
+            }
+          }
+          ;(function(d, s, id) {
+            setTimeout(() => {
+              try {
+                const fjs = d.getElementsByTagName(s)[0]
+                if (d.getElementById(id)) {
+                  return
+                }
+
+                const js = d.createElement(s)
+                js.id = id
+                js.src = '//connect.facebook.net/en_US/sdk.js'
+                fjs.parentNode.insertBefore(js, fjs)
+              } catch (e) {
+                console.error('Failed to load Facebook SDK', e)
+              }
+            }, 1000)
+          })(document, 'script', 'facebook-jssdk')
+        }
+
+        console.log('Installing FB SDK', process.env.FACEBOOK_APPID)
+        Vue.use(VueFB, {
+          appId: process.env.FACEBOOK_APPID,
+          autoLogAppEvents: true,
+          xfbml: true,
+          version: 'v4.0'
+        })
+
+        console.log('Installed FB SDK, bump')
+      } else {
+        console.log('FB SDK already loaded')
+      }
+    },
+    FBUIShare(group) {
+      Vue.FB.ui(
+        {
+          method: 'share',
+          display: 'popup',
+          href: 'https://ilovefreegle.org'
+        },
+        function(response) {}
+      )
+    },
     async share(group) {
       this.busy.push(group.id)
 

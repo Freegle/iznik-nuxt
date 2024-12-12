@@ -79,5 +79,10 @@ export const actions = {
   async update({ commit, getters, dispatch }, params) {
     await this.$api.location.update(params)
     // Server doesn't support fetching of an individual location so we don't fetch.
+  },
+
+  async convertKML({ commit }, kml) {
+    const { wkt } = await this.$api.location.convertKML(kml)
+    return wkt
   }
 }

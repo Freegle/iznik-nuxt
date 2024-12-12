@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-row v-if="!chatmessage.sameasnext || last || chatmessage.bymailid || chatmessage.gap" class="text-muted small">
+    <b-row v-if="!chatmessage.sameasnext || last || chatmessage.bymailid || chatmessage.gap" class="text-muted small mb-1">
       <b-col v-if="!messageIsFromCurrentUser">
         <span class="chat__dateread--theirs" :title="datetimeshort(chatmessage.date)">
           {{ timeadapt(chatmessage.date) }}

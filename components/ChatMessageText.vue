@@ -1,5 +1,5 @@
 <template>
-  <div class="chatMessageWrapper pb-1" :class="{ myChatMessage : messageIsFromCurrentUser }">
+  <div class="chatMessageWrapper" :class="{ myChatMessage : messageIsFromCurrentUser }">
     <div class="chatMessage forcebreak chatMessage__owner">
       <span v-if="!highlightEmails">
         <span v-if="modtools">

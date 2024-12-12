@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-row class="pb-1">
+    <b-row>
       <b-col>
         <div class="media">
           <b-card border-variant="success" :class="{ 'ml-auto': !amUser } ">

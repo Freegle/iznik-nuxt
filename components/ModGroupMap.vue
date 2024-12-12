@@ -185,6 +185,7 @@
             Please zoom in further to see locations.
           </NoticeMessage>
           <ModPostcodeTester />
+          <ModConvertKML />
           <b-card v-if="dodgyInBounds.length" no-body style="max-height: 600px; overflow-y: scroll">
             <b-card-header class="bg-warning d-flex justify-content-between">
               Mapping Changes
@@ -216,6 +217,7 @@
 import map from '@/mixins/map.js'
 import ModChangedMapping from '@/components/ModChangedMapping'
 import ModPostcodeTester from '@/components/ModPostcodeTester'
+import ModConvertKML from '@/components/ModConvertKML'
 import turfpolygon from 'turf-polygon'
 import turfintersect from 'turf-intersect'
 import turfarea from 'turf-area'
@@ -251,6 +253,7 @@ export default {
     ModChangedMapping,
     ModGroupMapLocation,
     ModPostcodeTester,
+    ModConvertKML,
     SpinButton,
     ClusterMarker
   },

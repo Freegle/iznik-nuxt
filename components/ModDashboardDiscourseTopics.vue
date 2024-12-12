@@ -8,15 +8,25 @@
         Discourse is where we can chat to each other and ask questions.  Join in!
       </p>
       <ModDashboardDiscourseTopic v-for="topic in top5" :key="topic.id" :topic="topic" />
+      <NoticeMessage variant="info">
+        We also have a couple of groups on WhatsApp for
+        <!-- eslint-disable-next-line -->
+        <ExternalLink href="https://chat.whatsapp.com/DLS6UdRxXxr5slNN48SOwK">chat</ExternalLink>
+        and
+        <!-- eslint-disable-next-line -->
+        <ExternalLink href="https://chat.whatsapp.com/EFdLHJ8IqSOIcUDlLlWxpy">announcements</ExternalLink>.
+      </NoticeMessage>
     </b-card-body>
   </b-card>
 </template>
 <script>
 import ModDashboardDiscourseTopic from '@/components/ModDashboardDiscourseTopic'
+import ExternalLink from './ExternalLink.vue'
+import NoticeMessage from './NoticeMessage.vue'
 import ModDashboardBase from '~/components/ModDashboardBase'
 
 export default {
-  components: { ModDashboardDiscourseTopic },
+  components: { NoticeMessage, ExternalLink, ModDashboardDiscourseTopic },
   extends: ModDashboardBase,
   data: function() {
     return {

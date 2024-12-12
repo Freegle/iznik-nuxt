@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-row class="pb-1">
+    <b-row>
       <b-col>
         <div v-if="!otheruser || chatmessage.userid != me.id" class="media">
           <b-card border-variant="warning">

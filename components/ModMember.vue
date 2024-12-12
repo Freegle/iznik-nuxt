@@ -26,7 +26,7 @@
         <NoticeMessage v-if="unsubscribed">
           This freegler has been unsubscribed.
         </NoticeMessage>
-        <ModDeletedOrForgotten :user="user" />
+        <ModDeletedOrForgotten v-if="user" :user="user" />
         <NoticeMessage v-if="banned" variant="danger" class="mb-2">
           This freegler is banned from this group.
         </NoticeMessage>
