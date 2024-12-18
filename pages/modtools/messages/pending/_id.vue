@@ -24,6 +24,7 @@
       </div>
 
       <ModAffiliationConfirmModal v-if="affiliationGroup" ref="affiliation" :groupid="affiliationGroup" />
+      <ModRulesModal v-if="rulesGroup" ref="rules" />
 
       <infinite-loading :key="'infinite-' + groupid + '-' + messages.length" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
         <span slot="no-results" />
@@ -50,10 +51,12 @@ import ModMessage from '../../../../components/ModMessage'
 import ModCakeModal from '~/components/ModCakeModal'
 import ScrollToTop from '~/components/ScrollToTop'
 import ModAffiliationConfirmModal from '~/components/ModAffiliationConfirmModal'
+import ModRulesModal from '~/components/ModRulesModal'
 
 export default {
   components: {
     ModAffiliationConfirmModal,
+    ModRulesModal,
     // ModZoomStock,
     // ModFreeStock,
     ScrollToTop,
@@ -74,7 +77,8 @@ export default {
     return {
       collection: 'Pending',
       workType: 'pending',
-      affiliationGroup: null
+      affiliationGroup: null,
+      rulesGroup: null
     }
   },
   mounted() {
@@ -111,7 +115,23 @@ export default {
       })
     }
 
-    console.log('refs', this.$refs)
+    // Find a group that we have owner status on and are not a backup where there are no rules set.
+    for (const group of this.myGroups) {
+      console.log('Group', group.type, group.role, group.rules)
+      if (group.type === 'Freegle' && group.role === 'Owner' && !group.rules) {
+        this.rulesGroup = group.id
+        break
+      }
+    }
+
+    console.log('rule', this.rulesGroup)
+    if (this.rulesGroup) {
+      this.waitForRef('rules', () => {
+        this.$refs.rules.show()
+        this.$refs.rules.expand()
+      })
+    }
+
     this.waitForRef('aims', () => {
       this.$refs.aims.show()
     })

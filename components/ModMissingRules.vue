@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NoticeMessage v-if="invalid.length" variant="danger">
+    <NoticeMessage v-if="invalid.length >= 0" variant="danger">
       <div v-if="summary">
         <div>
           <v-icon name="exclamation-triangle" /> {{ invalid.length }} groups are missing group rules.  Please add them.
@@ -34,6 +34,12 @@ import ExternalLink from './ExternalLink.vue'
 
 export default {
   components: { ExternalLink, NoticeMessage },
+  props: {
+    expanded: {
+      type: Boolean,
+      default: false
+    }
+  },
   data: function() {
     return {
       summary: true
@@ -55,6 +61,11 @@ export default {
       }
 
       return ret
+    }
+  },
+  mounted() {
+    if (this.expanded) {
+      this.summary = false
     }
   },
   methods: {
