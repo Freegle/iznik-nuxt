@@ -274,7 +274,7 @@
               <ModGroupRule
                 :groupid="groupid"
                 name="suggesteddonations"
-                label="Do you allow suggested donations to charity to obtain items?"
+                label="Do you allow people to ask for a donation to charity when offering items?"
                 type="toggle"
                 toggle-checked="Yes"
                 toggle-unchecked="No"
