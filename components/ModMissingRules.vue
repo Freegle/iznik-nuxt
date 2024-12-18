@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NoticeMessage v-if="invalid.length >= 0" variant="danger">
+    <NoticeMessage v-if="invalid.length" variant="danger">
       <div v-if="summary">
         <div>
           <v-icon name="exclamation-triangle" /> {{ invalid.length }} groups are missing group rules.  Please add them.

@@ -124,11 +124,9 @@ export default {
       }
     }
 
-    console.log('rule', this.rulesGroup)
     if (this.rulesGroup) {
       this.waitForRef('rules', () => {
         this.$refs.rules.show()
-        this.$refs.rules.expand()
       })
     }
 
