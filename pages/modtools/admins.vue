@@ -242,22 +242,25 @@ export default {
 
       this.creating = true
 
-      await this.$api.admins.add({
-        groupid: this.groupidcreate > 0 ? this.groupidcreate : null,
-        subject: this.subject,
-        text: this.body,
-        ctatext: this.ctatext,
-        ctalink: this.ctalink
-      })
+      // Don't allow CTA link/text without the other.
+      if ((this.ctatext && this.ctalink) || (!this.ctatext && !this.ctalink)) {
+        await this.$api.admins.add({
+          groupid: this.groupidcreate > 0 ? this.groupidcreate : null,
+          subject: this.subject,
+          text: this.body,
+          ctatext: this.ctatext,
+          ctalink: this.ctalink
+        })
 
-      this.creating = false
-      this.created = true
+        this.creating = false
+        this.created = true
 
-      setTimeout(() => {
-        this.created = false
-      }, 2000)
+        setTimeout(() => {
+          this.created = false
+        }, 2000)
 
-      this.fetchMe(['work'])
+        this.fetchMe(['work'])
+      }
     },
     async fetch(groupid) {
       await this.$store.dispatch('admins/clear')
