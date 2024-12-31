@@ -5,6 +5,12 @@
       <span class="small">
         <v-icon name="hashtag" class="text-muted" scale="0.75" />{{ user.id }}
       </span>
+      <div v-if="user.tnuserid" class="text-muted small">
+        TN user id <v-icon name="hashtag" scale="0.6" />{{ user.tnuserid }}
+      </div>
+      <div v-if="user.ljuserid" class="text-muted small">
+        LoveJunk user id <v-icon name="hashtag" scale="0.6" />{{ user.ljuserid }}
+      </div>
       <span v-if="email">
         (<ExternalLink :href="'mailto:' + email">{{ email }}</ExternalLink> <Clipboard :value="email" />)
       </span>
