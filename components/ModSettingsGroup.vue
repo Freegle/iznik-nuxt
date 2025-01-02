@@ -224,8 +224,8 @@
               <strong class="mr-1 mt-2">Copy rules from:</strong>
               <GroupSelect v-model="copyfrom" modonly class="mb-2 mr-2" />
               <div>
-                <b-btn variant="secondary" :disabled="copyfrom <= 0" @click="copy">
-                  <v-icon name="copy" /> Copy
+                <b-btn variant="secondary" :disabled="copyfrom <= 0 || copyfrom === groupid" @click="copy">
+                  <v-icon name="copy" /> Copy to {{ group.nameshort }}
                 </b-btn>
               </div>
             </div>
