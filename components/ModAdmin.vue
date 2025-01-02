@@ -75,6 +75,14 @@
             </span>
           </span>
         </p>
+        <NoticeMessage :variant="admin.essential ? 'warning' : 'info'" class="mb-2">
+          <span v-if="admin.essential">
+            Essential - will be sent to all members.
+          </span>
+          <span v-else>
+            Newsletter - will not be sent to members who have opted out.
+          </span>
+        </NoticeMessage>
         <b-form-group
           label="Subject of ADMIN:"
           label-for="subject"

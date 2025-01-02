@@ -38,6 +38,35 @@
                 label-for="subject"
                 label-class="mb-0"
               >
+                <p>
+                  ADMINs come in two flavours:
+                  <ul>
+                    <li>
+                      Essential - everyone must receive them.  These are important announcements about the running
+                      of the group.
+                    </li>
+                    <li>
+                      Newsletter - people can opt out (via the setting which mentions "to remind you").  These
+                      are less important or encouragements to freegle more.
+                    </li>
+                  </ul>
+                </p>
+                <OurToggle
+                  v-model="essential"
+                  class="mt-2"
+                  :height="30"
+                  :width="150"
+                  :font-size="14"
+                  :sync="true"
+                  :labels="{checked: 'Essential', unchecked: 'Newsletter'}"
+                  color="#61AE24"
+                />
+              </b-form-group>
+              <b-form-group
+                label="Subject of ADMIN:"
+                label-for="subject"
+                label-class="mb-0"
+              >
                 <validating-form-input
                   id="subject"
                   v-model="subject"
@@ -150,6 +179,7 @@ import ValidatingForm from '~/components/ValidatingForm'
 import ValidatingFormInput from '~/components/ValidatingFormInput'
 import ValidatingTextarea from '~/components/ValidatingTextarea'
 import ModHelpAdmins from '~/components/ModHelpAdmins'
+const OurToggle = () => import('~/components/OurToggle')
 
 const noAdmin = val => {
   return !!(val && val.toLowerCase().indexOf('admin') === -1)
@@ -163,7 +193,8 @@ export default {
     GroupSelect,
     ValidatingForm,
     ValidatingFormInput,
-    ValidatingTextarea
+    ValidatingTextarea,
+    OurToggle
   },
   mixins: [validationMixin, validationHelpers, loginRequired],
   data: function() {
@@ -176,7 +207,8 @@ export default {
       ctatext: null,
       ctalink: null,
       creating: false,
-      created: false
+      created: false,
+      essential: true
     }
   },
   computed: {
@@ -249,7 +281,8 @@ export default {
           subject: this.subject,
           text: this.body,
           ctatext: this.ctatext,
-          ctalink: this.ctalink
+          ctalink: this.ctalink,
+          essential: this.essential
         })
 
         this.creating = false
