@@ -3,7 +3,7 @@
     <div
       :class="{
         selected: selected,
-        strike: chatmessage.reviewrejected
+        strike: chatmessage.reviewrejected || chatmessage.deleted
       }"
       @click="selectMe"
     >
