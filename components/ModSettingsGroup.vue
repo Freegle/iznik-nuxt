@@ -297,7 +297,7 @@
               />
               <ModGroupRule
                 :groupid="groupid"
-                name="restrictpersonalinfo"
+                name="restrictdistance"
                 label="Do you remove any members purely for being out of your group area?"
                 type="toggle"
                 toggle-checked="Yes"
