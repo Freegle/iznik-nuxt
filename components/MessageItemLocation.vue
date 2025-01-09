@@ -2,7 +2,7 @@
   <div class="item header--size4">
     <h3 class="m-0 d-flex justify-content-between">
       <div class="w-100">
-        <div class="sr-only">
+        <div>
           {{ type }}
         </div>
         <Highlighter
