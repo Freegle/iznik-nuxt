@@ -10,6 +10,7 @@
       <!--      </NoticeMessage>-->
       <div class="d-flex justify-content-between">
         <GroupSelect v-model="groupid" all modonly :work="['pending', 'pendingother']" remember="pending" />
+        <ModtoolsViewControl misckey="modtoolsMessagesPendingSummary" />
         <b-btn variant="link" @click="loadAll">
           Load all
         </b-btn>
@@ -19,7 +20,7 @@
       </NoticeMessage>
       <div v-for="(message, ix) in visibleMessages" :key="'messagelist-' + message.id" class="p-0 mt-2">
         <div :ref="'top' + message.id" />
-        <ModMessage :message="message" :next="ix < visibleMessages.length - 1 ? visibleMessages[ix + 1].id : null" :next-after-removed="nextAfterRemoved" @destroy="destroy" />
+        <ModMessage :message="message" :next="ix < visibleMessages.length - 1 ? visibleMessages[ix + 1].id : null" :next-after-removed="nextAfterRemoved" :summary="summary" @destroy="destroy" />
         <div :ref="'bottom' + message.id" />
       </div>
 
@@ -48,6 +49,7 @@ import ModAimsModal from '@/components/ModAimsModal'
 import NoticeMessage from '../../../../components/NoticeMessage'
 import GroupSelect from '../../../../components/GroupSelect'
 import ModMessage from '../../../../components/ModMessage'
+import ModtoolsViewControl from '../../../../components/ModtoolsViewControl.vue'
 import ModCakeModal from '~/components/ModCakeModal'
 import ScrollToTop from '~/components/ScrollToTop'
 import ModAffiliationConfirmModal from '~/components/ModAffiliationConfirmModal'
@@ -55,6 +57,7 @@ import ModRulesModal from '~/components/ModRulesModal'
 
 export default {
   components: {
+    ModtoolsViewControl,
     ModAffiliationConfirmModal,
     ModRulesModal,
     // ModZoomStock,
@@ -79,6 +82,14 @@ export default {
       workType: 'pending',
       affiliationGroup: null,
       rulesGroup: null
+    }
+  },
+  computed: {
+    summary() {
+      const ret = this.$store.getters['misc/get'](
+        'modtoolsMessagesPendingSummary'
+      )
+      return ret === undefined ? false : ret
     }
   },
   mounted() {

@@ -16,18 +16,22 @@ const OurToggle = () => import('~/components/OurToggle')
 
 export default {
   components: { OurToggle },
+  props: {
+    misckey: {
+      type: String,
+      required: true
+    }
+  },
   computed: {
     summary() {
-      const ret = this.$store.getters['misc/get'](
-        'modtoolsMessagesApprovedSummary'
-      )
+      const ret = this.$store.getters['misc/get'](this.misckey)
       return typeof ret === 'undefined' ? false : ret
     }
   },
   methods: {
     toggleView(c, e) {
       this.$store.dispatch('misc/set', {
-        key: 'modtoolsMessagesApprovedSummary',
+        key: this.misckey,
         value: c.value
       })
     }
