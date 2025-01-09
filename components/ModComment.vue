@@ -21,7 +21,7 @@
       <span v-if="savedComment.groupid">
         on {{ groupname }}
       </span>
-      <span v-if="amAModOn(savedComment.groupid) || supportOrAdmin">
+      <span v-if="amAModOn(savedComment.groupid) || supportOrAdmin || savedComment.byuserid === myid">
         <b-btn variant="link" size="sm" @click="editIt">
           <v-icon name="pen" /> Edit
         </b-btn>
