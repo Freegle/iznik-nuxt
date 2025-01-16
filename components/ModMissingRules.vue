@@ -19,11 +19,9 @@
           Please go to the <em>Rules</em> section of the group settings and respond to each question.  You can
           copy the rules if you have multiple groups.
         </p>
-        <div v-for="(inv) of invalid" :key="'fbinvalid-' + inv.id">
-          Click to add rules for <nuxt-link :to="'/modtools/settings/' + inv.id">
-            {{ inv.namedisplay }}
-          </nuxt-link>
-        </div>
+        <a v-for="(inv) of invalid" :key="'fbinvalid-' + inv.id" :href="'/modtools/settings/' + inv.id">
+          Click to add rules for {{ inv.namedisplay }}<br>
+        </a>
       </div>
     </NoticeMessage>
   </div>
@@ -34,6 +32,12 @@ import ExternalLink from './ExternalLink.vue'
 
 export default {
   components: { ExternalLink, NoticeMessage },
+  props: {
+    expanded: {
+      type: Boolean,
+      default: false
+    }
+  },
   data: function() {
     return {
       summary: true
@@ -55,6 +59,11 @@ export default {
       }
 
       return ret
+    }
+  },
+  mounted() {
+    if (this.expanded) {
+      this.summary = false
     }
   },
   methods: {

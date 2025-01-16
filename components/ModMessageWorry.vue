@@ -15,7 +15,7 @@
           This post contains a keyword which means it's flagged up for review.  If you can't see anything wrong with it, then it's fine.
         </p>
         <p v-if="word.worryword.type === 'Regulated'">
-          This post looks as though it might contain a regulated substance.  These are not legal on Freegle.  Please do not approve this without checking on <a href="https://discourse.ilovefreegle.org/" data-realurl="true" target="_blank" rel="noopener noreferrer">Central</a> first.
+          This post looks as though it might contain a regulated substance.  These are not legal on Freegle.  If in doubt please check on <a href="https://discourse.ilovefreegle.org/" data-realurl="true" target="_blank" rel="noopener noreferrer">Central</a> first.
         </p>
         <p v-if="word.worryword.type === 'Reportable'">
           This post looks as though it might contain a reportable substance.  These may need to be reported to the police.  Please ask the member about it to see what their reason is, and if in doubt discuss on <a href="https://discourse.ilovefreegle.org/" data-realurl="true" target="_blank" rel="noopener noreferrer">Central</a>.

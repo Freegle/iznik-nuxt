@@ -20,7 +20,8 @@
       class="mb-2"
     />
     <ModMissingRules />
-    <ModMissingFacebook />
+    <!--    Disabled as Facebook sharing isn't working and will probably be retired.-->
+    <!--    <ModMissingFacebook />-->
     <ModMissingProfile class="mt-1" />
     <div class="d-flex mb-2 mt-2 flex-wrap">
       <div class="borderit d-flex flex-column">
@@ -118,7 +119,7 @@ import loginRequired from '../../mixins/loginRequired'
 import GroupSelect from '../../components/GroupSelect'
 import 'vue2-datepicker/index.css'
 import ModDashboardSkeleton from '../../components/ModDashboardSkeleton'
-import ModMissingFacebook from '../../components/ModMissingFacebook'
+// import ModMissingFacebook from '../../components/ModMissingFacebook'
 import ModMissingRules from '../../components/ModMissingRules'
 import ModMissingProfile from '../../components/ModMissingProfile'
 import ActivityGraph from '../../components/ActivityGraph'
@@ -142,7 +143,7 @@ export default {
     ModDashboardImpact,
     ActivityGraph,
     ModMissingProfile,
-    ModMissingFacebook,
+    // ModMissingFacebook,
     ModMissingRules,
     GroupSelect,
     ModDashboardRecentCounts: lazyLoadComponent({

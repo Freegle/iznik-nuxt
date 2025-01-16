@@ -5,6 +5,13 @@
       <b-card-header class="p-1 p-md-2">
         <div class="d-flex justify-content-between">
           <div class="flex-grow-1">
+            <NoticeMessage v-if="editing && !message.lat && !message.lng" variant="danger" class="mb-2 mr-2">
+              This message needs editing so that we know where it is.  Please put in a postcode
+              (it doesn't have to be exactly right - do your best based on the subject).
+              <b-input-group>
+                <Postcode class="mt-2" value="" :find="false" @selected="postcodeSelect" />
+              </b-input-group>
+            </NoticeMessage>
             <div v-if="editing" class="d-flex flex-wrap">
               <GroupSelect v-model="editgroup" modonly class="mr-1" size="lg" :disabled-except-for="memberGroupIds" />
               <div v-if="message.item && message.location" class="d-flex justify-content-start">
@@ -321,7 +328,10 @@
           This message is held by someone else.  The buttons are hidden so you don't click them by accident.  Please
           check with them before releasing the message.
         </div>
-        <ModMessageButtons v-else-if="!editing" :message="message" :modconfig="modconfig" :editreview="editreview" :cantpost="membership && membership.ourpostingstatus === 'PROHIBITED'" />
+        <NoticeMessage v-else-if="!editing && !message.lat && !message.lng" variant="danger" class="mb-2">
+          This message needs editing so that we know where it is.
+        </NoticeMessage>
+        <ModMessageButtons v-else-if="!editing " :message="message" :modconfig="modconfig" :editreview="editreview" :cantpost="membership && membership.ourpostingstatus === 'PROHIBITED'" />
         <b-btn v-if="editing" variant="secondary" class="mr-auto" @click="photoAdd">
           <v-icon name="camera" />&nbsp;Add photo
         </b-btn>

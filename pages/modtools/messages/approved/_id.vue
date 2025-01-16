@@ -9,7 +9,7 @@
         <span v-else class="mt-2">
           Select a community to search messages.
         </span>
-        <ModtoolsViewControl />
+        <ModtoolsViewControl misckey="modtoolsMessagesApprovedSummary" />
       </div>
       <div>
         <div v-for="message in visibleMessages" :key="'messagelist-' + message.id" class="p-0 mt-2">

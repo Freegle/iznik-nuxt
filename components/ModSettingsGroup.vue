@@ -224,8 +224,8 @@
               <strong class="mr-1 mt-2">Copy rules from:</strong>
               <GroupSelect v-model="copyfrom" modonly class="mb-2 mr-2" />
               <div>
-                <b-btn variant="secondary" :disabled="copyfrom <= 0" @click="copy">
-                  <v-icon name="copy" /> Copy
+                <b-btn variant="secondary" :disabled="copyfrom <= 0 || copyfrom === groupid" @click="copy">
+                  <v-icon name="copy" /> Copy to {{ group.nameshort }}
                 </b-btn>
               </div>
             </div>
@@ -274,7 +274,7 @@
               <ModGroupRule
                 :groupid="groupid"
                 name="suggesteddonations"
-                label="Do you allow suggested donations to charity to obtain items?"
+                label="Do you allow people to ask for a donation to charity when offering items?"
                 type="toggle"
                 toggle-checked="Yes"
                 toggle-unchecked="No"
@@ -297,7 +297,7 @@
               />
               <ModGroupRule
                 :groupid="groupid"
-                name="restrictpersonalinfo"
+                name="restrictdistance"
                 label="Do you remove any members purely for being out of your group area?"
                 type="toggle"
                 toggle-checked="Yes"

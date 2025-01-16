@@ -10,6 +10,7 @@
       <!--      </NoticeMessage>-->
       <div class="d-flex justify-content-between">
         <GroupSelect v-model="groupid" all modonly :work="['pending', 'pendingother']" remember="pending" />
+        <ModtoolsViewControl misckey="modtoolsMessagesPendingSummary" />
         <b-btn variant="link" @click="loadAll">
           Load all
         </b-btn>
@@ -19,11 +20,12 @@
       </NoticeMessage>
       <div v-for="(message, ix) in visibleMessages" :key="'messagelist-' + message.id" class="p-0 mt-2">
         <div :ref="'top' + message.id" />
-        <ModMessage :message="message" :next="ix < visibleMessages.length - 1 ? visibleMessages[ix + 1].id : null" :next-after-removed="nextAfterRemoved" @destroy="destroy" />
+        <ModMessage :message="message" :next="ix < visibleMessages.length - 1 ? visibleMessages[ix + 1].id : null" :next-after-removed="nextAfterRemoved" :summary="summary" @destroy="destroy" />
         <div :ref="'bottom' + message.id" />
       </div>
 
       <ModAffiliationConfirmModal v-if="affiliationGroup" ref="affiliation" :groupid="affiliationGroup" />
+      <ModRulesModal v-if="rulesGroup" ref="rules" />
 
       <infinite-loading :key="'infinite-' + groupid + '-' + messages.length" force-use-infinite-wrapper="body" :distance="distance" @infinite="loadMore">
         <span slot="no-results" />
@@ -47,13 +49,17 @@ import ModAimsModal from '@/components/ModAimsModal'
 import NoticeMessage from '../../../../components/NoticeMessage'
 import GroupSelect from '../../../../components/GroupSelect'
 import ModMessage from '../../../../components/ModMessage'
+import ModtoolsViewControl from '../../../../components/ModtoolsViewControl.vue'
 import ModCakeModal from '~/components/ModCakeModal'
 import ScrollToTop from '~/components/ScrollToTop'
 import ModAffiliationConfirmModal from '~/components/ModAffiliationConfirmModal'
+import ModRulesModal from '~/components/ModRulesModal'
 
 export default {
   components: {
+    ModtoolsViewControl,
     ModAffiliationConfirmModal,
+    ModRulesModal,
     // ModZoomStock,
     // ModFreeStock,
     ScrollToTop,
@@ -74,7 +80,16 @@ export default {
     return {
       collection: 'Pending',
       workType: 'pending',
-      affiliationGroup: null
+      affiliationGroup: null,
+      rulesGroup: null
+    }
+  },
+  computed: {
+    summary() {
+      const ret = this.$store.getters['misc/get'](
+        'modtoolsMessagesPendingSummary'
+      )
+      return ret === undefined ? false : ret
     }
   },
   mounted() {
@@ -111,7 +126,21 @@ export default {
       })
     }
 
-    console.log('refs', this.$refs)
+    // Find a group that we have owner status on and are not a backup where there are no rules set.
+    for (const group of this.myGroups) {
+      console.log('Group', group.type, group.role, group.rules)
+      if (group.type === 'Freegle' && group.role === 'Owner' && !group.rules) {
+        this.rulesGroup = group.id
+        break
+      }
+    }
+
+    if (this.rulesGroup) {
+      this.waitForRef('rules', () => {
+        this.$refs.rules.show()
+      })
+    }
+
     this.waitForRef('aims', () => {
       this.$refs.aims.show()
     })
