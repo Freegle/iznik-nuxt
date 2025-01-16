@@ -136,9 +136,9 @@
             :valid.sync="emailValid"
             label="Email address"
           />
-          <NoticeMessage v-if="referToGoogleButton">
+          <!-->NoticeMessage v-if="referToGoogleButton">
             Please use the <em>Continue with Google</em> button to log in.  That way you don't need to remember a password on this site.
-          </NoticeMessage>
+          </NoticeMessage-->
           <NoticeMessage v-if="referToYahooButton">
             Please use the <em>Continue with Yahoo</em> button to log in.  That way you don't need to remember a password on this site.
           </NoticeMessage>
