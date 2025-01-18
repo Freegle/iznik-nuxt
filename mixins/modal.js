@@ -12,7 +12,9 @@ export default {
     // from within a modal then make sure we route to it - this is a case that happens if you Message someone from
     // a modal on mobile.
     const unregisterRouterGuard = this.$router.beforeEach((to, from, next) => {
-      if (to.path.indexOf('/chats') === -1) {
+      if (to?.query?.noguard) {
+        next()
+      } else if (to.path.indexOf('/chats') === -1) {
         this.back(next)
       } else {
         // It's to a chat.
