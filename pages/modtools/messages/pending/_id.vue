@@ -10,10 +10,10 @@
       <!--      </NoticeMessage>-->
       <div class="d-flex justify-content-between">
         <GroupSelect v-model="groupid" all modonly :work="['pending', 'pendingother']" remember="pending" />
-        <ModtoolsViewControl misckey="modtoolsMessagesPendingSummary" />
         <b-btn variant="link" @click="loadAll">
           Load all
         </b-btn>
+        <ModtoolsViewControl misckey="modtoolsMessagesPendingSummary" />
       </div>
       <NoticeMessage v-if="!messages.length && !busy" class="mt-2">
         There are no messages at the moment.  This will refresh automatically.
