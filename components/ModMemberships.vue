@@ -3,7 +3,7 @@
     <div v-if="memberof && memberof.length">
       <div v-for="m in memberof" :key="'membership-' + m.membershipid" class="p-1 mr-1">
         <strong>{{ m.namedisplay.length > 32 ? (m.namedisplay.substring(0, 32) + '...') : m.namedisplay }}</strong>
-        <span :class="'small ' + (daysago(m.added) < 31 ? 'text-danger font-weight-bold' : 'text-muted')">{{ timeago(m.added) }}</span>
+        <span :class="'small ' + (daysago(m.added) < 31 ? 'text-danger font-weight-bold' : 'text-muted')">joined {{ timeago(m.added) }}</span>
       </div>
     </div>
     <div v-else class="p-1 mr-1">
