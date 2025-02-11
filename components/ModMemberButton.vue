@@ -93,6 +93,16 @@ export default {
       required: false,
       default: false
     },
+    reviewhold: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    reviewrelease: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     spamhold: {
       type: Boolean,
       required: false,
@@ -161,6 +171,10 @@ export default {
       } else if (this.release) {
         console.log('Release')
         await this.releaseIt()
+      } else if (this.reviewhold) {
+        await this.reviewHoldIt()
+      } else if (this.reviewrelease) {
+        await this.reviewReleaseIt()
       } else {
         // We want to show a modal.
         if (this.leave) {
@@ -239,6 +253,16 @@ export default {
       await this.$store.dispatch('members/delete', {
         id: this.member.userid,
         groupid: this.groupid
+      })
+    },
+    async reviewHoldIt() {
+      await this.$store.dispatch('members/reviewHold', {
+        membershipid: this.member.membershipid
+      })
+    },
+    async reviewReleaseIt() {
+      await this.$store.dispatch('members/reviewRelease', {
+        membershipid: this.member.membershipid
       })
     },
     async releaseIt() {

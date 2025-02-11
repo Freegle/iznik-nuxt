@@ -11,6 +11,7 @@
       </div>
       <div v-if="amAModOn(membership.id) && needsReview" class="d-flex mt-2 flex-wrap">
         <SpinButton
+          v-if="!member.heldby || member.heldby.id === myid"
           name="check"
           spinclass="success"
           variant="primary"
@@ -19,11 +20,30 @@
           class="mr-2 mb-1"
         />
         <SpinButton
+          v-if="!member.heldby || member.heldby.id === myid"
           name="trash-alt"
           spinclass="success"
           variant="warning"
           :handler="remove"
           label="Remove"
+          class="mr-2 mb-1"
+        />
+        <ModMemberButton
+          v-if="!member.heldby"
+          :member="member"
+          variant="warning"
+          icon="pause"
+          reviewhold
+          label="Hold"
+          class="mr-2 mb-1"
+        />
+        <ModMemberButton
+          v-else
+          :member="member"
+          variant="warning"
+          icon="play"
+          reviewrelease
+          label="Release"
           class="mr-2 mb-1"
         />
         <b-btn :to="'/modtools/members/approved/search/' + membership.id + '/' + member.userid" variant="secondary" class="mb-1">
@@ -37,9 +57,11 @@
 <script>
 import SpinButton from '@/components/SpinButton'
 import ConfirmModal from './ConfirmModal'
+import ModMemberButton from '~/components/ModMemberButton.vue'
 
 export default {
   components: {
+    ModMemberButton,
     SpinButton,
     ConfirmModal
   },

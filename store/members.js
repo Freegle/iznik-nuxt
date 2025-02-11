@@ -81,6 +81,15 @@ export const mutations = {
   },
   setContext(state, ctx) {
     state.context = ctx
+  },
+  reviewHeld(state, params) {
+    Object.keys(state.list).forEach(key => {
+      if (
+        parseInt(state.list[key].membershipid) === parseInt(params.membershipid)
+      ) {
+        state.list[key].heldby = params.heldby
+      }
+    })
   }
 }
 
@@ -463,6 +472,25 @@ export const actions = {
       groupid: params.groupid,
       happinessid: params.happinessid,
       action: 'HappinessReviewed'
+    })
+  },
+
+  async reviewHold({ dispatch, commit, rootGetters }, params) {
+    await this.$api.memberships.reviewHold(params.membershipid)
+    const me = rootGetters['auth/user']
+    commit('reviewHeld', {
+      heldby: {
+        id: me.id
+      },
+      membershipid: params.membershipid
+    })
+  },
+
+  async reviewRelease({ dispatch, commit, rootGetters }, params) {
+    await this.$api.memberships.reviewRelease(params.membershipid)
+    commit('reviewHeld', {
+      heldby: null,
+      membershipid: params.membershipid
     })
   },
 
