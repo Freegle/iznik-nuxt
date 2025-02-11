@@ -72,6 +72,7 @@ module.exports = {
   head: {
     title: "Freegle - Don't throw it away, give it away!",
     meta: [
+      { name: 'robots', content: 'noindex' },
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'author', name: 'author', content: 'Freegle' },
