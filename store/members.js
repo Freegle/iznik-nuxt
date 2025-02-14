@@ -476,7 +476,7 @@ export const actions = {
   },
 
   async reviewHold({ dispatch, commit, rootGetters }, params) {
-    await this.$api.memberships.reviewHold(params.membershipid)
+    await this.$api.memberships.reviewHold(params.membershipid, params.groupid)
     const me = rootGetters['auth/user']
     commit('reviewHeld', {
       heldby: {
@@ -487,7 +487,10 @@ export const actions = {
   },
 
   async reviewRelease({ dispatch, commit, rootGetters }, params) {
-    await this.$api.memberships.reviewRelease(params.membershipid)
+    await this.$api.memberships.reviewRelease(
+      params.membershipid,
+      params.groupid
+    )
     commit('reviewHeld', {
       heldby: null,
       membershipid: params.membershipid

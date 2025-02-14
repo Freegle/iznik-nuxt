@@ -257,12 +257,14 @@ export default {
     },
     async reviewHoldIt() {
       await this.$store.dispatch('members/reviewHold', {
-        membershipid: this.member.membershipid
+        membershipid: this.member.id,
+        groupid: this.groupid
       })
     },
     async reviewReleaseIt() {
       await this.$store.dispatch('members/reviewRelease', {
-        membershipid: this.member.membershipid
+        membershipid: this.member.id,
+        groupid: this.groupid
       })
     },
     async releaseIt() {
