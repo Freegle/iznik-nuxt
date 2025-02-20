@@ -33,7 +33,7 @@
               :member="member"
               variant="warning"
               icon="play"
-              release
+              reviewrelease
               label="Release"
             />
           </NoticeMessage>

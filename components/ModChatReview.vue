@@ -89,7 +89,7 @@
               <v-icon name="play" /> Release
             </b-btn>
             <SpinButton
-              v-if="!message.held"
+              v-if="!message.held || me.id === message.held.id"
               name="exclamation-triangle"
               label="Add Mod Message"
               variant="warning"
@@ -97,7 +97,7 @@
               :handler="modnote"
             />
             <SpinButton
-              v-if="!message.held"
+              v-if="!message.held || me.id === message.held.id"
               name="eraser"
               label="Remove highlighted emails"
               variant="warning"
@@ -106,7 +106,7 @@
             />
           </template>
           <SpinButton
-            v-if="!message.held"
+            v-if="!message.held || me.id === message.held.id"
             name="check"
             label="Approve - Not Spam"
             spinclass="text-white"
@@ -116,7 +116,7 @@
           />
           <template v-if="!message.widerchatreview">
             <SpinButton
-              v-if="!message.held"
+              v-if="!message.held || me.id === message.held.id"
               name="check"
               label="Approve and whitelist"
               spinclass="text-white"
@@ -126,7 +126,7 @@
               :handler="whitelist"
             />
             <SpinButton
-              v-if="!message.held"
+              v-if="!message.held || me.id === message.held.id"
               name="pause"
               label="Hold"
               variant="warning"
@@ -134,7 +134,7 @@
               :handler="hold"
             />
             <SpinButton
-              v-if="!message.held"
+              v-if="!message.held || me.id === message.held.id"
               name="trash-alt"
               label="Delete"
               variant="danger"
@@ -143,7 +143,7 @@
               :handler="reject"
             />
             <SpinButton
-              v-if="!message.held"
+              v-if="!message.held || me.id === message.held.id"
               name="ban"
               label="Spam"
               variant="danger"

@@ -42,6 +42,7 @@
           <ChatButton
             :userid="member.user.id"
             :groupid="member.groupid"
+            chattype="User2Mod"
             title="Chat"
             variant="white"
           />

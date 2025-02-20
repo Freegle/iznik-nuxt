@@ -10,10 +10,10 @@
       <!--      </NoticeMessage>-->
       <div class="d-flex justify-content-between">
         <GroupSelect v-model="groupid" all modonly :work="['pending', 'pendingother']" remember="pending" />
-        <ModtoolsViewControl misckey="modtoolsMessagesPendingSummary" />
         <b-btn variant="link" @click="loadAll">
           Load all
         </b-btn>
+        <ModtoolsViewControl misckey="modtoolsMessagesPendingSummary" />
       </div>
       <NoticeMessage v-if="!messages.length && !busy" class="mt-2">
         There are no messages at the moment.  This will refresh automatically.
@@ -129,7 +129,12 @@ export default {
     // Find a group that we have owner status on and are not a backup where there are no rules set.
     for (const group of this.myGroups) {
       console.log('Group', group.type, group.role, group.rules)
-      if (group.type === 'Freegle' && group.role === 'Owner' && !group.rules) {
+      if (
+        group.type === 'Freegle' &&
+        group.role === 'Owner' &&
+        !group.rules &&
+        group.publish
+      ) {
         this.rulesGroup = group.id
         break
       }

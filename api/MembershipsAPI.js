@@ -94,6 +94,22 @@ export default class MembershipsAPI extends BaseAPI {
     })
   }
 
+  reviewHold(membershipid, groupid) {
+    return this.$post('/memberships', {
+      action: 'ReviewHold',
+      membershipid: membershipid,
+      groupid: groupid
+    })
+  }
+
+  reviewRelease(membershipid, groupid) {
+    return this.$post('/memberships', {
+      action: 'ReviewRelease',
+      membershipid: membershipid,
+      groupid: groupid
+    })
+  }
+
   happinessReviewed(params) {
     return this.$post('/memberships', params)
   }
