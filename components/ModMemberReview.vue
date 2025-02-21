@@ -19,25 +19,6 @@
         </div>
       </b-card-header>
       <b-card-body>
-        <div v-if="member.heldby">
-          <NoticeMessage variant="warning" class="mb-2">
-            <p v-if="me.id === member.heldby.id">
-              You held this member.  Other people will see a warning to check with
-              you before releasing them.
-            </p>
-            <p v-else>
-              Held by <strong>{{ member.heldby.displayname }}</strong>.  Please check before releasing them.
-            </p>
-            <ModMemberButton
-              v-if="member.heldby"
-              :member="member"
-              variant="warning"
-              icon="play"
-              reviewrelease
-              label="Release"
-            />
-          </NoticeMessage>
-        </div>
         <ModComments :user="member" />
         <ModSpammer v-if="member.spammer" :user="member" />
         <NoticeMessage v-if="member.systemrole !== 'User'" variant="info">
@@ -129,7 +110,6 @@ import ModComments from './ModComments'
 import ModLogsModal from './ModLogsModal'
 import ModBouncing from './ModBouncing'
 import ModMemberLogins from './ModMemberLogins'
-import ModMemberButton from './ModMemberButton'
 import Supporter from '~/components/Supporter'
 
 const ExternalLink = () => import('~/components/ExternalLink')
@@ -140,7 +120,6 @@ export default {
   name: 'ModMember',
   components: {
     MessageMap,
-    ModMemberButton,
     ModMemberLogins,
     ModBouncing,
     ModLogsModal,
