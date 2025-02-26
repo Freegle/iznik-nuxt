@@ -3,6 +3,9 @@
     <b-card bg-variant="white" no-body>
       <b-card-header class="d-flex justify-content-between flex-wrap">
         <div>
+          <div v-if="isLJ">
+            LoveJunk user #{{ user.ljuserid }}
+          </div>
           <!-- eslint-disable-next-line -->
           <v-icon name="envelope" /> <ExternalLink :href="'mailto:' + email">{{ email }}</ExternalLink>
         </div>
@@ -151,25 +154,8 @@ export default {
     }
   },
   computed: {
-    reviewgroups() {
-      let ms = null
-
-      if (this.member && this.member.memberof) {
-        ms = this.member.memberof
-      } else if (this.user && this.user.memberof) {
-        ms = this.user.memberof
-      }
-
-      if (!ms) {
-        return null
-      }
-
-      return ms.filter(g => {
-        return (
-          this.amActiveModOn(g.id) &&
-          ('reviewrequestedat' in g || g.collection === 'Spam')
-        )
-      })
+    isLJ() {
+      return this.user && this.user.ljuserid
     },
     allmemberof() {
       let ms = []
@@ -252,13 +238,6 @@ export default {
     user() {
       return this.$store.getters['user/get'](this.member.userid)
     },
-    reportUser() {
-      return {
-        // Due to inconsistencies about userid vs id in objects.
-        userid: this.user.id,
-        displayname: this.user.displayname
-      }
-    },
     settings() {
       if (this.user && this.user.settings && this.user.settings) {
         return this.user.settings
@@ -321,37 +300,6 @@ export default {
 
       this.waitForRef('logs', () => {
         this.$refs.logs.show()
-      })
-    },
-    async changeNotification(e, type) {
-      const settings = this.settings
-      const notifications = this.notifications
-      notifications[type] = e.value
-      settings.notifications = notifications
-
-      await this.$store.dispatch('user/edit', {
-        id: this.user.id,
-        settings: settings
-      })
-    },
-    async changeRelevant(e) {
-      await this.$store.dispatch('user/edit', {
-        id: this.user.id,
-        relevantallowed: e.value
-      })
-    },
-    async changeNotifChitchat(e) {
-      const settings = this.user.settings
-      settings.notificationmails = e.value
-      await this.$store.dispatch('user/edit', {
-        id: this.user.id,
-        settings: settings
-      })
-    },
-    async changeNewsletter(e) {
-      await this.$store.dispatch('user/edit', {
-        id: this.user.id,
-        newslettersallowed: e.value
       })
     }
   }
