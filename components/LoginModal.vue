@@ -29,7 +29,7 @@
     </p>
     <p v-if="modtools" class="text-center">
       <!-- eslint-disable-next-line -->
-      Need temporary help moderating?  Mail <ExternalLink href="mailto:mentors@ilovefreegle.org">mentors@ilovefreegle.org</ExternalLink>.
+      Need any help moderating?  Mail <ExternalLink href="mailto:mentors@ilovefreegle.org">mentors@ilovefreegle.org</ExternalLink>.
     </p>
     <p v-if="loginType" class="text-center font-weight-bold">
       You usually log in using {{ loginType }}.
