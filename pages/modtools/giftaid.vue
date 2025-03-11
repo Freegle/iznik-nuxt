@@ -4,7 +4,7 @@
     <b-card no-body class="mb-2">
       <b-card-body>
         <p>
-          You can search for existing Gift Aid details by someone's name or address.
+          You can search for existing Gift Aid details by someone's name, address or gift aid ID.
         </p>
         <b-input-group>
           <b-input v-model="search" placeholder="Search for gift aid record" @keyup="checkSearch" />
