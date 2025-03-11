@@ -13,7 +13,14 @@
               </b-input-group>
             </NoticeMessage>
             <div v-if="editing" class="d-flex flex-wrap">
-              <GroupSelect v-model="editgroup" modonly class="mr-1" size="lg" :disabled-except-for="memberGroupIds" />
+              <GroupSelect
+                v-model="editgroup"
+                modonly
+                class="mr-1"
+                size="lg"
+                :disabled-except-for="memberGroupIds"
+                :disabled="message.fromuser.tnuserid"
+              />
               <div v-if="message.item && message.location" class="d-flex justify-content-start">
                 <b-select v-model="message.type" :options="typeOptions" class="type mr-1" size="lg" />
                 <b-input v-model="message.item.name" size="lg" class="mr-1" />
