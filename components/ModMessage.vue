@@ -469,16 +469,32 @@ export default {
       uploading: false,
       attachments: [],
       homegroup: null,
-      homegroupontn: false
+      homegroupontn: false,
+      historyGroups: {}
     }
   },
   computed: {
-    group() {
+    messageGroup() {
       let ret = null
 
       if (this.message && this.message.groups && this.message.groups.length) {
-        const groupid = this.message.groups[0].groupid
-        ret = this.myGroups.find(g => parseInt(g.id) === groupid)
+        ret = this.message.groups[0].groupid
+      }
+
+      return ret
+    },
+    messageHistory() {
+      return this.message &&
+        this.message.fromuser &&
+        this.message.fromuser.messagehistory
+        ? this.message.fromuser.messagehistory
+        : []
+    },
+    group() {
+      let ret = null
+
+      if (this.messageGroup) {
+        ret = this.myGroups.find(g => parseInt(g.id) === this.messageGroup)
       }
 
       return ret
@@ -679,6 +695,24 @@ export default {
         this.$refs.bottom.scrollIntoView()
         this.$refs.top.scrollIntoView(true)
       }
+    },
+    messageHistory: {
+      immediate: true,
+      handler: async function(newVal) {
+        // We want to ensure that we have the groups for any message history, so that we can use them in canonSubj.
+        const store = this.$store
+        const self = this
+        await newVal.forEach(async function(message) {
+          if (!self.historyGroups[message.groupid]) {
+            self.historyGroups[message.groupid] = await store.dispatch(
+              'group/fetch',
+              {
+                id: message.groupid
+              }
+            )
+          }
+        })
+      }
     }
   },
   mounted() {
@@ -781,7 +815,6 @@ export default {
       })
 
       if (!alreadyon) {
-        console.log('Need to move to group', this.editgroup)
         await this.$store.dispatch('messages/move', {
           id: this.message.id,
           groupid: this.editgroup
@@ -814,7 +847,20 @@ export default {
         this.$refs.original.show()
       })
     },
-    canonSubj(subj) {
+    canonSubj(message) {
+      let subj = message.subject
+      const group = this.historyGroups[message.groupid]
+
+      if (group && group.settings && group.settings.keywords) {
+        const keyword =
+          message.type === 'Offer'
+            ? group.settings.keywords.offer
+            : group.settings.keywords.wanted
+        if (keyword) {
+          subj = subj.replace(keyword, message.type.toUpperCase())
+        }
+      }
+
       subj = subj.toLocaleLowerCase()
 
       // Remove any group tag
@@ -835,7 +881,7 @@ export default {
     },
     checkHistory(duplicateCheck) {
       const ret = []
-      const subj = this.canonSubj(this.message.subject)
+      const subj = this.canonSubj(this.message)
       const dupids = []
       const crossids = []
 
@@ -850,7 +896,7 @@ export default {
             this.duplicateAge &&
             message.daysago <= this.duplicateAge
           ) {
-            if (this.canonSubj(message.subject) === subj) {
+            if (this.canonSubj(message) === subj) {
               // No point displaying any group tag in the duplicate.
               message.subject = message.subject.replace(/\[.*\](.*)/, '$1')
 
