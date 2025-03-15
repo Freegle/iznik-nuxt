@@ -5,7 +5,8 @@
     </b-btn>
     <p>
       These are members who have <strong>used the same device for different members</strong>.  By merging members who are
-      really the same person, we can help them avoid confusion and missing messages.
+      really the same person, we can help them avoid confusion and missing messages - which results in fewer support requests
+      to you!
     </p>
     <p>
       It suggests they're probably the same person if they have a similar name or email, and:
