@@ -56,6 +56,7 @@ export default {
         'Last Auto-Approve',
         'Auto-Approve %',
         'Auto-Approves',
+        'Active Owners',
         'Active Mods',
         'Last Moderated',
         'Publish?',
@@ -98,7 +99,12 @@ export default {
         {
           data: 'recentautoapproves',
           type: 'numeric',
-          renderer: this.forceNumeric
+          renderer: this.maybeMissingNumber
+        },
+        {
+          data: 'activeownercount',
+          type: 'numeric',
+          renderer: this.colourOwner
         },
         {
           data: 'activemodcount',
@@ -232,6 +238,53 @@ export default {
         cellProperties
       )
     },
+    colourOwner(hotInstance, td, row, column, prop, value, cellProperties) {
+      if (!value) {
+        td.style.backgroundColor = 'red'
+        td.style.color = 'white'
+        Handsontable.renderers.TextRenderer.call(
+          this,
+          hotInstance,
+          td,
+          row,
+          column,
+          prop,
+          '-',
+          cellProperties
+        )
+      } else {
+        const val = parseInt(value)
+
+        Handsontable.renderers.NumericRenderer.call(
+          this,
+          hotInstance,
+          td,
+          row,
+          column,
+          prop,
+          val,
+          cellProperties
+        )
+      }
+
+      const group = this.$store.getters['group/get'](value)
+      console.log('Active owner', group ? group.activeownercount : '-')
+
+      if (group && group.activeownercount < 1) {
+        console.log('Red!')
+      }
+
+      Handsontable.renderers.NumericRenderer.call(
+        this,
+        hotInstance,
+        td,
+        row,
+        column,
+        prop,
+        parseInt(value),
+        cellProperties
+      )
+    },
     forceNumeric(hotInstance, td, row, column, prop, value, cellProperties) {
       Handsontable.renderers.NumericRenderer.call(
         this,
@@ -243,6 +296,43 @@ export default {
         parseInt(value),
         cellProperties
       )
+    },
+    maybeMissingNumber(
+      hotInstance,
+      td,
+      row,
+      column,
+      prop,
+      value,
+      cellProperties
+    ) {
+      if (!value) {
+        // Show -
+        td.style.textAlign = 'center'
+        Handsontable.renderers.TextRenderer.call(
+          this,
+          hotInstance,
+          td,
+          row,
+          column,
+          prop,
+          '-',
+          cellProperties
+        )
+      } else {
+        const val = parseInt(value)
+
+        Handsontable.renderers.NumericRenderer.call(
+          this,
+          hotInstance,
+          td,
+          row,
+          column,
+          prop,
+          val,
+          cellProperties
+        )
+      }
     },
     autoApproves(hotInstance, td, row, column, prop, value, cellProperties) {
       // We don't want to highlight the colour for unpublished groups, because they're not actually causing any
