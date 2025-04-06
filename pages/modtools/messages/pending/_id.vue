@@ -129,12 +129,27 @@ export default {
     // Find a group that we have owner status on and are not a backup where there are no rules set.
     for (const group of this.myGroups) {
       console.log('Group', group.type, group.role, group.rules)
+      const rules = group.rules ? JSON.parse(group.rules) : null
+      const missingRules = group.rules
+        ? [
+            'limitgroups',
+            'wastecarrier',
+            'carboot',
+            'chineselanterns',
+            'carseats',
+            'pondlife',
+            'copyright',
+            'porn'
+          ].filter(rule => !Object.keys(rules).includes(rule))
+        : null
+
       if (
         group.type === 'Freegle' &&
         group.role === 'Owner' &&
-        !group.rules &&
-        group.publish
+        group.publish &&
+        (!group.rules || missingRules)
       ) {
+        console.log('Missing rules', group.nameshort, missingRules)
         this.rulesGroup = group.id
         break
       }

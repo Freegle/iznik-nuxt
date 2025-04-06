@@ -1,6 +1,23 @@
 <template>
   <div>
-    <NoticeMessage v-if="invalid.length" variant="danger">
+    <NoticeMessage v-if="newRulesMissing.length" variant="danger">
+      <p>
+        We are collecting information about which rules groups have - see
+        <ExternalLink href="https://discourse.ilovefreegle.org/t/collecting-information-about-group-rules/8070">
+          here
+        </ExternalLink>.
+        We'll use this to help freeglers get things right more often.
+      </p>
+      <p>
+        Based on your feedback, we've added some more rule questions.  Please respond to each question
+        in Settings which is flagged with <span class="text-danger font-weight-bold">New</span>.  You can copy the rules if you have
+        multiple groups and they are the same.
+      </p>
+      <a v-for="(inv) of newRulesMissing" :key="'fbinvalid-' + inv.id" :href="'/modtools/settings/' + inv.id">
+        Click to add rules for {{ inv.namedisplay }}<br>
+      </a>
+    </NoticeMessage>
+    <NoticeMessage v-else-if="invalid.length" variant="danger">
       <div v-if="summary">
         <div>
           <v-icon name="exclamation-triangle" /> {{ invalid.length }} groups are missing group rules.  Please add them.
@@ -55,6 +72,40 @@ export default {
           group.publish
         ) {
           ret.push(group)
+        }
+      }
+
+      return ret
+    },
+    newRulesMissing() {
+      const ret = []
+
+      for (const group of this.myGroups) {
+        if (
+          group.type === 'Freegle' &&
+          group.role === 'Owner' &&
+          group.rules &&
+          group.publish
+        ) {
+          const rules = group.rules ? JSON.parse(group.rules) : null
+
+          // Check if the rules object is missing any values from ['A', 'B', 'C']
+          const missingRules = group.rules
+            ? [
+                'limitgroups',
+                'wastecarrier',
+                'carboot',
+                'chineselanterns',
+                'carseats',
+                'pondlife',
+                'copyright',
+                'porn'
+              ].filter(rule => !Object.keys(rules).includes(rule))
+            : null
+
+          if (missingRules.length > 0) {
+            ret.push(group)
+          }
         }
       }
 
