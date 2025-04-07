@@ -147,7 +147,7 @@ export default {
         group.type === 'Freegle' &&
         group.role === 'Owner' &&
         group.publish &&
-        (!group.rules || missingRules)
+        (!group.rules || (missingRules && missingRules.length))
       ) {
         console.log('Missing rules', group.nameshort, missingRules)
         this.rulesGroup = group.id
