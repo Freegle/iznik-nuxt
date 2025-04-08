@@ -14,7 +14,7 @@
         multiple groups and they are the same.
       </p>
       <a v-for="(inv) of newRulesMissing" :key="'fbinvalid-' + inv.id" :href="'/modtools/settings/' + inv.id">
-        Click to add rules for {{ inv.namedisplay }}<br>
+        Click to add rules for {{ inv.namedisplay }} (missing: {{ inv.missing }})<br>
       </a>
     </NoticeMessage>
     <NoticeMessage v-else-if="invalid.length" variant="danger">
@@ -104,6 +104,12 @@ export default {
             : null
 
           if (missingRules.length > 0) {
+            // Take upto 3 missing rules, add an ellipsis if more, convert to a string
+            // and push to the ret array
+            group.missing =
+              missingRules.length > 3
+                ? missingRules.slice(0, 3).join(',') + '...'
+                : missingRules.slice(0, 3).join(',')
             ret.push(group)
           }
         }
