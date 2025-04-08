@@ -8,7 +8,7 @@
         :class="{
           invisible: haveValue
         }"
-        class="mb-2 text-small text-muted"
+        class="mb-2 text-small dangerimp"
       >
         No answer given yet.
       </b-form-text>
@@ -57,7 +57,7 @@
           :width="toggleWidth"
           :font-size="14"
           :sync="true"
-          :labels="{checked: toggleChecked, unchecked: toggleUnchecked}"
+          :labels="{checked: haveValue ? toggleChecked : 'N/A', unchecked: haveValue ? toggleUnchecked : 'N/A'}"
           color="#61AE24"
           :disabled="readonly"
           @change="save"
@@ -190,5 +190,10 @@ export default {
 input,
 select {
   max-width: 300px;
+}
+
+.dangerimp {
+  color: $color-red !important;
+  font-weight: bold;
 }
 </style>
