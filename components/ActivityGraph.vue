@@ -35,7 +35,7 @@
         These are the posts marked as TAKEN/RECEIVED.
       </p>
       <p v-if="graphType === 'Donations'">
-        These are donations received via PayPal or Stripe.
+        These is the sum in pounds of donations received via PayPal or Stripe.
       </p>
       <p v-if="graphType === 'ActiveUsers'">
         This is the number of freeglers active in the 30 days before each date.  Only available for individual communities

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.ilovefreegle.modtools" ios-CFBundleVersion="418" version="0.3.114" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="org.ilovefreegle.modtools" ios-CFBundleVersion="419" version="0.3.115" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <!-- npm run mtapp using node 14. Then in node 20, cordova build and then install.sh - or release using relapp.sh -->
   <!-- In iOS might need to change LD_SEARCH... to xLD_SEARCH in PodsModtools xcconfig debug and release -->
   <name>ModTools</name>

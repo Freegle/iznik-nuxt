@@ -257,6 +257,15 @@
               />
               <ModGroupRule
                 :groupid="groupid"
+                name="limitgroups"
+                label="Do you limit the number of groups a member can join?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+                new-rule
+              />
+              <ModGroupRule
+                :groupid="groupid"
                 name="restrictcrossposting"
                 label="Do you restrict cross-posting to other groups?"
                 type="toggle"
@@ -431,6 +440,69 @@
                 type="toggle"
                 toggle-checked="Yes"
                 toggle-unchecked="No"
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="wastecarrier"
+                label="Do you ask for a waste carrier license in any requests for scrap metal?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+                new-rule
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="carboot"
+                label="Do you allow any requests for items to sell at car boot sales?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+                new-rule
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="chineselanterns"
+                label="Do you allow any offers or requests for Chinese Lanterns?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+                new-rule
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="carseats"
+                label="Do you allow any offers or requests for Child/Baby Car Seats?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+                new-rule
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="pondlife"
+                label="Do you allow any offers or requests for pondlife (eg frog spawn) or pond plants?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+                new-rule
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="copyright"
+                label="Do you allow any offers or requests for original items subject to copyright, eg computer software or games, music, films?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+                new-rule
+              />
+              <ModGroupRule
+                :groupid="groupid"
+                name="porn"
+                label="Do you allow any offers or requests for items that you consider pornographic?"
+                type="toggle"
+                toggle-checked="Yes"
+                toggle-unchecked="No"
+                new-rule
               />
               <h4>Other rules</h4>
               <ModGroupRule

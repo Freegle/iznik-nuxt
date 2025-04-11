@@ -12,9 +12,9 @@
             Total donations &pound;{{ giftaid.donations }}
           </NoticeMessage>
           <NoticeMessage v-else variant="danger">
-            No donations found - check in case they are using multiple email addresses and you need to merge the accounts.
-            You can't approve this until
-            it's linked to a donation - but you could click Give Up if you can't manage to.
+            No donations found - please ask what donation method they used and if their donation was made
+            using a different email address.  If so then you need to add that as a secondary email address
+            on their account using Support Tools.
           </NoticeMessage>
           <span class="small text-muted">
             {{ timeago(giftaid.timestamp) }}

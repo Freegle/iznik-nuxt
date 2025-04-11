@@ -1,68 +1,73 @@
 <template>
-  <b-form-group :label="label">
-    <b-form-text v-if="description" class="mb-2">
-      {{ description }}
-    </b-form-text>
-    <b-form-text
-      :class="{
-        invisible: haveValue
-      }"
-      class="mb-2 text-small text-muted"
-    >
-      No answer given yet.
-    </b-form-text>
-    <b-input-group v-if="type === 'input'">
-      <b-input v-model="value" />
-      <b-input-group-append>
-        <SpinButton variant="white" name="save" label="Save" :handler="save" :disabled="readonly" />
-      </b-input-group-append>
-    </b-input-group>
-    <b-input-group v-if="type === 'number'">
-      <b-input v-model="value" type="number" :step="step" />
-      <b-input-group-append>
-        <SpinButton
-          variant="white"
-          name="save"
-          label="Save"
-          :handler="save"
-          :disabled="readonly"
-        />
-      </b-input-group-append>
-    </b-input-group>
-    <div v-else-if="type === 'textarea'">
-      <b-row>
-        <b-col>
-          <b-textarea v-model="value" :rows="rows" />
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col>
+  <div class="d-flex">
+    <b-form-group :label="label">
+      <b-form-text v-if="description" class="mb-2">
+        {{ description }}
+      </b-form-text>
+      <b-form-text
+        :class="{
+          invisible: haveValue
+        }"
+        class="mb-2 text-small dangerimp"
+      >
+        No answer given yet.
+      </b-form-text>
+      <b-input-group v-if="type === 'input'">
+        <b-input v-model="value" />
+        <b-input-group-append>
+          <SpinButton variant="white" name="save" label="Save" :handler="save" :disabled="readonly" />
+        </b-input-group-append>
+      </b-input-group>
+      <b-input-group v-if="type === 'number'">
+        <b-input v-model="value" type="number" :step="step" />
+        <b-input-group-append>
           <SpinButton
             variant="white"
             name="save"
             label="Save"
             :handler="save"
-            class="mt-2"
             :disabled="readonly"
           />
-        </b-col>
-      </b-row>
+        </b-input-group-append>
+      </b-input-group>
+      <div v-else-if="type === 'textarea'">
+        <b-row>
+          <b-col>
+            <b-textarea v-model="value" :rows="rows" />
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col>
+            <SpinButton
+              variant="white"
+              name="save"
+              label="Save"
+              :handler="save"
+              class="mt-2"
+              :disabled="readonly"
+            />
+          </b-col>
+        </b-row>
+      </div>
+      <div v-else-if="type === 'toggle'">
+        <OurToggle
+          v-model="value"
+          class="mt-2"
+          :height="30"
+          :width="toggleWidth"
+          :font-size="14"
+          :sync="true"
+          :labels="{checked: haveValue ? toggleChecked : 'N/A', unchecked: haveValue ? toggleUnchecked : 'N/A'}"
+          color="#61AE24"
+          :disabled="readonly"
+          @change="save"
+        />
+      </div>
+    </b-form-group>
+    <div v-if="newRule" class="text-danger font-weight-bold">
+      &nbsp;New
     </div>
-    <div v-else-if="type === 'toggle'">
-      <OurToggle
-        v-model="value"
-        class="mt-2"
-        :height="30"
-        :width="toggleWidth"
-        :font-size="14"
-        :sync="true"
-        :labels="{checked: toggleChecked, unchecked: toggleUnchecked}"
-        color="#61AE24"
-        :disabled="readonly"
-        @change="save"
-      />
-    </div>
-  </b-form-group>
+  </div>
 </template>
 <script>
 import SpinButton from './SpinButton'
@@ -117,6 +122,11 @@ export default {
       type: String,
       required: false,
       default: null
+    },
+    newRule: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data: function() {
@@ -180,5 +190,10 @@ export default {
 input,
 select {
   max-width: 300px;
+}
+
+.dangerimp {
+  color: $color-red !important;
+  font-weight: bold;
 }
 </style>

@@ -135,7 +135,7 @@
           <b-btn
             v-if="chat && chat.chattype === 'User2Mod' && mod"
             v-b-tooltip.hover.top
-            title="Ask Support for help"
+            title="Add a note for this member, and optionally alert other groups."
             variant="secondary"
             @click="addAComment"
           >
@@ -177,8 +177,8 @@
             Spammer
           </div>
         </div>
-        <div v-if="chat && chat.chattype === 'User2Mod' && mod" v-b-tooltip.hover.top title="Ask on Central for help" class="mr-2">
-          <external-link href="https://discourse.ilovefreegle.org/c/central" class="nocolor">
+        <div v-if="chat && chat.chattype === 'User2Mod' && mod" class="mr-2">
+          <external-link v-b-tooltip.hover.top href="https://discourse.ilovefreegle.org/c/central" class="nocolor" title="Ask on Central for help">
             <v-icon scale="2" name="question-circle" class="fa-mob" />
           </external-link>
           <div class="mobtext text--smallest">

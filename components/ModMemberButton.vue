@@ -122,6 +122,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    reviewgroupid: {
+      type: Number,
+      required: false,
+      default: null
     }
   },
   data: function() {
@@ -257,14 +262,14 @@ export default {
     },
     async reviewHoldIt() {
       await this.$store.dispatch('members/reviewHold', {
-        membershipid: this.member.id,
-        groupid: this.groupid
+        membershipid: this.member.membershipid,
+        groupid: this.reviewgroupid
       })
     },
     async reviewReleaseIt() {
       await this.$store.dispatch('members/reviewRelease', {
-        membershipid: this.member.id,
-        groupid: this.groupid
+        membershipid: this.member.membershipid,
+        groupid: this.reviewgroupid
       })
     },
     async releaseIt() {

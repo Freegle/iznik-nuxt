@@ -9,9 +9,20 @@
           {{ membership.reviewreason }}
         </span>
       </div>
+      <div v-if="amAModOn(membership.id) && needsReview && membership.heldby">
+        <NoticeMessage variant="warning" class="mt-2 mb-2">
+          <p v-if="me.id === membership.heldby">
+            You held this member.  Other people will see a warning to check with
+            you before releasing them.
+          </p>
+          <p v-else>
+            Held by <v-icon name="hashtag" class="text-muted" scale="0.5" /><strong>{{ membership.heldby }}</strong>.  Please check before releasing them.
+          </p>
+        </NoticeMessage>
+      </div>
       <div v-if="amAModOn(membership.id) && needsReview" class="d-flex mt-2 flex-wrap">
         <SpinButton
-          v-if="!member.heldby || member.heldby.id === myid"
+          v-if="!membership.heldby || membership.heldby.id === myid"
           name="check"
           spinclass="success"
           variant="primary"
@@ -20,7 +31,7 @@
           class="mr-2 mb-1"
         />
         <SpinButton
-          v-if="!member.heldby || member.heldby.id === myid"
+          v-if="!membership.heldby || membership.heldby.id === myid"
           name="trash-alt"
           spinclass="success"
           variant="warning"
@@ -29,20 +40,22 @@
           class="mr-2 mb-1"
         />
         <ModMemberButton
-          v-if="!member.heldby"
-          :member="member"
+          v-if="!membership.heldby"
+          :member="membership"
           variant="warning"
           icon="pause"
           reviewhold
+          :reviewgroupid="groupid"
           label="Hold"
           class="mr-2 mb-1"
         />
         <ModMemberButton
           v-else
-          :member="member"
+          :member="membership"
           variant="warning"
           icon="play"
           reviewrelease
+          :reviewgroupid="groupid"
           label="Release"
           class="mr-2 mb-1"
         />
@@ -56,11 +69,13 @@
 </template>
 <script>
 import SpinButton from '@/components/SpinButton'
+import NoticeMessage from '@/components/NoticeMessage.vue'
 import ConfirmModal from './ConfirmModal'
 import ModMemberButton from '~/components/ModMemberButton.vue'
 
 export default {
   components: {
+    NoticeMessage,
     ModMemberButton,
     SpinButton,
     ConfirmModal
@@ -81,6 +96,17 @@ export default {
     }
   },
   computed: {
+    groupid() {
+      let ret = null
+
+      this.member.memberof.forEach(h => {
+        if (h.id === this.membership.id) {
+          ret = h.id
+        }
+      })
+
+      return ret
+    },
     needsReview() {
       if (this.reviewed) {
         return false

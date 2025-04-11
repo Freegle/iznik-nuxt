@@ -5,8 +5,10 @@
     </div>
     <h2>Hello, {{ me.displayname }}</h2>
     <p>Here's your dashboard, where you can see what your communities have been doing recently.</p>
-    <!-- eslint-disable-next-line -->
-    <p>Need temporary help moderating?  Mail <ExternalLink href="mailto:mentors@ilovefreegle.org">mentors@ilovefreegle.org</ExternalLink></p>
+    <p>
+      <!-- eslint-disable-next-line -->
+      Need any help moderating?  Mail <ExternalLink href="mailto:mentors@ilovefreegle.org">mentors@ilovefreegle.org</ExternalLink>.
+    </p>
     <p v-if="isApp">
       ModTools app version: {{ modtoolsVersion }}.
     </p>
