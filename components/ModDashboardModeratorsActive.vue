@@ -14,7 +14,7 @@
         </b-card-body>
       </b-card>
       <div v-else-if="ModeratorsActive && ModeratorsActive.length">
-        <p>This shows when the volunteers on this community last visited FD or MT.</p>
+        <p>This shows when the volunteers on this community last moderated on ModTools.  Just visiting the site isn't enough to cause this to update.</p>
         <b-card no-body>
           <b-card-body>
             <b-row v-for="user in ModeratorsActiveVisible" :key="'popular-' + user.id">
