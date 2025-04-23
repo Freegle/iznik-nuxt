@@ -13,7 +13,7 @@
         in Settings which is flagged with <span class="text-danger font-weight-bold">New</span>.  You can copy the rules if you have
         multiple groups and they are the same.
       </p>
-      <a v-for="(inv) of newRulesMissing" :key="'fbinvalid-' + inv.id" :href="'/modtools/settings/' + inv.id">
+      <a v-for="(inv) of newRulesMissing" :key="'fbinvalid-' + inv.id" href="#" @click.prevent="gotogroup(inv.id)">
         Click to add rules for {{ inv.namedisplay }} (missing: {{ inv.missing }})<br>
       </a>
     </NoticeMessage>
