@@ -8,7 +8,7 @@ const SENTRY_DSN = 'https://b68903e730034a4ba3b8b2358331389e@o118493.ingest.sent
 const YAHOO_CLIENTID =
   'dj0yJmk9N245WTRqaDd2dnA4JmQ9WVdrOWIzTlZNMU01TjJjbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWRh'
 const MOBILE_VERSION = '2.0.120'
-const MODTOOLS_VERSION = '0.3.116'
+const MODTOOLS_VERSION = '0.3.117'
 // nvm use 14.21.3
 // npm run mtapp
 // cd ../iznik-nuxt-mt
@@ -39,7 +39,8 @@ if ((process.env.NUXT_BUILD_TYPE === 'fdapp') || (process.env.NUXT_BUILD_TYPE ==
 }
 if (process.env.NUXT_BUILD_TYPE === 'mtapp') {
   //API = 'https://fdapidbg.ilovefreegle.org/api'
-  API = 'https://modtools.org/api'
+  //API = 'https://modtools.org/api'
+  API = 'https://fdapilive.ilovefreegle.org/api'
 }
 
 // IZNIK_API is where we send it to.  This avoids CORS issues (and removes preflight OPTIONS calls for GETs, which
